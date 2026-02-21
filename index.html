@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Checker</title>
+</head>
+
+<body style="font-family:Arial;text-align:center;margin-top:80px">
+
+<h2>Enter Code</h2>
+
+<input id="code" placeholder="Enter code">
+<button onclick="check()">CHECK</button>
+
+<h3 id="result"></h3>
+
+<script>
+async function check() {
+
+let userCode = document.getElementById("code").value;
+
+let res = await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/DATEUSER.TXT");
+let text = await res.text();
+
+// split by >
+let data = text.split(">");
+
+// index 2 = real code (1145)
+let realCode = data[2];
+
+if(userCode === realCode){
+
+document.getElementById("result").innerHTML =
+"VALID ✅<br><br>" +
+"SERULI: " + data[4] + "<br>" +
+"WELI: " + data[6];
+
+}else{
+document.getElementById("result").innerHTML = "WRONG CODE ❌";
+}
+
+}
+</script>
+
+</body>
+</html>
