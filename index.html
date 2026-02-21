@@ -6,72 +6,12 @@
 <title>Product Verification</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
-}
-
-body{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-color:white;
-}
-
-.card{
-width:90%;
-max-width:400px;
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(20px);
-padding:30px;
-border-radius:25px;
-box-shadow:0 15px 35px rgba(0,0,0,0.4);
-text-align:center;
-}
-
-h1{
-font-size:22px;
-margin-bottom:25px;
-font-weight:600;
-}
-
-input{
-width:100%;
-padding:15px;
-border-radius:15px;
-border:none;
-outline:none;
-margin-bottom:15px;
-font-size:16px;
-text-align:center;
-}
-
-button{
-width:100%;
-padding:15px;
-border-radius:15px;
-border:none;
-font-size:16px;
-font-weight:600;
-cursor:pointer;
-background:white;
-color:#203a43;
-transition:0.3s;
-}
-
-button:hover{
-transform:scale(1.05);
-}
-
-#result{
-margin-top:20px;
-font-size:15px;
-line-height:1.6;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;}
+body{height:100vh;display:flex;justify-content:center;align-items:center;background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);color:white;}
+.card{width:90%;max-width:400px;background:rgba(255,255,255,0.08);backdrop-filter:blur(20px);padding:30px;border-radius:25px;box-shadow:0 15px 35px rgba(0,0,0,0.4);text-align:center;}
+h1{font-size:22px;margin-bottom:25px;font-weight:600;}
+input{width:100%;padding:15px;border-radius:15px;border:none;outline:none;margin-bottom:15px;font-size:16px;text-align:center;}
+#result{margin-top:20px;font-size:15px;line-height:1.6;}
 .valid{color:#00ffae;}
 .invalid{color:#ff4d4d;}
 </style>
@@ -81,52 +21,64 @@ line-height:1.6;
 
 <div class="card">
 <h1>Product Verification</h1>
-
 <input id="code" placeholder="Enter product code">
-<button onclick="check()">VERIFY</button>
-
 <div id="result"></div>
 </div>
 
 <script>
+let lastCode = "";
+
+// ფუნქცია კოდის შემოწმებისთვის
 async function check(){
+    let userCode = document.getElementById("code").value.trim();
+    if(!userCode) return;
 
-let userCode=document.getElementById("code").value.trim();
+    lastCode = userCode;
 
-let res=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/DATEUSER.TXT");
-let text=await res.text();
+    try{
+        // Background fetch TXT file
+        let res = await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/DATEUSER.TXT?nocache=" + new Date().getTime());
+        let text = await res.text();
 
-// split file by lines
-let lines=text.split("\n");
+        let lines = text.split("\n");
+        let found = false;
 
-let found=false;
+        for(let line of lines){
+            if(!line.trim()) continue;
+            let d = line.trim().split(">");
 
-for(let line of lines){
+            if(d[2] === userCode){
+                document.getElementById("result").innerHTML=
+                "<div class='valid'>VALID ✅</div><br>"+
+                "Serial: "+(d[4]||"-")+"<br>"+
+                "Year: "+(d[6]||"-")+"<br>"+
+                "Brand: "+(d[8]||"-")+"<br>"+
+                "Country: "+(d[10]||"-");
+                found = true;
+                break;
+            }
+        }
 
-if(!line.trim()) continue;
+        if(!found){
+            document.getElementById("result").innerHTML=
+            "<div class='invalid'>WRONG CODE ❌</div>";
+        }
 
-let d=line.trim().split(">");
-
-if(d[2]===userCode){
-
-document.getElementById("result").innerHTML=
-"<div class='valid'>VALID ✅</div><br>"+
-"Serial: "+(d[4]||"-")+"<br>"+
-"Year: "+(d[6]||"-")+"<br>"+
-"Brand: "+(d[8]||"-")+"<br>"+
-"Country: "+(d[10]||"-");
-
-found=true;
-break;
+    }catch(e){
+        document.getElementById("result").innerHTML="<div class='invalid'>Error loading data ❌</div>";
+    }
 }
-}
 
-if(!found){
-document.getElementById("result").innerHTML=
-"<div class='invalid'>WRONG CODE ❌</div>";
-}
+// ავტომატური შემოწმება ყოველ წამში (background)
+setInterval(function(){
+    if(lastCode){
+        check();
+    }
+},1000);
 
-}
+// კოდის ცვლილებაზე ავტომატურად შემოწმება
+document.getElementById("code").addEventListener("input",check);
+
 </script>
 
 </body>
