@@ -2,41 +2,119 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Checker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Verification</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+color:white;
+}
+
+.card{
+width:90%;
+max-width:400px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(20px);
+padding:30px;
+border-radius:25px;
+box-shadow:0 15px 35px rgba(0,0,0,0.4);
+text-align:center;
+}
+
+h1{
+font-size:22px;
+margin-bottom:25px;
+font-weight:600;
+}
+
+input{
+width:100%;
+padding:15px;
+border-radius:15px;
+border:none;
+outline:none;
+margin-bottom:15px;
+font-size:16px;
+text-align:center;
+}
+
+button{
+width:100%;
+padding:15px;
+border-radius:15px;
+border:none;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+background:white;
+color:#203a43;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+}
+
+#result{
+margin-top:20px;
+font-size:15px;
+line-height:1.6;
+}
+.valid{
+color:#00ffae;
+}
+.invalid{
+color:#ff4d4d;
+}
+</style>
 </head>
 
-<body style="font-family:Arial;text-align:center;margin-top:80px">
+<body>
 
-<h2>Enter Code</h2>
+<div class="card">
+<h1>Product Verification</h1>
 
-<input id="code" placeholder="Enter code">
-<button onclick="check()">CHECK</button>
+<input id="code" placeholder="Enter product code">
+<button onclick="check()">VERIFY</button>
 
-<h3 id="result"></h3>
+<div id="result"></div>
+</div>
 
 <script>
-async function check() {
+async function check(){
 
-let userCode = document.getElementById("code").value;
+let userCode=document.getElementById("code").value.trim();
 
-let res = await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/DATEUSER.TXT");
-let text = await res.text();
+let res=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/DATEUSER.TXT");
+let text=await res.text();
 
-// split by >
-let data = text.split(">");
+let d=text.split(">");
+let realCode=d[2];
 
-// index 2 = real code (1145)
-let realCode = data[2];
+if(userCode===realCode){
 
-if(userCode === realCode){
-
-document.getElementById("result").innerHTML =
-"VALID ✅<br><br>" +
-"SERULI: " + data[4] + "<br>" +
-"WELI: " + data[6];
+document.getElementById("result").innerHTML=
+"<div class='valid'>VALID ✅</div><br>"+
+"Serial: "+d[4]+"<br>"+
+"Year: "+d[6]+"<br>"+
+"Brand: "+d[8]+"<br>"+
+"Country: "+d[10];
 
 }else{
-document.getElementById("result").innerHTML = "WRONG CODE ❌";
+document.getElementById("result").innerHTML=
+"<div class='invalid'>WRONG CODE ❌</div>";
 }
 
 }
