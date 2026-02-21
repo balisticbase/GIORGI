@@ -72,12 +72,8 @@ margin-top:20px;
 font-size:15px;
 line-height:1.6;
 }
-.valid{
-color:#00ffae;
-}
-.invalid{
-color:#ff4d4d;
-}
+.valid{color:#00ffae;}
+.invalid{color:#ff4d4d;}
 </style>
 </head>
 
@@ -100,19 +96,32 @@ let userCode=document.getElementById("code").value.trim();
 let res=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/DATEUSER.TXT");
 let text=await res.text();
 
-let d=text.split(">");
-let realCode=d[2];
+// split file by lines
+let lines=text.split("\n");
 
-if(userCode===realCode){
+let found=false;
+
+for(let line of lines){
+
+if(!line.trim()) continue;
+
+let d=line.trim().split(">");
+
+if(d[2]===userCode){
 
 document.getElementById("result").innerHTML=
 "<div class='valid'>VALID ✅</div><br>"+
-"Serial: "+d[4]+"<br>"+
-"Year: "+d[6]+"<br>"+
-"Brand: "+d[8]+"<br>"+
-"Country: "+d[10];
+"Serial: "+(d[4]||"-")+"<br>"+
+"Year: "+(d[6]||"-")+"<br>"+
+"Brand: "+(d[8]||"-")+"<br>"+
+"Country: "+(d[10]||"-");
 
-}else{
+found=true;
+break;
+}
+}
+
+if(!found){
 document.getElementById("result").innerHTML=
 "<div class='invalid'>WRONG CODE ❌</div>";
 }
