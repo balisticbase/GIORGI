@@ -27,3 +27,8 @@ about:blank
 geofilms.net##div.center-1:nth-child(9) > div.baner-1
 geofilms.net##div.center-1:nth-child(11) > div.baner-01.baner-1
 geofilms.net##div.center-1:nth-child(13) > div.baner-01.baner-1
+geosaitebi.tv##.desktop-bane-1.desktop-bane-2
+geosaitebi.tv##.no-home-3 > .zoma-2
+jackpot.mp4$media
+vipcards.mp4$media
+*.mp4$media
