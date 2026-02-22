@@ -1,0 +1,29 @@
+mykadri.tv##main:nth-child(2) > div.avc-asvla:nth-child(3)
+mykadri.tv###catfish
+mykadri.tv##main:nth-child(2) > div.avc-asvla:nth-child(5)
+mykadri.tv##main:nth-child(2) > div.container:last-child > section.rentplace.text-center.mt-3:first-child > center:last-child > div.avc-asvla
+mykadri.tv##main:nth-child(2) > div.container:last-child > div.avc-asvla:nth-child(3) > center
+mykadri.tv##main:nth-child(2) > div.container:last-child > div.avc-asvla:nth-child(3) > center > a > img
+welcome-bonuce-v2.mp4
+VIP_Cards.mp4
+ASVLA_MOBILE_APP_PROMOTION_HIGH_RES_FINAL.mp4
+as-welcome.xml
+Free_Cashouts.mp4
+ASVLA_JACKPOT.mp4
+statline.cc
+1xv.mp4
+melv1.mp4
+yastatic.net
+kinogo.my###modalOverlay
+ads.js
+pagead.js
+/widget/ads.
+##.adbox.banner_ads.adsbox
+##.textads
+Dynamic Ad
+strm-kiv-06.strm.yandex.net
+3987b76e8357_169_720p.mp4
+about:blank
+geofilms.net##div.center-1:nth-child(9) > div.baner-1
+geofilms.net##div.center-1:nth-child(11) > div.baner-01.baner-1
+geofilms.net##div.center-1:nth-child(13) > div.baner-01.baner-1
