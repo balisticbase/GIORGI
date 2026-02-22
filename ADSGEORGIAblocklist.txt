@@ -32,3 +32,7 @@ geosaitebi.tv##.no-home-3 > .zoma-2
 jackpot.mp4$media
 vipcards.mp4$media
 *.mp4$media
+geosaitebi.tv###dle-content > div.zoma-2:last-child > div.shida-kino-1:first-child > div.k-kazino-2:first-child > div.ban-bbc-1:last-child > center:first-child > div.avc-asv > a > img
+geosaitebi.tv##div.wrapper:nth-child(15) > div.fulshi-1:nth-child(2) > div.bb-size-120.zoma-2:nth-child(2) > div.ifram-b-3.ifram-b-1.baner-1-NO > div.avc-asv > a > img
+geosaitebi.tv##div.wrapper:nth-child(15) > div.fulshi-1:nth-child(2) > div.bb-size-120.zoma-2:nth-child(5) > div.ifram-b-3.ifram-b-1.baner-1-NO > div.avc-asv > a > img
+geosaitebi.tv##div.wrapper:nth-child(15) > div.fulshi-1:nth-child(2) > div.bb-size-120.zoma-2:nth-child(5) > div.ifram-b-3.ifram-b-1.baner-1-NO
