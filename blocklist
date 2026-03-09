@@ -1,3 +1,8 @@
+##.ad-catfish__desktop.ad-catfish
+##.ad-catfish-content
+##.ad-catfish-content > .avc-asv
+##.ad-catfish-content > .avc-asv > [href]
+##.ad-catfish-content > .avc-asv > [href] > [src]
 ##.space-y-8.mt-8 .avc-asv > [href^="https://asvla.com/free"]
 ||adjaranet.in/asvl/banner/*/
 ||adjaranet.in/asvl/banner/cashout/
