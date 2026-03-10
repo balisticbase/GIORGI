@@ -1,26 +1,8 @@
-mykadri.tv###jf-container-tp2pseries > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
-mykadri.tv###jf-container-tp2pseries_vast_static
-mykadri.tv###jf-container-tp2pseries_vast
-mykadri.tv###jf-container-tp2pmovie > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
-mykadri.tv###jf-container-tp2pmovie_vast_static
-mykadri.tv###jf-container-tp2pmovie_vast
-kinolab.cc###topBanner
-kinolab.cc###bannerPlace3 > a > img
-kinolab.cc###bannerPlace3 > a
-kinolab.cc##section:nth-child(19) > div.center-1:nth-child(9) > div.lab-shida-6:last-child > div.full-baner-2:nth-child(2) > div.avc-asvla > div.c-baner-bg-2.c-baner-bg-1
-kinolab.cc###bannerPlace1 > a > img
-kinolab.cc###bannerPlace2 > a > img
-kinolab.cc##section:nth-child(19) > div.center-1:nth-child(9) > div.full-baner-1:first-child > div.avc-asvla > div.c-baner-bg-1
-##.full-baner-1 > .avc-asvla > .c-baner-bg-1 > .center-1
-||kinolab.cc/templates/kinolab-1/baner/
-adjaranet.bet###overlayAd
-adjaranet.bet##footer.mt-auto:nth-child(7) > center:nth-child(2)
+adjaranet.in##main.mt-\[60px\].lg\:mt-\[72px\]:nth-child(5) > div > center:nth-child(5) > div.avc-asv > a > img
+adjaranet.in##main.mt-\[60px\].lg\:mt-\[72px\]:nth-child(5) > div > center:nth-child(5) > div.avc-asv > a
+adjaranet.in##main.mt-\[60px\].lg\:mt-\[72px\]:nth-child(5) > div > center:nth-child(5) > div.avc-asv
+adjaranet.in##main.mt-\[60px\].lg\:mt-\[72px\]:nth-child(5) > div > center:nth-child(5)
 adjaranet.bet###adPopup
-##.overlay-wrapper
-adjaranets.com##footer.mt-auto:nth-child(6) > center:last-child
-adjaranets.com###adPopup
-###adPopup
-adjaranets.com##.overlay-wrapper
 adjaranet.in###jwp-hls-series > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
 adjaranet.in###jwp-hls-movie > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
 adjaranet.in##main:nth-child(4) > div.wrapper > div.mt-8.space-y-8 > center:nth-child(2)
