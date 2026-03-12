@@ -225,30 +225,6 @@ geosaitebi.tv###jwp-hls-series > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-o
       Aak.checkUpdate(true); // check if AakScript is up to date.
       Aak.checkList(); // check if AakList is enabled.
       Aak.blockDetect(); // detect and kill anti-adblocks.
-    },
-    aabs : {},
-    opts : {},
-    options : {
-      autoPlay : {
-        group : 'general',
-        type : 'checkbox',
-        value : false,
-        label : 'Play video automatically. *',
-        info : ''
-      },
-      videoHD : {
-        group : 'general',
-        type : 'checkbox',
-        value : false,
-        label : 'Play video in HD quality. **',
-        info : ''
-      },
-      forceVLC : {
-        group : 'general',
-        type : 'checkbox',
-        value : false,
-        label : 'Play video with VLC plugin. *',
-        info : ''
       },
       checkList : {
         group : 'general',
@@ -1208,26 +1184,6 @@ geosaitebi.tv###jwp-hls-series > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-o
           this.attributes.id = this.attributes.name = Aak.generateID();
           this.attributes.height = this.target.node.height || this.target.node.clientHeight || '480px';
           this.attributes.width = this.target.node.width || this.target.node.clientWidth || '640px';
-        },
-        getMimeType : function (type) {
-          // doc: http://tinyurl.com/jrs8fgz
-          switch (type.toLowerCase()) {
-          case 'mp4':
-            return 'video/mp4';
-          case 'webm':
-            return 'video/webm';
-          case 'ogg':
-          case 'ogv':
-            return 'video/ogg';
-          case 'flv':
-            return 'video/x-flv';
-          case 'hls':
-            return 'application/x-mpegURL';
-          case 'hds':
-            return 'application/f4m+xml';
-          default:
-            return type;
-          }
         },
         building : function (tagName) {
           var self = this;
