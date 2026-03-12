@@ -1213,13 +1213,7 @@ geosaitebi.tv###jwp-hls-series > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-o
             this.player.node.setAttribute('allowfullscreen', true); // http://tinyurl.com/oyyehab
             // allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen
             break;
-          case 'video':
-            var attrName;
-            this.player.node = document.createElement('video');
-            for (attrName in this.attributes) {
-              if (this.attributes.hasOwnProperty(attrName))
-                this.player.node.setAttribute(attrName, this.attributes[attrName]);
-            }
+          }
 
             if (this.attributes.autoplay) { // fix bug duplicate playing on firefox/chrome
               this.player.node.onloadstart = function () {
