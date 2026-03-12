@@ -127,6 +127,35 @@ geosaitebi.tv###jwp-hls-series > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-o
 
 
 
+
+
+! HQQ anti adblock killer
+hqq.ac##.adb
+hqq.ac##.adblock
+hqq.ac##.anti-adblock
+hqq.ac##.adblock-overlay
+hqq.ac##.adblock-warning
+hqq.ac##.popup
+
+! remove overlay block
+hqq.ac##body:style(overflow:auto !important)
+hqq.ac##html:style(overflow:auto !important)
+
+! kill anti adblock scripts
+hqq.ac##+js(abort-current-inline-script, adblock)
+hqq.ac##+js(abort-current-inline-script, adsbygoogle)
+hqq.ac##+js(abort-current-inline-script, AdBlock)
+hqq.ac##+js(set, adblock, false)
+hqq.ac##+js(set, adblockDetected, false)
+
+! stop popup redirect
+hqq.ac##+js(aopr, open)
+hqq.ac##+js(abort-current-inline-script, window.open)
+
+
+
+
+
 ! Block all external redirects from adjaranet.bet
 ||adjaranet.bet^$document
 
