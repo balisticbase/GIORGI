@@ -159,15 +159,3 @@ hqq.ac##+js(abort-current-inline-script, window.open)
 
 
 
-! Prevent opening external domains from this site
-||*^$document,domain=adjaranet.bet
-
-! Kill redirect scripts
-adjaranet.bet##+js(abort-on-property-write, location)
-adjaranet.bet##+js(abort-current-inline-script, location.href)
-adjaranet.bet##+js(abort-current-inline-script, window.open)
-adjaranet.bet##+js(abort-current-inline-script, document.location)
-
-! Remove click redirect handlers)
-adjaranet.bet##+js(aopr, location.assign)
-adjaranet.bet##+js(aopr, location.replace)
