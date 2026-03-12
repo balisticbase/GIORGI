@@ -122,3 +122,27 @@ ufasofilmebi.ge###watch > div.container:last-child > div.matrix-banner-container
 ufasofilmebi.ge###sparkleBanner
 geosaitebi.tv##div.wrapper:nth-child(7) > div.center-1.no-home.apirebsyureba-1:first-child > div.no-home-2 > div.no-home-3 > div.b-size-120.zoma-2:nth-child(2)
 geosaitebi.tv###jwp-hls-series > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
+
+
+
+
+
+! Block all external redirects from adjaranet.bet
+||adjaranet.bet^$document
+
+! Block popups and new tabs
+||adjaranet.bet^$popup
+
+! Prevent opening external domains from this site
+||*^$document,domain=adjaranet.bet
+
+! Kill redirect scripts
+adjaranet.bet##+js(abort-on-property-write, location)
+adjaranet.bet##+js(abort-current-inline-script, location.href)
+adjaranet.bet##+js(abort-current-inline-script, window.open)
+adjaranet.bet##+js(abort-current-inline-script, document.location)
+
+! Remove click redirect handlers
+adjaranet.bet##+js(aopr, open)
+adjaranet.bet##+js(aopr, location.assign)
+adjaranet.bet##+js(aopr, location.replace)
