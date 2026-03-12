@@ -1,3 +1,6 @@
+imoviesge.com##div.wrap:nth-child(4) > div.wrap-main.wrap-center:nth-child(3) > div.content > center:last-child > div > img:first-child
+imoviesge.com##div.wrap:nth-child(4) > div.wrap-main.wrap-center:nth-child(3) > div.content > center:last-child > div
+imoviesge.com##div.wrap:nth-child(4) > div.wrap-main.wrap-center:nth-child(3) > div.content > center:last-child
 imoviesge.com##div.wrap:nth-child(4) > div.wrap-main.wrap-center:nth-child(2) > div.content > center:last-child > div > img:first-child
 imoviesge.com##div.wrap:nth-child(4) > div.wrap-main.wrap-center:nth-child(2) > div.content > center:last-child > div
 imoviesge.com##div.wrap:nth-child(4) > div.wrap-main.wrap-center:nth-child(2) > div.content > center:last-child
