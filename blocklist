@@ -1,3 +1,21 @@
+##iframe[src*="iamcdn.net"] { 
+position: fixed !important;
+top: 10000px !important;
+left: 0 !important;
+}##iframe[src*="iamcdn.net"]
+##div:has(iframe[src*="iamcdn.net"])
+##iframe[src*="iamcdn.net"] { 
+pointer-events: none !important;
+opacity: 0 !important;
+}
+
+
+
+
+
+
+
+
 ||platform-cdn.sharethis.com
 ||adx.stack.bidster.net
 ||srv224.com
