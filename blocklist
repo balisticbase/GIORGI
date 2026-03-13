@@ -1,5 +1,3 @@
-adjaranet.cam##iframe[src*="iamcdn"] { pointer-events:none!important; }
-adjaranet.cam##iframe[src*="ads"] { pointer-events:none!important; }
 
 
 
