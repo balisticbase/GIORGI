@@ -1,83 +1,386 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Product Verification</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>European Appliance Registry</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;}
-body{height:100vh;display:flex;justify-content:center;align-items:center;background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);color:white;}
-.card{width:90%;max-width:400px;background:rgba(255,255,255,0.08);backdrop-filter:blur(20px);padding:30px;border-radius:25px;box-shadow:0 15px 35px rgba(0,0,0,0.4);text-align:center;}
-h1{font-size:22px;margin-bottom:25px;font-weight:600;}
-input{width:100%;padding:15px;border-radius:15px;border:none;outline:none;margin-bottom:15px;font-size:16px;text-align:center;}
-#result{margin-top:20px;font-size:15px;line-height:1.6;}
-.valid{color:#00ffae;}
-.invalid{color:#ff4d4d;}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+font-family:Inter,sans-serif;
+background:#f5f7fb;
+color:#111827;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:0 20px;
+}
+
+header{
+background:white;
+border-bottom:1px solid #e5e7eb;
+}
+
+.header-inner{
+display:flex;
+justify-content:space-between;
+align-items:center;
+height:70px;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:700;
+font-size:18px;
+}
+
+.logo-box{
+width:40px;
+height:40px;
+background:#1f3a8a;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:6px;
+font-weight:800;
+}
+
+/* STATUS */
+
+.status{
+display:flex;
+align-items:center;
+gap:8px;
+padding:6px 14px;
+border-radius:20px;
+font-size:13px;
+font-weight:600;
+}
+
+.status.online{
+background:#ecfdf5;
+color:#065f46;
+}
+
+.status.offline{
+background:#fef2f2;
+color:#991b1b;
+}
+
+.dot{
+width:10px;
+height:10px;
+border-radius:50%;
+}
+
+.online .dot{
+background:#22c55e;
+animation:pulseGreen 1.5s infinite;
+}
+
+.offline .dot{
+background:#ef4444;
+animation:pulseRed 1.5s infinite;
+}
+
+@keyframes pulseGreen{
+0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}
+70%{box-shadow:0 0 0 10px rgba(34,197,94,0)}
+100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}
+}
+
+@keyframes pulseRed{
+0%{box-shadow:0 0 0 0 rgba(239,68,68,.6)}
+70%{box-shadow:0 0 0 10px rgba(239,68,68,0)}
+100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}
+}
+
+/* HERO */
+
+.hero{
+padding:70px 0;
+text-align:center;
+}
+
+.hero h1{
+font-size:36px;
+font-weight:800;
+margin-bottom:10px;
+}
+
+.hero p{
+color:#6b7280;
+max-width:600px;
+margin:auto;
+}
+
+/* CARD */
+
+.card{
+background:white;
+border:1px solid #e5e7eb;
+border-radius:12px;
+padding:30px;
+margin-top:40px;
+box-shadow:0 8px 25px rgba(0,0,0,.05);
+}
+
+.input-row{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+input{
+flex:1;
+min-width:200px;
+height:48px;
+border-radius:8px;
+border:1px solid #d1d5db;
+padding:0 14px;
+font-size:15px;
+}
+
+button{
+height:48px;
+padding:0 24px;
+background:#1f3a8a;
+color:white;
+border:none;
+border-radius:8px;
+font-weight:600;
+cursor:pointer;
+}
+
+.result{
+margin-top:25px;
+}
+
+.state{
+padding:14px;
+border-radius:8px;
+font-weight:600;
+margin-bottom:15px;
+}
+
+.loading{background:#fff7ed;color:#92400e}
+.success{background:#ecfdf5;color:#065f46}
+.error{background:#fef2f2;color:#991b1b}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:12px;
+border-bottom:1px solid #e5e7eb;
+text-align:left;
+}
+
+th{
+color:#6b7280;
+font-weight:600;
+}
+
+a{
+color:#2563eb;
+font-weight:600;
+text-decoration:none;
+}
+
+a:hover{
+text-decoration:underline;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="card">
-<h1>Product Verification</h1>
-<input id="code" placeholder="Enter product code">
-<div id="result"></div>
+<header>
+<div class="container header-inner">
+
+<div class="logo">
+<div class="logo-box">EU</div>
+European Appliance Registry
 </div>
 
+<div id="systemStatus" class="status online">
+<div class="dot"></div>
+<span>System Status: Online</span>
+</div>
+
+</div>
+</header>
+
+<section class="hero">
+
+<div class="container">
+
+<h1>Official Product Verification</h1>
+
+<p>
+Verify appliance serial numbers using the official registry database.
+</p>
+
+<div class="card">
+
+<div class="input-row">
+
+<input id="code" placeholder="Enter product code">
+
+<button onclick="check()">Verify</button>
+
+</div>
+
+<div id="result" class="result">
+
+<div class="state loading">
+Ready for verification
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
 <script>
-let lastCode = "";
 
-// ფუნქცია კოდის შემოწმებისთვის
-async function check(){
-    let userCode = document.getElementById("code").value.trim();
-    if(!userCode) return;
+/* ONLINE OFFLINE STATUS */
 
-    lastCode = userCode;
+function updateConnection(){
 
-    try{
-        // Background fetch TXT file
-        let res = await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/DATEUSER.TXT?nocache=" + new Date().getTime());
-        let text = await res.text();
+const status=document.getElementById("systemStatus")
 
-        let lines = text.split("\n");
-        let found = false;
+if(navigator.onLine){
 
-        for(let line of lines){
-            if(!line.trim()) continue;
-            let d = line.trim().split(">");
+status.classList.remove("offline")
+status.classList.add("online")
 
-            if(d[2] === userCode){
-                document.getElementById("result").innerHTML=
-                "<div class='valid'>VALID ✅</div><br>"+
-                "Serial: "+(d[4]||"-")+"<br>"+
-                "Year: "+(d[6]||"-")+"<br>"+
-                "Brand: "+(d[8]||"-")+"<br>"+
-                "Country: "+(d[10]||"-");
-                found = true;
-                break;
-            }
-        }
+status.innerHTML='<div class="dot"></div><span>System Status: Online</span>'
 
-        if(!found){
-            document.getElementById("result").innerHTML=
-            "<div class='invalid'>WRONG CODE ❌</div>";
-        }
+}else{
 
-    }catch(e){
-        document.getElementById("result").innerHTML="<div class='invalid'>Error loading data ❌</div>";
-    }
+status.classList.remove("online")
+status.classList.add("offline")
+
+status.innerHTML='<div class="dot"></div><span>System Status: Offline</span>'
+
 }
 
-// ავტომატური შემოწმება ყოველ წამში (background)
-setInterval(function(){
-    if(lastCode){
-        check();
-    }
-},1000);
+}
 
-// კოდის ცვლილებაზე ავტომატურად შემოწმება
-document.getElementById("code").addEventListener("input",check);
+updateConnection()
+setInterval(updateConnection,1000)
+
+/* VERIFY */
+
+async function check(){
+
+let code=document.getElementById("code").value.trim()
+
+if(!code)return
+
+let result=document.getElementById("result")
+
+result.innerHTML='<div class="state loading">Checking database...</div>'
+
+try{
+
+let r=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/DATEUSER.TXT?nocache="+Date.now())
+
+let text=await r.text()
+
+let lines=text.split("\n")
+
+let found=false
+
+for(let line of lines){
+
+let d=line.trim().split(">")
+
+if(d[2]===code){
+
+found=true
+
+let brand=d[8]||"-"
+let serial=d[4]||"-"
+
+let searchURL="https://www.google.com/search?q="+encodeURIComponent(brand+" "+serial)
+
+result.innerHTML=`
+
+<div class="state success">Verification successful</div>
+
+<table>
+
+<tr>
+<th>Product Code</th>
+<td>${code}</td>
+</tr>
+
+<tr>
+<th>Serial Number</th>
+<td>
+<a href="${searchURL}" target="_blank">
+${serial}
+</a>
+</td>
+</tr>
+
+<tr>
+<th>Year</th>
+<td>${d[6]||"-"}</td>
+</tr>
+
+<tr>
+<th>Brand</th>
+<td>${brand}</td>
+</tr>
+
+<tr>
+<th>Country</th>
+<td>${d[10]||"-"}</td>
+</tr>
+
+</table>
+`
+
+break
+}
+
+}
+
+if(!found){
+
+result.innerHTML='<div class="state error">Code not found</div>'
+
+}
+
+}
+catch{
+
+result.innerHTML='<div class="state error">Database connection error</div>'
+
+}
+
+}
 
 </script>
 
