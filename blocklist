@@ -1,4 +1,4 @@
-||static-cdn.xyz^$all,important ||static-cdn.xyz/vast_tracking.php^$all,important ||static-cdn.xyz/vast_tracking.php^$script,image,media,xmlhttprequest,subdocument,third-party,popup ||static-cdn.xyz^$script ||static-cdn.xyz^$image ||static-cdn.xyz^$media ||static-cdn.xyz^$xmlhttprequest ||static-cdn.xyz^$subdocument ||static-cdn.xyz^$popup ||static-cdn.xyz^$third-party /static-cdn\.xyz\/vast_tracking\.php/ static-cdn.xyz 0.0.0.0 static-cdn.xyz 127.0.0.1 static-cdn.xyz
+||static-cdn.xyz^$all
 /.*(ket555xs9rbrhqb3fo917cizbbt\.jpg|vrjt0wdjqbbipysg5f520bas2dn\.jpg|all-eyes-off-me\.jpg|kgrajszlecawq3nqocnpfv8m6gw\.jpg).*/$all,important
 ||*/ad?*
 ||*/ad/*$popup
