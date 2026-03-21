@@ -13,11 +13,10 @@ wayfarerorthodox.com
 bonusgaf.com
 loop.pulzi.link
 bonusvip.ink
-adjaranet.in##div.ad-catfish.ad-catfish__desktop:nth-child(9) > div.ad-catfish-content > div.avc-asv:first-child > a > img
-adjaranet.in##div.ad-catfish.ad-catfish__desktop:nth-child(9) > div.ad-catfish-content > div.avc-asv:first-child
-adjaranet.in##div.ad-catfish.ad-catfish__desktop:nth-child(9) > div.ad-catfish-content > div.ad-close:last-child
-adjaranet.in##div.ad-catfish.ad-catfish__desktop:nth-child(9) > div.ad-catfish-content
-adjaranet.in##div.ad-catfish.ad-catfish__desktop:nth-child(9)
+##.ad-catfish
+##.ad-catfish__desktop
+##.ad-catfish-content
+##.avc-asv
 iamcdn.net
 cdn.7kprtners.com
 cdn-cgi/scripts/7d0fa10a/cloudflare-static
