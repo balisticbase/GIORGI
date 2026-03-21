@@ -1,3 +1,20 @@
+||recursive-reverie.website^$all
+||*.recursive-reverie.website^$all
+||recursive-reverie.website^$script
+||recursive-reverie.website^$image
+||recursive-reverie.website^$media
+||recursive-reverie.website^$popup
+||recursive-reverie.website^$third-party
+||*.recursive-reverie.website^$script
+||*.recursive-reverie.website^$image
+||*.recursive-reverie.website^$media
+||*.recursive-reverie.website^$popup
+||*.recursive-reverie.website^$third-party
+##a[href*="recursive-reverie.website"]
+##iframe[src*="recursive-reverie.website"]
+##script[src*="recursive-reverie.website"]
+##img[src*="recursive-reverie.website"]
+##video[src*="recursive-reverie.website"]
 adjaranet.in##div.ad-catfish.ad-catfish__desktop:nth-child(9) > div.ad-catfish-content
 adjaranet.in##div.ad-catfish.ad-catfish__desktop:nth-child(9)
 ||sf16-ads-format-sign.tiktokcdn.com^
