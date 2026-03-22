@@ -64,6 +64,8 @@
 ||*baner/468x60_Wel_Bon_3.png
 ||*baner/468x60_Withdraw_.png
 ||*###overlayAd*
+||*/api/ads/get/
+||*ads/welcome_voucher
 mykadri.tv##main:nth-child(4) > div.container:last-child > section.rentplace.text-center.mt-3:first-child > center:last-child > div.avc-asvla
 mykadri.tv##main:nth-child(4) > div.container:last-child > div.avc-asvla:nth-child(3)
 mykadri.tv###catfish
