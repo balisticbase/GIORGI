@@ -1,204 +1,36 @@
-||recursive-reverie.website^$all
-||*.recursive-reverie.website^$all
-||recursive-reverie.website^$script
-||recursive-reverie.website^$image
-||recursive-reverie.website^$media
-||recursive-reverie.website^$popup
-||recursive-reverie.website^$third-party
-||*.recursive-reverie.website^$script
-||*.recursive-reverie.website^$image
-||*.recursive-reverie.website^$media
-||*.recursive-reverie.website^$popup
-||*.recursive-reverie.website^$third-party
-##a[href*="recursive-reverie.website"]
-##iframe[src*="recursive-reverie.website"]
-##script[src*="recursive-reverie.website"]
-##img[src*="recursive-reverie.website"]
-##video[src*="recursive-reverie.website"]
-adjaranet.in##div.ad-catfish.ad-catfish__desktop:nth-child(9) > div.ad-catfish-content
-adjaranet.in##div.ad-catfish.ad-catfish__desktop:nth-child(9)
-||sf16-ads-format-sign.tiktokcdn.com^
-*port80ge.adocean.pl
-*hit.gemius.pl
-||*/ad?*
-||*/ad/*$popup
-||*/ad/*$script
-||*-ad-site-*.tiktokcdn.com
-||*/asvla2/*
-*admixer.net
-adjaranets.com###jwp-iframe-movie-eng-1 > div.jwp-before-play:first-child
+||*.recursive-reverie.website
+||*port80ge.adocean.pl
+||*hit.gemius.pl
+||*tiktokcdn.com
+||*admixer.net
 ||*.nel.cloudflare.com
-wayfarerorthodox.com
-bonusgaf.com
-loop.pulzi.link
-bonusvip.ink
-adjaranet.in##div.ad-catfish.ad-catfish__desktop:nth-child(8) > div.ad-catfish-content
-##.ad-catfish
-##.ad-catfish__desktop
-##.ad-catfish-content
-##.avc-asv
-iamcdn.net
-cdn.7kprtners.com
-cdn-cgi/scripts/7d0fa10a/cloudflare-static
-morphify.net
-statics.sssrr.org
-kettledroopingcontinuation.com
-mondostudio.cc###adPopup
-preroll/as-468.php
-preroll/as-468_6.xml
-preroll/as-468_1.xml?v=1.0.2
-preroll/ASVLA_JACKPOT.xml
-preroll/as-prerol.php
-cdn.servetraff.com
-echo.websocket.org
-r.botsford.link
-mykadri.tv###jf-container-p2pmovie > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
-mykadri.tv###jf-container-p2pmovie_vast_static
-||platform-cdn.sharethis.com
-||adx.stack.bidster.net
-||srv224.com
-https://i.ibb.co/9mXZDHrQ/m.png/
-mykadri.tv###jf-container-tp2pmovie_vast_static
-mykadri.tv###jf-container-tp2pmovie_vast
-mykadri.tv###jf-container-tp2pmovie > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
-||*.creative-sb1.com^
-cvt-s1.agl010.pro
-doubleclick.net
-geosaitebi.tv##div.wrapper:nth-child(15) > div.ad-catfish.ad-catfish__desktop:nth-child(12) > div.ad-catfish-content > div.avc-asv:first-child > a
-geosaitebi.tv##div.wrapper:nth-child(15) > div.ad-catfish.ad-catfish__desktop:nth-child(12) > div.ad-catfish-content
-geosaitebi.tv##div.wrapper:nth-child(15) > div.ad-catfish.ad-catfish__desktop:nth-child(12)
-geosaitebi.tv##div.wrapper:last-child > div.center-1.no-home.fulshi-1.apirebsyureba-1:first-child > div.ad-catfish.ad-catfish__desktop:nth-child(14)
-imoviesge.com##div.wrap:nth-child(4) > div.wrap-main.wrap-center:nth-child(3) > div.content > center:last-child > div > img:first-child
-imoviesge.com##div.wrap:nth-child(4) > div.wrap-main.wrap-center:nth-child(3) > div.content > center:last-child > div
-imoviesge.com##div.wrap:nth-child(4) > div.wrap-main.wrap-center:nth-child(3) > div.content > center:last-child
-imoviesge.com##div.wrap:nth-child(4) > div.wrap-main.wrap-center:nth-child(2) > div.content > center:last-child > div > img:first-child
-imoviesge.com##div.wrap:nth-child(4) > div.wrap-main.wrap-center:nth-child(2) > div.content > center:last-child > div
-imoviesge.com##div.wrap:nth-child(4) > div.wrap-main.wrap-center:nth-child(2) > div.content > center:last-child
-imoviesge.com###adPlayer
-imoviesge.com###overlayAd
-imoviesge.com###adPopup > div
-imoviesge.com###adPopup
-w3schools.com
-googleadservices.com
-google-analytics.com
-||asvla.com/icons/^
-||asvla.com/assets/og-image.png^
-vvru.promptcdn.com
-kinoebi.in###fbOverlay > div.fb-card
-kinoebi.in###fbOverlay
-adjaranet.bet##footer.mt-auto:nth-child(7) > center:nth-child(2) > div
-adjaranet.bet##footer.mt-auto:nth-child(7) > center:nth-child(2)
-adjaranet.bet###adPlayer
-adjaranet.bet###overlayAd
-gogatv.net###adPopup > div > div:nth-child(2) > img:last-child
-gogatv.net###adPopup > div
-gogatv.net###adPopup
-gogatv.net###adPlayer
-gogatv.net###overlayAd
-||propedron.com
-*attirecideryeah.com*
-||cdn.storageimagedisplay.com
-||i.ibb.co
-adjaranets.com###adPopup > div > div:nth-child(2) > img:last-child
-adjaranets.com###adPopup > div > div:nth-child(2)
-adjaranets.com###adPopup > div
-0x3BhR3o.mp4
-adjaranets.com###overlayAd
-adjaranets.com###adPopup 
-###adPopup 
-###overlayAd
-###adPlayer
-geosaitebi.tv###jwp-hls-movie_vast_static
-geosaitebi.tv###jwp-hls-movie_vast
-geosaitebi.tv###jwp-hls-movie > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
-adjaranet.in##main.mt-\[60px\].lg\:mt-\[72px\]:nth-child(5) > div > center:nth-child(5) > div.avc-asv > a > img
-adjaranet.in##main.mt-\[60px\].lg\:mt-\[72px\]:nth-child(5) > div > center:nth-child(5) > div.avc-asv > a
-adjaranet.in##main.mt-\[60px\].lg\:mt-\[72px\]:nth-child(5) > div > center:nth-child(5) > div.avc-asv
-adjaranet.in##main.mt-\[60px\].lg\:mt-\[72px\]:nth-child(5) > div > center:nth-child(5)
-adjaranet.bet###adPopup
-adjaranet.in###jwp-hls-series > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
-adjaranet.in###jwp-hls-movie > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
-adjaranet.in##main:nth-child(4) > div.wrapper > div.mt-8.space-y-8 > center:nth-child(2)
-adjaranet.in##main.mt-\[60px\].lg\:mt-\[72px\]:nth-child(5) > div > center:nth-child(3)
-adjaranet.in##main:nth-child(4) > div.wrapper > div.mt-8.space-y-8 > center:nth-child(4)
-||adjaranet.in/asvl/preroll/cashouts.mp4$media
-||adjaranet.in/asvl/preroll/app.mp4$media
-||adjaranet.in/asvl/preroll/vipcards.mp4$media
-||adjaranet.in/asvl/preroll/jackpot.mp4$media
-##.ad-catfish__desktop.ad-catfish
-##.ad-catfish-content
-##.ad-catfish-content > .avc-asv
-##.ad-catfish-content > .avc-asv > [href]
-##.ad-catfish-content > .avc-asv > [href] > [src]
-##.space-y-8.mt-8 .avc-asv > [href^="https://asvla.com/free"]
-||adjaranet.in/asvl/banner/*/
-||adjaranet.in/asvl/banner/cashout/
-##[href^="
-||adjaranet.in/asvl/banner/welcome/
-##center:nth-of-type(1)
-vnmfvnkd.win
-mykadri.tv##main:nth-child(2) > div.avc-asvla:nth-child(3)
-mykadri.tv###catfish
-mykadri.tv##main:nth-child(2) > div.avc-asvla:nth-child(5)
-mykadri.tv##main:nth-child(2) > div.container:last-child > section.rentplace.text-center.mt-3:first-child > center:last-child > div.avc-asvla
-mykadri.tv##main:nth-child(2) > div.container:last-child > div.avc-asvla:nth-child(3) > center
-mykadri.tv##main:nth-child(2) > div.container:last-child > div.avc-asvla:nth-child(3) > center > a > img
-welcome-bonuce-v2.mp4
-VIP_Cards.mp4
-ASVLA_MOBILE_APP_PROMOTION_HIGH_RES_FINAL.mp4
-as-welcome.xml
-Free_Cashouts.mp4
-ASVLA_JACKPOT.mp4
-statline.cc
-1xv.mp4
-melv1.mp4
-yastatic.net
-kinogo.my###modalOverlay
-ads.js
-pagead.js
-/widget/ads.
-##.adbox.banner_ads.adsbox
-##.textads
-strm-kiv-06.strm.yandex.net
-3987b76e8357_169_720p.mp4
-<div class="avc-asvla">
-Welcome_Bonus_1.jpg
-mykadri.tv##main:nth-child(2) > section.section.section--dle-content.my-4:last-child > div.container > div.avc-asvla:first-child
-cashouts.mp4
-geosaitebi.tv##div.wrapper:last-child > div.center-1.no-home.fulshi-1.apirebsyureba-1:first-child > div.no-home-2:first-child > div.no-home-3 > div.b-size-120.zoma-2:nth-child(2)
-geosaitebi.tv###dle-content > div.zoma-2:last-child > div.shida-kino-1:first-child > div.k-kazino-2:first-child > div.ban-bbc-1:last-child > center:first-child
-geosaitebi.tv##div.wrapper:nth-child(15) > div.fulshi-1:nth-child(2) > div.bb-size-120.zoma-2:nth-child(5) > div.ifram-b-3.ifram-b-1.baner-1-NO
-geosaitebi.tv##div.wrapper:nth-child(15) > div.fulshi-1:nth-child(2) > div.bb-size-120.zoma-2:nth-child(2) > div.ifram-b-3.ifram-b-1.baner-1-NO
-jackpot.mp4
-app.mp4
-app.xml
-well.mp4
-wellcome2.xml
-vipcards.mp4
-duckduckgo.com###header-non-nav > div.header--aside.js-header-aside:last-child
-https://storage.croco.cam
-welcome_voucher.mp4
-croconet.cam##main.mobile\:pb-20.pb-10:nth-child(6) > a.mobile\:h-\[130px\].h-\[90px\].overflow-hidden.relative.bg-linear-to-r.from-\[\#251305\].via-\[\#0e0e0e\].to-\[\#251305\].font-mainSemiBold.case_up.text-\[\#ffffff\].flex.items-center.justify-center:first-child
-croconet.cam##main:nth-child(5) > a.mobile\:h-\[130px\].h-\[90px\].overflow-hidden.relative.bg-linear-to-r.from-\[\#251305\].via-\[\#0e0e0e\].to-\[\#251305\].font-mainSemiBold.case_up.text-\[\#ffffff\].flex.items-center.justify-center:nth-child(3)
-croconet.cam##main:nth-child(5) > div.my_container:nth-child(9)
-mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(3) > center > a > img
-mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(5)
-mykadri.tv##main:nth-child(4) > div.container:last-child > section.rentplace.text-center.mt-3:first-child > center:last-child > div.avc-asvla
-mykadri.tv##main:nth-child(4) > div.container:last-child > div.avc-asvla:nth-child(3) > center
-mykadri.tv##main:nth-child(4) > section.section.section--dle-content.my-4:last-child > div.container > div.avc-asvla:first-child > center
-geofilms.net##div.center-1:nth-child(9) > div.baner-1
-geofilms.net##div.center-1:nth-child(11) > div.baner-01.baner-1
-geofilms.net##div.center-1:nth-child(13) > div.baner-01.baner-1
-geofilms.net###topBanner
-geofilms.net###dle-content > div.center-1:nth-child(5) > div.center-full-1 > div.shida-1 > div.baner-adis-2.center-122:first-child
-geofilms.net###dle-content > div.center-1:nth-child(5) > div.center-full-1 > div.shida-1 > div.shida-2:last-child > div.shida-06:last-child > div.fplayer.tabs-box:first-child > div.center-10:last-child > div.baner-full.baner-1
-geofilms.net##div.baneri-cati-ss-1:nth-child(7) > div.baneri-cati-1
-geofilms.net###bannerPlace1
-croconet.cam##main:nth-child(6) > div.my_container:nth-child(9)
-croconet.cam##main:nth-child(6) > div.my_container:nth-child(6)
-croconet.cam##main:nth-child(6) > div.my_container:nth-child(6) > div.my-4.mobile\:max-h-\[200px\].max-h-\[120px\].w-full.overflow-hidden > div.w-full.h-full > iframe
-croconet.cam##main:nth-child(6) > a.mobile\:h-\[130px\].h-\[90px\].overflow-hidden.relative.bg-linear-to-r.from-\[\#251305\].via-\[\#0e0e0e\].to-\[\#251305\].font-mainSemiBold.case_up.text-\[\#ffffff\].flex.items-center.justify-center:nth-child(4)
-ufasofilmebi.ge###watch > div.container:last-child > div.matrix-banner-container:nth-child(6)
-ufasofilmebi.ge###sparkleBanner
-geosaitebi.tv##div.wrapper:nth-child(7) > div.center-1.no-home.apirebsyureba-1:first-child > div.no-home-2 > div.no-home-3 > div.b-size-120.zoma-2:nth-child(2)
-geosaitebi.tv###jwp-hls-series > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
+||*wayfarerorthodox.com
+||*bonusgaf.com
+||*loop.pulzi.link
+||*bonusvip.ink
+||*iamcdn.net
+||*cdn.7kprtners.com
+||*morphify.net
+||*statics.sssrr.org
+||*kettledroopingcontinuation.com
+||*cdn.servetraff.com
+||*echo.websocket.org
+||*r.botsford.link
+||*platform-cdn.sharethis.com
+||*adx.stack.bidster.net
+||*srv224.com
+||*creative-sb1.com^
+||*cvt-s1.agl010.pro
+||*doubleclick.net
+||*w3schools.com
+||*googleadservices.com
+||*google-analytics.com
+||*vvru.promptcdn.com
+||*propedron.com
+||*attirecideryeah.com*
+||*cdn.storageimagedisplay.com
+||*i.ibb.co
+||*vnmfvnkd.win
+||*yastatic.net
+||*strm.yandex.net
+||*storage.croco.cam
