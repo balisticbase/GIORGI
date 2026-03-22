@@ -13,12 +13,6 @@
 ||*as-468_4.xml
 ||*as-468_1.xml
 ||*as-468_2.xml
-mykadri.tv##main:nth-child(4) > div.container:last-child > section.rentplace.text-center.mt-3:first-child > center:last-child > div.avc-asvla
-mykadri.tv##main:nth-child(4) > div.container:last-child > div.avc-asvla:nth-child(3)
-mykadri.tv###catfish
-mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(3)
-mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(5) > center
-
 ||*.recursive-reverie.website
 ||*port80ge.adocean.pl
 ||*hit.gemius.pl
@@ -55,3 +49,21 @@ mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(5) > center
 ||*yastatic.net
 ||*strm.yandex.net
 ||*storage.croco.cam
+||baner/300x100/5.png
+||*baner/300x100/4.png
+||*baner/300x100/7.png
+||*baner/468x60_Wel_Bon_2.png
+||*baner/300x100/2.png
+||*baner/300x100/3.png
+||*baner/300x100/5.png
+||*baner/300x100/6.png
+||*baner/468x60_Shkhara_3.png
+||*baner/300x100/1.png
+mykadri.tv##main:nth-child(4) > div.container:last-child > section.rentplace.text-center.mt-3:first-child > center:last-child > div.avc-asvla
+mykadri.tv##main:nth-child(4) > div.container:last-child > div.avc-asvla:nth-child(3)
+mykadri.tv###catfish
+mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(3)
+mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(5) > center
+geofilms.net###dle-content > div.center-1:nth-child(5) > div.center-full-1 > div.shida-1 > div.baner-adis-2.center-122:first-child > div.baner-01.baner-1 > div.avc-asvla
+geofilms.net##div.baner-adis-1.center-1:nth-child(11) > div.baner-01.baner-1 > div.avc-asvla
+geofilms.net###bannerPlace3
