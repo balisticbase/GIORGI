@@ -69,3 +69,4 @@ mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(5) > center
 geofilms.net###dle-content > div.center-1:nth-child(5) > div.center-full-1 > div.shida-1 > div.baner-adis-2.center-122:first-child > div.baner-01.baner-1 > div.avc-asvla
 geofilms.net##div.baner-adis-1.center-1:nth-child(11) > div.baner-01.baner-1 > div.avc-asvla
 geofilms.net###bannerPlace3
+geofilms.net##div.center-1:nth-child(13) > div.baner-01.baner-1 > div.avc-asvla
