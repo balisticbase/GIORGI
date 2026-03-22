@@ -1,3 +1,24 @@
+||*statline.cc
+||*ASVLA_JACKPOT.xml
+||*as-vipcard.xml
+||*as-468_5.xml
+||*as-468_6.xml
+||*as-welcome.xml
+||*as-468_3.xml
+||*asvla2
+||*googleadservices.com
+||*as-cashout.xml
+||*as-app.xml
+||*as-468_7.xml
+||*as-468_4.xml
+||*as-468_1.xml
+||*as-468_2.xml
+mykadri.tv##main:nth-child(4) > div.container:last-child > section.rentplace.text-center.mt-3:first-child > center:last-child > div.avc-asvla
+mykadri.tv##main:nth-child(4) > div.container:last-child > div.avc-asvla:nth-child(3)
+mykadri.tv###catfish
+mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(3)
+mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(5) > center
+
 ||*.recursive-reverie.website
 ||*port80ge.adocean.pl
 ||*hit.gemius.pl
