@@ -59,7 +59,6 @@
 ||*1xv
 ||*1xv1
 ||*melv1
-||*###overlayAd*
 ||*preroll/jackpot
 ||*preroll/cashouts
 ||*preroll/vipcards
@@ -103,3 +102,8 @@ BANERS GEOFILMS NET
 geofilms.net###bannerPlace1 > a > img
 geofilms.net###bannerPlace2 > a > img
 geofilms.net###bannerPlace3 > a
+
+
+ADJARANET BET 
+||*###overlayAd*
+adjaranet.bet###overlayAd
