@@ -98,3 +98,8 @@ geosaitebi.tv##div.wrapper:nth-child(15) > div.fulshi-1:nth-child(2) > div.bb-si
 geosaitebi.tv##div.wrapper:nth-child(15) > div.fulshi-1:nth-child(2) > div.bb-size-120.zoma-2:nth-child(5) > div.ifram-b-3.ifram-b-1.baner-1-NO > div.avc-asv
 geosaitebi.tv##div.wrapper:nth-child(15) > div.fulshi-1:nth-child(2) > div.bb-size-120.zoma-2:nth-child(5) > div.ifram-b-3.ifram-b-1.baner-1-NO
 
+
+BANERS GEOFILMS NET
+geofilms.net###bannerPlace1 > a > img
+geofilms.net###bannerPlace2 > a > img
+geofilms.net###bannerPlace3 > a
