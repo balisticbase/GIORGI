@@ -1,6 +1,5 @@
 ||*site-maps.cc
 ||*api.initem.ws
-||*close3.png
 ||*3x.avif
 ||*gstatic.com
 ||*cdn.plyr.io
@@ -12,7 +11,6 @@
 ||*as-468_6.xml
 ||*as-welcome.xml
 ||*as-468_3.xml
-||*asvla2
 ||*googleadservices.com
 ||*as-cashout.xml
 ||*as-app.xml
@@ -56,58 +54,12 @@
 ||*yastatic.net
 ||*strm.yandex.net
 ||*storage.croco.cam
-1xv.mp4
-1xv1.mp4
-melv1.mp4
-||baner/300x100/5.png
-||*baner/300x100/4.png
-||*baner/300x100/7.png
-||*baner/468x60_Wel_Bon_2.png
-||*baner/300x100/2.png
-||*baner/300x100/3.png
-||*baner/300x100/5.png
-||*baner/300x100/6.png
-||*baner/468x60_Shkhara_3.png
-||*baner/300x100/1.png
-||*baner/468x60_Shkhara_1.png
-||*baner/468x60_Wel_Bon_3.png
-||*baner/468x60_Withdraw_.png
+||*1xv
+||*1xv1
+||*melv1
 ||*###overlayAd*
-||*/api/ads/get/
-||*ads/welcome_voucher
-mykadri.tv##main:nth-child(4) > div.container:last-child > section.rentplace.text-center.mt-3:first-child > center:last-child > div.avc-asvla
-mykadri.tv##main:nth-child(4) > div.container:last-child > div.avc-asvla:nth-child(3)
-mykadri.tv###catfish
-mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(3)
-mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(5) > center
-geofilms.net###dle-content > div.center-1:nth-child(5) > div.center-full-1 > div.shida-1 > div.baner-adis-2.center-122:first-child > div.baner-01.baner-1 > div.avc-asvla
-geofilms.net##div.baner-adis-1.center-1:nth-child(11) > div.baner-01.baner-1 > div.avc-asvla
-geofilms.net###bannerPlace3
-geofilms.net##div.center-1:nth-child(13) > div.baner-01.baner-1 > div.avc-asvla
-geofilms.net###dle-content > div.center-1:nth-child(5) > div.center-full-1 > div.shida-1 > div.shida-2:last-child > div.shida-06:last-child > div.fplayer.tabs-box:first-child > div.center-10:last-child > div.baner-full.baner-1
-geofilms.net###dle-content > div.center-1:nth-child(5) > div.center-full-1 > div.shida-1 > div.shida-2:last-child > div.shida-06:last-child > div.fplayer.tabs-box:first-child > div.center-10:last-child > div.baner-full.baner-1 > div.avc-asvla
-||*banner/cashout/320x90-4.png
-||*banner/vipcard/320x90-5.png
-||*preroll/jackpot.mp4
-||*preroll/cashouts.mp4
-||*preroll/vipcards.mp4
-||*rolls/cat/welcome2.png
-||*preroll/well.mp4
-||*upload/banner/wellcome/320x90-4.png
-||*upload/banner/vipcard/320x90-6.png
-||*rolls/cat/cashout3.png
+||*preroll/jackpot
+||*preroll/cashouts
+||*preroll/vipcards
+||*preroll/well
 ||*rolls/cashout3.xml
-||*##div.wrapper:nth-child(15) > div.ad-catfish.ad-catfish__desktop:nth-child(12)
-||*##div.wrapper:nth-child(15) > div.ad-catfish.ad-catfish__desktop:nth-child(12) > div.ad-catfish-content
-geosaitebi.tv##div.wrapper:nth-child(15) > div.ad-catfish.ad-catfish__desktop:nth-child(12)
-||*##div.wrapper:nth-child(15) > div.fulshi-1:nth-child(2) > div.bb-size-120.zoma-2:nth-child(2) > div.ifram-b-3.ifram-b-1.baner-1-NO
-||*##div.wrapper:nth-child(15) > div.fulshi-1:nth-child(2) > div.bb-size-120.zoma-2:nth-child(5) > div.ifram-b-3.ifram-b-1.baner-1-NO
-||*##div.wrapper:last-child > div.center-1.no-home.fulshi-1.apirebsyureba-1:first-child > div.ad-catfish.ad-catfish__desktop:nth-child(14)
-||*###dle-content > div.zoma-2:last-child > div.shida-kino-1:first-child > div.k-kazino-2:first-child > div.ban-bbc-1:last-child > center:first-child
-||*##div.wrapper:last-child > div.center-1.no-home.fulshi-1.apirebsyureba-1:first-child > div.no-home-2:first-child > div.no-home-3 > div.b-size-120.zoma-2:nth-child(2)
-||*###jwp-hls-movie_vast
-geosaitebi.tv###dle-content > div.zoma-2:last-child > div.shida-kino-1:first-child > div.k-kazino-2:first-child > div.ban-bbc-1:last-child > center:first-child
-geosaitebi.tv##div.wrapper:last-child > div.center-1.no-home.fulshi-1.apirebsyureba-1:first-child > div.ad-catfish.ad-catfish__desktop:nth-child(14) > div.ad-catfish-content
-geosaitebi.tv##div.wrapper:last-child > div.center-1.no-home.fulshi-1.apirebsyureba-1:first-child > div.no-home-2:first-child > div.no-home-3 > div.b-size-120.zoma-2:nth-child(2)
-geosaitebi.tv###jwp-hls-movie_vast
-geosaitebi.tv##div.wrapper:nth-child(15) > div.fulshi-1:nth-child(2) > div.bb-size-120.zoma-2:nth-child(2) > div.ifram-b-3.ifram-b-1.baner-1-NO
