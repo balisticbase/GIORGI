@@ -57,6 +57,10 @@ mykadri-tv
 ||*/preroll/as-468_2.xml?v=1.0.2
 
 
+
+mykadri-tv
+
+
 mykadri.tv###jf-container-tp2pseries > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
 mykadri.tv/preroll/ASVLA_JACKPOT.xml
 mykadri.tv##main:nth-child(4) > div.container:last-child > section.rentplace.text-center.mt-3:first-child > center:last-child > div.avc-asvla
@@ -92,3 +96,8 @@ kinolab-cc
 ## #bannerPlace3
 ## .top-banner
 kinolab.cc###jf-container-player2 > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
+kinolab.cc##section:nth-child(19) > div.center-1:nth-child(9) > div.full-baner-1:first-child > div.avc-asvla > div.c-baner-bg-1 > div.center-1
+kinolab.cc##section:nth-child(19) > div.center-1:nth-child(9) > div.lab-shida-6:last-child > div.full-baner-2:nth-child(2) > div.avc-asvla > div.c-baner-bg-2.c-baner-bg-1 > div.center-1
+kinolab.cc##section:nth-child(20) > div.avc-asvla:nth-child(3) > div.c-baner-bg-1 > div.center-1
+kinolab.cc##section:nth-child(20) > div.avc-asvla:nth-child(5) > div.c-baner-bg-2.c-baner-bg-1
+kinolab.cc##section:nth-child(17) > div.no-homi-1.center-top > div.baneri-cati-1:nth-child(2)
