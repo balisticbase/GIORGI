@@ -24,7 +24,7 @@
 ||*vnmfvnkd.win
 
 
-mykadri-tv
+
 
 ||*VIP_Cards_2.jpg
 ||*Wel_Bon_3.jpg
@@ -68,7 +68,9 @@ mykadri-tv
 
 mykadri-tv
 
-
+mykadri.tv##main:nth-child(7) > section.section.section--dle-content.my-4:last-child > div.container > div.avc-asvla:first-child > center > a
+mykadri.tv##main:nth-child(7) > section.section.section--dle-content.my-4:last-child > div.container > div.avc-asvla:first-child > center > a > img
+mykadri.tv##main:nth-child(7) > section.section.section--dle-content.my-4:last-child > div.container > div.avc-asvla:first-child > center
 mykadri.tv###jf-container-tp2pseries > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
 mykadri.tv/preroll/ASVLA_JACKPOT.xml
 mykadri.tv##main:nth-child(4) > div.container:last-child > section.rentplace.text-center.mt-3:first-child > center:last-child > div.avc-asvla
