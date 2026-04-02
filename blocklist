@@ -124,7 +124,10 @@ adjaranet.in##main:nth-child(4) > div.wrapper > div.mt-8.space-y-8 > center:nth-
 geofilms-net
 
 
-
+geofilms.net##div.baner-adis-1.center-1:nth-child(11) > div.baner-01.baner-1
+geofilms.net###topBanner > div.avc-asvla:last-child
+geofilms.net###jwp-container-own-server > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
+geofilms.net###jf-container-player2 > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
 geofilms.net###dle-content > div.center-1:nth-child(5) > div.center-full-1 > div.shida-1 > div.baner-adis-2.center-122:first-child
 geofilms.net###topBanner
 geofilms.net###dle-content > div.center-1:nth-child(5) > div.center-full-1 > div.shida-1 > div.shida-2:last-child > div.shida-06:last-child > div.fplayer.tabs-box:first-child > div.center-10:last-child > div.baner-full.baner-1
