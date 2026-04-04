@@ -24,10 +24,12 @@ grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:20px;
 padding:20px;
 }
-.card{
+.card,.login,.service-box{
 background:#1e293b;
 border-radius:20px;
 overflow:hidden;
+}
+.card{
 padding-bottom:15px;
 }
 .card img{
@@ -50,8 +52,6 @@ color:#cbd5e1;
 max-width:400px;
 margin:30px auto;
 padding:20px;
-background:#1e293b;
-border-radius:20px;
 }
 input{
 width:100%;
@@ -68,6 +68,23 @@ text-align:center;
 color:red;
 margin-top:10px;
 }
+.service-box{
+max-width:800px;
+margin:20px auto;
+padding:25px;
+text-align:center;
+}
+.service-btn{
+display:inline-block;
+margin-top:15px;
+padding:14px 24px;
+background:#2563eb;
+color:white;
+border-radius:12px;
+text-decoration:none;
+font-size:16px;
+font-weight:bold;
+}
 #profile{
 display:none;
 padding:20px;
@@ -77,14 +94,6 @@ background:#1e293b;
 padding:15px;
 margin-top:10px;
 border-radius:15px;
-}
-iframe{
-width:100%;
-height:700px;
-border:none;
-border-radius:20px;
-margin-top:20px;
-background:white;
 }
 button{
 margin-top:15px;
@@ -137,15 +146,17 @@ font-size:18px;
 <div id="msg"></div>
 </div>
 
+<div class="service-box">
+<h3>External Service Portal</h3>
+<p>Access additional services</p>
+<a href="https://qidian.letui.xyz" target="_blank" class="service-btn">Open Service</a>
+</div>
+
 </section>
 
 <section id="profile">
 <h2 id="welcome"></h2>
-
 <div id="links"></div>
-
-<iframe src="https://qidian.letui.xyz"></iframe>
-
 <button onclick="logout()">Logout</button>
 </section>
 
@@ -164,7 +175,6 @@ checkCredentials(savedUser,savedPass);
 
 function autoCheck(){
 clearTimeout(timeout);
-
 timeout=setTimeout(()=>{
 const user=document.getElementById("user").value.trim();
 const pass=document.getElementById("pass").value.trim();
@@ -189,7 +199,6 @@ let dbUser=data[1].trim();
 let dbPass=data[3].trim();
 
 if(dbUser===user && dbPass===pass){
-
 localStorage.setItem("loggedUser",user);
 localStorage.setItem("loggedPass",pass);
 
