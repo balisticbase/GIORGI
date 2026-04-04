@@ -5,12 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Premium Services</title>
 <style>
+*{
+box-sizing:border-box;
+}
+
 body{
 margin:0;
 font-family:Arial,sans-serif;
 background:#0f172a;
 color:white;
 }
+
 header{
 text-align:center;
 padding:20px;
@@ -18,23 +23,27 @@ font-size:28px;
 font-weight:bold;
 background:#111827;
 }
+
 .cards{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:20px;
 padding:20px;
 }
+
 .card{
 background:#1e293b;
 border-radius:20px;
 overflow:hidden;
 padding-bottom:15px;
 }
+
 .card img{
 width:100%;
 aspect-ratio:16/9;
 object-fit:cover;
 }
+
 .price{
 font-size:32px;
 text-align:center;
@@ -42,32 +51,67 @@ color:#38bdf8;
 margin-top:10px;
 font-weight:bold;
 }
+
 .card p{
 text-align:center;
 color:#cbd5e1;
 }
+
 .login{
-max-width:400px;
+max-width:420px;
 margin:30px auto;
-padding:20px;
+padding:25px;
 background:#1e293b;
 border-radius:20px;
+display:flex;
+flex-direction:column;
+gap:12px;
 }
+
 input{
 width:100%;
-padding:14px;
-margin-bottom:12px;
+height:52px;
+padding:0 15px;
 border:none;
-border-radius:12px;
+border-radius:14px;
 background:#334155;
 color:white;
 font-size:16px;
+outline:none;
 }
+
+button{
+width:100%;
+height:52px;
+border:none;
+border-radius:14px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.02);
+}
+
+.buy-btn{
+background:#22c55e;
+color:white;
+}
+
+.logout-btn{
+background:#ef4444;
+color:white;
+}
+
 #msg{
 text-align:center;
 color:red;
-margin-top:10px;
+margin-top:5px;
+min-height:20px;
 }
+
 .embed-box{
 margin:30px auto;
 max-width:1100px;
@@ -76,6 +120,7 @@ border-radius:20px;
 overflow:hidden;
 padding:10px;
 }
+
 iframe{
 width:100%;
 height:800px;
@@ -83,30 +128,29 @@ border:none;
 border-radius:15px;
 background:white;
 }
+
 #profile{
 display:none;
 padding:20px;
 }
+
 .link-card{
 background:#1e293b;
 padding:15px;
 margin-top:10px;
 border-radius:15px;
 }
-button{
-margin-top:15px;
-padding:12px 20px;
-border:none;
-border-radius:12px;
-background:#ef4444;
-color:white;
-font-size:16px;
-cursor:pointer;
-}
+
 a{
 color:#38bdf8;
 text-decoration:none;
 font-size:18px;
+}
+
+@media(max-width:600px){
+.login{
+margin:20px;
+}
 }
 </style>
 </head>
@@ -133,9 +177,14 @@ font-size:18px;
 </div>
 
 <div class="login">
+
+<button class="buy-btn" onclick="window.open('https://t.me/ioscrackonline','_blank')">Buy Now</button>
+
 <input id="user" placeholder="Login" oninput="autoCheck()">
 <input id="pass" type="password" placeholder="Password" oninput="autoCheck()">
+
 <div id="msg"></div>
+
 </div>
 
 <div class="embed-box">
@@ -147,7 +196,7 @@ font-size:18px;
 <section id="profile">
 <h2 id="welcome"></h2>
 <div id="links"></div>
-<button onclick="logout()">Logout</button>
+<button class="logout-btn" onclick="logout()">Logout</button>
 </section>
 
 <script>
