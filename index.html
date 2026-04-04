@@ -1,387 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>European Appliance Registry</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Services</title>
 <style>
-
-*{margin:0;padding:0;box-sizing:border-box}
-
 body{
-font-family:Inter,sans-serif;
-background:#f5f7fb;
-color:#111827;
+margin:0;
+font-family:Arial,sans-serif;
+background:#0f172a;
+color:white;
 }
-
-.container{
-max-width:1100px;
-margin:auto;
-padding:0 20px;
-}
-
 header{
-background:white;
-border-bottom:1px solid #e5e7eb;
+text-align:center;
+padding:20px;
+font-size:28px;
+font-weight:bold;
+background:#111827;
 }
-
-.header-inner{
-display:flex;
-justify-content:space-between;
-align-items:center;
-height:70px;
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
+padding:20px;
 }
-
-.logo{
-display:flex;
-align-items:center;
-gap:10px;
-font-weight:700;
+.card{
+background:#1e293b;
+border-radius:20px;
+overflow:hidden;
+padding-bottom:15px;
+}
+.card img{
+width:100%;
+aspect-ratio:16/9;
+object-fit:cover;
+}
+.price{
+font-size:32px;
+text-align:center;
+color:#38bdf8;
+margin-top:10px;
+font-weight:bold;
+}
+.card p{
+text-align:center;
+color:#cbd5e1;
+}
+.login{
+max-width:400px;
+margin:30px auto;
+padding:20px;
+background:#1e293b;
+border-radius:20px;
+}
+input{
+width:100%;
+padding:14px;
+margin-bottom:12px;
+border:none;
+border-radius:12px;
+background:#334155;
+color:white;
+font-size:16px;
+}
+#msg{
+text-align:center;
+color:red;
+}
+#profile{
+display:none;
+padding:20px;
+}
+.link-card{
+background:#1e293b;
+padding:15px;
+margin-top:10px;
+border-radius:15px;
+}
+a{
+color:#38bdf8;
+text-decoration:none;
 font-size:18px;
 }
-
-.logo-box{
-width:40px;
-height:40px;
-background:#1f3a8a;
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-border-radius:6px;
-font-weight:800;
-}
-
-/* STATUS */
-
-.status{
-display:flex;
-align-items:center;
-gap:8px;
-padding:6px 14px;
-border-radius:20px;
-font-size:13px;
-font-weight:600;
-}
-
-.status.online{
-background:#ecfdf5;
-color:#065f46;
-}
-
-.status.offline{
-background:#fef2f2;
-color:#991b1b;
-}
-
-.dot{
-width:10px;
-height:10px;
-border-radius:50%;
-}
-
-.online .dot{
-background:#22c55e;
-animation:pulseGreen 1.5s infinite;
-}
-
-.offline .dot{
-background:#ef4444;
-animation:pulseRed 1.5s infinite;
-}
-
-@keyframes pulseGreen{
-0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}
-70%{box-shadow:0 0 0 10px rgba(34,197,94,0)}
-100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}
-}
-
-@keyframes pulseRed{
-0%{box-shadow:0 0 0 0 rgba(239,68,68,.6)}
-70%{box-shadow:0 0 0 10px rgba(239,68,68,0)}
-100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}
-}
-
-/* HERO */
-
-.hero{
-padding:70px 0;
-text-align:center;
-}
-
-.hero h1{
-font-size:36px;
-font-weight:800;
-margin-bottom:10px;
-}
-
-.hero p{
-color:#6b7280;
-max-width:600px;
-margin:auto;
-}
-
-/* CARD */
-
-.card{
-background:white;
-border:1px solid #e5e7eb;
-border-radius:12px;
-padding:30px;
-margin-top:40px;
-box-shadow:0 8px 25px rgba(0,0,0,.05);
-}
-
-.input-row{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-}
-
-input{
-flex:1;
-min-width:200px;
-height:48px;
-border-radius:8px;
-border:1px solid #d1d5db;
-padding:0 14px;
-font-size:15px;
-}
-
 button{
-height:48px;
-padding:0 24px;
-background:#1f3a8a;
-color:white;
+margin-top:15px;
+padding:12px 20px;
 border:none;
-border-radius:8px;
-font-weight:600;
+border-radius:12px;
+background:#ef4444;
+color:white;
+font-size:16px;
 cursor:pointer;
 }
-
-.result{
-margin-top:25px;
-}
-
-.state{
-padding:14px;
-border-radius:8px;
-font-weight:600;
-margin-bottom:15px;
-}
-
-.loading{background:#fff7ed;color:#92400e}
-.success{background:#ecfdf5;color:#065f46}
-.error{background:#fef2f2;color:#991b1b}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-th,td{
-padding:12px;
-border-bottom:1px solid #e5e7eb;
-text-align:left;
-}
-
-th{
-color:#6b7280;
-font-weight:600;
-}
-
-a{
-color:#2563eb;
-font-weight:600;
-text-decoration:none;
-}
-
-a:hover{
-text-decoration:underline;
-}
-
 </style>
 </head>
-
 <body>
 
-<header>
-<div class="container header-inner">
+<header>Premium iOS Services</header>
 
-<div class="logo">
-<div class="logo-box">EU</div>
-European Appliance Registry
-</div>
+<section id="main">
 
-<div id="systemStatus" class="status online">
-<div class="dot"></div>
-<span>System Status: Online</span>
-</div>
-
-</div>
-</header>
-
-<section class="hero">
-
-<div class="container">
-
-<h1>Official Product Verification</h1>
-
-<p>
-Verify appliance serial numbers using the official registry database.
-</p>
+<div class="cards">
 
 <div class="card">
-
-<div class="input-row">
-
-<input id="code" placeholder="Enter product code">
-
-<button onclick="check()">Verify</button>
-
+<img src="https://cdn-pubgm-cms.vasdgame.com/vasd-cms-pubgm/prod/EN_91a734224c.jpg">
+<div class="price">30₾</div>
+<p>Entertainment Service</p>
 </div>
 
-<div id="result" class="result">
-
-<div class="state loading">
-Ready for verification
+<div class="card">
+<img src="https://crazycapystore.com/wp-content/uploads/2024/06/shieldpubgma.jpg.webp">
+<div class="price">100₾</div>
+<p>Unlimited Premium Install</p>
 </div>
 
 </div>
 
-</div>
-
+<div class="login">
+<input id="user" placeholder="Login" oninput="autoCheck()">
+<input id="pass" type="password" placeholder="Password" oninput="autoCheck()">
+<div id="msg"></div>
 </div>
 
 </section>
 
+<section id="profile">
+<h2 id="welcome"></h2>
+<div id="links"></div>
+<button onclick="logout()">Logout</button>
+</section>
+
 <script>
+let timeout;
 
-/* ONLINE OFFLINE STATUS */
+window.onload=function(){
+const savedUser=localStorage.getItem("loggedUser");
+const savedPass=localStorage.getItem("loggedPass");
 
-function updateConnection(){
-
-const status=document.getElementById("systemStatus")
-
-if(navigator.onLine){
-
-status.classList.remove("offline")
-status.classList.add("online")
-
-status.innerHTML='<div class="dot"></div><span>System Status: Online</span>'
-
-}else{
-
-status.classList.remove("online")
-status.classList.add("offline")
-
-status.innerHTML='<div class="dot"></div><span>System Status: Offline</span>'
-
+if(savedUser && savedPass){
+document.querySelector(".login").style.display="none";
+checkCredentials(savedUser,savedPass);
+}
 }
 
+function autoCheck(){
+clearTimeout(timeout);
+timeout=setTimeout(()=>{
+const user=document.getElementById("user").value.trim();
+const pass=document.getElementById("pass").value.trim();
+
+if(user.length>0 && pass.length>0){
+checkCredentials(user,pass);
+}
+},400);
 }
 
-updateConnection()
-setInterval(updateConnection,1000)
-
-/* VERIFY */
-
-async function check(){
-
-let code=document.getElementById("code").value.trim()
-
-if(!code)return
-
-let result=document.getElementById("result")
-
-result.innerHTML='<div class="state loading">Checking database...</div>'
-
+async function checkCredentials(user,pass){
 try{
+const res=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/main/ioscrack.online");
+const text=await res.text();
+const rows=text.split("\n");
 
-let r=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/DATEUSER.TXT?nocache="+Date.now())
+for(let row of rows){
+let data=row.trim().split(">");
 
-let text=await r.text()
+if(data.length>=4){
+let dbUser=data[1].trim();
+let dbPass=data[3].trim();
 
-let lines=text.split("\n")
+if(dbUser===user && dbPass===pass){
 
-let found=false
+localStorage.setItem("loggedUser",user);
+localStorage.setItem("loggedPass",pass);
 
-for(let line of lines){
+document.getElementById("main").style.display="none";
+document.getElementById("profile").style.display="block";
+document.getElementById("welcome").innerText="Welcome "+user;
 
-let d=line.trim().split(">")
+let html="";
 
-if(d[2]===code){
-
-found=true
-
-let brand=d[8]||"-"
-let serial=d[4]||"-"
-
-let searchURL="https://www.google.com/search?q="+encodeURIComponent(brand+" "+serial)
-
-result.innerHTML=`
-
-<div class="state success">Verification successful</div>
-
-<table>
-
-<tr>
-<th>Product Code</th>
-<td>${code}</td>
-</tr>
-
-<tr>
-<th>Serial Number</th>
-<td>
-<a href="${searchURL}" target="_blank">
-${serial}
-</a>
-</td>
-</tr>
-
-<tr>
-<th>Year</th>
-<td>${d[6]||"-"}</td>
-</tr>
-
-<tr>
-<th>Brand</th>
-<td>${brand}</td>
-</tr>
-
-<tr>
-<th>Country</th>
-<td>${d[10]||"-"}</td>
-</tr>
-
-</table>
-`
-
-break
+for(let i=4;i<data.length;i+=3){
+if(data[i+1] && data[i+1].trim()==="URL"){
+html+=`<div class="link-card"><a href="${data[i+2].trim()}" target="_blank">${data[i].trim()}</a></div>`;
+}
 }
 
+document.getElementById("links").innerHTML=html;
+return;
+}
+}
 }
 
-if(!found){
+document.getElementById("msg").innerText="არასწორი login ან password";
 
-result.innerHTML='<div class="state error">Code not found</div>'
-
+}catch{
+document.getElementById("msg").innerText="connection error";
+}
 }
 
+function logout(){
+localStorage.removeItem("loggedUser");
+localStorage.removeItem("loggedPass");
+location.reload();
 }
-catch{
-
-result.innerHTML='<div class="state error">Database connection error</div>'
-
-}
-
-}
-
 </script>
 
 </body>
