@@ -66,6 +66,7 @@ font-size:16px;
 #msg{
 text-align:center;
 color:red;
+margin-top:10px;
 }
 #profile{
 display:none;
@@ -77,10 +78,13 @@ padding:15px;
 margin-top:10px;
 border-radius:15px;
 }
-a{
-color:#38bdf8;
-text-decoration:none;
-font-size:18px;
+iframe{
+width:100%;
+height:700px;
+border:none;
+border-radius:20px;
+margin-top:20px;
+background:white;
 }
 button{
 margin-top:15px;
@@ -91,6 +95,11 @@ background:#ef4444;
 color:white;
 font-size:16px;
 cursor:pointer;
+}
+a{
+color:#38bdf8;
+text-decoration:none;
+font-size:18px;
 }
 </style>
 </head>
@@ -104,14 +113,20 @@ cursor:pointer;
 
 <div class="card">
 <img src="https://cdn-pubgm-cms.vasdgame.com/vasd-cms-pubgm/prod/EN_91a734224c.jpg">
-<div class="price">50₾ ნავცლად 30₾</div>
-<p>გასართობად მეგობრებთან ერთად 1YEAR</p>
+<div class="price">30₾</div>
+<p>Entertainment Service</p>
+</div>
+
+<div class="card">
+<img src="https://i.ytimg.com/vi/-eji2_yWbtw/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAKcnqm7rs8mYQg25WCgynK_1SLCQ">
+<div class="price">50₾</div>
+<p>Custom Signature</p>
 </div>
 
 <div class="card">
 <img src="https://crazycapystore.com/wp-content/uploads/2024/06/shieldpubgma.jpg.webp">
-<div class="price">150₾ ნავცლად 100₾</div>
-<p>PUBG HACK PLUS YouTube PREMIUM </p>
+<div class="price">100₾</div>
+<p>Unlimited Premium Install</p>
 </div>
 
 </div>
@@ -126,7 +141,11 @@ cursor:pointer;
 
 <section id="profile">
 <h2 id="welcome"></h2>
+
 <div id="links"></div>
+
+<iframe src="https://qidian.letui.xyz"></iframe>
+
 <button onclick="logout()">Logout</button>
 </section>
 
@@ -145,6 +164,7 @@ checkCredentials(savedUser,savedPass);
 
 function autoCheck(){
 clearTimeout(timeout);
+
 timeout=setTimeout(()=>{
 const user=document.getElementById("user").value.trim();
 const pass=document.getElementById("pass").value.trim();
@@ -191,10 +211,10 @@ return;
 }
 }
 
-document.getElementById("msg").innerText="არასწორი login ან password";
+document.getElementById("msg").innerText="Incorrect login or password";
 
 }catch{
-document.getElementById("msg").innerText="connection error";
+document.getElementById("msg").innerText="Connection error";
 }
 }
 
