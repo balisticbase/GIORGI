@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -111,7 +111,7 @@ background:white;
 <button class="buy" onclick="window.open('https://t.me/ioscrackonline','_blank')">Buy Now</button>
 
 <div id="loginPage">
-<input id="user" placeholder="Login">
+<input id="user" placeholder="Username">
 <input id="pass" type="password" placeholder="Password">
 <button class="login" onclick="checkLogin()">Login</button>
 <div id="error"></div>
@@ -128,12 +128,97 @@ background:white;
 
 <script>
 
+function isBlocked(user){
+let blockedUntil=localStorage.getItem("blocked_"+user);
+return blockedUntil ? parseInt(blockedUntil) : null;
+}
+
+function blockUser(user){
+let until=Date.now()+5*60*60*1000; // 5 hours block
+localStorage.setItem("blocked_"+user,until);
+showBlockBanner(until);
+}
+
+function showBlockBanner(until){
+let old=document.getElementById("blockBanner");
+if(old) old.remove();
+
+let banner=document.createElement("div");
+banner.id="blockBanner";
+banner.style.position="fixed";
+banner.style.top="0";
+banner.style.left="0";
+banner.style.width="100%";
+banner.style.background="red";
+banner.style.color="white";
+banner.style.fontSize="20px";
+banner.style.fontWeight="bold";
+banner.style.textAlign="center";
+banner.style.padding="15px";
+banner.style.zIndex="9999";
+document.body.appendChild(banner);
+
+function update(){
+let remain=until-Date.now();
+if(remain<=0){
+banner.remove();
+return;
+}
+let h=Math.floor(remain/1000/60/60);
+let m=Math.floor((remain/1000/60)%60);
+let s=Math.floor((remain/1000)%60);
+banner.innerText=`⛔ Wrong IP | Unblock in ${h}h ${m}m ${s}s`;
+}
+
+update();
+setInterval(update,1000);
+}
+
+async function getIP(){
+let r=await fetch('https://api.ipify.org?format=json');
+let d=await r.json();
+return d.ip;
+}
+
 async function checkLogin(){
 
 let u=document.getElementById("user").value.trim();
 let p=document.getElementById("pass").value.trim();
 
+if(!u || !p){
+document.getElementById("error").innerText="Please enter username and password";
+return;
+}
+
+let blocked=isBlocked(u);
+if(blocked && Date.now()<blocked){
+showBlockBanner(blocked);
+return;
+}
+
 try{
+
+let userIP=await getIP();
+
+let ipResponse=await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/browserleaks.com');
+let ipText=await ipResponse.text();
+let ipLines=ipText.split('\n');
+
+let allowedIP=null;
+
+for(let line of ipLines){
+let parts=line.split('>');
+if(parts[0]?.trim()===u){
+allowedIP=parts[1]?.trim();
+break;
+}
+}
+
+if(userIP!==allowedIP){
+blockUser(u);
+document.getElementById("error").innerText="Access denied: wrong IP address";
+return;
+}
 
 let response=await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/ioscrack.online');
 let text=await response.text();
@@ -145,14 +230,14 @@ for(let line of lines){
 
 let parts=line.split('>');
 
-let dbUser=parts[1];
-let dbPass=parts[3];
+let dbUser=parts[1]?.trim();
+let dbPass=parts[3]?.trim();
 
-let app1Name=parts[5];
-let app1Url=parts[7];
+let app1Name=parts[5]?.trim();
+let app1Url=parts[7]?.trim();
 
-let app2Name=parts[9];
-let app2Url=parts[11];
+let app2Name=parts[9]?.trim();
+let app2Url=parts[11]?.trim();
 
 if(u===dbUser && p===dbPass){
 
@@ -177,7 +262,7 @@ break;
 }
 
 if(!found){
-document.getElementById("error").innerText="Wrong login or password";
+document.getElementById("error").innerText="Wrong username or password";
 }
 
 }catch{
