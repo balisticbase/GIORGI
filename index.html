@@ -1,158 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Domain For Sale | LLC. ARC</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>iOSCrack Online</title>
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
 body{
-    background:#0a0f1f;
-    color:white;
-    overflow-x:hidden;
+margin:0;
+font-family:Arial,sans-serif;
+background:#0f172a;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+color:white;
+padding:20px;
 }
-header{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    background:linear-gradient(135deg,#050816,#0f172a,#1e293b);
-    position:relative;
+
+.box{
+width:380px;
+background:#1e293b;
+padding:25px;
+border-radius:20px;
+box-shadow:0 0 30px rgba(0,0,0,0.4);
+text-align:center;
 }
-header::before{
-    content:'';
-    position:absolute;
-    width:300px;
-    height:300px;
-    background:#00d4ff;
-    filter:blur(150px);
-    top:10%;
-    left:10%;
-    opacity:0.3;
+
+img{
+width:100%;
+border-radius:15px;
+margin-bottom:15px;
 }
-header::after{
-    content:'';
-    position:absolute;
-    width:300px;
-    height:300px;
-    background:#7c3aed;
-    filter:blur(150px);
-    bottom:10%;
-    right:10%;
-    opacity:0.3;
+
+.description{
+font-size:15px;
+margin-bottom:10px;
+line-height:1.5;
 }
-.container{
-    position:relative;
-    z-index:2;
+
+.price{
+font-size:24px;
+font-weight:bold;
+margin-bottom:20px;
+color:#10b981;
 }
-h1{
-    font-size:60px;
-    margin-bottom:20px;
-    animation:fadeIn 2s ease;
+
+input{
+width:100%;
+padding:14px;
+margin:10px 0;
+border:none;
+border-radius:12px;
+font-size:16px;
+box-sizing:border-box;
 }
-p{
-    font-size:22px;
-    margin-bottom:30px;
-    color:#cbd5e1;
+
+button{
+width:100%;
+padding:14px;
+margin-top:12px;
+border:none;
+border-radius:12px;
+font-size:16px;
+cursor:pointer;
+font-weight:bold;
 }
-.btn{
-    display:inline-block;
-    padding:15px 35px;
-    background:#00d4ff;
-    color:black;
-    text-decoration:none;
-    border-radius:10px;
-    font-weight:bold;
-    transition:0.3s;
+
+.login{
+background:#2563eb;
+color:white;
 }
-.btn:hover{
-    background:white;
-    transform:scale(1.05);
+
+.buy{
+background:#f59e0b;
+color:white;
 }
-.info{
-    padding:80px 20px;
-    text-align:center;
-    background:#111827;
+
+.link{
+background:#10b981;
+color:white;
 }
-.info h2{
-    font-size:40px;
-    margin-bottom:20px;
-}
-.cards{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:20px;
-    margin-top:40px;
-}
-.card{
-    background:#1e293b;
-    padding:30px;
-    width:300px;
-    border-radius:15px;
-    transition:0.3s;
-}
-.card:hover{
-    transform:translateY(-10px);
-    box-shadow:0 10px 30px rgba(0,212,255,0.3);
-}
-footer{
-    text-align:center;
-    padding:30px;
-    background:#020617;
-    color:#94a3b8;
-}
-@keyframes fadeIn{
-    from{opacity:0;transform:translateY(30px);}
-    to{opacity:1;transform:translateY(0);}
-}
-@media(max-width:768px){
-    h1{
-        font-size:38px;
-    }
-    p{
-        font-size:18px;
-    }
+
+#error{
+color:red;
+margin-top:10px;
 }
 </style>
 </head>
 <body>
 
-<header>
-    <div class="container">
-        <h1>SERVER CLOSED</h1>
-        <p>This domain is available for sale</p>
-        <a href="#" class="btn">BUY DOMAIN</a>
-    </div>
-</header>
+<div class="box">
 
-<section class="info">
-    <h2>Official Domain Sale</h2>
-    <div class="cards">
-        <div class="card">
-            <h3>Domain Sale</h3>
-            <p>Premium domain available for business and private projects.</p>
-        </div>
-        <div class="card">
-            <h3>Company</h3>
-            <p>By Company Georgia Developer</p>
-        </div>
-        <div class="card">
-            <h3>Owner</h3>
-            <p>LLC. ARC<br>Giorgi Madoishvili</p>
-        </div>
-    </div>
-</section>
+<img src="https://i.ytimg.com/vi/4KCfthJYU0U/maxresdefault.jpg">
 
-<footer>
-    © 2026 LLC. ARC | Georgia Developer | Giorgi Madoishvili
-</footer>
+<div class="description">
+Здесь ты сам пишешь описание товара.  
+Например: Premium iOS install package / direct access / instant activation
+</div>
+
+<div class="price">$25</div>
+
+<button class="buy" onclick="window.location.href='https://t.me/ioscrackonline'">Buy Now</button>
+
+<div id="loginPage">
+<input id="user" placeholder="Login">
+<input id="pass" type="password" placeholder="Password">
+<button class="login" onclick="checkLogin()">Login</button>
+<div id="error"></div>
+</div>
+
+<div id="panel" style="display:none;">
+<button class="link" onclick="window.location.href='https://mail.ru'">PUBG</button>
+<button class="link" onclick="window.location.href='https://t.me/one_ibot/install?startapp=ZxSADU&mode=compact'">YOUTUBE</button>
+</div>
+
+</div>
+
+<script>
+function checkLogin(){
+let u=document.getElementById("user").value;
+let p=document.getElementById("pass").value;
+
+if(u==="GIORGI" && p==="1234"){
+document.getElementById("loginPage").style.display="none";
+document.getElementById("panel").style.display="block";
+}else{
+document.getElementById("error").innerText="Wrong login or password";
+}
+}
+</script>
 
 </body>
 </html>
