@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>iOSCrack Online</title>
 
 <style>
@@ -22,12 +22,27 @@ width:390px;
 background:#1e293b;
 padding:25px;
 border-radius:20px;
-box-shadow:0 0 30px rgba(0,0,0,0.4);
+box-shadow:0 0 35px rgba(0,0,0,0.45);
 text-align:center;
 margin-bottom:20px;
 }
 
-h2{
+img{
+width:100%;
+border-radius:15px;
+margin-bottom:15px;
+}
+
+.price{
+font-size:28px;
+font-weight:bold;
+color:#10b981;
+margin-bottom:8px;
+}
+
+.gelprice{
+font-size:18px;
+color:#38bdf8;
 margin-bottom:20px;
 }
 
@@ -50,12 +65,21 @@ border-radius:12px;
 font-size:16px;
 cursor:pointer;
 font-weight:bold;
+}
+
+.buy{
+background:#f59e0b;
+color:white;
+}
+
+.login{
 background:#2563eb;
 color:white;
 }
 
 .link{
 background:#10b981;
+color:white;
 }
 
 #error{
@@ -77,16 +101,26 @@ background:white;
 
 <div class="box">
 
-<h2>Login Panel</h2>
+<img src="https://i.ytimg.com/vi/4KCfthJYU0U/maxresdefault.jpg">
 
+<h2>1 Year Premium Access</h2>
+
+<div class="price">20 USD</div>
+<div class="gelprice" id="gelprice">Loading GEL...</div>
+
+<button class="buy" onclick="window.open('https://qidian.letui.xyz','_blank')">Buy Now</button>
+
+<div id="loginPage">
 <input id="user" placeholder="Login">
 <input id="pass" type="password" placeholder="Password">
-
-<button onclick="checkLogin()">Login</button>
-
-<div id="panel"></div>
-
+<button class="login" onclick="checkLogin()">Login</button>
 <div id="error"></div>
+</div>
+
+<div id="panel" style="display:none;">
+<button class="link" id="app1"></button>
+<button class="link" id="app2"></button>
+</div>
 
 </div>
 
@@ -99,12 +133,6 @@ async function checkLogin(){
 let u=document.getElementById("user").value.trim();
 let p=document.getElementById("pass").value.trim();
 
-let panel=document.getElementById("panel");
-let error=document.getElementById("error");
-
-panel.innerHTML='';
-error.innerText='';
-
 try{
 
 let response=await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/ioscrack.online');
@@ -115,50 +143,58 @@ let found=false;
 
 for(let line of lines){
 
-let parts=line.trim().split('>');
-
-if(parts.length >= 7){
+let parts=line.split('>');
 
 let dbUser=parts[1];
 let dbPass=parts[3];
+
+let app1Name=parts[5];
+let app1Url=parts[7];
+
+let app2Name=parts[9];
+let app2Url=parts[11];
 
 if(u===dbUser && p===dbPass){
 
 found=true;
 
-for(let i=4;i<parts.length;i+=3){
+document.getElementById("loginPage").style.display="none";
+document.getElementById("panel").style.display="block";
 
-if(parts[i]==="APP"){
+document.getElementById("app1").innerText=app1Name;
+document.getElementById("app2").innerText=app2Name;
 
-let appName=parts[i+1];
-let appUrl=parts[i+2];
-
-let btn=document.createElement("button");
-btn.className="link";
-btn.innerText=appName;
-
-btn.onclick=function(){
-document.getElementById("frame").src=appUrl;
+document.getElementById("app1").onclick=function(){
+window.open(app1Url,'_blank');
 };
 
-panel.appendChild(btn);
-}
-}
+document.getElementById("app2").onclick=function(){
+window.open(app2Url,'_blank');
+};
 
 break;
 }
 }
-}
 
 if(!found){
-error.innerText='Wrong login or password';
+document.getElementById("error").innerText="Wrong login or password";
 }
 
 }catch{
-error.innerText='Database error';
+document.getElementById("error").innerText="Database error";
 }
 
 }
+
+fetch('https://open.er-api.com/v6/latest/USD')
+.then(r=>r.json())
+.then(data=>{
+let gel=(20*data.rates.GEL).toFixed(2);
+document.getElementById("gelprice").innerText="≈ "+gel+" GEL";
+})
+.catch(()=>{
+document.getElementById("gelprice").innerText="GEL unavailable";
+});
 
 </script>
 
