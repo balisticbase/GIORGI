@@ -164,7 +164,7 @@ let APP1_URL="";
 let APP2_NAME="";
 let APP2_URL="";
 
-// ---------- COOKIE ----------
+// COOKIE
 function setCookie(name,value,minutes){
 let d=new Date();
 d.setTime(d.getTime()+(minutes*60*1000));
@@ -181,7 +181,7 @@ if(c.indexOf(n)==0) return c.substring(n.length,c.length);
 return null;
 }
 
-// ---------- LOAD CONFIG ----------
+// LOAD CONFIG
 async function loadConfig(){
 
 let loginData=await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/ioscrack.online').then(r=>r.text());
@@ -197,7 +197,6 @@ APP2_NAME=a[9];
 APP2_URL=a[11];
 
 let b=ipData.split(">");
-
 ALLOWED_IP=b[1];
 
 document.getElementById("app1").innerText=APP1_NAME;
@@ -208,14 +207,14 @@ document.getElementById("app2").onclick=()=>window.open(APP2_URL,'_blank');
 
 }
 
-// ---------- GET IP ----------
+// GET IP
 async function getIP(){
 let r=await fetch('https://api.ipify.org?format=json');
 let d=await r.json();
 return d.ip;
 }
 
-// ---------- WRONG BLOCK ----------
+// WRONG BLOCK
 function startWrongBlock(until){
 
 localStorage.setItem("wrongBlock",until);
@@ -253,7 +252,7 @@ tick();
 window.wrongInterval=setInterval(tick,1000);
 }
 
-// ---------- IP BLOCK ----------
+// IP BLOCK
 function startIPBlock(until){
 
 document.getElementById("ipOverlay").style.display="flex";
@@ -264,7 +263,7 @@ setCookie("ipBlock",until,30);
 clearInterval(window.ipInterval);
 clearInterval(window.ipCheckInterval);
 
-async function tick(){
+function tick(){
 
 let remain=until-Date.now();
 
@@ -272,7 +271,6 @@ if(remain<=0){
 document.getElementById("ipOverlay").style.display="none";
 localStorage.removeItem("ipBlock");
 setCookie("ipBlock","",0);
-clearInterval(window.ipCheckInterval);
 return;
 }
 
@@ -309,7 +307,7 @@ window.ipInterval=setInterval(tick,1000);
 window.ipCheckInterval=setInterval(checkAllowedIP,10000);
 }
 
-// ---------- LOGIN ----------
+// LOGIN
 async function checkLogin(){
 
 let u=document.getElementById("user").value.trim();
@@ -317,24 +315,29 @@ let p=document.getElementById("pass").value.trim();
 
 if(u!==REAL_USER || p!==REAL_PASS){
 
-let tries=parseInt(localStorage.getItem("tries")||0)+1;
+let tries=parseInt(getCookie("tries")||localStorage.getItem("tries")||0)+1;
+
 localStorage.setItem("tries",tries);
+setCookie("tries",tries,30);
 
 document.getElementById("error").innerText="Wrong username or password";
 
-if(tries>=3){
+if(tries>=4){
 localStorage.removeItem("tries");
+setCookie("tries",0,30);
 startWrongBlock(Date.now()+30*60*1000);
 }
 
 return;
 }
 
+setCookie("auth","ok",30);
+localStorage.setItem("auth","ok");
+
 let currentIP=await getIP();
 
 if(currentIP!==ALLOWED_IP){
 startIPBlock(Date.now()+30*60*1000);
-document.getElementById("error").innerText="IP protection active";
 return;
 }
 
@@ -342,10 +345,31 @@ document.getElementById("loginPage").style.display="none";
 document.getElementById("panel").style.display="block";
 }
 
-// ---------- INIT ----------
-loadConfig();
+// RESTORE AFTER RELOAD
+window.onload=async()=>{
 
-// ---------- USD TO GEL ----------
+await loadConfig();
+
+if(getCookie("auth")==="ok" || localStorage.getItem("auth")==="ok"){
+document.getElementById("loginPage").style.display="none";
+document.getElementById("panel").style.display="block";
+}
+
+let wb=getCookie("wrongBlock") || localStorage.getItem("wrongBlock");
+
+if(wb && Date.now()<wb){
+startWrongBlock(parseInt(wb));
+}
+
+let ib=getCookie("ipBlock") || localStorage.getItem("ipBlock");
+
+if(ib && Date.now()<ib){
+startIPBlock(parseInt(ib));
+}
+
+}
+
+// USD TO GEL
 fetch('https://open.er-api.com/v6/latest/USD')
 .then(r=>r.json())
 .then(data=>{
