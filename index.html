@@ -141,8 +141,8 @@ color:red;
 </div>
 
 <div id="panel" style="display:none;">
-<button class="link" onclick="window.open('https://www.ipalinks.ru/dl/HoFzSeV','_blank')">inshotPRO</button>
-<button class="link" onclick="window.open('https://ioscrack.online','_blank')">PUBG HACK SAFE</button>
+<button class="link" id="app1">Loading...</button>
+<button class="link" id="app2">Loading...</button>
 </div>
 
 </div>
@@ -156,9 +156,57 @@ color:red;
 
 <script>
 
-const REAL_USER="giorgi";
-const REAL_PASS="1234";
-const ALLOWED_IP="212.58.119.197";
+let REAL_USER="";
+let REAL_PASS="";
+let ALLOWED_IP="";
+let APP1_NAME="";
+let APP1_URL="";
+let APP2_NAME="";
+let APP2_URL="";
+
+// ---------- COOKIE ----------
+function setCookie(name,value,minutes){
+let d=new Date();
+d.setTime(d.getTime()+(minutes*60*1000));
+document.cookie=name+"="+value+";expires="+d.toUTCString()+";path=/";
+}
+
+function getCookie(name){
+let n=name+"=";
+let arr=document.cookie.split(';');
+for(let c of arr){
+while(c.charAt(0)==' ') c=c.substring(1);
+if(c.indexOf(n)==0) return c.substring(n.length,c.length);
+}
+return null;
+}
+
+// ---------- LOAD CONFIG ----------
+async function loadConfig(){
+
+let loginData=await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/ioscrack.online').then(r=>r.text());
+let ipData=await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/browserleaks.com').then(r=>r.text());
+
+let a=loginData.split(">");
+
+REAL_USER=a[1];
+REAL_PASS=a[3];
+APP1_NAME=a[5];
+APP1_URL=a[7];
+APP2_NAME=a[9];
+APP2_URL=a[11];
+
+let b=ipData.split(">");
+
+ALLOWED_IP=b[1];
+
+document.getElementById("app1").innerText=APP1_NAME;
+document.getElementById("app1").onclick=()=>window.open(APP1_URL,'_blank');
+
+document.getElementById("app2").innerText=APP2_NAME;
+document.getElementById("app2").onclick=()=>window.open(APP2_URL,'_blank');
+
+}
 
 // ---------- GET IP ----------
 async function getIP(){
@@ -167,10 +215,11 @@ let d=await r.json();
 return d.ip;
 }
 
-// ---------- WRONG PASSWORD BLOCK ----------
+// ---------- WRONG BLOCK ----------
 function startWrongBlock(until){
 
 localStorage.setItem("wrongBlock",until);
+setCookie("wrongBlock",until,30);
 
 document.getElementById("user").disabled=true;
 document.getElementById("pass").disabled=true;
@@ -184,11 +233,11 @@ let remain=until-Date.now();
 
 if(remain<=0){
 localStorage.removeItem("wrongBlock");
+setCookie("wrongBlock","",0);
 
 document.getElementById("user").disabled=false;
 document.getElementById("pass").disabled=false;
 document.getElementById("loginBtn").disabled=false;
-
 document.getElementById("timerLogin").innerText="";
 return;
 }
@@ -210,16 +259,20 @@ function startIPBlock(until){
 document.getElementById("ipOverlay").style.display="flex";
 
 localStorage.setItem("ipBlock",until);
+setCookie("ipBlock",until,30);
 
 clearInterval(window.ipInterval);
+clearInterval(window.ipCheckInterval);
 
-function tick(){
+async function tick(){
 
 let remain=until-Date.now();
 
 if(remain<=0){
 document.getElementById("ipOverlay").style.display="none";
 localStorage.removeItem("ipBlock");
+setCookie("ipBlock","",0);
+clearInterval(window.ipCheckInterval);
 return;
 }
 
@@ -230,35 +283,34 @@ document.getElementById("timer").innerText=`${m}:${s<10?'0':''}${s}`;
 
 }
 
+async function checkAllowedIP(){
+
+let currentIP=await getIP();
+
+if(currentIP===ALLOWED_IP){
+
+document.getElementById("ipOverlay").style.display="none";
+
+localStorage.removeItem("ipBlock");
+setCookie("ipBlock","",0);
+
+clearInterval(window.ipInterval);
+clearInterval(window.ipCheckInterval);
+
+document.getElementById("loginPage").style.display="none";
+document.getElementById("panel").style.display="block";
+
+}
+
+}
+
 tick();
 window.ipInterval=setInterval(tick,1000);
-}
-
-// ---------- RESTORE BLOCKS ----------
-function restoreBlocks(){
-
-let wrong=localStorage.getItem("wrongBlock");
-
-if(wrong && Date.now()<parseInt(wrong)){
-startWrongBlock(parseInt(wrong));
-}
-
-let ip=localStorage.getItem("ipBlock");
-
-if(ip && Date.now()<parseInt(ip)){
-startIPBlock(parseInt(ip));
-}
-
+window.ipCheckInterval=setInterval(checkAllowedIP,10000);
 }
 
 // ---------- LOGIN ----------
 async function checkLogin(){
-
-let wrong=localStorage.getItem("wrongBlock");
-
-if(wrong && Date.now()<parseInt(wrong)){
-return;
-}
 
 let u=document.getElementById("user").value.trim();
 let p=document.getElementById("pass").value.trim();
@@ -266,19 +318,13 @@ let p=document.getElementById("pass").value.trim();
 if(u!==REAL_USER || p!==REAL_PASS){
 
 let tries=parseInt(localStorage.getItem("tries")||0)+1;
-
 localStorage.setItem("tries",tries);
 
 document.getElementById("error").innerText="Wrong username or password";
 
 if(tries>=3){
-
 localStorage.removeItem("tries");
-
-let until=Date.now()+30*60*1000;
-
-startWrongBlock(until);
-
+startWrongBlock(Date.now()+30*60*1000);
 }
 
 return;
@@ -287,23 +333,17 @@ return;
 let currentIP=await getIP();
 
 if(currentIP!==ALLOWED_IP){
-
-let until=Date.now()+30*60*1000;
-
-startIPBlock(until);
-
+startIPBlock(Date.now()+30*60*1000);
 document.getElementById("error").innerText="IP protection active";
-
 return;
 }
 
 document.getElementById("loginPage").style.display="none";
 document.getElementById("panel").style.display="block";
-
 }
 
 // ---------- INIT ----------
-restoreBlocks();
+loadConfig();
 
 // ---------- USD TO GEL ----------
 fetch('https://open.er-api.com/v6/latest/USD')
