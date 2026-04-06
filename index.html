@@ -16,85 +16,17 @@ flex-direction:column;
 align-items:center;
 padding:20px;
 }
-
-.box{
-width:390px;
-background:#1e293b;
-padding:25px;
-border-radius:20px;
-box-shadow:0 0 35px rgba(0,0,0,0.45);
-text-align:center;
-margin-bottom:20px;
-}
-
-img{
-width:100%;
-border-radius:15px;
-margin-bottom:15px;
-}
-
-.price{
-font-size:28px;
-font-weight:bold;
-color:#10b981;
-margin-bottom:8px;
-}
-
-.gelprice{
-font-size:18px;
-color:#38bdf8;
-margin-bottom:20px;
-}
-
-input{
-width:100%;
-padding:14px;
-margin:8px 0;
-border:none;
-border-radius:12px;
-font-size:16px;
-box-sizing:border-box;
-}
-
-button{
-width:100%;
-padding:14px;
-margin:8px 0;
-border:none;
-border-radius:12px;
-font-size:16px;
-cursor:pointer;
-font-weight:bold;
-}
-
-.buy{
-background:#f59e0b;
-color:white;
-}
-
-.login{
-background:#2563eb;
-color:white;
-}
-
-.link{
-background:#10b981;
-color:white;
-}
-
-#error{
-color:red;
-margin-top:10px;
-}
-
-iframe{
-width:100%;
-max-width:1200px;
-height:700px;
-border:none;
-border-radius:20px;
-background:white;
-}
+.box{width:390px;background:#1e293b;padding:25px;border-radius:20px;box-shadow:0 0 35px rgba(0,0,0,0.45);text-align:center;margin-bottom:20px;}
+img{width:100%;border-radius:15px;margin-bottom:15px;}
+.price{font-size:28px;font-weight:bold;color:#10b981;margin-bottom:8px;}
+.gelprice{font-size:18px;color:#38bdf8;margin-bottom:20px;}
+input{width:100%;padding:14px;margin:8px 0;border:none;border-radius:12px;font-size:16px;box-sizing:border-box;}
+button{width:100%;padding:14px;margin:8px 0;border:none;border-radius:12px;font-size:16px;cursor:pointer;font-weight:bold;}
+.buy{background:#f59e0b;color:white;}
+.login{background:#2563eb;color:white;}
+.link{background:#10b981;color:white;}
+#error{color:red;margin-top:10px;}
+iframe{width:100%;max-width:1200px;height:700px;border:none;border-radius:20px;background:white;}
 </style>
 </head>
 <body>
@@ -102,12 +34,10 @@ background:white;
 <div class="box">
 
 <img src="https://i.ytimg.com/vi/4KCfthJYU0U/maxresdefault.jpg">
-
 <h2>1 Year Premium Access</h2>
 
 <div class="price">20 USD</div>
 <div class="gelprice" id="gelprice">Loading GEL...</div>
-
 <button class="buy" onclick="window.open('https://t.me/ioscrackonline','_blank')">Buy Now</button>
 
 <div id="loginPage">
@@ -123,26 +53,21 @@ background:white;
 </div>
 
 </div>
-
 <iframe id="frame" src="https://qidian.letui.xyz"></iframe>
 
 <script>
-
 function isBlocked(user){
 let blockedUntil=localStorage.getItem("blocked_"+user);
 return blockedUntil ? parseInt(blockedUntil) : null;
 }
-
 function blockUser(user){
 let until=Date.now()+5*60*60*1000; // 5 hours block
 localStorage.setItem("blocked_"+user,until);
 showBlockBanner(until);
 }
-
 function showBlockBanner(until){
 let old=document.getElementById("blockBanner");
 if(old) old.remove();
-
 let banner=document.createElement("div");
 banner.id="blockBanner";
 banner.style.position="fixed";
@@ -157,23 +82,17 @@ banner.style.textAlign="center";
 banner.style.padding="15px";
 banner.style.zIndex="9999";
 document.body.appendChild(banner);
-
 function update(){
 let remain=until-Date.now();
-if(remain<=0){
-banner.remove();
-return;
-}
+if(remain<=0){banner.remove();return;}
 let h=Math.floor(remain/1000/60/60);
 let m=Math.floor((remain/1000/60)%60);
 let s=Math.floor((remain/1000)%60);
 banner.innerText=`⛔ Wrong IP | Unblock in ${h}h ${m}m ${s}s`;
 }
-
 update();
 setInterval(update,1000);
 }
-
 async function getIP(){
 let r=await fetch('https://api.ipify.org?format=json');
 let d=await r.json();
@@ -181,107 +100,71 @@ return d.ip;
 }
 
 async function checkLogin(){
-
 let u=document.getElementById("user").value.trim();
 let p=document.getElementById("pass").value.trim();
-
-if(!u || !p){
-document.getElementById("error").innerText="Please enter username and password";
-return;
-}
-
+if(!u || !p){document.getElementById("error").innerText="Please enter username and password";return;}
 let blocked=isBlocked(u);
-if(blocked && Date.now()<blocked){
-showBlockBanner(blocked);
-return;
-}
+if(blocked && Date.now()<blocked){showBlockBanner(blocked);return;}
 
 try{
-
 let userIP=await getIP();
 
-let ipResponse=await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/browserleaks.com');
+// --- check IP ---
+let ipResponse=await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/main/browserleaks.com');
+if(!ipResponse.ok) throw new Error('IP database not found');
 let ipText=await ipResponse.text();
 let ipLines=ipText.split('\n');
-
 let allowedIP=null;
-
 for(let line of ipLines){
+if(!line.includes('>')) continue;
 let parts=line.split('>');
-if(parts[0]?.trim()===u){
-allowedIP=parts[1]?.trim();
-break;
+if(parts[0]?.trim()===u){allowedIP=parts[1]?.trim();break;}
 }
-}
-
 if(userIP!==allowedIP){
 blockUser(u);
 document.getElementById("error").innerText="Access denied: wrong IP address";
 return;
 }
 
-let response=await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/ioscrack.online');
+// --- check username/password ---
+let response=await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/main/ioscrack.online');
+if(!response.ok) throw new Error('User database not found');
 let text=await response.text();
-
 let lines=text.split('\n');
 let found=false;
-
 for(let line of lines){
-
+if(!line.includes('>')) continue;
 let parts=line.split('>');
-
 let dbUser=parts[1]?.trim();
 let dbPass=parts[3]?.trim();
-
 let app1Name=parts[5]?.trim();
 let app1Url=parts[7]?.trim();
-
 let app2Name=parts[9]?.trim();
 let app2Url=parts[11]?.trim();
-
 if(u===dbUser && p===dbPass){
-
 found=true;
-
 document.getElementById("loginPage").style.display="none";
 document.getElementById("panel").style.display="block";
-
 document.getElementById("app1").innerText=app1Name;
 document.getElementById("app2").innerText=app2Name;
-
-document.getElementById("app1").onclick=function(){
-window.open(app1Url,'_blank');
-};
-
-document.getElementById("app2").onclick=function(){
-window.open(app2Url,'_blank');
-};
-
+document.getElementById("app1").onclick=function(){window.open(app1Url,'_blank');};
+document.getElementById("app2").onclick=function(){window.open(app2Url,'_blank');};
 break;
 }
 }
+if(!found) document.getElementById("error").innerText="Wrong username or password";
 
-if(!found){
-document.getElementById("error").innerText="Wrong username or password";
+}catch(e){document.getElementById("error").innerText="Database error";console.log(e);}
 }
 
-}catch{
-document.getElementById("error").innerText="Database error";
-}
-
-}
-
+// --- GEL ---
 fetch('https://open.er-api.com/v6/latest/USD')
 .then(r=>r.json())
 .then(data=>{
 let gel=(20*data.rates.GEL).toFixed(2);
 document.getElementById("gelprice").innerText="≈ "+gel+" GEL";
 })
-.catch(()=>{
-document.getElementById("gelprice").innerText="GEL unavailable";
-});
-
+.catch(()=>{document.getElementById("gelprice").innerText="GEL unavailable";});
 </script>
-
 </body>
 </html>
