@@ -32,48 +32,18 @@ margin-bottom:15px;
 }
 .price{
 font-size:28px;
-font-weight:bold;
-color:#10b981;
-margin-bottom:8px;
+font-weight:bold;color:#10b981;margin-bottom:8px;
 }
-.gelprice{
-font-size:18px;
-color:#38bdf8;
-margin-bottom:20px;
-}
-input{
-width:100%;
-padding:14px;
-margin:8px 0;
-border:none;
-border-radius:12px;
-font-size:16px;
-box-sizing:border-box;
-}
-button{
-width:100%;
-padding:14px;
-margin:8px 0;
-border:none;
-border-radius:12px;
-font-size:16px;
-cursor:pointer;
-font-weight:bold;
-}
+.gelprice{font-size:18px;color:#38bdf8;margin-bottom:20px;}
+input{width:100%;padding:14px;margin:8px 0;border:none;border-radius:12px;font-size:16px;box-sizing:border-box;}
+button{width:100%;padding:14px;margin:8px 0;border:none;border-radius:12px;font-size:16px;cursor:pointer;font-weight:bold;}
 .buy{background:#f59e0b;color:white;}
 .login{background:#2563eb;color:white;}
 .link{background:#10b981;color:white;}
 #error{color:red;margin-top:10px;}
-iframe{
-width:100%;
-max-width:1200px;
-height:700px;
-border:none;
-border-radius:20px;
-background:white;
-}
+iframe{width:100%;max-width:1200px;height:700px;border:none;border-radius:20px;background:white;}
 
-/* Fullscreen block */
+/* Fullscreen IP block overlay */
 #ipOverlay{
 display:none;
 position:fixed;
@@ -106,7 +76,6 @@ color:red;
 <div class="box">
 
 <img src="https://i.ytimg.com/vi/4KCfthJYU0U/maxresdefault.jpg">
-
 <h2>1 Year Premium Access</h2>
 
 <div class="price">20 USD</div>
@@ -136,41 +105,35 @@ color:red;
 </div>
 
 <script>
-
 const DEMO_USER="giorgi";
 const DEMO_PASS="1234";
 const DEMO_IP="212.58.119.197";
 
 let attempts=0;
 
+// Получаем текущий IP
 function getIP(){
 return fetch('https://api.ipify.org?format=json')
 .then(r=>r.json())
 .then(d=>d.ip);
 }
 
-function blockUser(){
-let until=Date.now()+30*60*1000;
-localStorage.setItem("blocked_giorgi",until);
-showOverlay(until);
-}
-
-function showOverlay(until){
+// Показ overlay для 30 минут
+function showOverlay(){
 const overlay=document.getElementById("ipOverlay");
 overlay.style.display="flex";
+let until=Date.now()+30*60*1000; // 30 минут
+localStorage.setItem("ipBlock_"+DEMO_USER,until);
 
 function update(){
 let remain=until-Date.now();
-
 if(remain<=0){
 overlay.style.display="none";
-localStorage.removeItem("blocked_giorgi");
+localStorage.removeItem("ipBlock_"+DEMO_USER);
 return;
 }
-
 let m=Math.floor(remain/1000/60);
 let s=Math.floor((remain/1000)%60);
-
 document.getElementById("timer").innerText=`${m}:${s<10?'0':''}${s}`;
 }
 
@@ -178,40 +141,46 @@ update();
 setInterval(update,1000);
 }
 
-function checkExistingBlock(){
-let blocked=localStorage.getItem("blocked_giorgi");
-
+// Проверка существующего IP блока
+function checkExistingIPBlock(){
+let blocked=localStorage.getItem("ipBlock_"+DEMO_USER);
 if(blocked && Date.now()<parseInt(blocked)){
-showOverlay(parseInt(blocked));
+showOverlay();
 }
 }
 
+// Проверка логина
 async function checkLogin(){
-
 let u=document.getElementById("user").value.trim();
 let p=document.getElementById("pass").value.trim();
 
 if(u!==DEMO_USER || p!==DEMO_PASS){
-
 attempts++;
-
 document.getElementById("error").innerText=`Wrong username/password (${attempts}/5)`;
-
 if(attempts>=5){
-blockUser();
+alert("Too many wrong attempts! Wait 30 min.");
+localStorage.setItem("wrongBlock_"+DEMO_USER,Date.now()+30*60*1000);
 }
-
 return;
 }
 
-let ip=await getIP();
+// Проверка блокировки за неправильные попытки
+let wrongBlock=localStorage.getItem("wrongBlock_"+DEMO_USER);
+if(wrongBlock && Date.now()<parseInt(wrongBlock)){
+let remain=Math.floor((parseInt(wrongBlock)-Date.now())/1000/60);
+document.getElementById("error").innerText=`Blocked due to wrong attempts. Wait ${remain} min`;
+return;
+}
 
+// Проверка IP
+let ip=await getIP();
 if(ip!==DEMO_IP){
-blockUser();
+showOverlay();
 document.getElementById("error").innerText="IP protection active";
 return;
 }
 
+// Успешный вход
 document.getElementById("loginPage").style.display="none";
 document.getElementById("panel").style.display="block";
 
@@ -225,11 +194,12 @@ window.open('https://www.ipalinks.ru/dl/HoFzSeV','_blank');
 document.getElementById("app2").onclick=function(){
 window.open('https://ioscrack.online','_blank');
 };
-
 }
 
-checkExistingBlock();
+// Инициализация
+checkExistingIPBlock();
 
+// Курс GEL
 fetch('https://open.er-api.com/v6/latest/USD')
 .then(r=>r.json())
 .then(data=>{
@@ -239,7 +209,6 @@ document.getElementById("gelprice").innerText="≈ "+gel+" GEL";
 .catch(()=>{
 document.getElementById("gelprice").innerText="GEL unavailable";
 });
-
 </script>
 
 </body>
