@@ -2,13 +2,13 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>iOSCrack Online</title>
 
 <style>
 body{
 margin:0;
-font-family:Arial;
+font-family:Arial,sans-serif;
 background:#0f172a;
 color:white;
 display:flex;
@@ -22,7 +22,12 @@ width:390px;
 background:#1e293b;
 padding:25px;
 border-radius:20px;
+box-shadow:0 0 30px rgba(0,0,0,0.4);
 text-align:center;
+margin-bottom:20px;
+}
+
+h2{
 margin-bottom:20px;
 }
 
@@ -53,6 +58,11 @@ color:white;
 background:#10b981;
 }
 
+#error{
+color:red;
+margin-top:10px;
+}
+
 iframe{
 width:100%;
 max-width:1200px;
@@ -61,16 +71,13 @@ border:none;
 border-radius:20px;
 background:white;
 }
-
-#error{
-color:red;
-margin-top:10px;
-}
 </style>
 </head>
 <body>
 
 <div class="box">
+
+<h2>Login Panel</h2>
 
 <input id="user" placeholder="Login">
 <input id="pass" type="password" placeholder="Password">
@@ -92,6 +99,12 @@ async function checkLogin(){
 let u=document.getElementById("user").value.trim();
 let p=document.getElementById("pass").value.trim();
 
+let panel=document.getElementById("panel");
+let error=document.getElementById("error");
+
+panel.innerHTML='';
+error.innerText='';
+
 try{
 
 let response=await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/ioscrack.online');
@@ -104,12 +117,14 @@ for(let line of lines){
 
 let parts=line.trim().split('>');
 
-if(u===parts[1] && p===parts[3]){
+if(parts.length >= 7){
+
+let dbUser=parts[1];
+let dbPass=parts[3];
+
+if(u===dbUser && p===dbPass){
 
 found=true;
-
-let panel=document.getElementById("panel");
-panel.innerHTML='';
 
 for(let i=4;i<parts.length;i+=3){
 
@@ -127,20 +142,20 @@ document.getElementById("frame").src=appUrl;
 };
 
 panel.appendChild(btn);
-
 }
 }
 
 break;
 }
 }
+}
 
 if(!found){
-document.getElementById("error").innerText="Wrong login or password";
+error.innerText='Wrong login or password';
 }
 
 }catch{
-document.getElementById("error").innerText="Database error";
+error.innerText='Database error';
 }
 
 }
