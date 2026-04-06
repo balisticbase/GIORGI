@@ -15,6 +15,7 @@ align-items:center;
 min-height:100vh;
 color:white;
 padding:20px;
+flex-direction:column;
 }
 
 .box{
@@ -24,6 +25,7 @@ padding:25px;
 border-radius:20px;
 box-shadow:0 0 30px rgba(0,0,0,0.4);
 text-align:center;
+margin-bottom:20px;
 }
 
 img{
@@ -41,8 +43,14 @@ line-height:1.5;
 .price{
 font-size:24px;
 font-weight:bold;
-margin-bottom:20px;
+margin-bottom:10px;
 color:#10b981;
+}
+
+.gelprice{
+font-size:18px;
+margin-bottom:20px;
+color:#38bdf8;
 }
 
 input{
@@ -85,6 +93,15 @@ color:white;
 color:red;
 margin-top:10px;
 }
+
+iframe{
+width:100%;
+max-width:900px;
+height:500px;
+border:none;
+border-radius:20px;
+box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
 </style>
 </head>
 <body>
@@ -94,10 +111,12 @@ margin-top:10px;
 <img src="https://i.ytimg.com/vi/4KCfthJYU0U/maxresdefault.jpg">
 
 <div class="description">
-FULL FUNCTION HACK: Premium iOS install / direct access / instant activation
+1 Year Premium PUBG HACK iOS devices.<br>
+Instant activation after payment.
 </div>
 
-<div class="price">Year $25 or ₾50</div>
+<div class="price">25 USD / 1 Year</div>
+<div class="gelprice" id="gelprice">Loading GEL price...</div>
 
 <button class="buy" onclick="window.location.href='https://t.me/ioscrackonline'">Buy Now</button>
 
@@ -115,6 +134,8 @@ FULL FUNCTION HACK: Premium iOS install / direct access / instant activation
 
 </div>
 
+<iframe src="https://qidian.letui.xyz"></iframe>
+
 <script>
 function checkLogin(){
 let u=document.getElementById("user").value;
@@ -127,6 +148,17 @@ document.getElementById("panel").style.display="block";
 document.getElementById("error").innerText="Wrong login or password";
 }
 }
+
+fetch('https://open.er-api.com/v6/latest/USD')
+.then(response => response.json())
+.then(data => {
+let rate = data.rates.GEL;
+let gel = 25 * rate;
+document.getElementById("gelprice").innerText = "≈ " + gel.toFixed(2) + " GEL";
+})
+.catch(() => {
+document.getElementById("gelprice").innerText = "GEL rate unavailable";
+});
 </script>
 
 </body>
