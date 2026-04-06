@@ -8,15 +8,13 @@
 <style>
 body{
 margin:0;
-font-family:Arial,sans-serif;
+font-family:Arial;
 background:#0f172a;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
-padding:20px;
 color:white;
+display:flex;
 flex-direction:column;
+align-items:center;
+padding:20px;
 }
 
 .box{
@@ -24,27 +22,7 @@ width:390px;
 background:#1e293b;
 padding:25px;
 border-radius:20px;
-box-shadow:0 0 35px rgba(0,0,0,0.45);
 text-align:center;
-margin-bottom:20px;
-}
-
-img{
-width:100%;
-border-radius:15px;
-margin-bottom:15px;
-}
-
-.price{
-font-size:28px;
-font-weight:bold;
-color:#10b981;
-margin-bottom:8px;
-}
-
-.gelprice{
-font-size:18px;
-color:#38bdf8;
 margin-bottom:20px;
 }
 
@@ -67,34 +45,26 @@ border-radius:12px;
 font-size:16px;
 cursor:pointer;
 font-weight:bold;
-}
-
-.buy{
-background:#f59e0b;
-color:white;
-}
-
-.login{
 background:#2563eb;
 color:white;
 }
 
 .link{
 background:#10b981;
-color:white;
+}
+
+iframe{
+width:100%;
+max-width:1200px;
+height:700px;
+border:none;
+border-radius:20px;
+background:white;
 }
 
 #error{
 color:red;
 margin-top:10px;
-}
-
-iframe{
-width:100%;
-height:700px;
-border:none;
-border-radius:20px;
-background:white;
 }
 </style>
 </head>
@@ -102,26 +72,14 @@ background:white;
 
 <div class="box">
 
-<img src="https://i.ytimg.com/vi/4KCfthJYU0U/maxresdefault.jpg">
-
-<h2>1 Year Premium Access</h2>
-
-<div class="price">20 USD</div>
-<div class="gelprice" id="gelprice">Loading GEL...</div>
-
-<button class="buy" onclick="document.getElementById('frame').src='https://qidian.letui.xyz'">Buy Now</button>
-
-<div id="loginPage">
 <input id="user" placeholder="Login">
 <input id="pass" type="password" placeholder="Password">
-<button class="login" onclick="checkLogin()">Login</button>
-<div id="error"></div>
-</div>
 
-<div id="panel" style="display:none;">
-<button class="link" id="app1"></button>
-<button class="link" id="app2"></button>
-</div>
+<button onclick="checkLogin()">Login</button>
+
+<div id="panel"></div>
+
+<div id="error"></div>
 
 </div>
 
@@ -144,34 +102,34 @@ let found=false;
 
 for(let line of lines){
 
-let parts=line.split('>');
+let parts=line.trim().split('>');
 
-let dbUser=parts[1];
-let dbPass=parts[3];
-
-let app1Name=parts[5];
-let app1Url=parts[7];
-
-let app2Name=parts[9];
-let app2Url=parts[11];
-
-if(u===dbUser && p===dbPass){
+if(u===parts[1] && p===parts[3]){
 
 found=true;
 
-document.getElementById("loginPage").style.display="none";
-document.getElementById("panel").style.display="block";
+let panel=document.getElementById("panel");
+panel.innerHTML='';
 
-document.getElementById("app1").innerText=app1Name;
-document.getElementById("app2").innerText=app2Name;
+for(let i=4;i<parts.length;i+=3){
 
-document.getElementById("app1").onclick=function(){
-document.getElementById('frame').src=app1Url;
+if(parts[i]==="APP"){
+
+let appName=parts[i+1];
+let appUrl=parts[i+2];
+
+let btn=document.createElement("button");
+btn.className="link";
+btn.innerText=appName;
+
+btn.onclick=function(){
+document.getElementById("frame").src=appUrl;
 };
 
-document.getElementById("app2").onclick=function(){
-document.getElementById('frame').src=app2Url;
-};
+panel.appendChild(btn);
+
+}
+}
 
 break;
 }
@@ -186,16 +144,6 @@ document.getElementById("error").innerText="Database error";
 }
 
 }
-
-fetch('https://open.er-api.com/v6/latest/USD')
-.then(r=>r.json())
-.then(data=>{
-let gel=(20*data.rates.GEL).toFixed(2);
-document.getElementById("gelprice").innerText="≈ "+gel+" GEL";
-})
-.catch(()=>{
-document.getElementById("gelprice").innerText="GEL unavailable";
-});
 
 </script>
 
