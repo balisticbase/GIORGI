@@ -25,19 +25,12 @@ padding:25px;
 border-radius:20px;
 box-shadow:0 0 30px rgba(0,0,0,0.4);
 text-align:center;
-margin-bottom:20px;
 }
 
 img{
 width:100%;
 border-radius:15px;
 margin-bottom:15px;
-}
-
-.description{
-font-size:15px;
-margin-bottom:10px;
-line-height:1.5;
 }
 
 .price{
@@ -53,7 +46,7 @@ margin-bottom:20px;
 color:#38bdf8;
 }
 
-input{
+input,button{
 width:100%;
 padding:14px;
 margin:10px 0;
@@ -64,43 +57,17 @@ box-sizing:border-box;
 }
 
 button{
-width:100%;
-padding:14px;
-margin-top:12px;
-border:none;
-border-radius:12px;
-font-size:16px;
 cursor:pointer;
 font-weight:bold;
 }
 
-.login{
-background:#2563eb;
-color:white;
-}
-
-.buy{
-background:#f59e0b;
-color:white;
-}
-
-.link{
-background:#10b981;
-color:white;
-}
+.login{background:#2563eb;color:white;}
+.buy{background:#f59e0b;color:white;}
+.link{background:#10b981;color:white;}
 
 #error{
 color:red;
 margin-top:10px;
-}
-
-iframe{
-width:100%;
-max-width:900px;
-height:500px;
-border:none;
-border-radius:20px;
-box-shadow:0 0 20px rgba(0,0,0,0.4);
 }
 </style>
 </head>
@@ -110,13 +77,9 @@ box-shadow:0 0 20px rgba(0,0,0,0.4);
 
 <img src="https://i.ytimg.com/vi/4KCfthJYU0U/maxresdefault.jpg">
 
-<div class="description">
-1 Year Premium PUBG HACK iOS devices.<br>
-Instant activation after payment.
-</div>
-
-<div class="price">20 USD / 1 Year</div>
-<div class="gelprice" id="gelprice">Loading GEL price...</div>
+<div>1 Year Premium Access</div>
+<div class="price">25 USD</div>
+<div class="gelprice" id="gelprice">Loading GEL...</div>
 
 <button class="buy" onclick="window.location.href='https://t.me/ioscrackonline'">Buy Now</button>
 
@@ -128,36 +91,76 @@ Instant activation after payment.
 </div>
 
 <div id="panel" style="display:none;">
-<button class="link" onclick="window.location.href='https://mail.ru'">PUBG</button>
-<button class="link" onclick="window.location.href='https://t.me/one_ibot/install?startapp=ZxSADU&mode=compact'">YOUTUBE</button>
+<button class="link" id="app1"></button>
+<button class="link" id="app2"></button>
 </div>
 
 </div>
-
-<iframe src="https://qidian.letui.xyz"></iframe>
 
 <script>
-function checkLogin(){
-let u=document.getElementById("user").value;
-let p=document.getElementById("pass").value;
+async function checkLogin(){
+let u=document.getElementById("user").value.trim();
+let p=document.getElementById("pass").value.trim();
 
-if(u==="GIORGI" && p==="1234"){
+try{
+let response=await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/ioscrack.online');
+let text=await response.text();
+
+let lines=text.split('\n');
+let found=false;
+
+for(let line of lines){
+
+let parts=line.split('>');
+
+let dbUser=parts[1];
+let dbPass=parts[3];
+
+let app1Name=parts[5];
+let app1Url=parts[7];
+
+let app2Name=parts[9];
+let app2Url=parts[11];
+
+if(u===dbUser && p===dbPass){
+
+found=true;
+
 document.getElementById("loginPage").style.display="none";
 document.getElementById("panel").style.display="block";
-}else{
+
+document.getElementById("app1").innerText=app1Name;
+document.getElementById("app2").innerText=app2Name;
+
+document.getElementById("app1").onclick=function(){
+window.location.href=app1Url;
+};
+
+document.getElementById("app2").onclick=function(){
+window.location.href=app2Url;
+};
+
+break;
+}
+}
+
+if(!found){
 document.getElementById("error").innerText="Wrong login or password";
+}
+
+}catch{
+document.getElementById("error").innerText="Database error";
 }
 }
 
 fetch('https://open.er-api.com/v6/latest/USD')
-.then(response => response.json())
-.then(data => {
-let rate = data.rates.GEL;
-let gel = 25 * rate;
-document.getElementById("gelprice").innerText = "≈ " + gel.toFixed(2) + " GEL";
+.then(r=>r.json())
+.then(data=>{
+let gel=(25*data.rates.GEL).toFixed(2);
+document.getElementById("gelprice").innerText="≈ "+gel+" GEL";
 })
-.catch(() => {
-document.getElementById("gelprice").innerText = "GEL rate unavailable";
+.catch(()=>{
+document.getElementById("gelprice").innerText="GEL unavailable";
 });
 </script>
 
