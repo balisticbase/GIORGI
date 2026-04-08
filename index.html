@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>App Store IP Based</title>
+<title>App Store IP Premium</title>
 <style>
 body{
     margin:0;
@@ -55,38 +55,48 @@ button:hover{
 <body>
 
 <div class="container">
-    <h1>My Apps & Premium</h1>
-    <div id="apps"></div>
+    <h1>Premium & My Apps</h1>
 
+    <!-- Premium Product -->
     <div class="card premium">
         <h2>🔥 1 Year Premium Installer</h2>
-        <p>Official Price: $15 / 40.19₾</p>
-        <p>Access for 12 months</p>
+        <p>Official Price: $15 / <span id="gel-price">Loading...</span>₾</p>
         <button onclick="window.location.href='https://your-payment-link.com'">Buy Now</button>
     </div>
+
+    <!-- Apps -->
+    <div id="apps"></div>
 </div>
 
 <script>
-// Step 1: Get user IP
+// Step 1: Fetch USD to GEL exchange rate
+async function getUSDToGEL(){
+    try{
+        const res = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=GEL");
+        const data = await res.json();
+        return data.rates.GEL;
+    }catch(e){
+        return 2.68; // fallback
+    }
+}
+
+// Step 2: Get user IP
 async function getUserIP(){
     const res = await fetch("https://api.ipify.org?format=json");
     const data = await res.json();
     return data.ip;
 }
 
-// Step 2: Fetch USERBASE
+// Step 3: Load apps based on IP
 async function loadApps(){
     const userIP = await getUserIP();
     const raw = await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/main/USERBASE").then(r=>r.text());
-
-    // Split by ">"
     const entries = raw.split(">");
+
     let apps = [];
 
-    // Find matching IP block
     for(let i=0;i<entries.length;i++){
         if(entries[i] === "ip" && entries[i+1] === userIP){
-            // From i+2 onwards are apps until next "ip" or end
             let j = i+2;
             while(j<entries.length && entries[j] !== "ip"){
                 if(entries[j].startsWith("app")){
@@ -96,11 +106,10 @@ async function loadApps(){
                 }
                 j+=3;
             }
-            break; // Only take first match
+            break;
         }
     }
 
-    // Render apps
     const container = document.getElementById("apps");
     if(apps.length===0){
         container.innerHTML = "<p>No apps available for your IP.</p>";
@@ -116,6 +125,15 @@ async function loadApps(){
     }
 }
 
+// Step 4: Set GEL price dynamically
+async function setPrice(){
+    const rate = await getUSDToGEL();
+    const priceGEL = (15*rate).toFixed(2);
+    document.getElementById("gel-price").innerText = priceGEL;
+}
+
+// Run
+setPrice();
 loadApps();
 </script>
 
