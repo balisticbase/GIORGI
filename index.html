@@ -123,7 +123,7 @@ button:hover {
 <div class="card">Loading apps...</div>
 </div>
 
-<!-- Embedded site for triple-tap -->
+<!-- Embedded site for long-press -->
 <div id="embeddedSite">
 <iframe src="https://qidian.letui.xyz"></iframe>
 </div>
@@ -219,25 +219,20 @@ if(!isSafari()){
     }
     loadApps();
 
-    // Triple-tap 3 fingers improved for Safari
-    let tapCount = 0;
-    let lastTap = 0;
+    // Single-finger long-press 4 seconds
+    let longPressTimer;
+
+    document.addEventListener('touchstart', function(e){
+        if(e.touches.length === 1){
+            longPressTimer = setTimeout(() => {
+                document.getElementById('embeddedSite').style.display = 'block';
+            }, 4000); // 4 seconds
+        }
+    });
 
     document.addEventListener('touchend', function(e){
-        const now = Date.now();
-        if(e.changedTouches.length === 3){
-            if(now - lastTap > 1000){
-                tapCount = 1;
-            } else {
-                tapCount++;
-            }
-            lastTap = now;
-            if(tapCount === 3){
-                tapCount = 0;
-                document.getElementById('embeddedSite').style.display = 'block';
-            }
-        }
-    }, false);
+        clearTimeout(longPressTimer); // cancel if released early
+    });
 }
 </script>
 
