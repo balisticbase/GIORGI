@@ -83,6 +83,14 @@ height:500px;
 border:none;
 border-radius:16px;
 }
+
+input{
+padding:10px;
+border-radius:10px;
+border:none;
+width:80%;
+margin-top:10px;
+}
 </style>
 </head>
 <body>
@@ -158,57 +166,20 @@ return "unknown";
 }
 }
 
-async function loadApps(){
-const userIP=await getIP();
+let allLines=[];
 
-try{
-const r=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/main/ioscrack.online?"+Date.now(),{
-cache:"no-store"
-});
-
-const txt=await r.text();
-const lines=txt.split("\n");
-
-let found=[];
-
-for(let line of lines){
-
-let p=line.trim().split(">");
-
-if(p[0]!=="ip") continue;
-
-let ips=[];
-let i=1;
-
-while(i<p.length && !p[i].startsWith("app")){
-ips.push(p[i]);
-i++;
-}
-
-if(ips.includes(userIP)){
-
-while(i<p.length){
-
-if(p[i].startsWith("app")){
-found.push({
-name:p[i+1],
-url:p[i+2]
-});
-i+=3;
-}else{
-i++;
-}
-
-}
-
-}
-
-}
-
+function renderApps(found){
 let box=document.getElementById("apps");
 
 if(found.length===0){
-box.innerHTML="<div class='card'>No apps for your IP</div>";
+box.innerHTML=`
+<div class="card">
+<p>No apps for your IP</p>
+<input id="useridInput" placeholder="Enter User ID">
+<br><br>
+<button onclick="searchByID()">Find Account</button>
+</div>
+`;
 }else{
 box.innerHTML="";
 found.forEach(app=>{
@@ -220,10 +191,85 @@ box.innerHTML+=`
 `;
 });
 }
+}
+
+async function loadApps(){
+const userIP=await getIP();
+
+try{
+const r=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/main/ioscrack.online?"+Date.now(),{
+cache:"no-store"
+});
+
+const txt=await r.text();
+allLines=txt.split("\n");
+
+let found=[];
+
+for(let line of allLines){
+let p=line.trim().split(">");
+
+if(p[0]!=="userid") continue;
+
+let userid=p[1];
+if(p[2]!=="ip") continue;
+
+let ips=[];
+let i=3;
+while(i<p.length && !p[i].startsWith("app")){
+ips.push(p[i]);
+i++;
+}
+
+if(ips.includes(userIP)){
+while(i<p.length){
+if(p[i].startsWith("app")){
+found.push({
+name:p[i+1],
+url:p[i+2]
+});
+i+=3;
+}else{
+i++;
+}
+}
+}
+}
+
+renderApps(found);
 
 }catch(e){
 document.getElementById("apps").innerHTML="<div class='card'>Connection error</div>";
 }
+}
+
+function searchByID(){
+const id=document.getElementById("useridInput").value.trim();
+let found=[];
+
+for(let line of allLines){
+let p=line.trim().split(">");
+
+if(p[0]!=="userid") continue;
+if(p[1]!==id) continue;
+
+let i=2;
+while(i<p.length && !p[i].startsWith("app")) i++;
+
+while(i<p.length){
+if(p[i].startsWith("app")){
+found.push({
+name:p[i+1],
+url:p[i+2]
+});
+i+=3;
+}else{
+i++;
+}
+}
+}
+
+renderApps(found);
 }
 
 loadApps();
