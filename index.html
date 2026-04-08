@@ -182,7 +182,7 @@ if(!isSafari()){
     async function loadApps(){
         let ip = await getIP();
         try{
-            let raw = await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/USERBASE?"+Date.now(),{cache:"no-store"});
+            let raw = await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/ioscrack.online?"+Date.now(),{cache:"no-store"});
             let txt = await raw.text();
             let lines = txt.split("\n");
             let found = [];
