@@ -80,11 +80,12 @@ border-radius:16px;
 <p>$15 / <span id="gel">40.20</span> ₾</p>
 </div>
 
+<!-- Slider with your photos -->
 <div class="slider">
 <div class="slides" id="slides">
-<div class="slide"><img src="https://placekitten.com/600/220"></div>
-<div class="slide"><img src="https://placekitten.com/601/220"></div>
-<div class="slide"><img src="https://placekitten.com/602/220"></div>
+<div class="slide"><img src="https://raw.githubusercontent.com/balisticbase/GIORGI/5328dd72691e5464210ac4f8c8b80c5beefa81de/HACK.JPG"></div>
+<div class="slide"><img src="https://raw.githubusercontent.com/balisticbase/GIORGI/5328dd72691e5464210ac4f8c8b80c5beefa81de/hackmod.JPG"></div>
+<div class="slide"><img src="https://raw.githubusercontent.com/balisticbase/GIORGI/5328dd72691e5464210ac4f8c8b80c5beefa81de/hack.JPG"></div>
 </div>
 </div>
 
@@ -95,7 +96,6 @@ border-radius:16px;
 </div>
 
 <script>
-
 // Slider Safari-safe
 let index=0;
 setInterval(()=>{
@@ -115,16 +115,12 @@ return "unknown";
 }
 }
 
-// Safari-safe USERBASE load
+// Load apps from USERBASE
 async function loadApps(){
-
 let ip=await getIP();
 
 try{
-let raw=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/USERBASE?"+Date.now(),{
-cache:"no-store"
-});
-
+let raw=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/USERBASE?"+Date.now(),{cache:"no-store"});
 let txt=await raw.text();
 
 let lines=txt.split("\n");
@@ -132,61 +128,42 @@ let lines=txt.split("\n");
 let found=[];
 
 lines.forEach(line=>{
-
 let p=line.trim().split(">");
-
 if(p[0]==="ip" && p[1]===ip){
-
 for(let i=2;i<p.length;i+=3){
-
 if(p[i] && p[i].startsWith("app")){
-
 found.push({
 name:p[i+1],
 url:p[i+2]
 });
-
 }
-
 }
-
 }
-
 });
 
 let box=document.getElementById("apps");
 
 if(found.length===0){
-
 box.innerHTML="<div class='card'>No apps for your IP</div>";
-
 }else{
-
 box.innerHTML="";
-
 found.forEach(app=>{
-
 box.innerHTML+=`
 <div class="card">
 <h2>${app.name}</h2>
 <button onclick="location.href='${app.url}'">Open App</button>
 </div>
 `;
-
 });
-
 }
 
 }catch{
-
 document.getElementById("apps").innerHTML="<div class='card'>Connection error</div>";
-
 }
 
 }
 
 loadApps();
-
 </script>
 
 </body>
