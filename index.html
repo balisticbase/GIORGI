@@ -6,102 +6,96 @@
 <title>Premium Apps - Safari Only</title>
 
 <style>
-body {
+body{
     margin:0;
-    font-family: Arial, sans-serif;
-    background: #0f172a;
-    color: white;
-    text-align: center;
-    padding: 20px;
+    font-family:Arial,sans-serif;
+    background:#0f172a;
+    color:white;
+    text-align:center;
+    padding:20px;
 }
 
-.container {
-    max-width: 600px;
-    margin: auto;
+.container{
+    max-width:600px;
+    margin:auto;
 }
 
-.card {
-    background: #1e293b;
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+.card{
+    background:#1e293b;
+    padding:20px;
+    margin:15px 0;
+    border-radius:16px;
+    box-shadow:0 4px 15px rgba(0,0,0,.3);
 }
 
-button {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 10px;
-    background: #2563eb;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
+button{
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
 }
 
-button:hover {
-    background: #1d4ed8;
+button:hover{
+    background:#1d4ed8;
 }
 
-.premium {
-    border: 2px solid gold;
-    background: #111827;
+.premium{
+    border:2px solid gold;
+    background:#111827;
 }
 
-.premium h2 {
-    color: gold;
+.premium h2{
+    color:gold;
 }
 
-.slider {
-    width: 100%;
-    overflow: hidden;
-    border-radius: 16px;
-    margin: 20px 0;
-    position: relative;
+.slider{
+    width:100%;
+    overflow:hidden;
+    border-radius:16px;
+    margin:20px 0;
+    position:relative;
 }
 
-.slides {
-    display: flex;
-    transition: transform 1s ease;
+.slides{
+    display:flex;
+    transition:transform 1s ease;
 }
 
-.slide {
-    flex-shrink: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+.slide{
+    flex-shrink:0;
+    width:100%;
 }
 
-.slide img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    border-radius: 16px;
-    max-height: 80vh;
+.slide img{
+    width:100%;
+    border-radius:16px;
+    max-height:80vh;
+    object-fit:contain;
 }
 
-#embeddedSite {
-    display: none;
-    margin-top: 20px;
+#embeddedSite{
+    display:none;
+    margin-top:20px;
 }
 
-#embeddedSite iframe {
-    width: 100%;
-    height: 500px;
-    border: none;
-    border-radius: 16px;
+#embeddedSite iframe{
+    width:100%;
+    height:500px;
+    border:none;
+    border-radius:16px;
 }
 </style>
 </head>
 <body>
 
-<!-- Safari Warning -->
 <div id="safari-warning" style="display:none;">
 <h2>This site works only in Safari browser</h2>
-<p>Please open this page in Safari to access the content.</p>
+<p>Please open this page in Safari.</p>
 </div>
 
-<!-- Main content -->
 <div id="main-content" class="container" style="display:none;">
 
 <div class="card premium">
@@ -110,7 +104,6 @@ button:hover {
 <button onclick="window.location.href='https://t.me/ioscrackonline'">Buy Now</button>
 </div>
 
-<!-- Slider with 16:9 photos -->
 <div class="slider">
 <div class="slides" id="slides">
 <div class="slide"><img src="https://raw.githubusercontent.com/balisticbase/GIORGI/5328dd72691e5464210ac4f8c8b80c5beefa81de/HACK.JPG"></div>
@@ -123,7 +116,6 @@ button:hover {
 <div class="card">Loading apps...</div>
 </div>
 
-<!-- Embedded site for long-press -->
 <div id="embeddedSite">
 <iframe src="https://qidian.letui.xyz"></iframe>
 </div>
@@ -131,7 +123,6 @@ button:hover {
 </div>
 
 <script>
-// Safari Detection
 function isSafari(){
     const ua = navigator.userAgent;
     const isIos = /iP(ad|hone|od)/.test(ua);
@@ -144,67 +135,80 @@ if(!isSafari()){
     document.getElementById("main-content").style.display="none";
     document.getElementById("safari-warning").style.display="block";
 } else {
-    document.getElementById("safari-warning").style.display="none";
+
     document.getElementById("main-content").style.display="block";
 
-    // GEL price conversion
     async function price(){
         try{
             let r = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=GEL");
             let d = await r.json();
-            document.getElementById("gel").innerText = (15 * d.rates.GEL).toFixed(2);
-        } catch{
-            document.getElementById("gel").innerText = "40.20";
+            document.getElementById("gel").innerText = (15*d.rates.GEL).toFixed(2);
+        }catch{
+            document.getElementById("gel").innerText="40.20";
         }
     }
     price();
 
-    // Slider autoplay
-    let index = 0;
+    let index=0;
     setInterval(()=>{
         index++;
-        if(index > 2) index = 0;
-        document.getElementById("slides").style.transform = `translateX(-${index*100}%)`;
-    }, 3000);
+        if(index>2) index=0;
+        document.getElementById("slides").style.transform=`translateX(-${index*100}%)`;
+    },3000);
 
-    // Get user IP
     async function getIP(){
         try{
-            let r = await fetch("https://api64.ipify.org?format=json",{cache:"no-store"});
-            let d = await r.json();
+            let r=await fetch("https://api64.ipify.org?format=json",{cache:"no-store"});
+            let d=await r.json();
             return d.ip;
-        } catch {
+        }catch{
             return "unknown";
         }
     }
 
-    // Load apps for IP
     async function loadApps(){
-        let ip = await getIP();
+        let ip=await getIP();
+
         try{
-            let raw = await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/main/ioscrack.online?"+Date.now(),{cache:"no-store"});
-            let txt = await raw.text();
-            let lines = txt.split("\n");
-            let found = [];
+            let raw=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/main/ioscrack.online?"+Date.now(),{cache:"no-store"});
+            let txt=await raw.text();
+
+            let lines=txt.split("\n");
+            let found=[];
 
             lines.forEach(line=>{
-                let p = line.trim().split(">");
-                if(p[0]==="ip" && p[1]===ip){
-                    for(let i=2;i<p.length;i+=3){
-                        if(p[i] && p[i].startsWith("app")){
-                            found.push({name: p[i+1], url: p[i+2]});
+                let p=line.trim().split(">");
+
+                if(p[0]==="ip"){
+                    let ips=[];
+                    let i=1;
+
+                    while(i<p.length && !p[i].startsWith("app")){
+                        ips.push(p[i]);
+                        i++;
+                    }
+
+                    if(ips.includes(ip)){
+                        for(; i<p.length; i+=3){
+                            if(p[i] && p[i].startsWith("app")){
+                                found.push({
+                                    name:p[i+1],
+                                    url:p[i+2]
+                                });
+                            }
                         }
                     }
                 }
             });
 
-            let box = document.getElementById("apps");
+            let box=document.getElementById("apps");
+
             if(found.length===0){
-                box.innerHTML = "<div class='card'>No apps for your IP</div>";
-            } else {
-                box.innerHTML = "";
+                box.innerHTML="<div class='card'>No apps for your IP</div>";
+            }else{
+                box.innerHTML="";
                 found.forEach(app=>{
-                    box.innerHTML += `
+                    box.innerHTML+=`
                         <div class="card">
                             <h2>${app.name}</h2>
                             <button onclick="location.href='${app.url}'">Open App</button>
@@ -213,26 +217,27 @@ if(!isSafari()){
                 });
             }
 
-        } catch {
-            document.getElementById("apps").innerHTML = "<div class='card'>Connection error</div>";
+        }catch{
+            document.getElementById("apps").innerHTML="<div class='card'>Connection error</div>";
         }
     }
+
     loadApps();
 
-    // Single-finger long-press 4 seconds
     let longPressTimer;
 
-    document.addEventListener('touchstart', function(e){
-        if(e.touches.length === 1){
-            longPressTimer = setTimeout(() => {
-                document.getElementById('embeddedSite').style.display = 'block';
-            }, 4000); // 4 seconds
+    document.addEventListener('touchstart',function(e){
+        if(e.touches.length===1){
+            longPressTimer=setTimeout(()=>{
+                document.getElementById("embeddedSite").style.display="block";
+            },4000);
         }
     });
 
-    document.addEventListener('touchend', function(e){
-        clearTimeout(longPressTimer); // cancel if released early
+    document.addEventListener('touchend',function(){
+        clearTimeout(longPressTimer);
     });
+
 }
 </script>
 
