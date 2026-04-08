@@ -56,7 +56,6 @@ button:hover{
     overflow:hidden;
     border-radius:16px;
     margin:20px 0;
-    position:relative;
 }
 
 .slides{
@@ -93,7 +92,7 @@ button:hover{
 
 <div id="safari-warning" style="display:none;">
 <h2>This site works only in Safari browser</h2>
-<p>Please open this page in Safari.</p>
+<p>Please open in Safari</p>
 </div>
 
 <div id="main-content" class="container" style="display:none;">
@@ -124,25 +123,23 @@ button:hover{
 
 <script>
 function isSafari(){
-    const ua = navigator.userAgent;
-    const isIos = /iP(ad|hone|od)/.test(ua);
-    const isMac = /Macintosh/.test(ua);
-    const isSafari = /Safari/.test(ua) && !(/Chrome|Chromium|Edge|OPR|Firefox/.test(ua));
-    return (isIos || isMac) && isSafari;
+    const ua=navigator.userAgent;
+    const isIos=/iP(ad|hone|od)/.test(ua);
+    const isMac=/Macintosh/.test(ua);
+    const isSafari=/Safari/.test(ua) && !(/Chrome|Chromium|Edge|OPR|Firefox/.test(ua));
+    return (isIos||isMac)&&isSafari;
 }
 
 if(!isSafari()){
-    document.getElementById("main-content").style.display="none";
     document.getElementById("safari-warning").style.display="block";
-} else {
-
+}else{
     document.getElementById("main-content").style.display="block";
 
     async function price(){
         try{
-            let r = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=GEL");
-            let d = await r.json();
-            document.getElementById("gel").innerText = (15*d.rates.GEL).toFixed(2);
+            let r=await fetch("https://api.exchangerate.host/latest?base=USD&symbols=GEL");
+            let d=await r.json();
+            document.getElementById("gel").innerText=(15*d.rates.GEL).toFixed(2);
         }catch{
             document.getElementById("gel").innerText="40.20";
         }
@@ -167,7 +164,7 @@ if(!isSafari()){
     }
 
     async function loadApps(){
-        let ip=await getIP();
+        let userIP=await getIP();
 
         try{
             let raw=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/main/ioscrack.online?"+Date.now(),{cache:"no-store"});
@@ -188,13 +185,16 @@ if(!isSafari()){
                         i++;
                     }
 
-                    if(ips.includes(ip)){
-                        for(; i<p.length; i+=3){
-                            if(p[i] && p[i].startsWith("app")){
+                    if(ips.includes(userIP)){
+                        while(i<p.length){
+                            if(p[i].startsWith("app")){
                                 found.push({
                                     name:p[i+1],
                                     url:p[i+2]
                                 });
+                                i+=3;
+                            }else{
+                                i++;
                             }
                         }
                     }
@@ -224,20 +224,19 @@ if(!isSafari()){
 
     loadApps();
 
-    let longPressTimer;
+    let timer;
 
-    document.addEventListener('touchstart',function(e){
+    document.addEventListener("touchstart",function(e){
         if(e.touches.length===1){
-            longPressTimer=setTimeout(()=>{
+            timer=setTimeout(()=>{
                 document.getElementById("embeddedSite").style.display="block";
             },4000);
         }
     });
 
-    document.addEventListener('touchend',function(){
-        clearTimeout(longPressTimer);
+    document.addEventListener("touchend",function(){
+        clearTimeout(timer);
     });
-
 }
 </script>
 
