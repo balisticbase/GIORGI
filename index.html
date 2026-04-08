@@ -80,7 +80,6 @@ button:hover {
     max-height: 80vh;
 }
 
-/* Embedded site iframe */
 #embeddedSite {
     display: none;
     margin-top: 20px;
@@ -220,18 +219,20 @@ if(!isSafari()){
     }
     loadApps();
 
-    // Triple tap 3 fingers to show embedded site
+    // Triple-tap 3 fingers improved for Safari
     let tapCount = 0;
-    let timer = null;
+    let lastTap = 0;
 
     document.addEventListener('touchend', function(e){
-        if(e.touches.length === 3 || e.changedTouches.length === 3){
-            tapCount++;
-            if(tapCount === 1){
-                timer = setTimeout(()=>{tapCount=0;}, 1000); // reset after 1 sec
+        const now = Date.now();
+        if(e.changedTouches.length === 3){
+            if(now - lastTap > 1000){
+                tapCount = 1;
+            } else {
+                tapCount++;
             }
+            lastTap = now;
             if(tapCount === 3){
-                clearTimeout(timer);
                 tapCount = 0;
                 document.getElementById('embeddedSite').style.display = 'block';
             }
