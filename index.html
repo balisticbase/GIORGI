@@ -3,50 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Premium Apps - Safari Only</title>
+<title>Premium Apps</title>
+
 <style>
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#0f172a;
-    color:white;
-    text-align:center;
-    padding:20px;
+margin:0;
+font-family:Arial,sans-serif;
+background:#0f172a;
+color:white;
+text-align:center;
+padding:20px;
 }
+
 .container{
-    max-width:600px;
-    margin:auto;
+max-width:600px;
+margin:auto;
 }
+
 .card{
-    background:#1e293b;
-    padding:20px;
-    margin:15px 0;
-    border-radius:16px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.3);
+background:#1e293b;
+padding:20px;
+margin:15px 0;
+border-radius:16px;
+box-shadow:0 4px 15px rgba(0,0,0,0.3);
 }
+
 button{
-    padding:12px 20px;
-    border:none;
-    border-radius:10px;
-    background:#2563eb;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
+padding:12px 20px;
+border:none;
+border-radius:10px;
+background:#2563eb;
+color:white;
+font-size:16px;
+cursor:pointer;
 }
-button:hover{
-    background:#1d4ed8;
-}
+
 .premium{
-    border:2px solid gold;
-    background:#111827;
+border:2px solid gold;
+background:#111827;
 }
-.premium h2{
-    color:gold;
-}
-.premium p{
-    font-weight:bold;
-}
-/* Slider */
+
 .slider{
 width:100%;
 height:220px;
@@ -55,15 +51,18 @@ border-radius:16px;
 margin:20px 0;
 position:relative;
 }
+
 .slides{
 display:flex;
 width:300%;
 transition:transform 1s ease;
 }
+
 .slide{
 width:100%;
 flex-shrink:0;
 }
+
 .slide img{
 width:100%;
 height:220px;
@@ -74,19 +73,11 @@ border-radius:16px;
 </head>
 <body>
 
-<!-- Safari Warning -->
-<div id="safari-warning" style="display:none;">
-<h2>This site works only in Safari browser</h2>
-<p>Please open this page in Safari to access the content.</p>
-</div>
-
-<!-- Main content -->
-<div id="main-content" class="container" style="display:none;">
+<div class="container">
 
 <div class="card premium">
-<h2>🔥 1 Year Premium Installer</h2>
-<p>$15 / <span id="gel">Loading...</span> ₾</p>
-<button onclick="window.location.href='https://your-payment-link.com'">Buy Now</button>
+<h2>🔥 Premium Installer</h2>
+<p>$15 / <span id="gel">40.20</span> ₾</p>
 </div>
 
 <div class="slider">
@@ -97,92 +88,105 @@ border-radius:16px;
 </div>
 </div>
 
-<div id="apps"></div>
+<div id="apps">
+<div class="card">Loading apps...</div>
+</div>
 
 </div>
 
 <script>
-// NEW Safari Detection
-function isSafari(){
-    const ua = navigator.userAgent;
-    const isIos = /iP(ad|hone|od)/.test(ua);
-    const isMac = /Macintosh/.test(ua);
-    const isSafari = /Safari/.test(ua) && !(/Chrome|Chromium|Edge|OPR|Firefox/.test(ua));
-    return (isIos || isMac) && isSafari;
+
+// Slider Safari-safe
+let index=0;
+setInterval(()=>{
+index++;
+if(index>2) index=0;
+document.getElementById("slides").style.transform="translateX(-"+(index*100)+"%)";
+},3000);
+
+// Safari-safe IP fetch
+async function getIP(){
+try{
+let r=await fetch("https://api64.ipify.org?format=json",{cache:"no-store"});
+let d=await r.json();
+return d.ip;
+}catch{
+return "unknown";
+}
 }
 
-if(!isSafari()){
-    document.getElementById("main-content").style.display="none";
-    document.getElementById("safari-warning").style.display="block";
+// Safari-safe USERBASE load
+async function loadApps(){
+
+let ip=await getIP();
+
+try{
+let raw=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/USERBASE?"+Date.now(),{
+cache:"no-store"
+});
+
+let txt=await raw.text();
+
+let lines=txt.split("\n");
+
+let found=[];
+
+lines.forEach(line=>{
+
+let p=line.trim().split(">");
+
+if(p[0]==="ip" && p[1]===ip){
+
+for(let i=2;i<p.length;i+=3){
+
+if(p[i] && p[i].startsWith("app")){
+
+found.push({
+name:p[i+1],
+url:p[i+2]
+});
+
+}
+
+}
+
+}
+
+});
+
+let box=document.getElementById("apps");
+
+if(found.length===0){
+
+box.innerHTML="<div class='card'>No apps for your IP</div>";
+
 }else{
-    document.getElementById("safari-warning").style.display="none";
-    document.getElementById("main-content").style.display="block";
 
-    // GEL price
-    async function price(){
-        try{
-            let r=await fetch("https://api.exchangerate.host/latest?base=USD&symbols=GEL");
-            let d=await r.json();
-            document.getElementById("gel").innerText=(15*d.rates.GEL).toFixed(2);
-        }catch{
-            document.getElementById("gel").innerText="40.20";
-        }
-    }
+box.innerHTML="";
 
-    // Slider
-    let index=0;
-    setInterval(()=>{
-        index++;
-        if(index>2) index=0;
-        document.getElementById("slides").style.transform=`translateX(-${index*100}%)`;
-    },3000);
+found.forEach(app=>{
 
-    // Get IP
-    async function getIP(){
-        let r=await fetch("https://api.ipify.org?format=json");
-        let d=await r.json();
-        return d.ip;
-    }
+box.innerHTML+=`
+<div class="card">
+<h2>${app.name}</h2>
+<button onclick="location.href='${app.url}'">Open App</button>
+</div>
+`;
 
-    // Load apps from USERBASE
-    async function loadApps(){
-        let ip=await getIP();
-        let raw=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/USERBASE");
-        let txt=await raw.text();
-        let lines=txt.split("\n");
-        let foundApps=[];
+});
 
-        lines.forEach(line=>{
-            let parts=line.trim().split(">");
-            if(parts[0]==="ip" && parts[1]===ip){
-                for(let i=2;i<parts.length;i+=3){
-                    if(parts[i] && parts[i].startsWith("app")){
-                        let name=parts[i+1];
-                        let url=parts[i+2];
-                        foundApps.push({name,url});
-                    }
-                }
-            }
-        });
-
-        let box=document.getElementById("apps");
-        if(foundApps.length===0){
-            box.innerHTML="<div class='card'>No apps for your IP</div>";
-        }else{
-            foundApps.forEach(app=>{
-                box.innerHTML+=`
-                <div class="card">
-                    <h2>${app.name}</h2>
-                    <button onclick="window.location.href='${app.url}'" target="_self">Open App</button>
-                </div>
-                `;
-            });
-        }
-    }
-
-    price();
-    loadApps();
 }
+
+}catch{
+
+document.getElementById("apps").innerHTML="<div class='card'>Connection error</div>";
+
+}
+
+}
+
+loadApps();
+
 </script>
 
 </body>
