@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IP Locked App Store - Safari Only</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Premium Apps - Safari Only</title>
 <style>
 body{
     margin:0;
@@ -46,7 +46,6 @@ button:hover{
 .premium p{
     font-weight:bold;
 }
-
 /* Slider */
 .slider{
 width:100%;
@@ -75,6 +74,13 @@ border-radius:16px;
 </head>
 <body>
 
+<!-- Safari Warning -->
+<div id="safari-warning" style="display:none;">
+<h2>This site works only in Safari browser</h2>
+<p>Please open this page in Safari to access the content.</p>
+</div>
+
+<!-- Main content -->
 <div id="main-content" class="container" style="display:none;">
 
 <div class="card premium">
@@ -95,21 +101,21 @@ border-radius:16px;
 
 </div>
 
-<div id="safari-warning" style="display:none;">
-<h2>This site works only in Safari browser</h2>
-<p>Please open this page in Safari to access the content.</p>
-</div>
-
 <script>
-// Check Safari
+// NEW Safari Detection
 function isSafari(){
-    let ua=navigator.userAgent;
-    return /Safari/.test(ua) && !/Chrome|Chromium|Android/.test(ua);
+    const ua = navigator.userAgent;
+    const isIos = /iP(ad|hone|od)/.test(ua);
+    const isMac = /Macintosh/.test(ua);
+    const isSafari = /Safari/.test(ua) && !(/Chrome|Chromium|Edge|OPR|Firefox/.test(ua));
+    return (isIos || isMac) && isSafari;
 }
 
 if(!isSafari()){
+    document.getElementById("main-content").style.display="none";
     document.getElementById("safari-warning").style.display="block";
 }else{
+    document.getElementById("safari-warning").style.display="none";
     document.getElementById("main-content").style.display="block";
 
     // GEL price
@@ -138,15 +144,15 @@ if(!isSafari()){
         return d.ip;
     }
 
-    // Load apps
+    // Load apps from USERBASE
     async function loadApps(){
         let ip=await getIP();
         let raw=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/USERBASE");
         let txt=await raw.text();
-        let users=txt.split("\n");
+        let lines=txt.split("\n");
         let foundApps=[];
 
-        users.forEach(line=>{
+        lines.forEach(line=>{
             let parts=line.trim().split(">");
             if(parts[0]==="ip" && parts[1]===ip){
                 for(let i=2;i<parts.length;i+=3){
