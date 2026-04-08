@@ -43,7 +43,7 @@
 
 ||*asvla*jpg*
 ||*asvla2*jpg*
-||*geosaitebi.online/upload/*banner*png*
+
 
 
 
@@ -69,6 +69,7 @@ geosaitebi-tv
 
 
 
+||*geosaitebi.online/upload/*banner*png*
 ||*geosaitebi.online/upload/*banner*
 geosaitebi.tv##div.wrapper:nth-child(7) > div.ad-catfish.ad-catfish__desktop:nth-child(15)
 geosaitebi.tv##div.wrapper:nth-child(7) > div.ad-catfish.ad-catfish__desktop:nth-child(13)
