@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>App Store IP Premium</title>
+<title>IP Locked App Store with Slider</title>
 <style>
 body{
     margin:0;
@@ -50,12 +50,38 @@ button:hover{
 .premium p{
     font-weight:bold;
 }
+
+/* Slider */
+.slider{
+    position: relative;
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    border-radius:16px;
+    margin:20px 0;
+}
+.slides{
+    display:flex;
+    width:300%;
+    height:100%;
+    transition: transform 1s ease;
+}
+.slide{
+    width:100%;
+    flex-shrink:0;
+}
+.slide img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:16px;
+}
 </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Premium & My Apps</h1>
+    <h1>Premium & Your Apps</h1>
 
     <!-- Premium Product -->
     <div class="card premium">
@@ -64,44 +90,63 @@ button:hover{
         <button onclick="window.location.href='https://your-payment-link.com'">Buy Now</button>
     </div>
 
+    <!-- Image Slider -->
+    <div class="slider">
+        <div class="slides" id="slides">
+            <div class="slide"><img src="https://placekitten.com/500/250" alt="Slide 1"></div>
+            <div class="slide"><img src="https://placekitten.com/501/250" alt="Slide 2"></div>
+            <div class="slide"><img src="https://placekitten.com/502/250" alt="Slide 3"></div>
+        </div>
+    </div>
+
     <!-- Apps -->
     <div id="apps"></div>
 </div>
 
 <script>
-// Step 1: Fetch USD to GEL exchange rate
+// Slider
+let index=0;
+const slides=document.getElementById("slides");
+const total=slides.children.length;
+setInterval(()=>{
+    index++;
+    if(index>=total) index=0;
+    slides.style.transform=`translateX(-${index*100}%)`;
+},3000);
+
+// USD to GEL
 async function getUSDToGEL(){
     try{
-        const res = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=GEL");
-        const data = await res.json();
+        const res=await fetch("https://api.exchangerate.host/latest?base=USD&symbols=GEL");
+        const data=await res.json();
         return data.rates.GEL;
     }catch(e){
-        return 2.68; // fallback
+        return 2.68;
     }
 }
 
-// Step 2: Get user IP
+// User IP
 async function getUserIP(){
-    const res = await fetch("https://api.ipify.org?format=json");
-    const data = await res.json();
+    const res=await fetch("https://api.ipify.org?format=json");
+    const data=await res.json();
     return data.ip;
 }
 
-// Step 3: Load apps based on IP
+// Load IP-based Apps
 async function loadApps(){
-    const userIP = await getUserIP();
-    const raw = await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/main/USERBASE").then(r=>r.text());
-    const entries = raw.split(">");
+    const userIP=await getUserIP();
+    const raw=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/USERBASE")
+                  .then(r=>r.text());
+    const entries=raw.split(">");
 
-    let apps = [];
-
+    let apps=[];
     for(let i=0;i<entries.length;i++){
-        if(entries[i] === "ip" && entries[i+1] === userIP){
-            let j = i+2;
-            while(j<entries.length && entries[j] !== "ip"){
+        if(entries[i]==="ip" && entries[i+1]===userIP){
+            let j=i+2;
+            while(j<entries.length && entries[j]!=="ip"){
                 if(entries[j].startsWith("app")){
-                    let name = entries[j+1];
-                    let url = entries[j+2];
+                    let name=entries[j+1];
+                    let url=entries[j+2];
                     apps.push({name,url});
                 }
                 j+=3;
@@ -110,12 +155,12 @@ async function loadApps(){
         }
     }
 
-    const container = document.getElementById("apps");
+    const container=document.getElementById("apps");
     if(apps.length===0){
-        container.innerHTML = "<p>No apps available for your IP.</p>";
+        container.innerHTML="<p>No apps available for your IP.</p>";
     }else{
         apps.forEach(app=>{
-            container.innerHTML += `
+            container.innerHTML+=`
                 <div class="card">
                     <h2>${app.name}</h2>
                     <button onclick="window.location.href='${app.url}'">Open</button>
@@ -125,14 +170,13 @@ async function loadApps(){
     }
 }
 
-// Step 4: Set GEL price dynamically
+// Set GEL price
 async function setPrice(){
-    const rate = await getUSDToGEL();
-    const priceGEL = (15*rate).toFixed(2);
-    document.getElementById("gel-price").innerText = priceGEL;
+    const rate=await getUSDToGEL();
+    const priceGEL=(15*rate).toFixed(2);
+    document.getElementById("gel-price").innerText=priceGEL;
 }
 
-// Run
 setPrice();
 loadApps();
 </script>
