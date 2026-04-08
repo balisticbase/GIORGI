@@ -3,103 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premium Apps - Safari Only</title>
+<title>Premium Apps</title>
 
 <style>
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#0f172a;
-    color:white;
-    text-align:center;
-    padding:20px;
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+background:#0f172a;
+color:white;
+text-align:center;
+padding:20px;
+-webkit-user-select:none;
+user-select:none;
 }
 
 .container{
-    max-width:600px;
-    margin:auto;
+max-width:600px;
+margin:auto;
 }
 
 .card{
-    background:#1e293b;
-    padding:20px;
-    margin:15px 0;
-    border-radius:16px;
-    box-shadow:0 4px 15px rgba(0,0,0,.3);
+background:#1e293b;
+padding:20px;
+margin:15px 0;
+border-radius:16px;
+box-shadow:0 4px 15px rgba(0,0,0,.3);
 }
 
 button{
-    padding:12px 20px;
-    border:none;
-    border-radius:10px;
-    background:#2563eb;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-}
-
-button:hover{
-    background:#1d4ed8;
+padding:12px 20px;
+border:none;
+border-radius:10px;
+background:#2563eb;
+color:white;
+font-size:16px;
+cursor:pointer;
+-webkit-appearance:none;
 }
 
 .premium{
-    border:2px solid gold;
-    background:#111827;
+border:2px solid gold;
+background:#111827;
 }
 
 .premium h2{
-    color:gold;
+color:gold;
 }
 
 .slider{
-    width:100%;
-    overflow:hidden;
-    border-radius:16px;
-    margin:20px 0;
+width:100%;
+overflow:hidden;
+border-radius:16px;
+margin:20px 0;
 }
 
 .slides{
-    display:flex;
-    transition:transform 1s ease;
+display:flex;
+transition:transform 1s ease;
 }
 
 .slide{
-    flex-shrink:0;
-    width:100%;
+min-width:100%;
 }
 
 .slide img{
-    width:100%;
-    border-radius:16px;
-    max-height:80vh;
-    object-fit:contain;
+width:100%;
+border-radius:16px;
+display:block;
 }
 
 #embeddedSite{
-    display:none;
-    margin-top:20px;
+display:none;
+margin-top:20px;
 }
 
 #embeddedSite iframe{
-    width:100%;
-    height:500px;
-    border:none;
-    border-radius:16px;
+width:100%;
+height:500px;
+border:none;
+border-radius:16px;
 }
 </style>
 </head>
 <body>
 
 <div id="safari-warning" style="display:none;">
-<h2>This site works only in Safari browser</h2>
-<p>Please open in Safari</p>
+<h2>Safari only</h2>
+<p>Please open in Safari browser</p>
 </div>
 
 <div id="main-content" class="container" style="display:none;">
 
 <div class="card premium">
 <h2>🔥 1 Year iOS HACK Installer</h2>
-<p>$15 / <span id="gel">Loading...</span> ₾</p>
+<p>$15 / <span id="gel">40.20</span> ₾</p>
 <button onclick="window.location.href='https://t.me/ioscrackonline'">Buy Now</button>
 </div>
 
@@ -123,121 +120,127 @@ button:hover{
 
 <script>
 function isSafari(){
-    const ua=navigator.userAgent;
-    const isIos=/iP(ad|hone|od)/.test(ua);
-    const isMac=/Macintosh/.test(ua);
-    const isSafari=/Safari/.test(ua) && !(/Chrome|Chromium|Edge|OPR|Firefox/.test(ua));
-    return (isIos||isMac)&&isSafari;
+const ua=navigator.userAgent;
+return /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
 }
 
 if(!isSafari()){
-    document.getElementById("safari-warning").style.display="block";
+document.getElementById("safari-warning").style.display="block";
 }else{
-    document.getElementById("main-content").style.display="block";
-
-    async function price(){
-        try{
-            let r=await fetch("https://api.exchangerate.host/latest?base=USD&symbols=GEL");
-            let d=await r.json();
-            document.getElementById("gel").innerText=(15*d.rates.GEL).toFixed(2);
-        }catch{
-            document.getElementById("gel").innerText="40.20";
-        }
-    }
-    price();
-
-    let index=0;
-    setInterval(()=>{
-        index++;
-        if(index>2) index=0;
-        document.getElementById("slides").style.transform=`translateX(-${index*100}%)`;
-    },3000);
-
-    async function getIP(){
-        try{
-            let r=await fetch("https://api64.ipify.org?format=json",{cache:"no-store"});
-            let d=await r.json();
-            return d.ip;
-        }catch{
-            return "unknown";
-        }
-    }
-
-    async function loadApps(){
-        let userIP=await getIP();
-
-        try{
-            let raw=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/main/ioscrack.online?"+Date.now(),{cache:"no-store"});
-            let txt=await raw.text();
-
-            let lines=txt.split("\n");
-            let found=[];
-
-            lines.forEach(line=>{
-                let p=line.trim().split(">");
-
-                if(p[0]==="ip"){
-                    let ips=[];
-                    let i=1;
-
-                    while(i<p.length && !p[i].startsWith("app")){
-                        ips.push(p[i]);
-                        i++;
-                    }
-
-                    if(ips.includes(userIP)){
-                        while(i<p.length){
-                            if(p[i].startsWith("app")){
-                                found.push({
-                                    name:p[i+1],
-                                    url:p[i+2]
-                                });
-                                i+=3;
-                            }else{
-                                i++;
-                            }
-                        }
-                    }
-                }
-            });
-
-            let box=document.getElementById("apps");
-
-            if(found.length===0){
-                box.innerHTML="<div class='card'>No apps for your IP</div>";
-            }else{
-                box.innerHTML="";
-                found.forEach(app=>{
-                    box.innerHTML+=`
-                        <div class="card">
-                            <h2>${app.name}</h2>
-                            <button onclick="location.href='${app.url}'">Open App</button>
-                        </div>
-                    `;
-                });
-            }
-
-        }catch{
-            document.getElementById("apps").innerHTML="<div class='card'>Connection error</div>";
-        }
-    }
-
-    loadApps();
-
-    let timer;
-
-    document.addEventListener("touchstart",function(e){
-        if(e.touches.length===1){
-            timer=setTimeout(()=>{
-                document.getElementById("embeddedSite").style.display="block";
-            },4000);
-        }
-    });
-
-    document.addEventListener("touchend",function(){
-        clearTimeout(timer);
-    });
+document.getElementById("main-content").style.display="block";
 }
+
+async function getPrice(){
+try{
+const r=await fetch("https://api.exchangerate.host/latest?base=USD&symbols=GEL",{cache:"no-store"});
+const d=await r.json();
+if(d.rates && d.rates.GEL){
+document.getElementById("gel").innerText=(15*d.rates.GEL).toFixed(2);
+}
+}catch(e){}
+}
+getPrice();
+
+let slideIndex=0;
+setInterval(()=>{
+slideIndex++;
+if(slideIndex>2) slideIndex=0;
+document.getElementById("slides").style.transform=`translateX(-${slideIndex*100}%)`;
+},3000);
+
+async function getIP(){
+try{
+const r=await fetch("https://api64.ipify.org?format=json",{cache:"no-store"});
+const d=await r.json();
+return d.ip;
+}catch(e){
+return "unknown";
+}
+}
+
+async function loadApps(){
+const userIP=await getIP();
+
+try{
+const r=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/main/ioscrack.online?"+Date.now(),{
+cache:"no-store"
+});
+
+const txt=await r.text();
+const lines=txt.split("\n");
+
+let found=[];
+
+for(let line of lines){
+
+let p=line.trim().split(">");
+
+if(p[0]!=="ip") continue;
+
+let ips=[];
+let i=1;
+
+while(i<p.length && !p[i].startsWith("app")){
+ips.push(p[i]);
+i++;
+}
+
+if(ips.includes(userIP)){
+
+while(i<p.length){
+
+if(p[i].startsWith("app")){
+found.push({
+name:p[i+1],
+url:p[i+2]
+});
+i+=3;
+}else{
+i++;
+}
+
+}
+
+}
+
+}
+
+let box=document.getElementById("apps");
+
+if(found.length===0){
+box.innerHTML="<div class='card'>No apps for your IP</div>";
+}else{
+box.innerHTML="";
+found.forEach(app=>{
+box.innerHTML+=`
+<div class="card">
+<h2>${app.name}</h2>
+<button onclick="location.href='${app.url}'">Open App</button>
+</div>
+`;
+});
+}
+
+}catch(e){
+document.getElementById("apps").innerHTML="<div class='card'>Connection error</div>";
+}
+}
+
+loadApps();
+
+let holdTimer;
+
+document.addEventListener("touchstart",function(e){
+if(e.touches.length===1){
+holdTimer=setTimeout(()=>{
+document.getElementById("embeddedSite").style.display="block";
+},4000);
+}
+},{passive:true});
+
+document.addEventListener("touchend",function(){
+clearTimeout(holdTimer);
+},{passive:true});
 </script>
 
 </body>
