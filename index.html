@@ -2,180 +2,182 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IP Locked App Store</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Premium Apps</title>
+
 <style>
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#0f172a;
-    color:white;
-    text-align:center;
-    padding:20px;
-}
-.container{
-    max-width:600px;
-    margin:auto;
-}
-h1{
-    margin-bottom:20px;
-}
-.card{
-    background:#1e293b;
-    margin:15px 0;
-    padding:15px;
-    border-radius:12px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.3);
-}
-button{
-    margin-top:10px;
-    padding:10px 18px;
-    border:none;
-    border-radius:8px;
-    background:#2563eb;
-    color:white;
-    font-size:15px;
-    cursor:pointer;
-}
-button:hover{
-    background:#1d4ed8;
-}
-.premium{
-    border:2px solid gold;
-    background:#111827;
-}
-.premium h2{
-    color:gold;
-}
-.premium p{
-    font-weight:bold;
+margin:0;
+font-family:Arial,sans-serif;
+background:#0f172a;
+color:white;
+padding:20px;
+text-align:center;
 }
 
-/* Slider */
+.container{
+max-width:600px;
+margin:auto;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+margin:15px 0;
+border-radius:16px;
+box-shadow:0 4px 15px rgba(0,0,0,0.3);
+}
+
+button{
+padding:12px 20px;
+border:none;
+border-radius:10px;
+background:#2563eb;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+background:#1d4ed8;
+}
+
+.premium{
+border:2px solid gold;
+background:#111827;
+}
+
 .slider{
-    position: relative;
-    width: 100%;
-    height: 250px;
-    overflow: hidden;
-    border-radius:16px;
-    margin:20px 0;
+width:100%;
+height:220px;
+overflow:hidden;
+border-radius:16px;
+margin:20px 0;
+position:relative;
 }
+
 .slides{
-    display:flex;
-    width:300%;
-    height:100%;
-    transition: transform 1s ease;
+display:flex;
+width:300%;
+transition:transform 1s ease;
 }
+
 .slide{
-    width:100%;
-    flex-shrink:0;
+width:100%;
+flex-shrink:0;
 }
+
 .slide img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    border-radius:16px;
+width:100%;
+height:220px;
+object-fit:cover;
+border-radius:16px;
 }
 </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Premium & Your Apps</h1>
 
-    <!-- Premium Installer -->
-    <div class="card premium">
-        <h2>🔥 1 Year Premium Installer</h2>
-        <p>Official Price: $15 / <span id="gel-price">Loading...</span>₾</p>
-        <button onclick="window.location.href='https://your-payment-link.com'">Buy Now</button>
-    </div>
+<div class="card premium">
+<h2>🔥 1 Year Premium Installer</h2>
+<p>$15 / <span id="gel">Loading...</span> ₾</p>
+<button onclick="window.location.href='https://your-payment-link.com'">Buy Now</button>
+</div>
 
-    <!-- Image Slider -->
-    <div class="slider">
-        <div class="slides" id="slides">
-            <div class="slide"><img src="https://placekitten.com/600/250" alt="Slide 1"></div>
-            <div class="slide"><img src="https://placekitten.com/601/250" alt="Slide 2"></div>
-            <div class="slide"><img src="https://placekitten.com/602/250" alt="Slide 3"></div>
-        </div>
-    </div>
+<div class="slider">
+<div class="slides" id="slides">
+<div class="slide"><img src="https://placekitten.com/600/220"></div>
+<div class="slide"><img src="https://placekitten.com/601/220"></div>
+<div class="slide"><img src="https://placekitten.com/602/220"></div>
+</div>
+</div>
 
-    <!-- Apps -->
-    <div id="apps"></div>
+<div id="apps"></div>
+
 </div>
 
 <script>
-// Slider
+
+// GEL PRICE
+async function price(){
+try{
+let r=await fetch("https://api.exchangerate.host/latest?base=USD&symbols=GEL");
+let d=await r.json();
+document.getElementById("gel").innerText=(15*d.rates.GEL).toFixed(2);
+}catch{
+document.getElementById("gel").innerText="40.20";
+}
+}
+
+// SLIDER
 let index=0;
-const slides=document.getElementById("slides");
-const total=slides.children.length;
 setInterval(()=>{
-    index++;
-    if(index>=total) index=0;
-    slides.style.transform=`translateX(-${index*100}%)`;
+index++;
+if(index>2) index=0;
+document.getElementById("slides").style.transform=`translateX(-${index*100}%)`;
 },3000);
 
-// Set GEL price
-async function setPrice(){
-    try{
-        const rateRes = await fetch("https://api.exchangerate.host/latest?base=USD&symbols=GEL");
-        const rateData = await rateRes.json();
-        const priceGEL = (15*rateData.rates.GEL).toFixed(2);
-        document.getElementById("gel-price").innerText = priceGEL;
-    }catch(e){
-        document.getElementById("gel-price").innerText = "40.20"; // fallback
-    }
+// GET IP
+async function getIP(){
+let r=await fetch("https://api.ipify.org?format=json");
+let d=await r.json();
+return d.ip;
 }
 
-// Get user IP
-async function getUserIP(){
-    const res = await fetch("https://api.ipify.org?format=json");
-    const data = await res.json();
-    return data.ip;
-}
-
-// Load apps for this IP
+// LOAD USERBASE
 async function loadApps(){
-    const userIP = await getUserIP();
+let ip=await getIP();
 
-    const raw = await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/USERBASE")
-                  .then(r=>r.text());
+let raw=await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/USERBASE");
+let txt=await raw.text();
 
-    const entries = raw.split(">");
+let users=txt.split("\n");
 
-    let apps = [];
-    for(let i=0; i<entries.length; i++){
-        if(entries[i]==="ip" && entries[i+1]===userIP){
-            let j=i+2;
-            while(j<entries.length && entries[j]!=="ip"){
-                if(entries[j].startsWith("app")){
-                    let name = entries[j+1];
-                    let url = entries[j+2];
-                    apps.push({name, url});
-                }
-                j+=3;
-            }
-            break;
-        }
-    }
+let foundApps=[];
 
-    const container = document.getElementById("apps");
-    if(apps.length===0){
-        container.innerHTML="<p>No apps available for your IP.</p>";
-    }else{
-        apps.forEach(app=>{
-            container.innerHTML+=`
-                <div class="card">
-                    <h2>${app.name}</h2>
-                    <button onclick="window.location.href='${app.url}'" target="_self">Open App</button>
-                </div>
-            `;
-        });
-    }
+users.forEach(line=>{
+let parts=line.trim().split(">");
+
+if(parts[0]==="ip" && parts[1]===ip){
+
+for(let i=2;i<parts.length;i+=3){
+
+if(parts[i] && parts[i].startsWith("app")){
+let name=parts[i+1];
+let url=parts[i+2];
+
+foundApps.push({name,url});
 }
 
-// Initialize
-setPrice();
+}
+
+}
+
+});
+
+let box=document.getElementById("apps");
+
+if(foundApps.length===0){
+box.innerHTML="<div class='card'>No apps for your IP</div>";
+}else{
+
+foundApps.forEach(app=>{
+box.innerHTML+=`
+<div class="card">
+<h2>${app.name}</h2>
+<button onclick="window.location.href='${app.url}'">Open App</button>
+</div>
+`;
+});
+
+}
+
+}
+
+price();
 loadApps();
+
 </script>
 
 </body>
