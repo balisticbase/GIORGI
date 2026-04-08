@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>App Store IP Based</title>
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#0f172a;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+.container{
+    max-width:500px;
+    margin:auto;
+}
+h1{
+    margin-bottom:20px;
+}
+.card{
+    background:#1e293b;
+    margin:15px 0;
+    padding:20px;
+    border-radius:16px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.3);
+}
+button{
+    margin-top:10px;
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+button:hover{
+    background:#1d4ed8;
+}
+.premium{
+    border:2px solid gold;
+    background:#111827;
+}
+.premium h2{
+    color:gold;
+}
+.premium p{
+    font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>My Apps & Premium</h1>
+    <div id="apps"></div>
+
+    <div class="card premium">
+        <h2>🔥 1 Year Premium Installer</h2>
+        <p>Official Price: $15 / 40.19₾</p>
+        <p>Access for 12 months</p>
+        <button onclick="window.location.href='https://your-payment-link.com'">Buy Now</button>
+    </div>
+</div>
+
+<script>
+// Step 1: Get user IP
+async function getUserIP(){
+    const res = await fetch("https://api.ipify.org?format=json");
+    const data = await res.json();
+    return data.ip;
+}
+
+// Step 2: Fetch USERBASE
+async function loadApps(){
+    const userIP = await getUserIP();
+    const raw = await fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/main/USERBASE").then(r=>r.text());
+
+    // Split by ">"
+    const entries = raw.split(">");
+    let apps = [];
+
+    // Find matching IP block
+    for(let i=0;i<entries.length;i++){
+        if(entries[i] === "ip" && entries[i+1] === userIP){
+            // From i+2 onwards are apps until next "ip" or end
+            let j = i+2;
+            while(j<entries.length && entries[j] !== "ip"){
+                if(entries[j].startsWith("app")){
+                    let name = entries[j+1];
+                    let url = entries[j+2];
+                    apps.push({name,url});
+                }
+                j+=3;
+            }
+            break; // Only take first match
+        }
+    }
+
+    // Render apps
+    const container = document.getElementById("apps");
+    if(apps.length===0){
+        container.innerHTML = "<p>No apps available for your IP.</p>";
+    }else{
+        apps.forEach(app=>{
+            container.innerHTML += `
+                <div class="card">
+                    <h2>${app.name}</h2>
+                    <button onclick="window.location.href='${app.url}'">Open</button>
+                </div>
+            `;
+        });
+    }
+}
+
+loadApps();
+</script>
+
+</body>
+</html>
