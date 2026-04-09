@@ -68,6 +68,9 @@ website-PICTURE-all-web
 mykadri-tv
 
 
+mykadri.tv##main:nth-child(4) > section.section.section--dle-content.my-4:last-child > div.container
+mykadri.tv##main:nth-child(4) > section.section.section--dle-content.my-4:last-child > div.container > div.avc-asvla:first-child > center > a
+mykadri.tv##main:nth-child(4) > section.section.section--dle-content.my-4:last-child > div.container > div.avc-asvla:first-child > center
 mykadri.tv###jf-container-p2pserial > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
 mykadri.tv##main:nth-child(7) > section.section.section--dle-content.my-4:last-child > div.container > div.avc-asvla:first-child > center > a
 mykadri.tv##main:nth-child(7) > section.section.section--dle-content.my-4:last-child > div.container > div.avc-asvla:first-child > center > a > img
