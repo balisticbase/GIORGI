@@ -160,6 +160,8 @@ adjaranet.in##main:nth-child(4) > div.wrapper > div.mt-8.space-y-8 > center:nth-
 geofilms-net
 
 
+geofilms.net##div.baneri-cati-1:nth-child(10)
+geofilms.net###bannerPlace1 > a > img
 geofilms.net##div.baner-adis-1.center-1:nth-child(11) > div.baner-01.baner-1
 geofilms.net###topBanner > div.avc-asvla:last-child
 geofilms.net###jwp-container-own-server > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
