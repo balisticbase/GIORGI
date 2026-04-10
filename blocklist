@@ -1,7 +1,8 @@
+____________________________
+
 ads-direct-ads-virus-links
 
-
-
+____________________________
 
 all-website-picture-ads
 
@@ -10,16 +11,31 @@ all-website-picture-ads
 ||*asvla*png*
 ||*asvla2*png*
 
+____________________________
+
 DIRECT-ads-asvla
 
 ||*asvla.com*$all
 
-
+----------------------------
 ads-adsplay-video
-
 
 mykadri-tv
 
 
 ||*hdd.mykadri.com*
 
+____________________________
+
+mykadri-tv-script
+
+
+
+mykadri.tv###catfish
+mykadri.tv##main:nth-child(4) > div.container:last-child > section.rentplace.text-center.mt-3:first-child
+mykadri.tv##main:nth-child(4) > div.container:last-child > div.avc-asvla:nth-child(3)
+mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(3)
+mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(5)
+
+
+____________________________
