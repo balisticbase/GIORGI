@@ -68,15 +68,19 @@ ge-movie
 ||*port80ge.adocean.pl*
 
 
+
 mykadri-tv
 
 ||*hdd.mykadri.com*
 ||*r.botsford.link*
 ||vidsrc-embed.ru^$redirect
 
+
+
 myvideo-ge
 
 ||*va.myvideo.ge*
+
 
 
 televiziebi-tv
@@ -85,14 +89,25 @@ televiziebi-tv
 ||*televiziebi.tv*mp4*
 
 
+
 croconet-cam
 
 
 ||*storage.croco.cam*mp4*
 
+
+
 adjaranet-in
 
+
 ||*adjaranet.in*mp4*
+
+
+
+antenasport-org
+
+
+||*antenasport.org^$redirect
 
 ____________________________
 
