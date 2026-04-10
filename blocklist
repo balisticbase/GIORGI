@@ -25,10 +25,16 @@ DIRECT-ads-asvla
 ----------------------------
 ads-adsplay-video
 
+ge-movie
+
+||*port80ge.adocean.pl*$all
+
+
 mykadri-tv
 
 ||*hdd.mykadri.com*
 ||*r.botsford.link*
+
 
 myvideo-ge
 
@@ -66,3 +72,8 @@ televiziebi.tv##div.center-01.center-1:nth-child(11) > div.di-home-1 > div.di-ho
 
 
 ____________________________
+
+
+
+
+
