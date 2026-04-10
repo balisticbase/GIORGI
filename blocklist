@@ -54,6 +54,14 @@ croconet-cam
 
 ____________________________
 
+croconet-cam
+
+croconet.cam##main:nth-child(5) > div.my_container:nth-child(7)
+croconet.cam##main:nth-child(5) > div.my_container:nth-child(10)
+
+
+____________________________
+
 mykadri-tv
 
 
