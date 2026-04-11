@@ -57,9 +57,11 @@ direct-link-click-virus
 *$inline-script
 *$subdocument
 *$frame
+
 ##+js(set-constant, window.open, noopFunc)
 ##+js(set-constant, window.location, "")
-
+##+js(set-constant, window.location, "")
+##+js(set-constant, document.location, "")
 
 
 all-website-picture-ads
