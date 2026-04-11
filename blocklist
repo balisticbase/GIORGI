@@ -98,7 +98,7 @@ adjaranet-in
 ||*adjaranet.in*mp4*
 
 
-webiste-script-ads
+webiste-script-ads-plus 
 
 
 adjaranet-in
@@ -113,7 +113,25 @@ adjaranet.in##main.mt-\[60px\].lg\:mt-\[72px\]:nth-child(5) > div > center:nth-c
 
 
 
+
+geosaitebi-tv
+
+
+geosaitebi.tv##div.wrapper:last-child > div.center-1.no-home.fulshi-1.apirebsyureba-1:first-child > div.no-home-2:first-child > div.no-home-3 > div.b-size-120.zoma-2:nth-child(2)
+geosaitebi.tv###jwp-hls-movie > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
+geosaitebi.tv##div.wrapper:last-child > div.center-1.no-home.fulshi-1.apirebsyureba-1:first-child > div.no-home-2:first-child > div.no-home-3 > div.zoma-2:last-child > div.shida-kino-1:first-child > div.k-kazino-2:first-child > div.ban-bbc-1:last-child > center:first-child
+geosaitebi.tv##div.wrapper:last-child > div.center-1.no-home.fulshi-1.apirebsyureba-1:first-child > div.ad-catfish.ad-catfish__desktop:nth-child(13)
+geosaitebi.tv##div.wrapper:nth-child(15) > div.ad-catfish.ad-catfish__desktop:nth-child(11)
+geosaitebi.tv##div.wrapper:nth-child(15) > div.fulshi-1:nth-child(2) > div.bb-size-120.zoma-2:nth-child(2) > div.ifram-b-3.ifram-b-1.baner-1-NO
+geosaitebi.tv##div.wrapper:nth-child(15) > div.fulshi-1:nth-child(2) > div.bb-size-120.zoma-2:nth-child(5) > div.ifram-b-3.ifram-b-1.baner-1-NO
+geosaitebi.tv##div.wrapper:nth-child(7) > div.center-1.no-home.apirebsyureba-1:first-child > div.no-home-2 > div.no-home-3 > div.b-size-120.zoma-2:nth-child(2)
+geosaitebi.tv##div.wrapper:nth-child(7) > div.ad-catfish.ad-catfish__desktop:nth-child(15)
+
+
+
+
 croconet-cam
+
 
 croconet.cam##main:nth-child(5) > div.my_container:nth-child(7)
 croconet.cam##main:nth-child(5) > div.my_container:nth-child(10)
