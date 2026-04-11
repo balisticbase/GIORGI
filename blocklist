@@ -34,10 +34,9 @@ ads-direct-ads-virus-links
 ||*advertiser*$all
 ||*click/cx/*$all
 ||*dovr=true*$all
-||*10673573*$all
 ||*redirection_cost=&clickid*$all
 ||*dsp/cu/clc?aid*$all
-
+||*syncedCookie=false&rhd=false*$all
 
 
 
