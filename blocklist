@@ -43,27 +43,16 @@ all-website-picture-ads
 
 
 
+ads-adsplay-video
+
+
 
 adjaranetto-com
 
 
 ||*vsembed.su^$redirect
-
-
-
-
-
 ||*adjaraneti.xyz^$redirect
 
-
-
-
-DIRECT-ads-asvla
-
-||*asvla.com*$all
-
-
-ads-adsplay-video
 
 
 ge-movie
@@ -100,12 +89,13 @@ croconet-cam
 ||*storage.croco.cam*mp4*
 
 
-
 adjaranet-in
 
 
 ||*adjaranet.in*mp4*
 
+
+webiste-script-ads
 
 
 adjaranet-in
@@ -137,7 +127,6 @@ mykadri.tv##main:nth-child(4) > div.container:last-child > section.rentplace.tex
 mykadri.tv##main:nth-child(4) > div.container:last-child > div.avc-asvla:nth-child(3)
 mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(3)
 mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(5)
-
 
 
 
