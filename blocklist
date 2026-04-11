@@ -104,6 +104,15 @@ adjaranet-in
 webiste-script-ads-plus 
 
 
+liveball-sx
+
+
+liveball.sx##div.catfish_sec:nth-child(12)
+liveball.sx##main.main_div.main_page:nth-child(29) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.banner_player_sec:nth-child(7)
+liveball.sx##main.main_div.main_page:nth-child(29) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.odds_m_block:nth-child(2)
+liveball.sx##main.main_div.main_page:nth-child(29) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.free.align_center:nth-child(6) > div.prognoz.align_center:last-child
+
+
 adjaranet-in
 
 
