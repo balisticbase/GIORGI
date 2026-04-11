@@ -57,11 +57,8 @@ direct-link-click-virus
 *$inline-script
 *$subdocument
 *$frame
-
-
 ##+js(set-constant, window.open, noopFunc)
 ##+js(set-constant, window.location, "")
-
 
 
 
