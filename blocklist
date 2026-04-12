@@ -92,15 +92,6 @@ televiziebi.tv##.jwp-before-play
 liveball-sx
 
 
-liveball.sx##main.main_div.main_page:nth-child(29) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.banner_player_sec:nth-child(7) > a:first-child
-liveball.sx###prognozBtn
-liveball.sx##main.main_div.main_page:nth-child(29) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.odds_m_block:nth-child(2) > div.odds_m
-liveball.sx##main.main_div.main_page:nth-child(29) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.odds_m_block:nth-child(2)
-liveball.sx##div.custom_brand_mobile:nth-child(8) > a:first-child > img
-liveball.sx##div.catfish_sec:nth-child(12) > a.catfish_block:first-child > img.catfish
-liveball.sx##div.catfish_sec:nth-child(12)
-liveball.sx##main.main_div.main_page:nth-child(29) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.banner_player_sec:nth-child(7)
-liveball.sx##main.main_div.main_page:nth-child(29) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.free.align_center:nth-child(6) > div.prognoz.align_center:last-child
 
 
 
