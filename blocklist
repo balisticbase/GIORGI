@@ -6,35 +6,17 @@
 
 
 
-ads-direct-ads-virus-links
-
-
-||my.toruftuiov.com^$all
-||mostbeautuleedehad.com^$all
-||405kk.com^$all
-||jnbhi.com^$all
-||nq.blurbsoutpry.com^$all
-||preferencenail.com^$all
-||dofh8dlyafwsp.cloudfront.net^$all
-||togglevpn.org^$all
-||ycqdxopcqdaec.site^$all
-||dobvvamtbskgg.online^$all
-||jrqmkykli.com^$all
-||sihoky.com^$all
-||jenxlqwnuoqxv.website^$all
-||nextcloud.com^$all
-||kettledroopingcontinuation.com^$all
-||paraderascaldefinitely.com^$all
-||adexchangeclear.com^$all
-||usrpubtrk.com^$all
-||6060fezix.com^$all
+! ads-direct-ads-virus-links
 
 
 
 
 
 
-all-website-picture-ads
+
+
+
+! all-website-picture-ads
 
 
 ||*asvla2*$all
@@ -44,11 +26,11 @@ all-website-picture-ads
 ||*promo*$all
 
 
-ads-adsplay-video
+! ads-adsplay-video
 
 
 
-adjaranetto-com
+! adjaranetto.com
 
 
 ||vsembed.su^$redirect
@@ -56,19 +38,19 @@ adjaranetto-com
 
 
 
-geosaitebi-online
+! geosaitebi.online
 
 ||geosaitebi.online*mp4^$all
 
 
 
-ge-movie
+! ge.movie
 
 ||port80ge.adocean.pl^$all
 ||cdn.7kprtners.com^$all
 
 
-mykadri-tv
+! mykadri.tv
 
 ||hdd.mykadri.com^$all
 ||r.botsford.link^$all
@@ -76,37 +58,37 @@ mykadri-tv
 
 
 
-myvideo-ge
+! myvideo.ge
 
 
 ||va.myvideo.ge^$all
 
 
 
-televiziebi-tv
+! televiziebi.tv
 
 
 ||televiziebi.tv*mp4^$all
 
 
 
-croconet-cam
+! croconet.cam
 
 
 ||storage.croco.cam*mp4^$all
 
 
-adjaranet-in
+! adjaranet.in
 
 
 ||adjaranet.in*mp4^$all
 
 
-webiste-script-ads-plus 
+! webiste-script-ads-plus 
 
 
 
-antenasport-org
+! antenasport.org
 
 
 televiziebi.tv##.jwp-before-play
@@ -115,7 +97,7 @@ televiziebi.tv##.jwp-before-play
 
 
 
-!televiziebi-tv
+! televiziebi.tv
 
 
 televiziebi.tv###dle-content > div.di-right-1:nth-child(5) > div.ads-baneri-1:nth-child(2) > center > div.avc-asvl > a
@@ -136,7 +118,7 @@ televiziebi.tv##div.center-01.center-1:nth-child(13) > div.di-home-1 > div.di-ho
 
 
 
-adjaranet-in
+! adjaranet.in
 
 
 adjaranet.in##main:nth-child(4) > div.wrapper > div.mt-8.space-y-8 > center:nth-child(2)
@@ -149,7 +131,7 @@ adjaranet.in##main.mt-\[60px\].lg\:mt-\[72px\]:nth-child(5) > div > center:nth-c
 
 
 
-geosaitebi-tv
+! geosaitebi.tv
 
 
 geosaitebi.tv##div.wrapper:nth-child(7) > div.ad-catfish.ad-catfish__desktop:nth-child(13)
@@ -167,7 +149,7 @@ geosaitebi.tv##div.wrapper:nth-child(7) > div.ad-catfish.ad-catfish__desktop:nth
 
 
 
-croconet-cam
+! croconet.cam
 
 
 croconet.cam##main:nth-child(5) > div.my_container:nth-child(7)
@@ -176,7 +158,7 @@ croconet.cam##main:nth-child(5) > div.my_container:nth-child(10)
 
 
 
-mykadri-tv
+! mykadri.tv
 
 
 mykadri.tv##main:nth-child(7) > section.section.section--dle-content.my-4:last-child > div.container > div.avc-asvla:first-child
