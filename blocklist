@@ -58,20 +58,20 @@ adjaranetto-com
 
 geosaitebi-online
 
-||geosaitebi.online*mp4*$all
+||geosaitebi.online*mp4^$all
 
 
 
 ge-movie
 
-||port80ge.adocean.pl*$all
-||cdn.7kprtners.com*$all
+||port80ge.adocean.pl^$all
+||cdn.7kprtners.com^$all
 
 
 mykadri-tv
 
-||hdd.mykadri.com*$all
-||r.botsford.link*$all
+||hdd.mykadri.com^$all
+||r.botsford.link^$all
 ||vidsrc-embed.ru^$redirect
 
 
@@ -79,27 +79,27 @@ mykadri-tv
 myvideo-ge
 
 
-||va.myvideo.ge*$all
+||va.myvideo.ge^$all
 
 
 
 televiziebi-tv
 
 
-||televiziebi.tv*mp4*$all
+||televiziebi.tv*mp4^$all
 
 
 
 croconet-cam
 
 
-||storage.croco.cam*mp4*$all
+||storage.croco.cam*mp4^$all
 
 
 adjaranet-in
 
 
-||adjaranet.in*mp4*$all
+||adjaranet.in*mp4^$all
 
 
 webiste-script-ads-plus 
