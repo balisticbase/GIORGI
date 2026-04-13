@@ -14,20 +14,20 @@ test-virus-block-test/block
 
 
 
-||global.stun.twilio.com^$important
-||dofh8dlyafwsp.cloudfront.net^$important
-||togglevpn.org^$important
-||ycqdxopcqdaec.site^$important
-||dobvvamtbskgg.online^$important
-||jrqmkykli.com^$important
-||sihoky.com^$important
-||twilio.com^$important
-||jenxlqwnuoqxv.website^$important
-||nextcloud.com^$important
-||kettledroopingcontinuation.com^$important
-||paraderascaldefinitely.com^$important
-||adexchangeclear.com^$important
-||usrpubtrk.com^$important
+||*global.stun.twilio.com^$important
+||*dofh8dlyafwsp.cloudfront.net^$important
+||*togglevpn.org^$important
+||*ycqdxopcqdaec.site^$important
+||*dobvvamtbskgg.online^$important
+||*jrqmkykli.com^$important
+||*sihoky.com^$important
+||*twilio.com^$important
+||*jenxlqwnuoqxv.website^$important
+||*nextcloud.com^$important
+||*kettledroopingcontinuation.com^$important
+||*paraderascaldefinitely.com^$important
+||*adexchangeclear.com^$important
+||*usrpubtrk.com^$important
 ||*6060fezix.com^$important
 
 
