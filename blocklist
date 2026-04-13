@@ -95,9 +95,19 @@ televiziebi.tv##.jwp-before-play
 
 
 
-liveball-sx
+!televiziebi-tv
 
-
+televiziebi.tv##div.center-01.center-1:nth-child(12) > div.di-home-1 > div.di-home-2 > center:first-child > div.avc-asvl > a
+televiziebi.tv##div.center-01.center-1:nth-child(12) > div.di-home-1 > div.di-home-2 > center:first-child > div.avc-asvl
+televiziebi.tv##div.center-01.center-1:nth-child(12) > div.di-home-1 > div.di-home-2 > center:first-child
+televiziebi.tv##div.center-01.center-1:nth-child(12) > div.di-home-1 > div.di-home-2 > div.di-right-1:nth-child(3) > div.ads-baneri-2:last-child > center > div.avc-asvl
+televiziebi.tv##div.center-01.center-1:nth-child(12) > div.di-home-1 > div.di-home-2 > div.di-right-1:nth-child(3) > div.ads-baneri-2:last-child
+televiziebi.tv##div.center-01.center-1:nth-child(11) > div.di-home-1 > div.di-home-2 > center:first-child > div.avc-asvl > a
+televiziebi.tv##div.center-01.center-1:nth-child(11) > div.di-home-1 > div.di-home-2 > center:first-child > div.avc-asvl
+televiziebi.tv##div.center-01.center-1:nth-child(11) > div.di-home-1 > div.di-home-2 > center:first-child
+televiziebi.tv##div.center-01.center-1:nth-child(13) > div.di-home-1 > div.di-home-2 > center:first-child > div.avc-asvl > a
+televiziebi.tv##div.center-01.center-1:nth-child(13) > div.di-home-1 > div.di-home-2 > center:first-child > div.avc-asvl
+televiziebi.tv##div.center-01.center-1:nth-child(13) > div.di-home-1 > div.di-home-2 > center:first-child
 
 
 
