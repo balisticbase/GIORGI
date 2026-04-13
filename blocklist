@@ -97,6 +97,11 @@ televiziebi.tv##.jwp-before-play
 
 !televiziebi-tv
 
+
+televiziebi.tv###dle-content > div.di-right-1:nth-child(5) > div.ads-baneri-1:nth-child(2) > center > div.avc-asvl > a
+televiziebi.tv###dle-content > div.di-right-1:nth-child(5) > div.ads-baneri-1:nth-child(2) > center > div.avc-asvl
+televiziebi.tv###dle-content > div.di-right-1:nth-child(5) > div.ads-baneri-1:nth-child(2) > center
+televiziebi.tv###dle-content > div.di-right-1:nth-child(5) > div.ads-baneri-1:nth-child(2)
 televiziebi.tv##div.center-01.center-1:nth-child(12) > div.di-home-1 > div.di-home-2 > center:first-child > div.avc-asvl > a
 televiziebi.tv##div.center-01.center-1:nth-child(12) > div.di-home-1 > div.di-home-2 > center:first-child > div.avc-asvl
 televiziebi.tv##div.center-01.center-1:nth-child(12) > div.di-home-1 > div.di-home-2 > center:first-child
