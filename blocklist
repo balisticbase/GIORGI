@@ -87,6 +87,13 @@
 ! webiste-script-ads-plus 
 
 
+! cinematic.ge
+
+
+cinematic.ge##div.jq-toast-wrap.top-right:last-child
+
+
+
 
 ! antenasport.org
 
