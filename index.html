@@ -1,147 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ka">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SaaS DB Panel</title>
-
-<style>
-body {
-    margin:0;
-    font-family:Arial;
-    background:#0f172a;
-    color:white;
-}
-
-#login {
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-}
-
-input {
-    padding:10px;
-    margin:5px;
-    border:none;
-    border-radius:8px;
-}
-
-button {
-    padding:10px;
-    background:#38bdf8;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-#dashboard {
-    display:none;
-    padding:20px;
-}
-
-.apps {
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-    gap:15px;
-}
-
-.app {
-    background:#1e293b;
-    padding:15px;
-    border-radius:10px;
-    text-align:center;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>Beta Notice</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0f172a;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+    }
+    .box {
+      background: #1e293b;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    p {
+      margin-bottom: 30px;
+      color: #cbd5e1;
+    }
+    a.button {
+      text-decoration: none;
+      background: #2563eb;
+      padding: 12px 25px;
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    a.button:hover {
+      background: #1d4ed8;
+    }
+  </style>
 </head>
-
 <body>
 
-<div id="login">
-    <h2>Login</h2>
-    <input id="user" placeholder="Username">
-    <input id="pass" type="password" placeholder="Password">
-    <button onclick="login()">Login</button>
+<div class="box">
+  <h1>საიტი ბეტა ტესტირებაშია</h1>
+  <p>თუ გსურთ ჩეთის შეძენა, შეგიძლიათ დაგვიკავშირდეთ</p>
+  <a class="button" href="https://t.me/ioscrackonline" target="_blank">
+    დაგვიკავშირდით
+  </a>
 </div>
-
-<div id="dashboard">
-    <h2 id="welcome"></h2>
-    <button onclick="logout()">Logout</button>
-
-    <h3>Your Apps</h3>
-    <div class="apps" id="apps"></div>
-</div>
-
-<script>
-
-const DATA_URL = "https://raw.githubusercontent.com/balisticbase/GIORGI/main/ioscrack.online.txt";
-
-let users = [];
-let currentUser = null;
-
-/* LOAD DB */
-async function loadDB(){
-    try {
-        const res = await fetch(DATA_URL);
-        const text = await res.text();
-
-        users = JSON.parse(text);
-
-        console.log("DB Loaded", users);
-
-    } catch(e){
-        console.log(e);
-        alert("DB error ❌");
-    }
-}
-
-loadDB();
-
-/* LOGIN */
-function login(){
-    let u = document.getElementById("user").value;
-    let p = document.getElementById("pass").value;
-
-    let user = users.find(x => x.username === u && x.password === p);
-
-    if(user){
-        currentUser = user;
-
-        document.getElementById("login").style.display="none";
-        document.getElementById("dashboard").style.display="block";
-
-        document.getElementById("welcome").innerText =
-            "Welcome " + user.username;
-
-        loadApps(user.apps || []);
-
-    } else {
-        alert("Wrong login ❌");
-    }
-}
-
-/* LOAD USER APPS */
-function loadApps(apps){
-    let box = document.getElementById("apps");
-    box.innerHTML = "";
-
-    apps.forEach(app=>{
-        box.innerHTML += `
-            <div class="app">
-                <h4>${app.name}</h4>
-                <a href="${app.link}" target="_blank">Open</a>
-            </div>
-        `;
-    });
-}
-
-/* LOGOUT */
-function logout(){
-    location.reload();
-}
-
-</script>
 
 </body>
 </html>
