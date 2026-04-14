@@ -1,23 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaaS Panel</title>
+
+<style>
+body {
+    margin:0;
+    font-family:Arial;
+    background:#0f172a;
+    color:white;
+}
+
+/* LOGIN */
+#login {
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+}
+
+input {
+    padding:12px;
+    margin:5px;
+    border:none;
+    border-radius:8px;
+    width:220px;
+}
+
+button {
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    background:#38bdf8;
+    cursor:pointer;
+}
+
+/* DASHBOARD */
+#dashboard {
+    display:none;
+    padding:20px;
+}
+
+.top {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+/* APPS */
+.apps {
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:15px;
+}
+
+.app {
+    background:#1e293b;
+    padding:15px;
+    border-radius:10px;
+    text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+    <h2>Login</h2>
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+    <div class="top">
+        <h2 id="welcome"></h2>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <h3>Your Apps</h3>
+
+    <div>
+        <input id="appName" placeholder="App name">
+        <input id="appLink" placeholder="App link">
+        <button onclick="addApp()">Add</button>
+    </div>
+
+    <div class="apps" id="apps"></div>
+</div>
+
 <script>
-const DATA_URL = "https://raw.githubusercontent.com/balisticbase/GIORGI/main/ioscrack.online.txt";
 
-async function loadDB(){
-    try {
-        const res = await fetch(DATA_URL);
-        const text = await res.text();
+/* USERS */
+const USERS = [
+    { username:"giorgi", password:"123" }
+];
 
-        console.log("RAW DATA 👇");
-        console.log(text);
+let currentUser = null;
 
-        let data = JSON.parse(text);
+/* LOGIN */
+function login(){
+    let u = document.getElementById("username").value;
+    let p = document.getElementById("password").value;
 
-        console.log("PARSED ✅", data);
+    let user = USERS.find(x => x.username === u && x.password === p);
 
-    } catch(e){
-        console.error("ERROR ❌", e);
-        alert("DB error - open console (F12)");
+    if(user){
+        currentUser = u;
+        localStorage.setItem("user", u);
+
+        showDashboard();
+        loadApps();
+    } else {
+        alert("Wrong login");
     }
 }
 
-loadDB();
+/* AUTO LOGIN */
+window.onload = () => {
+    let u = localStorage.getItem("user");
+    if(u){
+        currentUser = u;
+        showDashboard();
+        loadApps();
+    }
+};
+
+/* SHOW DASHBOARD */
+function showDashboard(){
+    document.getElementById("login").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+    document.getElementById("welcome").innerText = "Welcome " + currentUser;
+}
+
+/* LOAD APPS */
+function loadApps(){
+    let apps = JSON.parse(localStorage.getItem("apps_"+currentUser)) || [];
+
+    let box = document.getElementById("apps");
+    box.innerHTML = "";
+
+    apps.forEach((a,i)=>{
+        box.innerHTML += `
+            <div class="app">
+                <h4>${a.name}</h4>
+                <a href="${a.link}" target="_blank">Open</a><br><br>
+                <button onclick="deleteApp(${i})">Delete</button>
+            </div>
+        `;
+    });
+}
+
+/* ADD APP */
+function addApp(){
+    let name = document.getElementById("appName").value;
+    let link = document.getElementById("appLink").value;
+
+    if(!name || !link){
+        alert("Fill all fields");
+        return;
+    }
+
+    let apps = JSON.parse(localStorage.getItem("apps_"+currentUser)) || [];
+
+    apps.push({name,link});
+
+    localStorage.setItem("apps_"+currentUser, JSON.stringify(apps));
+
+    document.getElementById("appName").value = "";
+    document.getElementById("appLink").value = "";
+
+    loadApps();
+}
+
+/* DELETE APP */
+function deleteApp(i){
+    let apps = JSON.parse(localStorage.getItem("apps_"+currentUser));
+
+    apps.splice(i,1);
+
+    localStorage.setItem("apps_"+currentUser, JSON.stringify(apps));
+
+    loadApps();
+}
+
+/* LOGOUT */
+function logout(){
+    localStorage.removeItem("user");
+    location.reload();
+}
+
 </script>
+
+</body>
+</html>
