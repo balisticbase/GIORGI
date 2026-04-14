@@ -9,11 +9,12 @@
 
 ! virus-domin-ad-direct-virus
 
-
+||*www.gstatic.com*$all
+||*counter.top.ge*$all
 ||*adx.stack.bidster.net*$all
 ||*ey43.com*$all
 ||cdn.7kprtners.com*$all
-
+||r.botsford.link^$all
 
 
 
@@ -53,8 +54,6 @@
 ! mykadri.tv
 
 ||hdd.mykadri.com^$all
-||r.botsford.link^$all
-||vidsrc-embed.ru^$redirect
 
 
 
@@ -62,6 +61,7 @@
 
 
 ||va.myvideo.ge^$all
+
 
 
 
