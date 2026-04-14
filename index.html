@@ -3,217 +3,157 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Beta Project</title>
+<title>User System</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Segoe UI", sans-serif;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
 body {
-    background: #0f172a;
-    color: white;
+    margin:0;
+    font-family: Arial;
+    background:#0f172a;
+    color:white;
 }
 
-/* NAVBAR */
-nav {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 50px;
-    background: rgba(15,23,42,0.9);
-    position: fixed;
-    width: 100%;
-    z-index: 1000;
+/* LOGIN */
+.login-box {
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
 }
 
-nav h2 {
-    color: #38bdf8;
+input {
+    padding:10px;
+    margin:5px;
+    width:200px;
+    border-radius:8px;
+    border:none;
 }
 
-nav a {
-    color: #cbd5e1;
-    margin-left: 20px;
-    text-decoration: none;
+button {
+    padding:10px 20px;
+    margin-top:10px;
+    background:#38bdf8;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
 }
 
-/* HERO */
-.hero {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background: linear-gradient(135deg, #0f172a, #1e293b);
+/* DASHBOARD */
+.dashboard {
+    display:none;
+    padding:40px;
 }
 
-.hero h1 {
-    font-size: 40px;
+.apps {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:15px;
+    margin-top:20px;
 }
 
-.hero p {
-    margin-top: 15px;
-    color: #cbd5e1;
+.app {
+    background:#1e293b;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
 }
 
-.btn {
-    margin-top: 25px;
-    padding: 12px 25px;
-    background: #38bdf8;
-    border: none;
-    border-radius: 10px;
-    color: #0f172a;
-    font-weight: bold;
-    cursor: pointer;
+.topbar {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
-
-/* BETA NOTICE */
-.beta {
-    margin-top: 20px;
-    color: #38bdf8;
-    font-size: 14px;
-}
-
-/* FEATURES */
-.features {
-    padding: 100px 50px;
-    text-align: center;
-}
-
-.features h2 {
-    margin-bottom: 40px;
-}
-
-.cards {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-}
-
-.card {
-    background: #1e293b;
-    padding: 25px;
-    border-radius: 15px;
-    width: 250px;
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-10px) scale(1.03);
-}
-
-/* ABOUT */
-.about {
-    padding: 100px 50px;
-    text-align: center;
-    background: #020617;
-}
-
-/* FOOTER */
-footer {
-    padding: 20px;
-    text-align: center;
-    background: #020617;
-    color: #94a3b8;
-}
-
-/* ANIMATION */
-.hidden {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 0.8s ease;
-}
-
-.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
 </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<nav>
-    <h2>MyProject</h2>
-    <div>
-        <a href="#hero">მთავარი</a>
-        <a href="#features">ფუნქციები</a>
-        <a href="#about">ჩვენ შესახებ</a>
+<!-- LOGIN -->
+<div class="login-box" id="loginBox">
+    <h2>Login</h2>
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+
+    <div class="topbar">
+        <h2 id="welcome"></h2>
+        <button onclick="logout()">Logout</button>
     </div>
-</nav>
 
-<!-- HERO -->
-<section id="hero" class="hero">
-    <div class="hidden">
-        <h1>მოგესალმები ჩემს პროექტში 🚀</h1>
-        <p>თანამედროვე პლატფორმა, რომელიც შენთვის იქმნება</p>
+    <h3>Your Apps</h3>
+    <div class="apps" id="apps"></div>
 
-        <div class="beta">
-            🚧 საიტი ბეტა ტესტირებაშია — ინფორმაცია შეიძლება შეიცვალოს
-        </div>
-
-        <button class="btn" onclick="alert('გმადლობ მხარდაჭერისთვის 🙌')">
-            დაწყება
-        </button>
-    </div>
-</section>
-
-<!-- FEATURES -->
-<section id="features" class="features">
-    <h2 class="hidden">რატომ ჩვენ?</h2>
-
-    <div class="cards">
-        <div class="card hidden">
-            <h3>⚡ სწრაფი</h3>
-            <p>მაქსიმალური სიჩქარე და ოპტიმიზაცია</p>
-        </div>
-
-        <div class="card hidden">
-            <h3>🔒 უსაფრთხო</h3>
-            <p>შენი მონაცემები დაცულია</p>
-        </div>
-
-        <div class="card hidden">
-            <h3>🎯 მარტივი</h3>
-            <p>მარტივი და მოსახერხებელი დიზაინი</p>
-        </div>
-    </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about" class="about">
-    <h2 class="hidden">ჩვენ შესახებ</h2>
-    <p class="hidden">
-        ეს პროექტი შექმნილია თანამედროვე ტექნოლოგიებით და მიზნად ისახავს
-        მომხმარებლისთვის საუკეთესო გამოცდილების შექმნას.
-    </p>
-</section>
-
-<!-- FOOTER -->
-<footer>
-    © 2026 MyProject | ყველა უფლება დაცულია
-</footer>
+</div>
 
 <script>
-// Scroll animation
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('show');
-        }
-    });
-});
 
-const hiddenElements = document.querySelectorAll('.hidden');
-hiddenElements.forEach(el => observer.observe(el));
+let usersData = [];
+let currentUser = null;
+
+/* შენი JSON link */
+const DATA_URL = "https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/cdsassets.apple.com";
+
+/* მონაცემების წამოღება */
+async function loadUsers(){
+    try {
+        let res = await fetch(DATA_URL);
+        usersData = await res.json();
+    } catch(e){
+        alert("Data loading error!");
+        console.log(e);
+    }
+}
+
+loadUsers();
+
+/* LOGIN */
+function login(){
+    let u = document.getElementById("username").value;
+    let p = document.getElementById("password").value;
+
+    let user = usersData.find(x => x.username === u && x.password === p);
+
+    if(user){
+        currentUser = user;
+
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+
+        document.getElementById("welcome").innerText = "Welcome " + user.username;
+
+        loadApps(user.apps);
+
+    } else {
+        alert("Wrong username or password!");
+    }
+}
+
+/* APPS */
+function loadApps(apps){
+    let container = document.getElementById("apps");
+    container.innerHTML = "";
+
+    apps.forEach(app=>{
+        let div = document.createElement("div");
+        div.className = "app";
+        div.innerText = app;
+        container.appendChild(div);
+    });
+}
+
+/* LOGOUT */
+function logout(){
+    currentUser = null;
+
+    document.getElementById("loginBox").style.display = "flex";
+    document.getElementById("dashboard").style.display = "none";
+}
+
 </script>
 
 </body>
