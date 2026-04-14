@@ -46,8 +46,8 @@
 
 ! ge.movie
 
-||port80ge.adocean.pl^$all
-||cdn.7kprtners.com^$all
+||port80ge.adocean.pl*mp4*
+||cdn.7kprtners.com*mp4*
 
 
 ! mykadri.tv
