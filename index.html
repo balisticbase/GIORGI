@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Beta Site</title>
+<title>My Beta Project</title>
 
 <style>
 * {
@@ -13,81 +13,126 @@
     font-family: "Segoe UI", sans-serif;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
+    background: #0f172a;
+    color: white;
+}
+
+/* NAVBAR */
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 50px;
+    background: rgba(15,23,42,0.9);
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+nav h2 {
+    color: #38bdf8;
+}
+
+nav a {
+    color: #cbd5e1;
+    margin-left: 20px;
+    text-decoration: none;
+}
+
+/* HERO */
+.hero {
     height: 100vh;
-    background: linear-gradient(135deg, #0f172a, #1e293b);
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-/* Glass Card */
-.card {
-    backdrop-filter: blur(15px);
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
-    padding: 40px;
-    width: 380px;
     text-align: center;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    border: 1px solid rgba(255,255,255,0.1);
-    animation: fadeIn 1s ease-in-out;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
 }
 
-/* Title */
-.badge {
-    display: inline-block;
-    padding: 8px 16px;
-    border-radius: 50px;
-    background: rgba(56, 189, 248, 0.15);
-    color: #38bdf8;
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 20px;
+.hero h1 {
+    font-size: 40px;
 }
 
-/* Heading */
-h1 {
-    font-size: 24px;
-    margin-bottom: 15px;
-    color: #fff;
-}
-
-/* Text */
-p {
-    font-size: 15px;
+.hero p {
+    margin-top: 15px;
     color: #cbd5e1;
-    line-height: 1.6;
 }
 
-/* Button */
-button {
+.btn {
     margin-top: 25px;
-    padding: 12px 20px;
+    padding: 12px 25px;
+    background: #38bdf8;
     border: none;
     border-radius: 10px;
-    background: #38bdf8;
     color: #0f172a;
     font-weight: bold;
     cursor: pointer;
+}
+
+/* BETA NOTICE */
+.beta {
+    margin-top: 20px;
+    color: #38bdf8;
+    font-size: 14px;
+}
+
+/* FEATURES */
+.features {
+    padding: 100px 50px;
+    text-align: center;
+}
+
+.features h2 {
+    margin-bottom: 40px;
+}
+
+.cards {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.card {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 15px;
+    width: 250px;
     transition: 0.3s;
 }
 
-button:hover {
-    background: #0ea5e9;
-    transform: scale(1.05);
+.card:hover {
+    transform: translateY(-10px) scale(1.03);
 }
 
-/* Animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* ABOUT */
+.about {
+    padding: 100px 50px;
+    text-align: center;
+    background: #020617;
+}
+
+/* FOOTER */
+footer {
+    padding: 20px;
+    text-align: center;
+    background: #020617;
+    color: #94a3b8;
+}
+
+/* ANIMATION */
+.hidden {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease;
+}
+
+.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 </style>
@@ -95,20 +140,81 @@ button:hover {
 
 <body>
 
-<div class="card">
-    <div class="badge">🚧 BETA VERSION</div>
-    
-    <h1>საიტი ბეტა რეჟიმშია</h1>
-    
-    <p>
-        საიტი ამჟამად ბეტა ტესტირების ეტაპზეა. 
-        წარმოდგენილი ინფორმაცია დროებითია და შესაძლოა შეიცვალოს.
-    </p>
+<!-- NAVBAR -->
+<nav>
+    <h2>MyProject</h2>
+    <div>
+        <a href="#hero">მთავარი</a>
+        <a href="#features">ფუნქციები</a>
+        <a href="#about">ჩვენ შესახებ</a>
+    </div>
+</nav>
 
-    <button onclick="alert('მადლობა მოთმინებისთვის 🙌')">
-        გასაგებია
-    </button>
-</div>
+<!-- HERO -->
+<section id="hero" class="hero">
+    <div class="hidden">
+        <h1>მოგესალმები ჩემს პროექტში 🚀</h1>
+        <p>თანამედროვე პლატფორმა, რომელიც შენთვის იქმნება</p>
+
+        <div class="beta">
+            🚧 საიტი ბეტა ტესტირებაშია — ინფორმაცია შეიძლება შეიცვალოს
+        </div>
+
+        <button class="btn" onclick="alert('გმადლობ მხარდაჭერისთვის 🙌')">
+            დაწყება
+        </button>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="features">
+    <h2 class="hidden">რატომ ჩვენ?</h2>
+
+    <div class="cards">
+        <div class="card hidden">
+            <h3>⚡ სწრაფი</h3>
+            <p>მაქსიმალური სიჩქარე და ოპტიმიზაცია</p>
+        </div>
+
+        <div class="card hidden">
+            <h3>🔒 უსაფრთხო</h3>
+            <p>შენი მონაცემები დაცულია</p>
+        </div>
+
+        <div class="card hidden">
+            <h3>🎯 მარტივი</h3>
+            <p>მარტივი და მოსახერხებელი დიზაინი</p>
+        </div>
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="about">
+    <h2 class="hidden">ჩვენ შესახებ</h2>
+    <p class="hidden">
+        ეს პროექტი შექმნილია თანამედროვე ტექნოლოგიებით და მიზნად ისახავს
+        მომხმარებლისთვის საუკეთესო გამოცდილების შექმნას.
+    </p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    © 2026 MyProject | ყველა უფლება დაცულია
+</footer>
+
+<script>
+// Scroll animation
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+        }
+    });
+});
+
+const hiddenElements = document.querySelectorAll('.hidden');
+hiddenElements.forEach(el => observer.observe(el));
+</script>
 
 </body>
 </html>
