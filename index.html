@@ -2,43 +2,75 @@
 <html lang="ka">
 <head>
   <meta charset="UTF-8">
-  <title>Beta Notice</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ბეტა რეჟიმი</title>
+
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
-      height: 100vh;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #0f172a;
-      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #020617);
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
       color: white;
-      text-align: center;
+      padding: 20px;
     }
+
     .box {
+      width: 100%;
+      max-width: 420px;
       background: #1e293b;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      padding: 30px 25px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
     }
+
     h1 {
-      margin-bottom: 20px;
+      font-size: 22px;
+      margin-bottom: 15px;
     }
+
     p {
-      margin-bottom: 30px;
+      font-size: 15px;
       color: #cbd5e1;
+      margin-bottom: 25px;
+      line-height: 1.5;
     }
-    a.button {
+
+    .button {
+      display: block;
+      width: 100%;
       text-decoration: none;
       background: #2563eb;
-      padding: 12px 25px;
-      border-radius: 10px;
+      padding: 14px;
+      border-radius: 12px;
       color: white;
-      font-weight: bold;
-      transition: 0.3s;
+      font-weight: 600;
+      font-size: 15px;
+      transition: 0.25s;
     }
-    a.button:hover {
+
+    .button:hover {
       background: #1d4ed8;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 400px) {
+      h1 {
+        font-size: 18px;
+      }
+
+      p {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -46,7 +78,7 @@
 
 <div class="box">
   <h1>საიტი ბეტა ტესტირებაშია</h1>
-  <p>თუ გსურთ ჩეთის შეძენა, შეგიძლიათ დაგვიკავშირდეთ</p>
+  <p>თუ გსურთ რაიმეს შეძენა, შეგიძლიათ დაგვიკავშირდეთ</p>
   <a class="button" href="https://t.me/ioscrackonline" target="_blank">
     დაგვიკავშირდით
   </a>
