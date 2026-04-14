@@ -117,6 +117,9 @@ cinematic.ge##div.jq-toast-wrap.top-right:last-child
 ! geofilms.net
 
 
+geofilms.net###jwp-container-own-server_vast_static
+geofilms.net###jwp-container-own-server_vast
+geofilms.net###jwp-container-own-server > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
 geofilms.net###jf-container-player2_vast_static
 geofilms.net###jf-container-player2_vast
 geofilms.net###jf-container-player2 > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
