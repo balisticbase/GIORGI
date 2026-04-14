@@ -4,10 +4,6 @@
 ! Title: GEORGIA AD BLOCK List
 ! Last modified: 13 Apr 2026 20:12 UTC
 
-! Official AdGuard DNS filter (iOS)
-! Source:https://filters.adtidy.org/dns/filter_1_ios.txt
-
-
 
 
 ! virus-domin-ad-direct-virus
@@ -214,3 +210,7 @@ mykadri.tv##main:nth-child(4) > div.container:last-child > section.rentplace.tex
 mykadri.tv##main:nth-child(4) > div.container:last-child > div.avc-asvla:nth-child(3)
 mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(3)
 mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(5)
+
+
+! Official AdGuard DNS filter (iOS)
+! Source: https://filters.adtidy.org/dns/filter_1_ios.txt
