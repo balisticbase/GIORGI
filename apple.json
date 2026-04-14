@@ -1,2 +1,32 @@
-user>giorgi>123>app>gmate>https://www.google.com>app2>gmm>https://www.yahoo.com/
-
+[
+  {
+    "username": "giorgi",
+    "password": "123",
+    "apps": [
+      {
+        "name": "Google",
+        "link": "https://google.com"
+      },
+      {
+        "name": "Yahoo",
+        "link": "https://yahoo.com"
+      }
+    ]
+  }
+]
+[
+  {
+    "username": "giorgi",
+    "password": "123",
+    "apps": [
+      {
+        "name": "Google",
+        "link": "https://google.com"
+      },
+      {
+        "name": "Yahoo",
+        "link": "https://yahoo.com"
+      }
+    ]
+  }
+]
