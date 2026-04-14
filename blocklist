@@ -100,6 +100,10 @@
 ! webiste-script-ads-plus 
 
 
+
+! website-script-ads-show
+
+
 ! cinematic.ge
 
 
@@ -107,13 +111,24 @@ cinematic.ge##div.jq-toast-wrap.top-right:last-child
 
 
 
+! geofilms.net
+
+
+geofilms.net###bannerPlace1 > a
+geofilms.net###bannerPlace1
+geofilms.net##div.baner-adis-1.center-1:nth-child(11) > div.baner-01.baner-1
+geofilms.net###bannerPlace3 > a
+geofilms.net###bannerPlace3
+geofilms.net###topBanner
+geofilms.net###bannerPlace2 > a
+geofilms.net##div.center-1:nth-child(13) > div.baner-01.baner-1
+
+
 
 ! antenasport.org
 
 
 televiziebi.tv##.jwp-before-play
-
-
 
 
 
