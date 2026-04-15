@@ -211,6 +211,9 @@ geosaitebi.tv##div.wrapper:nth-child(7) > div.ad-catfish.ad-catfish__desktop:nth
 ! croconet.cam
 
 
+croconet.cam##main:nth-child(5) > div.my_container:nth-child(4) > div.mobile\:mb-4.mt-4.my-4.mobile\:max-h-\[200px\].max-h-\[120px\].w-full.overflow-hidden > iframe
+croconet.cam##main:nth-child(5) > div.my_container:nth-child(4) > div.mobile\:mb-4.mt-4.my-4.mobile\:max-h-\[200px\].max-h-\[120px\].w-full.overflow-hidden
+croconet.cam##main:nth-child(5) > div.my_container:nth-child(4)
 croconet.cam##main:nth-child(5) > div.my_container:nth-child(7)
 croconet.cam##main:nth-child(5) > div.my_container:nth-child(10)
 
