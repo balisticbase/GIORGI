@@ -143,6 +143,9 @@ geofilms.net##div.center-1:nth-child(13) > div.baner-01.baner-1
 ! liveball.sx
 
 
+liveball.sx##main.main_div.main_page:nth-child(29) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.banner_player_sec:nth-child(6) > a:first-child > img
+liveball.sx##main.main_div.main_page:nth-child(29) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.banner_player_sec:nth-child(6) > a:first-child
+liveball.sx##main.main_div.main_page:nth-child(29) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.banner_player_sec:nth-child(6)
 liveball.sx##main.main_div.main_page:nth-child(30) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.banner_player_sec:nth-child(7) > a:first-child > img
 liveball.sx##main.main_div.main_page:nth-child(30) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.banner_player_sec:nth-child(7) > a:first-child
 liveball.sx##main.main_div.main_page:nth-child(30) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.banner_player_sec:nth-child(7)
