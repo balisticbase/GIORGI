@@ -8,6 +8,8 @@
 
 ! virus-domin-ad-direct-virus
 
+
+||betsxwin.pro*$all
 ||bit.ly*$all
 ||vnmfvnkd.win*$all
 ||gstatic.com*$all
@@ -144,6 +146,9 @@ geofilms.net##div.center-1:nth-child(13) > div.baner-01.baner-1
 ! liveball.sx
 
 
+liveball.sx##main.main_div.main_page:nth-child(30) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.banner_player_sec:nth-child(7) > a:first-child > img
+liveball.sx##main.main_div.main_page:nth-child(30) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.banner_player_sec:nth-child(7) > a:first-child
+liveball.sx##main.main_div.main_page:nth-child(30) > div.container.blank_container:first-child > div.blank > div.left_col:first-child > div.banner_player_sec:nth-child(7)
 liveball.sx##div.custom_brand_mobile:nth-child(8) > a:first-child > img
 liveball.sx##div.catfish_sec:nth-child(12) > a.catfish_block:first-child > img.catfish
 liveball.sx##div.catfish_sec:nth-child(12)
