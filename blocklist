@@ -141,7 +141,14 @@ geofilms.net##div.center-1:nth-child(13) > div.baner-01.baner-1
 
 
 
+! liveball.sx
 
+
+liveball.sx##div.custom_brand_mobile:nth-child(8) > a:first-child > img
+liveball.sx##div.catfish_sec:nth-child(12) > a.catfish_block:first-child > img.catfish
+liveball.sx##div.catfish_sec:nth-child(12)
+liveball.sx##div.custom_brand_mobile:nth-child(8) > a:first-child
+liveball.sx##div.custom_brand_mobile:nth-child(8)
 
 
 
