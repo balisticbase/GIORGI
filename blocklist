@@ -168,6 +168,27 @@ liveball.sx##div.custom_brand_mobile:nth-child(8)
 
 
 
+! kinolab.cc
+
+
+kinolab.cc###bannerPlace1 > a > img
+kinolab.cc###bannerPlace2 > a > img
+kinolab.cc###bannerPlace3 > a > img
+kinolab.cc###closeBanner
+kinolab.cc###bannerPlace1 > a
+kinolab.cc###bannerPlace1
+kinolab.cc##section:nth-child(19) > div.center-1:nth-child(9) > div.full-baner-1:first-child > div.avc-asvla > div.c-baner-bg-1
+kinolab.cc###bannerPlace2 > a
+kinolab.cc###bannerPlace2
+kinolab.cc##section:nth-child(19) > div.center-1:nth-child(9) > div.lab-shida-6:last-child > div.full-baner-2:nth-child(2) > div.avc-asvla > div.c-baner-bg-2.c-baner-bg-1
+kinolab.cc###bannerPlace3 > a
+kinolab.cc###bannerPlace3
+kinolab.cc###topBanner
+kinolab.cc###topBanner > div.avc-asvla:last-child
+
+
+
+
 ! televiziebi.tv
 
 
