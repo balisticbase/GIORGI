@@ -32,12 +32,12 @@
 ! all-website-picture-ads
 
 
-||asvla2*$all
-||asvla*$all
-||banner*$all
-||adjarabet_ge*$all
-||promo*$all
-||asvla-cards*$all
+||*asvla2*$all
+||*asvla*$all
+||*banner*$all
+||*adjarabet_ge*$all
+||*promo*$all
+||*asvla-cards*$all
 
 
 ! ads-adsplay-video
