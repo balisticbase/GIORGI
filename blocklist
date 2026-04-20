@@ -259,6 +259,9 @@ croconet.cam##main:nth-child(5) > div.my_container:nth-child(10)
 ! mykadri.tv
 
 
+mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(6)
+mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(6) > center > a > img
+mykadri.tv##main:nth-child(4) > div.avc-asvla:nth-child(6) > center > a
 mykadri.tv###jf-container-tp2pmovie > div.jw-wrapper.jw-reset:nth-child(2) > div.jw-overlays.jw-reset:nth-child(9)
 mykadri.tv###jf-container-tp2pmovie_vast_static
 mykadri.tv###jf-container-tp2pmovie_vast
