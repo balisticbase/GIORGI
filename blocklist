@@ -6,15 +6,6 @@
 ! virus-domin-ad-direct-virus
 
 
-
-
-||metrika.yandex.ru^$third-party
-||appmetrica.yandex.ru^$third-party
-||log.fc.yahoo.com^$third-party
-||gemini.yahoo.com^$third-party
-||adtech.yahooinc.com^$third-party
-||udcm.yahoo.com^$third-party
-||ads-api.twitter.com^$third-party
 ||business-api.tiktok.com^$third-party
 ||ads-api.tiktok.com^$third-party
 ||ads-sg.tiktok.com^$third-party
