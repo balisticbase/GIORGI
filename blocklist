@@ -6,7 +6,7 @@
 ! virus-domin-ad-direct-virus
 
 
-! >??????
+
 
 ||metrika.yandex.ru^$third-party
 ||appmetrica.yandex.ru^$third-party
@@ -18,25 +18,6 @@
 ||business-api.tiktok.com^$third-party
 ||ads-api.tiktok.com^$third-party
 ||ads-sg.tiktok.com^$third-party
-||*/ads.js$script
-||*/ads*.js$script
-||*/pagead.js$script
-||*/advert*.js$script
-||*/adserve*$script
-||*/track*$third-party
-||*/analytics*$third-party
-||*/pixel*$third-party
-||*/beacon*$third-party
-||pagead.js$script,domain=adblock.turtlecute.org
-||/widget/ads^$script,domain=adblock.turtlecute.org
-adblock.turtlecute.org##.adbox.banner_ads.adsbox
-adblock.turtlecute.org##.textads
-||*$script,third-party
-
-
-! > ^ ?
-
-
 ||*google-analytics.com^$all
 ||*statline.cc^$all
 ||*g.doubleclick.net^$all
