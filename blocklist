@@ -6,9 +6,9 @@
 ! virus-domin-ad-direct-virus
 
 
-||business-api.tiktok.com^$third-party
-||ads-api.tiktok.com^$third-party
-||ads-sg.tiktok.com^$third-party
+||*business-api.tiktok.com^$third-party
+||*ads-api.tiktok.com^$third-party
+||*ads-sg.tiktok.com^$third-party
 ||*google-analytics.com^$all
 ||*statline.cc^$all
 ||*g.doubleclick.net^$all
