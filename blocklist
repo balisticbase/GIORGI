@@ -12,7 +12,7 @@
 ||*fedoq.com^$all
 ||*lIvpn.com^$all
 ||*dd133.com^$all
-||googletagmanager.com/gtag/js^
+||googletagmanager.com/gtag/js^$all
 ||*decafeligiblyhad.com^$all
 ||*business-api.tiktok.com^$third-party
 ||*ads-api.tiktok.com^$third-party
