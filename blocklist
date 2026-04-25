@@ -179,25 +179,6 @@ liveball.sx##div.custom_brand_mobile:nth-child(8)
 
 
 
-! adjaranet.bet
-
-
-! test
-
-adjaranet.bet##html.is-showfull > iframe:nth-child(5)
-adjaranet.bet##html.is-showfull.is-scrolled > iframe:nth-child(5)
-
-! test
-adjaranet.bet###bottomBanner > div > div:last-child > div:last-child > iframe
-adjaranet.bet###bottomBanner > div > div:last-child > div:last-child
-adjaranet.bet###bottomBanner > div > div:last-child > img:first-child
-adjaranet.bet###bottomBanner > div > div:last-child
-adjaranet.bet###bottomBanner > div
-adjaranet.bet###bottomBanner
-
-
-
-
 ! kinolab.cc
 
 
