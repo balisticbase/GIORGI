@@ -262,6 +262,7 @@ croconet.cam##main:nth-child(5) > div.my_container:nth-child(10)
 ! mykadri.tv
 
 
+mykadri.tv##img[alt="close"]
 mykadri.tv##main:nth-child(4) > section.section.section--dle-content.my-4:last-child > div.container > div.avc-asvla:first-child > center > a > img
 mykadri.tv##main:nth-child(4) > section.section.section--dle-content.my-4:last-child > div.container > div.avc-asvla:first-child > center > a
 mykadri.tv##main:nth-child(4) > section.section.section--dle-content.my-4:last-child > div.container > div.avc-asvla:first-child > center
