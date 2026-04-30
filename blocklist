@@ -262,6 +262,11 @@ croconet.cam##main:nth-child(5) > div.my_container:nth-child(10)
 ! mykadri.tv
 
 
+
+mykadri.tv##main:nth-child(2) > div.avc-asvla:nth-child(3)
+mykadri.tv##main:nth-child(2) > div.avc-asvla:nth-child(3) > center > a > img
+mykadri.tv##main:nth-child(2) > div.avc-asvla:nth-child(3) > center > a
+mykadri.tv##main:nth-child(2) > div.avc-asvla:nth-child(3) > center
 mykadri.tv##main:nth-child(2) > div.container:last-child > section.rentplace.text-center.mt-3:first-child > center:last-child > div.avc-asvla > a > img
 mykadri.tv##main:nth-child(2) > div.container:last-child > div.avc-asvla:nth-child(3) > center > a > img
 mykadri.tv##main:nth-child(2) > div.container:last-child > div.avc-asvla:nth-child(3) > center > a
