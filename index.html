@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AdStopper GE</title>
+</head>
+
+<body style="background:#0f172a;color:white;text-align:center;padding:50px;">
+
+<h1>🚫 AdStopper GE</h1>
+
+<p>One link = all filters</p>
+
+<button onclick="copy()">Copy AdGuard Link</button>
+
+<p id="link">
+https://your-worker-url.workers.dev/blocklist.txt
+</p>
+
+<script>
+function copy() {
+  navigator.clipboard.writeText(
+    document.getElementById("link").innerText
+  );
+  alert("Copied!");
+}
+</script>
+
+</body>
+</html>
