@@ -1,37 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AdStopper GE</title>
+<title>AdStopper GE Viewer</title>
+
+<style>
+body {
+  background:#0f172a;
+  color:white;
+  font-family:Arial;
+  padding:30px;
+}
+
+pre {
+  background:#1e293b;
+  padding:20px;
+  border-radius:10px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+button {
+  padding:10px 20px;
+  background:#22c55e;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  margin-bottom:20px;
+}
+</style>
 </head>
 
-<body style="background:#0f172a;color:white;text-align:center;padding:50px;">
+<body>
 
-<h1>🚫 AdStopper GE</h1>
+<h1>🚫 AdStopper GE - Rules Viewer</h1>
 
-<p>One link = all filters (AdGuard compatible)</p>
+<button onclick="loadRules()">📥 Load Rules</button>
 
-<button onclick="copy()">📋 Copy AdGuard Link</button>
-
-<p id="link">
-https://balisticbase.github.io/GIORGI/blocklist.txt
-</p>
-
-<hr style="margin:30px;opacity:0.3;">
-
-<p>🔧 Sources (for developers):</p>
-
-<small>
-https://github.com/balisticbase/GIORGI/raw/refs/heads/main/build.yml<br>
-https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/sources.txt
-</small>
+<pre id="output">Click button to load rules...</pre>
 
 <script>
-function copy() {
-  navigator.clipboard.writeText(
-    document.getElementById("link").innerText
-  );
-  alert("Copied!");
+async function loadRules() {
+  const url = "https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist";
+
+  document.getElementById("output").innerText = "Loading...";
+
+  try {
+    const res = await fetch(url);
+    const text = await res.text();
+
+    document.getElementById("output").innerText = text;
+  } catch (e) {
+    document.getElementById("output").innerText = "Error loading file";
+  }
 }
 </script>
 
