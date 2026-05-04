@@ -10,51 +10,89 @@ body {
   color:white;
   font-family:Arial;
   padding:30px;
+  text-align:center;
 }
 
 pre {
   background:#1e293b;
   padding:20px;
   border-radius:10px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  max-height: 80vh;
-  overflow-y: scroll;
+  text-align:left;
+  white-space:pre-wrap;
+  word-break:break-word;
+  max-height:70vh;
+  overflow:auto;
 }
+
 button {
-  padding:10px 20px;
-  background:#22c55e;
+  padding:12px 18px;
+  margin:10px;
   border:none;
   border-radius:8px;
   cursor:pointer;
-  margin-bottom:20px;
+  font-weight:bold;
 }
+
+.load { background:#3b82f6; color:white; }
+.copy { background:#22c55e; color:black; }
 </style>
 </head>
 
 <body>
 
-<h1>🚫 AdStopper GE - Rules Viewer</h1>
+<h1>🚫 AdStopper GE Viewer</h1>
 
-<button onclick="loadRules()">📥 Load Rules</button>
+<button class="load" onclick="loadRules()">📥 Load Rules</button>
+<button class="copy" onclick="copyAll()">📋 Copy All</button>
 
-<pre id="output">Click button to load rules...</pre>
+<pre id="output">Click "Load Rules"...</pre>
 
 <script>
-async function loadRules() {
+
+let fullText = "";
+
+async function loadRules(retry = 0) {
   const url = "https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist";
 
-  document.getElementById("output").innerText = "Loading...";
+  document.getElementById("output").innerText = "Loading rules...";
 
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, { cache: "no-cache" });
+
+    if (!res.ok) throw new Error("HTTP error");
+
     const text = await res.text();
 
-    document.getElementById("output").innerText = text;
+    if (!text || text.trim().length === 0) {
+      throw new Error("Empty file");
+    }
+
+    fullText = text;
+    document.getElementById("output").innerText = fullText;
+
   } catch (e) {
-    document.getElementById("output").innerText = "Error loading file";
+
+    if (retry < 2) {
+      document.getElementById("output").innerText = "Retrying...";
+
+      setTimeout(() => loadRules(retry + 1), 1500);
+    } else {
+      document.getElementById("output").innerText =
+        "Failed to load rules. Check GitHub file or network.";
+    }
   }
 }
+
+function copyAll() {
+  if (!fullText) {
+    alert("Load rules first!");
+    return;
+  }
+
+  navigator.clipboard.writeText(fullText);
+  alert("Copied!");
+}
+
 </script>
 
 </body>
