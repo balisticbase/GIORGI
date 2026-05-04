@@ -12,22 +12,31 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Build list
+      - name: Build clean list
         run: |
-          echo "! AdStopper GE Unified List" > blocklist.txt
+          echo "! AdStopper GE Clean Blocklist" > blocklist.txt
 
           while read url; do
             echo "Downloading $url"
-            curl -s $url >> blocklist.txt
-            echo "" >> blocklist.txt
+            curl -s "$url" >> temp.txt
+            echo "" >> temp.txt
           done < sources.txt
 
-          sort -u blocklist.txt -o blocklist.txt
+          # УБРАТЬ HTML И МУСОР
+          grep -v "<!DOCTYPE" temp.txt | \
+          grep -v "<html" | \
+          grep -v "Downloading" | \
+          grep -v "ERROR" > clean.txt
+
+          # убрать пустые строки + дубликаты
+          sed '/^\s*$/d' clean.txt | sort -u > blocklist.txt
+
+          rm temp.txt clean.txt
 
       - name: Commit
         run: |
           git config user.name "bot"
           git config user.email "bot@github.com"
           git add blocklist.txt
-          git commit -m "update list" || exit 0
+          git commit -m "update clean list" || exit 0
           git push
