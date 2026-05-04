@@ -1,0 +1,33 @@
+name: Build Blocklist
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build list
+        run: |
+          echo "! AdStopper GE Unified List" > blocklist.txt
+
+          while read url; do
+            echo "Downloading $url"
+            curl -s $url >> blocklist.txt
+            echo "" >> blocklist.txt
+          done < sources.txt
+
+          sort -u blocklist.txt -o blocklist.txt
+
+      - name: Commit
+        run: |
+          git config user.name "bot"
+          git config user.email "bot@github.com"
+          git add blocklist.txt
+          git commit -m "update list" || exit 0
+          git push
