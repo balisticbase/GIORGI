@@ -1,0 +1,3 @@
+https://filters.adtidy.org/ios/filters/2_optimized.txt
+https://filters.adtidy.org/ios/filters/11_optimized.txt
+https://raw.githubusercontent.com/balisticbase/GIORGI/main/blocklist
