@@ -1,97 +1,194 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ka">
 <head>
 <meta charset="UTF-8">
-<title>AdStopper GE Viewer</title>
+<title>AdStopper GE</title>
 
 <style>
-body {
-  background:#0f172a;
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+  background:#0b0f19;
+  color:#e5e7eb;
+}
+
+/* WARNING */
+.warning{
+  background:linear-gradient(90deg,#f59e0b,#ef4444);
+  text-align:center;
+  padding:10px;
+  font-size:13px;
+}
+
+/* CONTAINER */
+.container{
+  max-width:1100px;
+  margin:0 auto;
+  padding:0 20px;
+}
+
+/* HEADER */
+.header{
+  display:flex;
+  justify-content:space-between;
+  padding:20px 0;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+
+/* HERO */
+.hero{
+  text-align:center;
+  padding:60px 0 30px;
+}
+
+.hero h1{
+  font-size:34px;
+}
+
+.hero p{
+  color:#9ca3af;
+  max-width:600px;
+  margin:auto;
+  line-height:1.6;
+}
+
+/* CTA */
+.cta button{
+  margin-top:20px;
+  padding:14px 22px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(90deg,#22c55e,#3b82f6,#a855f7);
   color:white;
-  font-family:Arial;
-  padding:30px;
+  cursor:pointer;
+}
+
+/* STATS */
+.stats{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  margin:20px 0;
+}
+
+.stat{
+  background:#020617;
+  padding:15px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.05);
   text-align:center;
 }
 
-pre {
-  background:#1e293b;
-  padding:20px;
-  border-radius:10px;
-  text-align:left;
-  white-space:pre-wrap;
-  word-break:break-word;
-  max-height:70vh;
-  overflow:auto;
+/* BUTTONS */
+.actions{
+  text-align:center;
+  margin:20px 0;
 }
 
-button {
-  padding:12px 18px;
-  margin:10px;
-  border:none;
+button{
+  padding:10px 15px;
+  margin:5px;
   border-radius:8px;
+  border:none;
   cursor:pointer;
-  font-weight:bold;
 }
 
-.load { background:#3b82f6; color:white; }
-.copy { background:#22c55e; color:black; }
+.primary{background:white;color:black;}
+.secondary{background:#1f2937;color:white;}
+.telegram{background:#0088cc;color:white;}
+
+/* OUTPUT */
+pre{
+  background:#020617;
+  padding:15px;
+  border-radius:10px;
+  max-height:40vh;
+  overflow:auto;
+  border:1px solid rgba(255,255,255,0.05);
+}
 </style>
 </head>
 
 <body>
 
-<h1>🚫 AdStopper GE Viewer</h1>
+<div class="warning">
+⚠️ თუ რეკლამა აღარ იბლოკება — განაახლე წესები ან დაუკავშირდი ადმინისტრატორს
+</div>
 
-<button class="load" onclick="loadRules()">📥 Load Rules</button>
-<button class="copy" onclick="copyAll()">📋 Copy All</button>
+<div class="container">
 
-<pre id="output">Click "Load Rules"...</pre>
+<div class="header">
+  <div>AdStopper GE</div>
+  <div>ღია კოდი</div>
+</div>
+
+<div class="hero">
+  <h1>რეკლამის ბლოკირება</h1>
+  <p>
+    სისტემა ბლოკავს რეკლამებს, აჩერებს ტრეკინგს და იცავს მომხმარებელს.
+    ყველა წესი ღიაა და ხელმისაწვდომია.
+  </p>
+
+  <div class="cta">
+    <button onclick="loadRules()">🔄 განახლება</button>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat">
+    <div id="ruleCount">0</div>
+    <small>წესი</small>
+  </div>
+</div>
+
+<div class="actions">
+  <button class="primary" onclick="loadRules()">ჩატვირთვა</button>
+  <button class="secondary" onclick="copyAll()">კოპირება</button>
+  <button class="telegram" onclick="contactAdmin()">💬 ადმინისტრატორი</button>
+</div>
+
+<pre id="output">დააჭირე ჩატვირთვას</pre>
+
+</div>
 
 <script>
+let fullText="";
 
-let fullText = "";
+async function loadRules(){
+  const url="https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist";
 
-async function loadRules(retry = 0) {
-  const url = "https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist";
+  try{
+    const res=await fetch(url);
+    const text=await res.text();
 
-  document.getElementById("output").innerText = "Loading rules...";
+    fullText=text;
 
-  try {
-    const res = await fetch(url, { cache: "no-cache" });
+    // მხოლოდ ნაწილი ჩანს (დაცვა)
+    document.getElementById("output").innerText =
+      text.substring(0, 600) + "\n\n🔒 სრული სია დაცულია";
 
-    if (!res.ok) throw new Error("HTTP error");
+    let count=text.split("\n").length;
+    document.getElementById("ruleCount").innerText=count;
 
-    const text = await res.text();
-
-    if (!text || text.trim().length === 0) {
-      throw new Error("Empty file");
-    }
-
-    fullText = text;
-    document.getElementById("output").innerText = fullText;
-
-  } catch (e) {
-
-    if (retry < 2) {
-      document.getElementById("output").innerText = "Retrying...";
-
-      setTimeout(() => loadRules(retry + 1), 1500);
-    } else {
-      document.getElementById("output").innerText =
-        "Failed to load rules. Check GitHub file or network.";
-    }
+  }catch{
+    document.getElementById("output").innerText="შეცდომა";
   }
 }
 
-function copyAll() {
-  if (!fullText) {
-    alert("Load rules first!");
-    return;
-  }
-
+function copyAll(){
+  if(!fullText)return alert("ჯერ ჩატვირთე");
   navigator.clipboard.writeText(fullText);
-  alert("Copied!");
 }
+
+function contactAdmin(){
+  window.open("https://t.me/ioscrackonline","_blank");
+}
+
+/* 🔒 БЛОК копирования и правого клика */
+document.addEventListener("copy", e => e.preventDefault());
+document.addEventListener("contextmenu", e => e.preventDefault());
 
 </script>
 
