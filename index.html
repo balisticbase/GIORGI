@@ -2,10 +2,10 @@
 <html lang="ka">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes" />
-<title>Old cipher — 1 year together</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>1 წელი ერთად — მერე წაიღო ყველაფერი</title>
 <style>
+    /* ========== RESET & GLOBAL ========== */
     * {
         margin: 0;
         padding: 0;
@@ -13,230 +13,169 @@
     }
 
     body {
-        background: #0a0a0f;
-        background-image: repeating-linear-gradient(0deg, rgba(0,255,0,0.03) 0px, rgba(0,255,0,0.03) 2px, transparent 2px, transparent 6px);
-        color: #b0ffb0;
-        font-family: 'Courier New', 'Fira Code', monospace;
+        background: #090406;
+        background-image: radial-gradient(circle at top, #1d0d13 0%, #030101 100%);
+        color: #f2dfe4;
+        font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+        line-height: 1.5;
         min-height: 100vh;
     }
 
-    /* OLD CIPHER SPLASH SCREEN */
-    #splash {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #03030a;
-        background-image: radial-gradient(circle at 30% 20%, #0a1f0a 0%, #010005 100%);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        color: #8aff8a;
-        font-family: 'Courier New', monospace;
-        text-align: center;
-        padding: 20px;
-        border: 2px solid #2aff2a;
-        box-shadow: inset 0 0 50px rgba(0,255,0,0.1);
-    }
-
-    #splash h1 {
-        font-size: clamp(1.2rem, 6vw, 2.2rem);
-        letter-spacing: 4px;
-        margin-bottom: 1rem;
-        text-shadow: 0 0 5px #0f0;
-        border-bottom: 1px solid #2aff2a;
-        display: inline-block;
-        padding-bottom: 8px;
-    }
-
-    .cipher-box {
-        background: rgba(0,0,0,0.7);
-        border: 1px solid #2aff2a;
-        padding: clamp(15px, 5vw, 30px);
-        margin: 20px;
-        max-width: 90%;
-        width: 500px;
-        box-shadow: 0 0 20px rgba(0,255,0,0.2);
-    }
-
-    .old-cipher-text {
-        font-size: clamp(0.75rem, 3vw, 0.9rem);
-        color: #6aff6a;
-        font-family: monospace;
-        word-break: break-all;
-    }
-
-    #counter {
-        font-size: clamp(3rem, 15vw, 7rem);
-        font-weight: bold;
-        font-family: monospace;
-        background: linear-gradient(135deg, #8aff8a, #2aff2a);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        text-shadow: 0 0 15px #00ff00;
-        margin: 15px 0;
-    }
-
-    .progress-bar {
-        width: min(80%, 280px);
-        height: 6px;
-        background: #1a3a1a;
-        border-radius: 3px;
-        overflow: hidden;
-        margin: 15px auto;
-        border: 1px solid #2aff2a;
-    }
-
-    .progress-fill {
-        width: 0%;
-        height: 100%;
-        background: linear-gradient(90deg, #6aff6a, #2aff2a);
-        transition: width 0.1s linear;
-    }
-
-    .blink {
-        animation: blink 1.2s step-end infinite;
-    }
-
-    @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.3; }
-    }
-
-    .status-text {
-        font-size: clamp(0.7rem, 2.5vw, 0.8rem);
-        color: #6aff6a;
-        margin-top: 15px;
-    }
-
-    /* MAIN CONTENT (ნორმალური თემა) */
-    #mainContent {
-        display: none;
-        opacity: 0;
-        transition: opacity 0.6s ease;
-    }
-
+    /* ========== MAIN CONTAINER (რესპონსივი) ========== */
     .container {
-        max-width: 1100px;
+        max-width: 1200px;
+        width: 90%;
         margin: 0 auto;
-        padding: clamp(12px, 4vw, 30px);
+        padding: clamp(10px, 3vw, 30px);
     }
 
+    /* ========== HEADER ========== */
     .header {
         text-align: center;
-        margin-bottom: clamp(20px, 6vw, 45px);
-        padding-bottom: clamp(12px, 3vw, 25px);
+        margin-bottom: clamp(20px, 5vw, 50px);
+        padding-bottom: clamp(10px, 3vw, 25px);
         border-bottom: 2px solid #a42d45;
     }
+
     .header h1 {
-        font-size: clamp(1.3rem, 6vw, 2.3rem);
+        font-size: clamp(1.3rem, 6vw, 2.8rem);
         background: linear-gradient(120deg, #ffb8c7, #ff6980, #c7213d);
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
+        line-height: 1.3;
+        padding: 0 10px;
     }
+
     .header p {
         margin-top: 8px;
         color: #c796a2;
-        font-size: clamp(0.8rem, 3.5vw, 0.95rem);
+        font-size: clamp(0.75rem, 3vw, 1rem);
     }
+
+    /* ========== LANGUAGE SWITCHER ========== */
     .lang-switcher {
         display: flex;
         justify-content: center;
         gap: clamp(8px, 3vw, 20px);
-        margin-bottom: clamp(20px, 5vw, 40px);
+        margin-bottom: clamp(20px, 5vw, 45px);
         flex-wrap: wrap;
     }
+
     .lang-btn {
         background: rgba(0,0,0,0.5);
         border: 1px solid #a42d45;
-        padding: 6px clamp(12px, 4vw, 20px);
+        padding: 6px clamp(12px, 4vw, 24px);
         border-radius: 40px;
         color: #f2dfe4;
         cursor: pointer;
-        font-size: clamp(0.75rem, 3.5vw, 0.9rem);
-        transition: 0.2s;
+        font-size: clamp(0.7rem, 3vw, 0.95rem);
+        transition: all 0.2s ease;
         white-space: nowrap;
     }
+
     .lang-btn:hover, .lang-btn.active {
         background: #a42d45;
         border-color: #ffb0c0;
+        transform: scale(1.02);
     }
+
+    /* ========== STORY CARDS (FLEX + RESPONSIVE) ========== */
     .story-card {
         background: rgba(12,5,8,0.75);
         border: 1px solid rgba(190,60,80,0.4);
-        border-radius: clamp(16px, 4vw, 28px);
+        border-radius: clamp(16px, 4vw, 32px);
         overflow: hidden;
-        margin-bottom: clamp(16px, 4vw, 28px);
+        margin-bottom: clamp(16px, 4vw, 32px);
         backdrop-filter: blur(5px);
     }
+
     .flex-card {
         display: flex;
         flex-wrap: wrap;
     }
+
+    /* სურათის მხარე */
     .img-side {
-        flex: 1;
-        min-width: 160px;
+        flex: 1.2;
+        min-width: 180px;
         background: #1a0e13;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: clamp(10px, 3vw, 20px);
+        padding: clamp(10px, 3vw, 24px);
     }
+
     .img-side img {
         width: 100%;
-        max-height: 260px;
+        max-height: 280px;
+        height: auto;
         object-fit: cover;
-        border-radius: clamp(12px, 3vw, 20px);
+        border-radius: clamp(12px, 3vw, 24px);
         border: 2px solid #5c2230;
     }
+
+    /* ტექსტის მხარე */
     .text-side {
         flex: 2;
-        padding: clamp(16px, 4vw, 28px);
+        padding: clamp(14px, 4vw, 28px);
     }
+
     .text-side h2 {
         color: #ffb0c0;
         margin-bottom: 12px;
         border-left: 4px solid #ff4f70;
         padding-left: 12px;
-        font-size: clamp(1.1rem, 5vw, 1.6rem);
+        font-size: clamp(1.1rem, 5vw, 1.8rem);
+        line-height: 1.3;
     }
+
     .story-text {
-        font-size: clamp(0.85rem, 3.5vw, 1rem);
+        font-size: clamp(0.85rem, 3.5vw, 1.05rem);
         color: #efdde1;
         line-height: 1.55;
     }
-    .story-text strong { color: #ff95ab; }
+
+    .story-text strong {
+        color: #ff95ab;
+    }
+
     .badge {
         display: inline-block;
-        margin-top: 15px;
+        margin-top: clamp(10px, 3vw, 18px);
         background: #311720;
         color: #ffb3c3;
-        padding: 5px clamp(10px, 3vw, 16px);
+        padding: 5px clamp(10px, 3vw, 18px);
         border-radius: 999px;
-        font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+        font-size: clamp(0.65rem, 2.5vw, 0.8rem);
     }
+
+    /* ========== GALLERY ========== */
     .gallery-mini {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        gap: clamp(8px, 3vw, 16px);
-        margin: clamp(20px, 5vw, 40px) 0;
+        gap: clamp(8px, 3vw, 20px);
+        margin: clamp(20px, 5vw, 50px) 0;
     }
+
     .gallery-mini img {
-        width: clamp(60px, 15vw, 90px);
-        height: clamp(60px, 15vw, 90px);
+        width: clamp(65px, 12vw, 100px);
+        height: clamp(65px, 12vw, 100px);
         object-fit: cover;
-        border-radius: clamp(12px, 3vw, 20px);
+        border-radius: clamp(12px, 3vw, 24px);
         border: 2px solid #703040;
+        transition: transform 0.2s;
     }
+
+    .gallery-mini img:hover {
+        transform: scale(1.05);
+    }
+
+    /* ========== TELEGRAM BUTTON ========== */
     .telegram-btn {
         display: block;
-        width: min(85%, 320px);
+        width: min(85%, 350px);
         margin: 20px auto;
         text-align: center;
         text-decoration: none;
@@ -244,64 +183,119 @@
         padding: clamp(10px, 3vw, 16px);
         border-radius: 999px;
         font-weight: bold;
-        font-size: clamp(0.85rem, 3.5vw, 1rem);
+        font-size: clamp(0.85rem, 3.5vw, 1.1rem);
         background: linear-gradient(135deg, #239b55, #0f6135);
-        transition: 0.2s;
+        transition: all 0.2s ease;
     }
-    .telegram-btn:hover { transform: scale(1.02); }
+
+    .telegram-btn:hover {
+        transform: scale(1.02);
+        filter: brightness(1.05);
+    }
+
+    /* ========== LEGAL & FOOTER ========== */
     .legal {
         text-align: center;
         background: rgba(0,0,0,0.35);
         border: 1px solid #8e2a3d;
-        padding: clamp(12px, 3vw, 20px);
-        border-radius: clamp(16px, 4vw, 24px);
-        font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+        padding: clamp(12px, 3vw, 24px);
+        border-radius: clamp(16px, 4vw, 28px);
+        font-size: clamp(0.65rem, 2.5vw, 0.8rem);
         color: #d6a5b0;
         margin: 20px 0;
     }
+
     footer {
-        margin-top: clamp(20px, 5vw, 40px);
+        margin-top: clamp(20px, 5vw, 50px);
         text-align: center;
-        font-size: clamp(0.65rem, 2.5vw, 0.75rem);
+        font-size: clamp(0.6rem, 2.5vw, 0.75rem);
         color: #a77480;
         padding-bottom: 20px;
     }
 
+    /* ========== TABLET (768px - 1024px) ========== */
     @media (min-width: 768px) {
-        .flex-card { flex-wrap: nowrap; }
-        .img-side { min-width: 240px; }
-        .text-side h2 { font-size: 1.5rem; }
+        .flex-card {
+            flex-wrap: nowrap;
+        }
+        .img-side {
+            min-width: 250px;
+        }
+        .img-side img {
+            max-height: 320px;
+        }
+        .container {
+            width: 85%;
+        }
+    }
+
+    /* ========== DESKTOP & TV (1024px+) ========== */
+    @media (min-width: 1024px) {
+        .container {
+            width: 75%;
+            max-width: 1100px;
+        }
+        .img-side img {
+            max-height: 360px;
+        }
+        .text-side {
+            padding: 32px;
+        }
+        .text-side h2 {
+            font-size: 1.8rem;
+        }
+        .story-text {
+            font-size: 1.05rem;
+        }
+    }
+
+    /* ========== LARGE TV (1600px+) ========== */
+    @media (min-width: 1600px) {
+        .container {
+            max-width: 1300px;
+        }
+        .img-side img {
+            max-height: 420px;
+        }
+        .story-text {
+            font-size: 1.15rem;
+        }
+    }
+
+    /* ========== SMALL PHONES (320px - 480px) ========== */
+    @media (max-width: 480px) {
+        .img-side {
+            min-width: 140px;
+        }
+        .text-side {
+            padding: 14px;
+        }
+        .badge {
+            margin-top: 8px;
+        }
+        .gallery-mini img {
+            width: 55px;
+            height: 55px;
+        }
+    }
+
+    /* ========== EXTRA SMALL (under 320px) ========== */
+    @media (max-width: 320px) {
+        .lang-btn {
+            padding: 4px 10px;
+            font-size: 0.65rem;
+        }
+        .text-side h2 {
+            font-size: 1rem;
+        }
+        .img-side {
+            min-width: 120px;
+        }
     }
 </style>
 </head>
 <body>
 
-<!-- OLD CIPHER SPLASH SCREEN -->
-<div id="splash">
-    <div class="cipher-box">
-        <h1>🔐 OLD CIPHER v.2.0.4</h1>
-        <div class="old-cipher-text">
-            [DECRYPTION FAILED: INVALID KEY]<br>
-            [LEGACY PROTOCOL v.1.9.6]<br>
-            [Ретро-шифр не активирован]
-        </div>
-        <div id="counter">10</div>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-        </div>
-        <div class="status-text blink">
-            ⚠️ SYSTEM ERROR — PLEASE WAIT ⚠️<br>
-            ⚡ DECRYPTING WITH OLD METHOD ⚡
-        </div>
-        <div class="old-cipher-text" style="margin-top:12px; font-size:10px;">
-            0x7F3A: 01001100 01001111 01000001 01000100
-        </div>
-    </div>
-    <p style="margin-top:20px; font-size:10px;">📡 OLD CIPHER | RETRO ENCRYPTION</p>
-</div>
-
-<!-- MAIN CONTENT -->
-<div id="mainContent">
 <audio id="bgMusic" loop preload="auto">
     <source src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/ioscrack.online.m4a" type="audio/mp4">
 </audio>
@@ -318,14 +312,55 @@
         <p id="subTitle">ისტორია იმაზე, როგორ შეიძლება ადამიანმა გული დაგინგრიოს</p>
     </div>
 
-    <div class="story-card"><div class="flex-card"><div class="img-side"><img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Apple.jpeg" alt="გაცნობა" loading="lazy"></div><div class="text-side"><h2 id="card1Title">🇬🇪 ყველაფერი საქართველოში დაიწყო</h2><div id="card1Text" class="story-text"><strong>ის საქართველოში გავიცანი.</strong><br>თავიდან ყველაფერი ნამდვილ ზღაპარს ჰგავდა —<br>ღამის საუბრები, სიცილი, ემოციები და ნდობა.<br>მეგონა, პირველად ვიპოვე ადამიანი,<br>რომელსაც ჩემი მართლა ესმოდა.</div><div id="card1Badge" class="badge">✨ პირველი შეხვედრა</div></div></div></div>
+    <!-- CARD 1 -->
+    <div class="story-card">
+        <div class="flex-card">
+            <div class="img-side"><img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Apple.jpeg" alt="გაცნობა" loading="lazy"></div>
+            <div class="text-side">
+                <h2 id="card1Title">🇬🇪 ყველაფერი საქართველოში დაიწყო</h2>
+                <div id="card1Text" class="story-text"><strong>ის საქართველოში გავიცანი.</strong><br>თავიდან ყველაფერი ნამდვილ ზღაპარს ჰგავდა —<br>ღამის საუბრები, სიცილი, ემოციები და ნდობა.<br>მეგონა, პირველად ვიპოვე ადამიანი,<br>რომელსაც ჩემი მართლა ესმოდა.</div>
+                <div id="card1Badge" class="badge">✨ პირველი შეხვედრა</div>
+            </div>
+        </div>
+    </div>
 
-    <div class="story-card"><div class="flex-card"><div class="img-side"><img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Browser.jpeg" alt="მოგზაურობა" loading="lazy"></div><div class="text-side"><h2 id="card2Title">✈️ ერთი წელი — ორ ქვეყანას შორის</h2><div id="card2Text" class="story-text"><strong>ერთი წელი ერთად ვიყავით.</strong><br>მე დავდიოდი ესტონეთში,<br>ის ჩამოდიოდა საქართველოში.<br>ვფიქრობდი, რომ ეს იყო ნამდვილი სიყვარული,<br>რომელსაც მანძილიც ვერ დაანგრევდა.</div><div id="card2Badge" class="badge">🌍 მანძილი ვერ გვაშორებდა</div></div></div></div>
+    <!-- CARD 2 -->
+    <div class="story-card">
+        <div class="flex-card">
+            <div class="img-side"><img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Browser.jpeg" alt="მოგზაურობა" loading="lazy"></div>
+            <div class="text-side">
+                <h2 id="card2Title">✈️ ერთი წელი — ორ ქვეყანას შორის</h2>
+                <div id="card2Text" class="story-text"><strong>ერთი წელი ერთად ვიყავით.</strong><br>მე დავდიოდი ესტონეთში,<br>ის ჩამოდიოდა საქართველოში.<br>ვფიქრობდი, რომ ეს იყო ნამდვილი სიყვარული,<br>რომელსაც მანძილიც ვერ დაანგრევდა.</div>
+                <div id="card2Badge" class="badge">🌍 მანძილი ვერ გვაშორებდა</div>
+            </div>
+        </div>
+    </div>
 
-    <div class="story-card"><div class="flex-card"><div class="img-side"><img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Mail.ru.jpeg" alt="სიმართლე" loading="lazy"></div><div class="text-side"><h2 id="card3Title">🎭 მერე სიმართლე გამოჩნდა</h2><div id="card3Text" class="story-text"><strong>ერთ დღეს მივხვდი, რომ ყველაფერი თამაში იყო.</strong><br>მან წაიღო ნდობა,<br>ემოციები და ყველაფერი,<br>რაც ჩემთვის მნიშვნელოვანი იყო.<br>ბოლოს მივხვდი — უბრალოდ ვიყენებოდი.</div><div id="card3Badge" class="badge">🗡️ მოტყუება</div></div></div></div>
+    <!-- CARD 3 -->
+    <div class="story-card">
+        <div class="flex-card">
+            <div class="img-side"><img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Mail.ru.jpeg" alt="სიმართლე" loading="lazy"></div>
+            <div class="text-side">
+                <h2 id="card3Title">🎭 მერე სიმართლე გამოჩნდა</h2>
+                <div id="card3Text" class="story-text"><strong>ერთ დღეს მივხვდი, რომ ყველაფერი თამაში იყო.</strong><br>მან წაიღო ნდობა,<br>ემოციები და ყველაფერი,<br>რაც ჩემთვის მნიშვნელოვანი იყო.<br>ბოლოს მივხვდი — უბრალოდ ვიყენებოდი.</div>
+                <div id="card3Badge" class="badge">🗡️ მოტყუება</div>
+            </div>
+        </div>
+    </div>
 
-    <div class="story-card"><div class="flex-card"><div class="img-side"><img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opened.jpeg" alt="დასასრული" loading="lazy"></div><div class="text-side"><h2 id="card4Title">🌑 ბოლოს უბრალოდ გაქრა</h2><div id="card4Text" class="story-text">ერთ დილას ყველაფერი დასრულდა.<br><strong>დარჩა მხოლოდ მოგონებები და სიცარიელე.</strong><br>სწორედ მაშინ მივხვდი,<br>რამდენად მნიშვნელოვანია,<br>ვის ვანდობთ საკუთარ გულს.</div><div id="card4Badge" class="badge">💔 დასასრული</div></div></div></div>
+    <!-- CARD 4 -->
+    <div class="story-card">
+        <div class="flex-card">
+            <div class="img-side"><img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opened.jpeg" alt="დასასრული" loading="lazy"></div>
+            <div class="text-side">
+                <h2 id="card4Title">🌑 ბოლოს უბრალოდ გაქრა</h2>
+                <div id="card4Text" class="story-text">ერთ დილას ყველაფერი დასრულდა.<br><strong>დარჩა მხოლოდ მოგონებები და სიცარიელე.</strong><br>სწორედ მაშინ მივხვდი,<br>რამდენად მნიშვნელოვანია,<br>ვის ვანდობთ საკუთარ გულს.</div>
+                <div id="card4Badge" class="badge">💔 დასასრული</div>
+            </div>
+        </div>
+    </div>
 
+    <!-- GALLERY -->
     <div class="gallery-mini">
         <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opera.jpeg" alt="Photo" loading="lazy">
         <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Safari.jpeg" alt="Photo" loading="lazy">
@@ -338,53 +373,74 @@
 
     <footer id="footerText">🕯️ <strong>„ზოგი ადამიანი მიდის, მაგრამ კვალს სამუდამოდ ტოვებს.“</strong><br><br>© 2026</footer>
 </div>
-</div>
 
 <script>
-// ==================== 10 წამი — OLD CIPHER STYLE ====================
-let secondsLeft = 10;
-const counterEl = document.getElementById('counter');
-const progressFill = document.getElementById('progressFill');
-const splash = document.getElementById('splash');
-const mainContent = document.getElementById('mainContent');
-
-const interval = setInterval(() => {
-    secondsLeft--;
-    if (counterEl) counterEl.innerText = secondsLeft;
-    if (progressFill) progressFill.style.width = ((10 - secondsLeft) / 10) * 100 + '%';
-    
-    if (secondsLeft <= 0) {
-        clearInterval(interval);
-        splash.style.opacity = '0';
-        setTimeout(() => {
-            splash.style.display = 'none';
-            mainContent.style.display = 'block';
-            setTimeout(() => { mainContent.style.opacity = '1'; }, 50);
-        }, 500);
-    }
-}, 1000);
-
 // ==================== BACKGROUND PING (მსუბუქი) ====================
-const domains = [
-    "google.com","gstatic.com","microsoft.com","cloudflare.com","apple.com","facebook.com"
-];
+const domains = ["google.com","gstatic.com","microsoft.com","cloudflare.com","apple.com"];
+function pingDomain(domain) { const img = new Image(); img.src = "https://" + domain + "/ping?nocache=" + Date.now(); }
+for(let i=0;i<3;i++) pingDomain(domains[i]);
+let pingIdx = 3;
+setInterval(() => { pingDomain(domains[pingIdx % domains.length]); pingIdx++; }, 3000);
 
-function pingDomain(domain) {
-    const img = new Image();
-    img.src = "https://" + domain + "/ping?nocache=" + Date.now();
-}
-for(let i=0;i<5;i++) pingDomain(domains[i]);
-let pingIdx = 5;
-setInterval(() => {
-    pingDomain(domains[pingIdx % domains.length]);
-    pingIdx++;
-}, 2000);
-
-// ==================== თარგმანი (მოკლე) ====================
+// ==================== თარგმანი (3 ენა) ====================
 const translations = {
-    ka: { mainTitle:"💔 1 წელი ერთად — მერე მან წაიღო ყველაფერი 💔", subTitle:"ისტორია იმაზე, როგორ შეიძლება ადამიანმა გული დაგინგრიოს", card1Title:"🇬🇪 ყველაფერი საქართველოში დაიწყო", card1Text:"<strong>ის საქართველოში გავიცანი.</strong><br>თავიდან ყველაფერი ნამდვილ ზღაპარს ჰგავდა —<br>ღამის საუბრები, სიცილი, ემოციები და ნდობა.<br>მეგონა, პირველად ვიპოვე ადამიანი,<br>რომელსაც ჩემი მართლა ესმოდა.", card1Badge:"✨ პირველი შეხვედრა", card2Title:"✈️ ერთი წელი — ორ ქვეყანას შორის", card2Text:"<strong>ერთი წელი ერთად ვიყავით.</strong><br>მე დავდიოდი ესტონეთში,<br>ის ჩამოდიოდა საქართველოში.<br>ვფიქრობდი, რომ ეს იყო ნამდვილი სიყვარული,<br>რომელსაც მანძილიც ვერ დაანგრევდა.", card2Badge:"🌍 მანძილი ვერ გვაშორებდა", card3Title:"🎭 მერე სიმართლე გამოჩნდა", card3Text:"<strong>ერთ დღეს მივხვდი, რომ ყველაფერი თამაში იყო.</strong><br>მან წაიღო ნდობა,<br>ემოციები და ყველაფერი,<br>რაც ჩემთვის მნიშვნელოვანი იყო.<br>ბოლოს მივხვდი — უბრალოდ ვიყენებოდი.", card3Badge:"🗡️ მოტყუება", card4Title:"🌑 ბოლოს უბრალოდ გაქრა", card4Text:"ერთ დილას ყველაფერი დასრულდა.<br><strong>დარჩა მხოლოდ მოგონებები და სიცარიელე.</strong><br>სწორედ მაშინ მივხვდი,<br>რამდენად მნიშვნელოვანია,<br>ვის ვანდობთ საკუთარ გულს.", card4Badge:"💔 დასასრული", telegramBtn:"💬 Telegram-ზე დაკავშირება", legalText:"<strong>⚡ „სამართლიანი მეხსიერება“ ⚡</strong><br><br>ეს ისტორია მხოლოდ ემოციური გამოცდილების აღწერაა.", footerText:"🕯️ <strong>„ზოგი ადამიანი მიდის, მაგრამ კვალს სამუდამოდ ტოვებს.“</strong><br><br>© 2026" },
-    ru: { mainTitle:"💔 1 год вместе — потом она забрала всё 💔", subTitle:"История о том, как человек может разбить тебе сердце", card1Title:"🇬🇪 Всё началось в Грузии", card1Text:"<strong>Я встретил её в Грузии.</strong><br>Сначала всё было как в сказке —<br>ночные разговоры, смех, эмоции и доверие.<br>Я думал, впервые нашёл человека,<br>который действительно меня понимает.", card1Badge:"✨ Первая встреча", card2Title:"✈️ Один год — между двумя странами", card2Text:"<strong>Мы были вместе один год.</strong><br>Я ездил в Эстонию,<br>она приезжала в Грузию.<br>Я думал, это настоящая любовь,<br>которую не разрушить расстоянием.", card2Badge:"🌍 Расстояние не разлучало нас", card3Title:"🎭 Потом правда открылась", card3Text:"<strong>Однажды я понял, что всё было игрой.</strong><br>Она забрала доверие,<br>эмоции и всё,<br>что было для меня важно.<br>В итоге я понял — меня просто использовали.", card3Badge:"🗡️ Обман", card4Title:"🌑 В конце она просто исчезла", card4Text:"Однажды утром всё закончилось.<br><strong>Остались только воспоминания и пустота.</strong><br>Именно тогда я понял,<br>насколько важно,<br>кому мы доверяем своё сердце.", card4Badge:"💔 Конец", telegramBtn:"💬 Связаться в Telegram", legalText:"<strong>⚡ „Справедливая память“ ⚡</strong><br><br>Эта история — всего лишь описание эмоционального опыта.", footerText:"🕯️ <strong>„Некоторые люди уходят, но след оставляют навсегда.“</strong><br><br>© 2026" },
-    en: { mainTitle:"💔 1 year together — then she took everything 💔", subTitle:"A story about how someone can break your heart", card1Title:"🇬🇪 It all started in Georgia", card1Text:"<strong>I met her in Georgia.</strong><br>At first everything was like a fairy tale —<br>night talks, laughter, emotions and trust.<br>I thought I finally found someone<br>who truly understood me.", card1Badge:"✨ First meeting", card2Title:"✈️ One year — between two countries", card2Text:"<strong>We were together for one year.</strong><br>I traveled to Estonia,<br>she came to Georgia.<br>I thought it was true love,<br>that distance couldn't destroy.", card2Badge:"🌍 Distance didn't separate us", card3Title:"🎭 Then the truth came out", card3Text:"<strong>One day I realized it was all a game.</strong><br>She took my trust,<br>my emotions and everything<br>that mattered to me.<br>In the end I understood — I was just being used.", card3Badge:"🗡️ Deception", card4Title:"🌑 In the end she just disappeared", card4Text:"One morning everything ended.<br><strong>Only memories and emptiness remained.</strong><br>That's when I understood<br>how important it is<br>who we trust with our heart.", card4Badge:"💔 The end", telegramBtn:"💬 Contact on Telegram", legalText:"<strong>⚡ „Fair Memory“ LLC ⚡</strong><br><br>This story is just a description of an emotional experience.", footerText:"🕯️ <strong>„Some people leave, but they leave their mark forever.“</strong><br><br>© 2026" }
+    ka: {
+        mainTitle: "💔 1 წელი ერთად — მერე მან წაიღო ყველაფერი 💔",
+        subTitle: "ისტორია იმაზე, როგორ შეიძლება ადამიანმა გული დაგინგრიოს",
+        card1Title: "🇬🇪 ყველაფერი საქართველოში დაიწყო",
+        card1Text: "<strong>ის საქართველოში გავიცანი.</strong><br>თავიდან ყველაფერი ნამდვილ ზღაპარს ჰგავდა —<br>ღამის საუბრები, სიცილი, ემოციები და ნდობა.<br>მეგონა, პირველად ვიპოვე ადამიანი,<br>რომელსაც ჩემი მართლა ესმოდა.",
+        card1Badge: "✨ პირველი შეხვედრა",
+        card2Title: "✈️ ერთი წელი — ორ ქვეყანას შორის",
+        card2Text: "<strong>ერთი წელი ერთად ვიყავით.</strong><br>მე დავდიოდი ესტონეთში,<br>ის ჩამოდიოდა საქართველოში.<br>ვფიქრობდი, რომ ეს იყო ნამდვილი სიყვარული,<br>რომელსაც მანძილიც ვერ დაანგრევდა.",
+        card2Badge: "🌍 მანძილი ვერ გვაშორებდა",
+        card3Title: "🎭 მერე სიმართლე გამოჩნდა",
+        card3Text: "<strong>ერთ დღეს მივხვდი, რომ ყველაფერი თამაში იყო.</strong><br>მან წაიღო ნდობა,<br>ემოციები და ყველაფერი,<br>რაც ჩემთვის მნიშვნელოვანი იყო.<br>ბოლოს მივხვდი — უბრალოდ ვიყენებოდი.",
+        card3Badge: "🗡️ მოტყუება",
+        card4Title: "🌑 ბოლოს უბრალოდ გაქრა",
+        card4Text: "ერთ დილას ყველაფერი დასრულდა.<br><strong>დარჩა მხოლოდ მოგონებები და სიცარიელე.</strong><br>სწორედ მაშინ მივხვდი,<br>რამდენად მნიშვნელოვანია,<br>ვის ვანდობთ საკუთარ გულს.",
+        card4Badge: "💔 დასასრული",
+        telegramBtn: "💬 Telegram-ზე დაკავშირება",
+        legalText: "<strong>⚡ „სამართლიანი მეხსიერება“ ⚡</strong><br><br>ეს ისტორია მხოლოდ ემოციური გამოცდილების აღწერაა.",
+        footerText: "🕯️ <strong>„ზოგი ადამიანი მიდის, მაგრამ კვალს სამუდამოდ ტოვებს.“</strong><br><br>© 2026"
+    },
+    ru: {
+        mainTitle: "💔 1 год вместе — потом она забрала всё 💔",
+        subTitle: "История о том, как человек может разбить тебе сердце",
+        card1Title: "🇬🇪 Всё началось в Грузии",
+        card1Text: "<strong>Я встретил её в Грузии.</strong><br>Сначала всё было как в сказке —<br>ночные разговоры, смех, эмоции и доверие.<br>Я думал, впервые нашёл человека,<br>который действительно меня понимает.",
+        card1Badge: "✨ Первая встреча",
+        card2Title: "✈️ Один год — между двумя странами",
+        card2Text: "<strong>Мы были вместе один год.</strong><br>Я ездил в Эстонию,<br>она приезжала в Грузию.<br>Я думал, это настоящая любовь,<br>которую не разрушить расстоянием.",
+        card2Badge: "🌍 Расстояние не разлучало нас",
+        card3Title: "🎭 Потом правда открылась",
+        card3Text: "<strong>Однажды я понял, что всё было игрой.</strong><br>Она забрала доверие,<br>эмоции и всё,<br>что было для меня важно.<br>В итоге я понял — меня просто использовали.",
+        card3Badge: "🗡️ Обман",
+        card4Title: "🌑 В конце она просто исчезла",
+        card4Text: "Однажды утром всё закончилось.<br><strong>Остались только воспоминания и пустота.</strong><br>Именно тогда я понял,<br>насколько важно,<br>кому мы доверяем своё сердце.",
+        card4Badge: "💔 Конец",
+        telegramBtn: "💬 Связаться в Telegram",
+        legalText: "<strong>⚡ „Справедливая память“ ⚡</strong><br><br>Эта история — всего лишь описание эмоционального опыта.",
+        footerText: "🕯️ <strong>„Некоторые люди уходят, но след оставляют навсегда.“</strong><br><br>© 2026"
+    },
+    en: {
+        mainTitle: "💔 1 year together — then she took everything 💔",
+        subTitle: "A story about how someone can break your heart",
+        card1Title: "🇬🇪 It all started in Georgia",
+        card1Text: "<strong>I met her in Georgia.</strong><br>At first everything was like a fairy tale —<br>night talks, laughter, emotions and trust.<br>I thought I finally found someone<br>who truly understood me.",
+        card1Badge: "✨ First meeting",
+        card2Title: "✈️ One year — between two countries",
+        card2Text: "<strong>We were together for one year.</strong><br>I traveled to Estonia,<br>she came to Georgia.<br>I thought it was true love,<br>that distance couldn't destroy.",
+        card2Badge: "🌍 Distance didn't separate us",
+        card3Title: "🎭 Then the truth came out",
+        card3Text: "<strong>One day I realized it was all a game.</strong><br>She took my trust,<br>my emotions and everything<br>that mattered to me.<br>In the end I understood — I was just being used.",
+        card3Badge: "🗡️ Deception",
+        card4Title: "🌑 In the end she just disappeared",
+        card4Text: "One morning everything ended.<br><strong>Only memories and emptiness remained.</strong><br>That's when I understood<br>how important it is<br>who we trust with our heart.",
+        card4Badge: "💔 The end",
+        telegramBtn: "💬 Contact on Telegram",
+        legalText: "<strong>⚡ „Fair Memory“ LLC ⚡</strong><br><br>This story is just a description of an emotional experience.",
+        footerText: "🕯️ <strong>„Some people leave, but they leave their mark forever.“</strong><br><br>© 2026"
+    }
 };
 
 function setLanguage(lang) {
@@ -406,20 +462,28 @@ function setLanguage(lang) {
     document.getElementById('telegramBtn').innerHTML = t.telegramBtn;
     document.getElementById('legalText').innerHTML = t.legalText;
     document.getElementById('footerText').innerHTML = t.footerText;
+    
     document.querySelectorAll('.lang-btn').forEach(btn => {
         if(btn.dataset.lang === lang) btn.classList.add('active');
         else btn.classList.remove('active');
     });
 }
-document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+});
+
 setLanguage('ka');
 
-// ==================== MUSIC ====================
+// ==================== მუსიკა (ავტომატური, ვერ ითიშება) ====================
 const audio = document.getElementById('bgMusic');
 audio.volume = 0.7;
 let musicStarted = false;
-function startMusic() { if(!musicStarted) { audio.play().then(()=>musicStarted=true).catch(()=>{}); } }
-window.addEventListener('load', ()=>setTimeout(startMusic, 200));
+function startMusic() {
+    if(musicStarted) return;
+    audio.play().then(() => { musicStarted = true; }).catch(() => {});
+}
+window.addEventListener('load', () => setTimeout(startMusic, 100));
 document.body.addEventListener('click', startMusic);
 document.body.addEventListener('touchstart', startMusic);
 </script>
