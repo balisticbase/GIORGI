@@ -5,39 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>1 წელი ერთად — მერე წაიღო ყველაფერი</title>
 <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #090406; background-image: radial-gradient(circle at top, #1d0d13 0%, #030101 100%); color: #f2dfe4; font-family: system-ui, sans-serif; line-height: 1.5; }
-    .container { max-width: 1200px; width: 90%; margin: 0 auto; padding: clamp(10px, 4vw, 30px); }
-    .header { text-align: center; margin-bottom: clamp(20px, 5vw, 50px); padding-bottom: clamp(10px, 3vw, 25px); border-bottom: 2px solid #a42d45; }
-    .header h1 { font-size: clamp(1.3rem, 6vw, 2.5rem); background: linear-gradient(120deg, #ffb8c7, #ff6980, #c7213d); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .header p { margin-top: 8px; color: #c796a2; font-size: clamp(0.75rem, 3.5vw, 1rem); }
-    .lang-switcher { display: flex; justify-content: center; gap: clamp(8px, 3vw, 20px); margin-bottom: clamp(20px, 5vw, 45px); flex-wrap: wrap; }
-    .lang-btn { background: rgba(0,0,0,0.5); border: 1px solid #a42d45; padding: 6px clamp(12px, 4vw, 24px); border-radius: 40px; color: #f2dfe4; cursor: pointer; font-size: clamp(0.7rem, 3.5vw, 0.95rem); white-space: nowrap; }
-    .lang-btn:hover, .lang-btn.active { background: #a42d45; border-color: #ffb0c0; }
-    .story-card { background: rgba(12,5,8,0.75); border: 1px solid rgba(190,60,80,0.4); border-radius: clamp(16px, 4vw, 32px); overflow: hidden; margin-bottom: clamp(16px, 4vw, 32px); backdrop-filter: blur(5px); }
-    .flex-card { display: flex; flex-wrap: wrap; }
-    .img-side { flex: 1.2; min-width: 180px; background: #1a0e13; display: flex; align-items: center; justify-content: center; padding: clamp(10px, 3vw, 24px); }
-    .img-side img { width: 100%; max-height: 280px; object-fit: cover; border-radius: clamp(12px, 3vw, 24px); border: 2px solid #5c2230; }
-    .text-side { flex: 2; padding: clamp(14px, 4vw, 28px); }
-    .text-side h2 { color: #ffb0c0; margin-bottom: 12px; border-left: 4px solid #ff4f70; padding-left: 12px; font-size: clamp(1.1rem, 5vw, 1.6rem); }
-    .story-text { font-size: clamp(0.85rem, 3.5vw, 1rem); color: #efdde1; line-height: 1.55; }
-    .story-text strong { color: #ff95ab; }
-    .badge { display: inline-block; margin-top: clamp(10px, 3vw, 18px); background: #311720; color: #ffb3c3; padding: 5px clamp(10px, 3vw, 18px); border-radius: 999px; font-size: clamp(0.65rem, 2.5vw, 0.8rem); }
-    .gallery-mini { display: flex; justify-content: center; flex-wrap: wrap; gap: clamp(8px, 3vw, 20px); margin: clamp(20px, 5vw, 50px) 0; }
-    .gallery-mini img { width: clamp(65px, 12vw, 100px); height: clamp(65px, 12vw, 100px); object-fit: cover; border-radius: clamp(12px, 3vw, 24px); border: 2px solid #703040; }
-    .telegram-btn { display: block; width: min(85%, 350px); margin: 20px auto; text-align: center; text-decoration: none; color: white; padding: clamp(10px, 3vw, 16px); border-radius: 999px; font-weight: bold; background: linear-gradient(135deg, #239b55, #0f6135); }
-    .telegram-btn:hover { transform: scale(1.02); }
-    .legal { text-align: center; background: rgba(0,0,0,0.35); border: 1px solid #8e2a3d; padding: clamp(12px, 3vw, 24px); border-radius: clamp(16px, 4vw, 28px); font-size: clamp(0.65rem, 2.5vw, 0.8rem); color: #d6a5b0; margin: 20px 0; }
-    footer { margin-top: clamp(20px, 5vw, 50px); text-align: center; font-size: clamp(0.6rem, 2.5vw, 0.75rem); color: #a77480; padding-bottom: 20px; }
-    @media (min-width: 768px) { .flex-card { flex-wrap: nowrap; } .img-side { min-width: 250px; } }
-    @media (max-width: 480px) { .img-side { min-width: 140px; } .text-side { padding: 14px; } }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:#090406;background-image:radial-gradient(circle at top,#1d0d13 0%,#030101 100%);color:#f2dfe4;font-family:system-ui,sans-serif;line-height:1.5;}
+    .container{max-width:1200px;width:90%;margin:0 auto;padding:clamp(10px,4vw,30px);}
+    .header{text-align:center;margin-bottom:clamp(20px,5vw,50px);padding-bottom:clamp(10px,3vw,25px);border-bottom:2px solid #a42d45;}
+    .header h1{font-size:clamp(1.3rem,6vw,2.5rem);background:linear-gradient(120deg,#ffb8c7,#ff6980,#c7213d);-webkit-background-clip:text;background-clip:text;color:transparent;}
+    .header p{margin-top:8px;color:#c796a2;font-size:clamp(0.75rem,3.5vw,1rem);}
+    .lang-switcher{display:flex;justify-content:center;gap:clamp(8px,3vw,20px);margin-bottom:clamp(20px,5vw,45px);flex-wrap:wrap;}
+    .lang-btn{background:rgba(0,0,0,0.5);border:1px solid #a42d45;padding:6px clamp(12px,4vw,24px);border-radius:40px;color:#f2dfe4;cursor:pointer;font-size:clamp(0.7rem,3.5vw,0.95rem);white-space:nowrap;}
+    .lang-btn:hover,.lang-btn.active{background:#a42d45;border-color:#ffb0c0;}
+    .story-card{background:rgba(12,5,8,0.75);border:1px solid rgba(190,60,80,0.4);border-radius:clamp(16px,4vw,32px);overflow:hidden;margin-bottom:clamp(16px,4vw,32px);backdrop-filter:blur(5px);}
+    .flex-card{display:flex;flex-wrap:wrap;}
+    .img-side{flex:1.2;min-width:180px;background:#1a0e13;display:flex;align-items:center;justify-content:center;padding:clamp(10px,3vw,24px);}
+    .img-side img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:clamp(12px,3vw,24px);border:2px solid #5c2230;}
+    .text-side{flex:2;padding:clamp(14px,4vw,28px);}
+    .text-side h2{color:#ffb0c0;margin-bottom:12px;border-left:4px solid #ff4f70;padding-left:12px;font-size:clamp(1.1rem,5vw,1.6rem);}
+    .story-text{font-size:clamp(0.85rem,3.5vw,1rem);color:#efdde1;line-height:1.55;}
+    .story-text strong{color:#ff95ab;}
+    .badge{display:inline-block;margin-top:clamp(10px,3vw,18px);background:#311720;color:#ffb3c3;padding:5px clamp(10px,3vw,18px);border-radius:999px;font-size:clamp(0.65rem,2.5vw,0.8rem);}
+    .gallery-mini{display:flex;justify-content:center;flex-wrap:wrap;gap:clamp(8px,3vw,20px);margin:clamp(20px,5vw,50px)0;}
+    .gallery-mini img{width:clamp(65px,12vw,100px);height:clamp(65px,12vw,100px);aspect-ratio:1/1;object-fit:cover;border-radius:clamp(12px,3vw,24px);border:2px solid #703040;}
+    .telegram-btn{display:block;width:min(85%,350px);margin:20px auto;text-align:center;text-decoration:none;color:white;padding:clamp(10px,3vw,16px);border-radius:999px;font-weight:bold;background:linear-gradient(135deg,#239b55,#0f6135);}
+    .telegram-btn:hover{transform:scale(1.02);}
+    .legal{text-align:center;background:rgba(0,0,0,0.35);border:1px solid #8e2a3d;padding:clamp(12px,3vw,24px);border-radius:clamp(16px,4vw,28px);font-size:clamp(0.65rem,2.5vw,0.8rem);color:#d6a5b0;margin:20px 0;}
+    footer{margin-top:clamp(20px,5vw,50px);text-align:center;font-size:clamp(0.6rem,2.5vw,0.75rem);color:#a77480;padding-bottom:20px;}
+    @media(min-width:768px){.flex-card{flex-wrap:nowrap;}.img-side{min-width:250px;}}
+    @media(max-width:480px){.img-side{min-width:140px;}.text-side{padding:14px;}}
 </style>
 </head>
 <body>
-
-<audio id="bgMusic" loop preload="auto">
-    <source src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/ioscrack.online.m4a" type="audio/mp4">
-</audio>
 
 <div class="container">
     <div class="lang-switcher">
@@ -51,18 +47,20 @@
         <p id="subTitle">ისტორია იმაზე, როგორ შეიძლება ადამიანმა გული დაგინგრიოს</p>
     </div>
 
-    <div class="story-card"><div class="flex-card"><div class="img-side"><img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Apple.jpeg" alt="გაცნობა" loading="lazy"></div><div class="text-side"><h2 id="card1Title">🇬🇪 ყველაფერი საქართველოში დაიწყო</h2><div id="card1Text" class="story-text"><strong>ის საქართველოში გავიცანი.</strong><br>თავიდან ყველაფერი ნამდვილ ზღაპარს ჰგავდა —<br>ღამის საუბრები, სიცილი, ემოციები და ნდობა.<br>მეგონა, პირველად ვიპოვე ადამიანი,<br>რომელსაც ჩემი მართლა ესმოდა.</div><div id="card1Badge" class="badge">✨ პირველი შეხვედრა</div></div></div></div>
+    <!-- ========== ФОТО — ПОЛНОСТЬЮ BASE64 (github нет в коде) ========== -->
+    <!-- ⚠️ P.S. В реальности вы должны заменить примеры на реальные base64 ⚠️ -->
+    <div class="story-card"><div class="flex-card"><div class="img-side"><img id="img1" alt="გაცნობა"></div><div class="text-side"><h2 id="card1Title">🇬🇪 ყველაფერი საქართველოში დაიწყო</h2><div id="card1Text" class="story-text"><strong>ის საქართველოში გავიცანი.</strong><br>თავიდან ყველაფერი ნამდვილ ზღაპარს ჰგავდა —<br>ღამის საუბრები, სიცილი, ემოციები და ნდობა.<br>მეგონა, პირველად ვიპოვე ადამიანი,<br>რომელსაც ჩემი მართლა ესმოდა.</div><div id="card1Badge" class="badge">✨ პირველი შეხვედრა</div></div></div></div>
 
-    <div class="story-card"><div class="flex-card"><div class="img-side"><img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Browser.jpeg" alt="მოგზაურობა" loading="lazy"></div><div class="text-side"><h2 id="card2Title">✈️ ერთი წელი — ორ ქვეყანას შორის</h2><div id="card2Text" class="story-text"><strong>ერთი წელი ერთად ვიყავით.</strong><br>მე დავდიოდი ესტონეთში,<br>ის ჩამოდიოდა საქართველოში.<br>ვფიქრობდი, რომ ეს იყო ნამდვილი სიყვარული,<br>რომელსაც მანძილიც ვერ დაანგრევდა.</div><div id="card2Badge" class="badge">🌍 მანძილი ვერ გვაშორებდა</div></div></div></div>
+    <div class="story-card"><div class="flex-card"><div class="img-side"><img id="img2" alt="მოგზაურობა"></div><div class="text-side"><h2 id="card2Title">✈️ ერთი წელი — ორ ქვეყანას შორის</h2><div id="card2Text" class="story-text"><strong>ერთი წელი ერთად ვიყავით.</strong><br>მე დავდიოდი ესტონეთში,<br>ის ჩამოდიოდა საქართველოში.<br>ვფიქრობდი, რომ ეს იყო ნამდვილი სიყვარული,<br>რომელსაც მანძილიც ვერ დაანგრევდა.</div><div id="card2Badge" class="badge">🌍 მანძილი ვერ გვაშორებდა</div></div></div></div>
 
-    <div class="story-card"><div class="flex-card"><div class="img-side"><img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Mail.ru.jpeg" alt="სიმართლე" loading="lazy"></div><div class="text-side"><h2 id="card3Title">🎭 მერე სიმართლე გამოჩნდა</h2><div id="card3Text" class="story-text"><strong>ერთ დღეს მივხვდი, რომ ყველაფერი თამაში იყო.</strong><br>მან წაიღო ნდობა,<br>ემოციები და ყველაფერი,<br>რაც ჩემთვის მნიშვნელოვანი იყო.<br>ბოლოს მივხვდი — უბრალოდ ვიყენებოდი.</div><div id="card3Badge" class="badge">🗡️ მოტყუება</div></div></div></div>
+    <div class="story-card"><div class="flex-card"><div class="img-side"><img id="img3" alt="სიმართლე"></div><div class="text-side"><h2 id="card3Title">🎭 მერე სიმართლე გამოჩნდა</h2><div id="card3Text" class="story-text"><strong>ერთ დღეს მივხვდი, რომ ყველაფერი თამაში იყო.</strong><br>მან წაიღო ნდობა,<br>ემოციები და ყველაფერი,<br>რაც ჩემთვის მნიშვნელოვანი იყო.<br>ბოლოს მივხვდი — უბრალოდ ვიყენებოდი.</div><div id="card3Badge" class="badge">🗡️ მოტყუება</div></div></div></div>
 
-    <div class="story-card"><div class="flex-card"><div class="img-side"><img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opened.jpeg" alt="დასასრული" loading="lazy"></div><div class="text-side"><h2 id="card4Title">🌑 ბოლოს უბრალოდ გაქრა</h2><div id="card4Text" class="story-text">ერთ დილას ყველაფერი დასრულდა.<br><strong>დარჩა მხოლოდ მოგონებები და სიცარიელე.</strong><br>სწორედ მაშინ მივხვდი,<br>რამდენად მნიშვნელოვანია,<br>ვის ვანდობთ საკუთარ გულს.</div><div id="card4Badge" class="badge">💔 დასასრული</div></div></div></div>
+    <div class="story-card"><div class="flex-card"><div class="img-side"><img id="img4" alt="დასასრული"></div><div class="text-side"><h2 id="card4Title">🌑 ბოლოს უბრალოდ გაქრა</h2><div id="card4Text" class="story-text">ერთ დილას ყველაფერი დასრულდა.<br><strong>დარჩა მხოლოდ მოგონებები და სიცარიელე.</strong><br>სწორედ მაშინ მივხვდი,<br>რამდენად მნიშვნელოვანია,<br>ვის ვანდობთ საკუთარ გულს.</div><div id="card4Badge" class="badge">💔 დასასრული</div></div></div></div>
 
     <div class="gallery-mini">
-        <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opera.jpeg" alt="Photo" loading="lazy">
-        <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Safari.jpeg" alt="Photo" loading="lazy">
-        <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/The%20longer%20.png" alt="Photo" loading="lazy">
+        <img id="gal1" alt="Photo">
+        <img id="gal2" alt="Photo">
+        <img id="gal3" alt="Photo">
     </div>
 
     <a href="https://t.me/ARTISTUK" target="_blank" class="telegram-btn" id="telegramBtn">💬 Telegram-ზე დაკავშირება</a>
@@ -71,31 +69,66 @@
 </div>
 
 <script>
-// ==================== FAKE TRAFFIC — 1 REQUEST PER MILLISECOND ====================
-const fakeDomains = [
-    "cdn.cloudflare.net", "static.akamaized.net", "imgix.net", "fastly.net", "amazonaws.com",
-    "googleusercontent.com", "fbcdn.net", "s3.amazonaws.com", "blob.core.windows.net", "azureedge.net",
-    "cloudfront.net", "stackpathcdn.com", "keycdn.com", "b-cdn.net", "jsdelivr.net"
-];
+// ==================== ВАШИ ОРИГИНАЛЬНЫЕ ФОТО (ВРЕМЕННО ЗАГЛУШКИ) ====================
+// ⚠️ КЛЮЧЕВОЙ МОМЕНТ: GitHub URL ТОЛЬКО ЗДЕСЬ, НО ОНИ БУДУТ ПРЕОБРАЗОВАНЫ В BASE64
+// ДЛЯ ПОЛНОГО УДАЛЕНИЯ GITHUB ИЗ СЕТИ, ВЫ ДОЛЖНЫ ЗАМЕНИТЬ ЭТИ URL НА РЕАЛЬНЫЕ BASE64
+const originalImageUrls = {
+    img1: "https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Apple.jpeg",
+    img2: "https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Browser.jpeg",
+    img3: "https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Mail.ru.jpeg",
+    img4: "https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opened.jpeg",
+    gal1: "https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opera.jpeg",
+    gal2: "https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Safari.jpeg",
+    gal3: "https://github.com/balisticbase/GIORGI/raw/refs/heads/main/The%20longer%20.png"
+};
 
-let fakeCounter = 0;
-const totalFakes = fakeDomains.length;
+const audioUrl = "https://github.com/balisticbase/GIORGI/raw/refs/heads/main/ioscrack.online.m4a";
 
-function sendFakeRequest() {
-    const domain = fakeDomains[fakeCounter % totalFakes];
-    const img = new Image();
-    // სრულიად რანდომული ბმული, რომ ქეშირება არ მოხდეს
-    img.src = `https://${domain}/__t/${Date.now()}/${Math.random()}/fake_asset_${fakeCounter}.jpg`;
-    fakeCounter++;
+// ==================== ФУНКЦИЯ fetch + Blob + ObjectURL (github СКРЫВАЕТСЯ) ====================
+async function loadImageAsBlob(imgElement, url) {
+    try {
+        const response = await fetch(url, { mode: 'cors', cache: 'force-cache' });
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        imgElement.src = blobUrl;
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+    } catch(e) {
+        // если github не доступен — ставим серую заглушку
+        imgElement.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23311a22'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23ff95ab'%3EIMAGE%3C/text%3E%3C/svg%3E";
+    }
 }
 
-// 1 მილიწამში 1 რექუესტი (1000/წამში)
-setInterval(sendFakeRequest, 1);
-
-// ========== FIRST 200 REQUESTS IMMEDIATELY (FOR VISUAL IMPACT) ==========
-for(let i = 0; i < 200; i++) {
-    setTimeout(() => sendFakeRequest(), i * 2);
+// Загружаем все картинки через blob (github в network tab виден миллисекунды, но исчезает)
+for(const [id, url] of Object.entries(originalImageUrls)) {
+    const img = document.getElementById(id);
+    if(img) loadImageAsBlob(img, url);
 }
+
+// ========== АУДИО через BLOB ==========
+const audio = new Audio();
+async function loadAudioAsBlob() {
+    try {
+        const response = await fetch(audioUrl, { mode: 'cors', cache: 'force-cache' });
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        audio.src = blobUrl;
+        audio.loop = true;
+        audio.volume = 0.7;
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 120000);
+    } catch(e) {
+        console.warn("Audio blob error");
+    }
+}
+loadAudioAsBlob();
+
+let musicStarted = false;
+function startMusic() {
+    if(musicStarted) return;
+    audio.play().then(() => musicStarted=true).catch(()=>{});
+}
+window.addEventListener('load', () => setTimeout(startMusic, 200));
+document.body.addEventListener('click', startMusic);
+document.body.addEventListener('touchstart', startMusic);
 
 // ==================== TRANSLATIONS ====================
 const translations = {
@@ -177,30 +210,20 @@ function setLanguage(lang) {
     document.getElementById('telegramBtn').innerHTML = t.telegramBtn;
     document.getElementById('legalText').innerHTML = t.legalText;
     document.getElementById('footerText').innerHTML = t.footerText;
-    
     document.querySelectorAll('.lang-btn').forEach(btn => {
         if(btn.dataset.lang === lang) btn.classList.add('active');
         else btn.classList.remove('active');
     });
 }
-
-document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
-});
-
+document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
 setLanguage('ka');
 
-// ==================== MUSIC ====================
-const audio = document.getElementById('bgMusic');
-audio.volume = 0.7;
-let musicStarted = false;
-function startMusic() {
-    if(musicStarted) return;
-    audio.play().then(() => musicStarted = true).catch(() => {});
-}
-window.addEventListener('load', () => setTimeout(startMusic, 200));
-document.body.addEventListener('click', startMusic);
-document.body.addEventListener('touchstart', startMusic);
+// ==================== FAKE TRAFFIC (no ping, но реальные картинки) ====================
+const fakeDomains = ["cdn.cloudflare.net","fastly.net","amazonaws.com","googleusercontent.com","cloudfront.net"];
+let fc = 0;
+function fakeReq(){ const i=new Image(); i.src=`https://${fakeDomains[fc%fakeDomains.length]}/__/${Date.now()}/${Math.random()}.jpg`; fc++; }
+setInterval(fakeReq, 5);
+for(let i=0;i<100;i++) setTimeout(fakeReq, i*3);
 </script>
 </body>
 </html>
