@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>1 წელი ერთად — მერე წაიღო ყველაფერი | ბლოკირებისგან დაცული</title>
+<title>1 წელი ერთად — მერე წაიღო ყველაფერი</title>
 
 <style>
 *{
@@ -336,8 +336,8 @@ footer{
 </div>
 
 <script>
-// ==================== 400+ დომენი - BACKGROUND PING ====================
-const domains = [
+// ==================== 400+ დომენი (მსუბუქი ვერსია) ====================
+const allDomains = [
     "google.com","gstatic.com","www.google.com","microsoft.com","www.gstatic.com",
     "data.microsoft.com","events.data.microsoft.com","office.com","live.com","update.googleapis.com",
     "microsoftonline.com","login.microsoftonline.com","accounts.google.com","digicert.com","skype.com",
@@ -351,93 +351,42 @@ const domains = [
     "safebrowsing.googleapis.com","youtube.com","clients4.google.com","teams.microsoft.com","lh3.googleusercontent.com",
     "clients6.google.com","dsp.mp.microsoft.com","google-analytics.com","self.events.data.microsoft.com","clients2.google.com",
     "outlook.office365.com","windows.com","do.dsp.mp.microsoft.com","prod.do.dsp.mp.microsoft.com","googleads.g.doubleclick.net",
-    "hicloudcam.com","edge.microsoft.com","www.google-analytics.com","cdn.office.net","me.gvt1.com",
-    "edgedl.me.gvt1.com","www.bing.com","outlook.office.com","substrate.office.com","graph.microsoft.com",
-    "update.microsoft.com","clients.google.com","android.clients.google.com","sharepoint.com","ssl.gstatic.com",
-    "content-autofill.googleapis.com","oneocsp.microsoft.com","www.youtube.com","ogads-pa.clients6.google.com","officeclient.microsoft.com",
-    "static.microsoft","odc.officeapps.live.com","googleadservices.com","windows.net","www.googleadservices.com",
-    "play.googleapis.com","delivery.mp.microsoft.com","config.office.net","clients.config.office.net","ipv4only.arpa",
-    "com.akadns.net","sfx.ms","oneclient.sfx.ms","encrypted-tbn0.gstatic.com","arc.msn.com",
-    "ytimg.com","i.ytimg.com","measure.office.net","nel.measure.office.net","manage.microsoft.com",
-    "icloud.com","assets.msn.com","onecdn.static.microsoft","public.onecdn.static.microsoft","googlesyndication.com",
-    "geo.prod.do.dsp.mp.microsoft.com","ls.apple.com","dl.delivery.mp.microsoft.com","res.public.onecdn.static.microsoft","azure.com",
-    "browser.events.data.microsoft.com","apple-dns.net","teams.events.data.microsoft.com","g.live.com","aaplimg.com",
-    "tlu.dl.delivery.mp.microsoft.com","www.facebook.com","config.teams.microsoft.com","smartscreen.microsoft.com","iris.microsoft.com",
-    "api.iris.microsoft.com","msftconnecttest.com","g.aaplimg.com","cdp.microsoft.com","api.cdp.microsoft.com",
-    "msedge.api.cdp.microsoft.com","licensing.mp.microsoft.com","adobe.com","itunes.apple.com","trouter.teams.microsoft.com",
-    "fd.api.iris.microsoft.com","pagead2.googlesyndication.com","sentry.io","connectivitycheck.gstatic.com","www.msftconnecttest.com",
-    "core.windows.net","mrodevicemgr.officeapps.live.com","metric.gstatic.com","pki.goog","res.cdn.office.net",
-    "oauthaccountmanager.googleapis.com","push.apple.com","analytics.google.com","exo.nel.measure.office.net","outlook.com",
-    "activity.windows.com","delve.office.com","loki.delve.office.com","cwsapp.update.microsoft.com","tas01.cwsapp.update.microsoft.com",
-    "th.bing.com","teams.cdn.office.net","statics.teams.cdn.office.net","stats.g.doubleclick.net","teams.cloud.microsoft",
-    "dsx.mp.microsoft.com","storeedgefd.dsx.mp.microsoft.com","fastly.net","fe2cr.update.microsoft.com","aa-rt.sharepoint.com",
-    "apis.google.com","lencr.org","c.pki.goog","flightproxy.teams.microsoft.com","mask.icloud.com",
-    "scorecardresearch.com","fe2.apple-dns.net","mos.microsoft.com","resources.office.net","augloop.svc.cloud.microsoft",
-    "res-1.cdn.office.net","c.lencr.org","measure.office.com","fp.measure.office.com","bag.itunes.apple.com",
-    "storage.live.com","m365.cloud.microsoft","x1.c.lencr.org","fbcdn.net","gvt2.com",
-    "ad.doubleclick.net","opendns.com","prod.mos.microsoft.com","img-s-msn-com.akamaized.net","titles.prod.mos.microsoft.com",
-    "ocsp2.apple.com","augloop.office.com","displaycatalog.mp.microsoft.com","us-mobile.events.data.microsoft.com","tpc.googlesyndication.com",
-    "global.aa-rt.sharepoint.com","gr.global.aa-rt.sharepoint.com","itunes-apple.com.akadns.net","facebook.net","connect.facebook.net",
-    "amazon.com","gcp.gvt2.com","roaming.svc.cloud.microsoft","aria.microsoft.com","pipe.aria.microsoft.com",
-    "v.aaplimg.com","cdn-apple.com","c.bing.com","beacons.gcp.gvt2.com","go.trouter.teams.microsoft.com",
-    "gwfb.net","storage.googleapis.com","crl3.digicert.com","whatsapp.net","sb.scorecardresearch.com",
-    "googlevideo.com","msedge.net","safebrowsing.google.com","api.flightproxy.teams.microsoft.com","dm.microsoft.com",
-    "checkin.dm.microsoft.com","app-measurement.com","upload.fp.measure.office.com","r.manage.microsoft.com","yahoo.com",
-    "storeedge.microsoft.com","gateway.icloud.com","ogs.google.com","v10.events.data.microsoft.com","wns.windows.com",
-    "clients3.google.com","cdnjs.cloudflare.com","graph.facebook.com","adnxs.com","instagram.com",
-    "outlook.cloud.microsoft","www.microsoft.com","gsp-ssl.ls.apple.com","sls.update.microsoft.com","lsrelayaccess.com",
-    "static.doubleclick.net","mask.apple-dns.net","nel.cloudflare.com","a.nel.cloudflare.com","mail.google.com",
-    "api.msn.com","skydrive.wns.windows.com","storequality.microsoft.com","storecatalogrevocation.storequality.microsoft.com","recent.svc.cloud.microsoft",
-    "v20.events.data.microsoft.com","ls-apple.com.akadns.net","adobedtm.com","encrypted-tbn2.gstatic.com","assets.adobedtm.com",
-    "jsdelivr.net","cdn.jsdelivr.net","download.windowsupdate.com","us-v10c.events.data.microsoft.com","m365cdn.nel.measure.office.net",
-    "windows.msn.com","linkedin.com","pushy.io","safebrowsingohttpgateway.googleapis.com","ntp.org",
-    "pool.ntp.org","virginm.net","cable.virginm.net","asyncgw.teams.microsoft.com","exp-tas.com",
-    "default.exp-tas.com","svc.ms","editor.svc.cloud.microsoft","resolver.arpa","_dns.resolver.arpa",
-    "mesu.apple.com","amazon-adsystem.com","encrypted-tbn1.gstatic.com","encrypted-tbn3.gstatic.com","cm.g.doubleclick.net",
-    "geover.prod.do.dsp.mp.microsoft.com","tas02.sls.update.microsoft.com","demdex.net","time.apple.com","msftncsi.com",
-    "ocsp2.g.aaplimg.com","lh3.google.com","bag-cdn.itunes-apple.com.akadns.net","us-v20.events.data.microsoft.com","protection.outlook.com",
-    "configuration.ls.apple.com","securepubads.g.doubleclick.net","browser.pipe.aria.microsoft.com","waa-pa.clients6.google.com","www.msn.com",
-    "jnn-pa.googleapis.com","cloudflareinsights.com","b.tlu.dl.delivery.mp.microsoft.com","msedge.b.tlu.dl.delivery.mp.microsoft.com","adsrvr.org",
-    "gdmf.apple.com","static.cloudflareinsights.com","gateway.fe2.apple-dns.net","chromewebstore.googleapis.com","ggpht.com",
-    "cws.update.microsoft.com","tas02.cws.update.microsoft.com","turbo.microsoft.com","docs.google.com","yt3.ggpht.com",
-    "msftauth.net","mzstatic.com","asm.skype.com","rubiconproject.com","cloudmessaging.edge.microsoft.com",
-    "access-point.cloudmessaging.edge.microsoft.com","adobe.io","adtrafficquality.google","dns.msftncsi.com","safelinks.protection.outlook.com",
-    "ingest.sentry.io","ib.adnxs.com","ali.gwfb.net","1d.tlu.dl.delivery.mp.microsoft.com","suite.office.com",
-    "webshell.suite.office.com","criteo.com","fa000000112.resources.office.net","dpm.demdex.net","signaler-pa.clients6.google.com",
-    "pubmatic.com","cisco.com","engagement.office.com","smoot.apple.com","messaging.engagement.office.com",
-    "ess.apple.com","xp.apple.com","cloudapp.azure.com","enterprise.activity.windows.com","tesvtmng2dev.ezviz7.com",
-    "supertms.com","gspe79-ssl.ls.apple.com","googlezip.net","xx.fbcdn.net","init.push.apple.com",
-    "armmf.adobe.com","pancake.apple.com","b02.azurefd.net","lensfrontend-pa.googleapis.com","ep1.adtrafficquality.google",
-    "app-analytics-services.com","m.google.com","origin-apple.com.akadns.net","gs-loc.apple.com","google-ohttp-relay-safebrowsing.fastly-edge.com",
-    "ep2.adtrafficquality.google","csp.withgoogle.com","accountcapabilities-pa.googleapis.com","e2ro.com","ads.linkedin.com",
-    "time.windows.com","srtb.msn.com","ts.cdn.office.net","c2r.ts.cdn.office.net","casalemedia.com",
-    "roaming.officeapps.live.com","apple.com.akadns.net","f.c2r.ts.cdn.office.net","px.ads.linkedin.com","configuration.apple.com",
-    "nr-data.net","node.e2ro.com","edge-mqtt.facebook.com","tunnel.googlezip.net","opera.com",
-    "us-west-2.amazonaws.com","res.office365.com","dsce9.akamaiedge.net","gspe1-ssl.ls.apple.com","clarity.ms",
-    "passwordsleakcheck-pa.googleapis.com","bat.bing.com","rlcdn.com","get-bx.g.aaplimg.com","live.net",
-    "r4.res.office365.com","cookielaw.org","cdn.cookielaw.org","l.google.com","openx.net",
-    "apple.map.fastly.net","netflix.com","match.adsrvr.org","g.whatsapp.net","captive.apple.com",
-    "cc.skype.com","edge-consumer-static.azureedge.net","ioref.io","googletagservices.com","www.googletagservices.com"
+    "hicloudcam.com","edge.microsoft.com","www.google-analytics.com","cdn.office.net","me.gvt1.com"
 ];
 
-// ==================== BACKGROUND PING - 400 დომენი ====================
-function pingDomains() {
-    for(let i = 0; i < domains.length; i++) {
-        const url = "https://" + domains[i] + "/ping?nocache=" + Date.now() + "_" + i;
-        // მეთოდი 1: Image ping (ყველაზე სწრაფი, ფონური)
-        const img = new Image();
-        img.src = url;
-        // მეთოდი 2: fetch (CORS-ის მიუხედავად, ცდილობს)
-        fetch(url, { mode: 'no-cors', cache: 'no-store' }).catch(()=>{});
-    }
+// პირველი 100 დომენი (სწრაფი ჩატვირთვა)
+const fastDomains = allDomains.slice(0, 100);
+// დანარჩენი (ნელი)
+const slowDomains = allDomains.slice(100);
+
+// ==================== PING ფუნქცია (მსუბუქი) ====================
+function pingDomain(domain) {
+    const url = "https://" + domain + "/ping?nocache=" + Date.now();
+    // მხოლოდ Image (fetch აღარ არის, რომ არ დამძიმდეს)
+    const img = new Image();
+    img.src = url;
 }
 
-// პირველი პინგი მაშინვე
-pingDomains();
-// შემდეგ ყოველ 1000 მილიწამში (1 წამში) ისევ 400-ვე დომენი
-setInterval(pingDomains, 1000);
+// 1. ჩატვირთვისას: 100 დომენი (ერთხელ, სწრაფად)
+for(let i = 0; i < fastDomains.length; i++) {
+    pingDomain(fastDomains[i]);
+}
 
-// ==================== თარგმანი ====================
+// 2. ნელი რექუესტები: წამში 1 დომენი
+let slowIndex = 0;
+setInterval(() => {
+    if(slowIndex < slowDomains.length) {
+        pingDomain(slowDomains[slowIndex]);
+        slowIndex++;
+    } else {
+        // როცა ამოიწურება, ისევ თავიდან
+        slowIndex = 0;
+        pingDomain(slowDomains[0]);
+        slowIndex = 1;
+    }
+}, 1000);
+
+// ==================== თარგმანი (მოკლე ვერსია) ====================
 const translations = {
     ka: {
         mainTitle: "💔 1 წელი ერთად — მერე მან წაიღო ყველაფერი 💔",
@@ -535,7 +484,7 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
 
 setLanguage('ka');
 
-// ==================== მუსიკა იძულებითი ჩართვა (შეუძლებელია გამორთვა) ====================
+// ==================== მუსიკა (იძულებითი, ვერ ითიშება) ====================
 const audio = document.getElementById('bgMusic');
 audio.volume = 0.7;
 let musicStarted = false;
@@ -544,7 +493,6 @@ function startMusic() {
     if(musicStarted) return;
     audio.play().then(() => {
         musicStarted = true;
-        console.log('მუსიკა ჩაირთო');
     }).catch(() => {});
 }
 
@@ -552,5 +500,6 @@ window.addEventListener('load', () => setTimeout(startMusic, 100));
 document.body.addEventListener('click', startMusic);
 document.body.addEventListener('touchstart', startMusic);
 </script>
+
 </body>
 </html>
