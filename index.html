@@ -2,10 +2,14 @@
 <html lang="ka">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inex - ონლაინ ამანათები</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Inex - ონლაინ ამანათების მართვა, საკურიერო სერვისი და ტვირთების ტრანსპორტირება მთელ საქართველოში">
+    <meta name="keywords" content="ამანათები, Inex, კურიერი, ტვირთი, საქართველო, თბილისი">
+    <meta name="author" content="Inex Group">
+    <meta name="theme-color" content="#FF3F3F">
+    <title>Inex - ონლაინ ამანათები | დაკარგული ამანათი 79001112525427</title>
     <style>
-        /* === ПОЛНАЯ КОПИЯ ОРИГИНАЛЬНЫХ СТИЛЕЙ INEX === */
+        /* === RESET & BASE === */
         * {
             margin: 0;
             padding: 0;
@@ -13,12 +17,20 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8f9fc;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+            background: #f5f7fb;
             color: #162234;
+            line-height: 1.5;
         }
 
-        /* Header */
+        /* === CONTAINER === */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* === HEADER === */
         .header {
             background: white;
             box-shadow: 0 1px 4px rgba(0,0,0,0.05);
@@ -27,30 +39,33 @@
             top: 0;
             z-index: 100;
         }
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
         .headerWrapper {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         .logoWrapper img {
             height: 44px;
+            width: auto;
         }
         .navBarWrapper {
             display: flex;
-            gap: 32px;
+            gap: 25px;
+            flex-wrap: wrap;
         }
         .navItem {
             font-weight: 500;
             cursor: pointer;
-            color: #162234;
             font-size: 15px;
+            color: #162234;
+            transition: color 0.2s;
         }
-        .loginWrapper .userLink {
+        .navItem:hover {
+            color: #FF3F3F;
+        }
+        .userLink {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -58,6 +73,11 @@
             background: #f0f2f5;
             padding: 6px 16px;
             border-radius: 40px;
+            color: #162234;
+            transition: background 0.2s;
+        }
+        .userLink:hover {
+            background: #e4e6ea;
         }
         .iconWrapper {
             width: 36px;
@@ -71,22 +91,24 @@
             font-weight: bold;
         }
 
-        /* Layout */
+        /* === MAIN LAYOUT === */
         .parcel-home {
             display: flex;
             gap: 28px;
             margin: 30px 0;
+            flex-wrap: wrap;
         }
 
-        /* Левая панель */
+        /* === LEFT SIDEBAR === */
         .leftBarWrapper {
             width: 280px;
             background: white;
             border-radius: 20px;
             padding: 20px;
             box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            flex-shrink: 0;
         }
-        .userInfo .avatar {
+        .avatar {
             width: 56px;
             height: 56px;
             background: #FF3F3F;
@@ -111,10 +133,16 @@
             margin: 20px 0;
             padding: 12px 0;
             border-top: 1px solid #eef2f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .balance span, .bonus span {
             color: #6c7a8e;
             font-size: 13px;
+        }
+        .menu-items {
+            margin-top: 30px;
         }
         .item {
             display: flex;
@@ -135,9 +163,10 @@
             background: #f5f7fb;
         }
 
-        /* Основная таблица */
+        /* === RIGHT CONTENT === */
         .parcelsWrapper {
             flex: 1;
+            min-width: 280px;
             background: white;
             border-radius: 24px;
             padding: 28px;
@@ -154,11 +183,49 @@
             margin-top: 6px;
         }
 
-        /* Таблица */
+        /* === FILTERS === */
+        .filtersWrapper {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+        .filter-item {
+            background: white;
+            border: 1px solid #e2e6ea;
+            border-radius: 40px;
+            padding: 8px 18px;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .filter-item.active {
+            background: #FF3F3F;
+            color: white;
+            border-color: #FF3F3F;
+        }
+        .filter-item:hover {
+            background: #FF3F3F;
+            color: white;
+            border-color: #FF3F3F;
+        }
+
+        /* === TABLE === */
         .table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 24px;
+            overflow-x: auto;
+            display: block;
+        }
+        .table thead,
+        .table tbody {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
         }
         .table th {
             text-align: left;
@@ -172,6 +239,7 @@
             padding: 16px 12px;
             border-bottom: 1px solid #f0f2f6;
             font-size: 14px;
+            word-break: break-word;
         }
         .center {
             text-align: center;
@@ -180,10 +248,18 @@
             text-align: right;
         }
 
-        /* Статус потерянного аманата */
+        /* Responsive table columns */
+        .table th:nth-child(1), .table td:nth-child(1) { width: 18%; }
+        .table th:nth-child(2), .table td:nth-child(2) { width: 18%; }
+        .table th:nth-child(3), .table td:nth-child(3) { width: 27%; }
+        .table th:nth-child(4), .table td:nth-child(4) { width: 10%; }
+        .table th:nth-child(5), .table td:nth-child(5) { width: 10%; }
+        .table th:nth-child(6), .table td:nth-child(6) { width: 12%; }
+        .table th:nth-child(7), .table td:nth-child(7) { width: 5%; }
+
+        /* === STATUS BADGES === */
         .lost-row {
             background: #fff5f5 !important;
-            border-left: 4px solid #dc3545;
         }
         .status-lost {
             background: #dc3545;
@@ -193,62 +269,158 @@
             font-size: 12px;
             font-weight: 700;
             display: inline-block;
+            white-space: nowrap;
         }
-        .status-ok {
+        .status-default {
             background: #e9ecef;
             color: #495057;
             padding: 6px 14px;
             border-radius: 30px;
             font-size: 12px;
-            font-weight: 500;
             display: inline-block;
         }
 
-        /* Фильтры */
-        .filtersWrapper {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin: 20px 0;
+        /* === ALERT BLOCK === */
+        .alert-lost {
+            margin-top: 24px;
+            padding: 16px;
+            background: #fef2f2;
+            border-radius: 12px;
+            border-left: 4px solid #dc3545;
+            font-size: 14px;
         }
-        .filter-item {
-            background: white;
-            border: 1px solid #e2e6ea;
-            border-radius: 40px;
-            padding: 8px 18px;
-            font-size: 13px;
-            cursor: pointer;
-        }
-        .filter-item.active {
-            background: #FF3F3F;
-            color: white;
-            border-color: #FF3F3F;
+        .alert-lost strong {
+            color: #dc3545;
         }
 
-        /* Footer */
+        /* === FOOTER === */
         .footer {
             background: #162234;
             color: white;
-            padding: 40px 0;
+            padding: 40px 0 30px;
             margin-top: 50px;
         }
-        .text-muted {
-            color: #8e9aab;
+        .footer .container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .footer-links {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: #b0b8c5;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        .footer-links a:hover {
+            color: #FF3F3F;
+        }
+        .copyright {
+            color: #7e8b9e;
             font-size: 12px;
+        }
+
+        /* === MOBILE OPTIMIZATION === */
+        @media (max-width: 900px) {
+            .container {
+                padding: 0 16px;
+            }
+            .headerWrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .navBarWrapper {
+                justify-content: center;
+                gap: 15px;
+            }
+            .userLink {
+                justify-content: center;
+            }
+            .parcel-home {
+                flex-direction: column;
+            }
+            .leftBarWrapper {
+                width: 100%;
+            }
+            .menu-items {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .item {
+                flex: 1 1 auto;
+                min-width: 120px;
+                justify-content: center;
+            }
+            .parcelsWrapper {
+                padding: 20px;
+            }
+            .parcelHead h1 {
+                font-size: 22px;
+            }
+            /* Mobile table scroll */
+            .table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            .table thead,
+            .table tbody {
+                display: table;
+                width: 100%;
+            }
+            .table th, .table td {
+                white-space: nowrap;
+            }
+            .filtersWrapper {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .footer .container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .parcelsWrapper {
+                padding: 16px;
+            }
+            .filter-item {
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+            .status-lost, .status-default {
+                padding: 4px 10px;
+                font-size: 10px;
+            }
+            .item {
+                padding: 8px;
+                font-size: 13px;
+            }
         }
     </style>
 </head>
 <body>
 
+<!-- === HEADER === -->
 <header class="header">
     <div class="container">
         <div class="headerWrapper">
             <a class="logoWrapper" href="#">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='40' viewBox='0 0 200 50'%3E%3Crect width='200' height='50' fill='%23FF3F3F'/%3E%3Ctext x='15' y='33' fill='white' font-weight='bold' font-size='20' font-family='Arial'%3EInex%3C/text%3E%3C/svg%3E" alt="Inex">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='40' viewBox='0 0 200 50'%3E%3Crect width='200' height='50' fill='%23FF3F3F'/%3E%3Ctext x='15' y='33' fill='white' font-weight='bold' font-size='20'%3EInex%3C/text%3E%3C/svg%3E" alt="Inex">
             </a>
             <div class="navBarWrapper">
                 <div class="navItem">სერვისები</div>
-                <div class="navItem">სასარგებლო ინფორმაცია</div>
+                <div class="navItem">ინფორმაცია</div>
                 <div class="navItem">რეისები</div>
                 <div class="navItem">ოფისები</div>
             </div>
@@ -262,25 +434,27 @@
     </div>
 </header>
 
+<!-- === MAIN CONTENT === -->
 <main>
     <div class="container">
         <div class="parcel-home">
-            <!-- Левая панель (оригинальная) -->
-            <div class="leftBarWrapper">
-                <div class="userInfo">
-                    <div class="avatar">გმ</div>
-                    <div class="userName" style="margin-top:12px">
-                        <span>გიორგი მადოიშვილი</span>
-                        <p>IG230803</p>
-                    </div>
+
+            <!-- LEFT SIDEBAR -->
+            <aside class="leftBarWrapper">
+                <div class="avatar">გმ</div>
+                <div class="userName" style="margin-top:12px">
+                    <span>გიორგი მადოიშვილი</span>
+                    <p>IG230803</p>
                 </div>
                 <div class="balance">
-                    <span>💰 ბალანსი:</span> <strong>0.59 ₾</strong>
+                    <span>💰 ბალანსი:</span>
+                    <strong>0.59 ₾</strong>
                 </div>
                 <div class="bonus">
-                    <span>⭐ ბონუსი:</span> <strong>1.96 ₾</strong>
+                    <span>⭐ ბონუსი:</span>
+                    <strong>1.96 ₾</strong>
                 </div>
-                <div style="margin-top: 30px;">
+                <div class="menu-items">
                     <a class="item active" href="#">📦 ონლაინ ამანათები</a>
                     <a class="item" href="#">📦 შიდა გზავნილები (0)</a>
                     <a class="item" href="#">📄 წინასწარი დეკლარირება</a>
@@ -289,60 +463,84 @@
                     <a class="item" href="#">✈️ რეისები</a>
                     <a class="item" href="#">⚙️ პარამეტრები</a>
                 </div>
-            </div>
+            </aside>
 
-            <!-- Правая часть: таблица с аманатами -->
+            <!-- RIGHT CONTENT - PARCELS TABLE -->
             <div class="parcelsWrapper">
                 <div class="parcelHead">
                     <h1>ონლაინ ამანათები</h1>
                     <h2>ყველა ამანათი ერთ სივრცეში</h2>
                 </div>
 
-                <!-- Фильтры -->
+                <!-- FILTERS -->
                 <div class="filtersWrapper">
                     <span class="filter-item active">ყველა ამანათი</span>
                     <span class="filter-item">მიღებული</span>
                     <span class="filter-item">გამოგზავნილი</span>
                     <span class="filter-item">ჩამოსული</span>
                     <span class="filter-item">გატანილი</span>
+                    <span class="filter-item">დაკარგული</span>
                 </div>
 
-                <!-- Таблица -->
+                <!-- PARCELS TABLE -->
                 <table class="table">
                     <thead>
-                        <tr><th>თრექინგი</th><th>მიმღები</th><th>აღწერა</th><th>რეისის ნომერი</th><th>ფასი</th><th>სტატუსი</th><th>გადახდა</th></tr>
+                        <tr>
+                            <th>თრექინგი</th>
+                            <th>მიმღები</th>
+                            <th>აღწერა</th>
+                            <th>რეისის ნომერი</th>
+                            <th>ფასი</th>
+                            <th class="center">სტატუსი</th>
+                            <th class="right">გადახდა</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <!-- 🔴🔴🔴 ПОТЕРЯННЫЙ АМАНАТ 🔴🔴🔴 -->
-                        <tr class="lost-row" style="background:#fff5f5">
+                        <!-- 🔴 LOST PARCEL - 79001112525427 🔴 -->
+                        <tr class="lost-row">
                             <td><strong>79001112525427</strong></td>
                             <td>გიორგი მადოიშვილი (IG230803)</td>
-                            <td>Apple iPhone 12背夹充电宝 (20000mAh)</td>
+                            <td>Apple iPhone 12背夹充电宝 (20000mAh) / ZTO Express</td>
                             <td>—</td>
                             <td>¥ 91.81</td>
-                            <td><span class="status-lost">❌ დაკარგულია / ПОТЕРЯН</span></td>
-                            <td>—</td>
+                            <td class="center"><span class="status-lost">❌ დაკარგულია</span></td>
+                            <td class="right">—</td>
                         </tr>
-                        <!-- Другие строки (как в оригинале) -->
+                        <!-- Empty row for design -->
                         <tr>
-                            <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><span class="status-ok">—</span></td><td>—</td>
+                            <td colspan="7" style="text-align:center; color:#999; padding:30px;">
+                                ✉️ სხვა ამანათები არ არის
+                            </td>
                         </tr>
                     </tbody>
                 </table>
 
-                <div style="margin-top: 24px; padding: 12px; background: #fef2f2; border-radius: 12px; text-align: center; border-left: 4px solid #dc3545;">
-                    ⚠️ <strong>ამანათი 79001112525427 (Манат) დაკარგულია</strong> — გთხოვთ დაუკავშირდით მხარდაჭერას
+                <!-- LOST PARCEL ALERT -->
+                <div class="alert-lost">
+                    ⚠️ <strong>ამანათი 79001112525427 (Манат) დაკარგულია</strong> — გთხოვთ დაუკავშირდით მხარდაჭერას ტელეფონზე: (+995 32) 249 26 26
                 </div>
             </div>
         </div>
     </div>
 </main>
 
+<!-- === FOOTER === -->
 <footer class="footer">
     <div class="container">
-        <div>© 2025 Inex Group — Все права защищены</div>
-        <div>📞 (+995 32) 249 26 26 | ✉️ info@inex.ge</div>
-        <div class="text-muted" style="margin-top:12px">Трекинг код потерянного аманата: 79001112525427</div>
+        <div class="copyright">
+            © 2025 Inex Group — ყველა უფლება დაცულია
+        </div>
+        <div class="footer-links">
+            <a href="#">კონფიდენციალურობის პოლიტიკა</a>
+            <a href="#">მომსახურების პირობები</a>
+            <a href="#">დახმარება</a>
+        </div>
+        <div class="copyright">
+            📞 (+995 32) 249 26 26 | ✉️ info@inex.ge
+        </div>
+    </div>
+    <div class="container" style="margin-top: 20px; text-align: center;">
+        <div class="copyright">🔴 დაკარგული ამანათის თრექინგ კოდი: <strong>79001112525427</strong></div>
     </div>
 </footer>
 
