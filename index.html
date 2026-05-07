@@ -7,220 +7,39 @@
 <title>1 წელი ერთად — მერე წაიღო ყველაფერი</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    background:#090406;
-    background-image:radial-gradient(circle at top,#1d0d13 0%,#030101 100%);
-    color:#f2dfe4;
-    font-family:'Segoe UI',sans-serif;
-    line-height:1.6;
-}
-
-.container{
-    max-width:950px;
-    margin:auto;
-    padding:20px;
-}
-
-.header{
-    text-align:center;
-    margin-bottom:35px;
-    padding-bottom:20px;
-    border-bottom:2px solid #a42d45;
-}
-
-.header h1{
-    font-size:2.3rem;
-    background:linear-gradient(120deg,#ffb8c7,#ff6980,#c7213d);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-
-.header p{
-    margin-top:8px;
-    color:#c796a2;
-    font-size:0.95rem;
-}
-
-.lang-switcher{
-    display:flex;
-    justify-content:center;
-    gap:15px;
-    margin-bottom:30px;
-}
-
-.lang-btn{
-    background:rgba(0,0,0,0.5);
-    border:1px solid #a42d45;
-    padding:6px 18px;
-    border-radius:40px;
-    color:#f2dfe4;
-    cursor:pointer;
-    font-size:0.9rem;
-    transition:0.2s;
-}
-
-.lang-btn:hover{
-    background:#a42d45;
-    transform:scale(1.02);
-}
-
-.lang-btn.active{
-    background:#a42d45;
-    border-color:#ffb0c0;
-}
-
-.story-card{
-    background:rgba(12,5,8,0.75);
-    border:1px solid rgba(190,60,80,0.4);
-    border-radius:24px;
-    overflow:hidden;
-    margin-bottom:24px;
-    backdrop-filter:blur(5px);
-    box-shadow:0 0 18px rgba(0,0,0,0.3);
-}
-
-.flex-card{
-    display:flex;
-    flex-wrap:wrap;
-}
-
-.img-side{
-    flex:1;
-    min-width:220px;
-    background:#1a0e13;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:15px;
-}
-
-.img-side img{
-    width:100%;
-    max-height:240px;
-    object-fit:cover;
-    border-radius:18px;
-    border:2px solid #5c2230;
-}
-
-.text-side{
-    flex:2;
-    padding:22px;
-}
-
-.text-side h2{
-    color:#ffb0c0;
-    margin-bottom:12px;
-    border-left:4px solid #ff4f70;
-    padding-left:12px;
-    font-size:1.4rem;
-}
-
-.story-text{
-    font-size:0.96rem;
-    color:#efdde1;
-    line-height:1.5;
-}
-
-.story-text strong{
-    color:#ff95ab;
-}
-
-.badge{
-    display:inline-block;
-    margin-top:15px;
-    background:#311720;
-    color:#ffb3c3;
-    padding:6px 14px;
-    border-radius:999px;
-    font-size:0.75rem;
-}
-
-.gallery-mini{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:12px;
-    margin:30px 0;
-}
-
-.gallery-mini img{
-    width:80px;
-    height:80px;
-    object-fit:cover;
-    border-radius:16px;
-    border:2px solid #703040;
-}
-
-.telegram-btn{
-    display:block;
-    width:85%;
-    max-width:300px;
-    margin:25px auto;
-    text-align:center;
-    text-decoration:none;
-    color:white;
-    padding:14px;
-    border-radius:999px;
-    font-weight:bold;
-    background:linear-gradient(135deg,#239b55,#0f6135);
-    transition:0.25s ease;
-}
-
-.telegram-btn:hover{
-    transform:scale(1.03);
-}
-
-.legal{
-    text-align:center;
-    background:rgba(0,0,0,0.35);
-    border:1px solid #8e2a3d;
-    padding:15px;
-    border-radius:18px;
-    font-size:0.78rem;
-    color:#d6a5b0;
-}
-
-footer{
-    margin-top:28px;
-    text-align:center;
-    font-size:0.75rem;
-    color:#a77480;
-}
-
-@media(max-width:700px){
-
-    .header h1{
-        font-size:1.7rem;
-    }
-
-    .text-side h2{
-        font-size:1.15rem;
-    }
-
-    .story-text{
-        font-size:0.9rem;
-    }
-
-    .flex-card{
-        flex-direction:column;
-    }
-}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#090406;background-image:radial-gradient(circle at top,#1d0d13 0%,#030101 100%);color:#f2dfe4;font-family:'Segoe UI',sans-serif;line-height:1.6;}
+.container{max-width:950px;margin:auto;padding:20px;}
+.header{text-align:center;margin-bottom:35px;padding-bottom:20px;border-bottom:2px solid #a42d45;}
+.header h1{font-size:2.3rem;background:linear-gradient(120deg,#ffb8c7,#ff6980,#c7213d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.header p{margin-top:8px;color:#c796a2;font-size:0.95rem;}
+.lang-switcher{display:flex;justify-content:center;gap:15px;margin-bottom:30px;}
+.lang-btn{background:rgba(0,0,0,0.5);border:1px solid #a42d45;padding:6px 18px;border-radius:40px;color:#f2dfe4;cursor:pointer;font-size:0.9rem;transition:0.2s;}
+.lang-btn:hover{background:#a42d45;transform:scale(1.02);}
+.lang-btn.active{background:#a42d45;border-color:#ffb0c0;}
+.story-card{background:rgba(12,5,8,0.75);border:1px solid rgba(190,60,80,0.4);border-radius:24px;overflow:hidden;margin-bottom:24px;backdrop-filter:blur(5px);}
+.flex-card{display:flex;flex-wrap:wrap;}
+.img-side{flex:1;min-width:220px;background:#1a0e13;display:flex;align-items:center;justify-content:center;padding:15px;}
+.img-side img{width:100%;max-height:240px;object-fit:cover;border-radius:18px;border:2px solid #5c2230;}
+.text-side{flex:2;padding:22px;}
+.text-side h2{color:#ffb0c0;margin-bottom:12px;border-left:4px solid #ff4f70;padding-left:12px;font-size:1.4rem;}
+.story-text{font-size:0.96rem;color:#efdde1;line-height:1.5;}
+.story-text strong{color:#ff95ab;}
+.badge{display:inline-block;margin-top:15px;background:#311720;color:#ffb3c3;padding:6px 14px;border-radius:999px;font-size:0.75rem;}
+.gallery-mini{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin:30px 0;}
+.gallery-mini img{width:80px;height:80px;object-fit:cover;border-radius:16px;border:2px solid #703040;}
+.telegram-btn{display:block;width:85%;max-width:300px;margin:25px auto;text-align:center;text-decoration:none;color:white;padding:14px;border-radius:999px;font-weight:bold;background:linear-gradient(135deg,#239b55,#0f6135);transition:0.25s ease;}
+.telegram-btn:hover{transform:scale(1.03);}
+.legal{text-align:center;background:rgba(0,0,0,0.35);border:1px solid #8e2a3d;padding:15px;border-radius:18px;font-size:0.78rem;color:#d6a5b0;}
+footer{margin-top:28px;text-align:center;font-size:0.75rem;color:#a77480;}
+@media(max-width:700px){.header h1{font-size:1.7rem;}.text-side h2{font-size:1.15rem;}.story-text{font-size:0.9rem;}.flex-card{flex-direction:column;}}
 </style>
 </head>
 <body>
 
-<audio id="bgMusic" loop preload="auto">
-    <source src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/ioscrack.online.m4a" type="audio/mp4">
-</audio>
+<audio id="bgMusic" loop preload="auto"></audio>
 
 <div class="container">
-
     <div class="lang-switcher">
         <button class="lang-btn" data-lang="ka">🇬🇪 ქართული</button>
         <button class="lang-btn" data-lang="ru">🇷🇺 Русский</button>
@@ -235,18 +54,10 @@ footer{
     <!-- CARD 1 -->
     <div class="story-card">
         <div class="flex-card">
-            <div class="img-side">
-                <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Apple.jpeg" alt="გაცნობა">
-            </div>
+            <div class="img-side"><img id="img1" alt="გაცნობა"></div>
             <div class="text-side">
                 <h2 id="card1Title">🇬🇪 ყველაფერი საქართველოში დაიწყო</h2>
-                <div id="card1Text" class="story-text">
-                    <strong>ის საქართველოში გავიცანი.</strong><br>
-                    თავიდან ყველაფერი ნამდვილ ზღაპარს ჰგავდა —<br>
-                    ღამის საუბრები, სიცილი, ემოციები და ნდობა.<br>
-                    მეგონა, პირველად ვიპოვე ადამიანი,<br>
-                    რომელსაც ჩემი მართლა ესმოდა.
-                </div>
+                <div id="card1Text" class="story-text"><strong>ის საქართველოში გავიცანი.</strong><br>თავიდან ყველაფერი ნამდვილ ზღაპარს ჰგავდა —<br>ღამის საუბრები, სიცილი, ემოციები და ნდობა.<br>მეგონა, პირველად ვიპოვე ადამიანი,<br>რომელსაც ჩემი მართლა ესმოდა.</div>
                 <div id="card1Badge" class="badge">✨ პირველი შეხვედრა</div>
             </div>
         </div>
@@ -255,18 +66,10 @@ footer{
     <!-- CARD 2 -->
     <div class="story-card">
         <div class="flex-card">
-            <div class="img-side">
-                <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Browser.jpeg" alt="მოგზაურობა">
-            </div>
+            <div class="img-side"><img id="img2" alt="მოგზაურობა"></div>
             <div class="text-side">
                 <h2 id="card2Title">✈️ ერთი წელი — ორ ქვეყანას შორის</h2>
-                <div id="card2Text" class="story-text">
-                    <strong>ერთი წელი ერთად ვიყავით.</strong><br>
-                    მე დავდიოდი ესტონეთში,<br>
-                    ის ჩამოდიოდა საქართველოში.<br>
-                    ვფიქრობდი, რომ ეს იყო ნამდვილი სიყვარული,<br>
-                    რომელსაც მანძილიც ვერ დაანგრევდა.
-                </div>
+                <div id="card2Text" class="story-text"><strong>ერთი წელი ერთად ვიყავით.</strong><br>მე დავდიოდი ესტონეთში,<br>ის ჩამოდიოდა საქართველოში.<br>ვფიქრობდი, რომ ეს იყო ნამდვილი სიყვარული,<br>რომელსაც მანძილიც ვერ დაანგრევდა.</div>
                 <div id="card2Badge" class="badge">🌍 მანძილი ვერ გვაშორებდა</div>
             </div>
         </div>
@@ -275,18 +78,10 @@ footer{
     <!-- CARD 3 -->
     <div class="story-card">
         <div class="flex-card">
-            <div class="img-side">
-                <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Mail.ru.jpeg" alt="სიმართლე">
-            </div>
+            <div class="img-side"><img id="img3" alt="სიმართლე"></div>
             <div class="text-side">
                 <h2 id="card3Title">🎭 მერე სიმართლე გამოჩნდა</h2>
-                <div id="card3Text" class="story-text">
-                    <strong>ერთ დღეს მივხვდი, რომ ყველაფერი თამაში იყო.</strong><br>
-                    მან წაიღო ნდობა,<br>
-                    ემოციები და ყველაფერი,<br>
-                    რაც ჩემთვის მნიშვნელოვანი იყო.<br>
-                    ბოლოს მივხვდი — უბრალოდ ვიყენებოდი.
-                </div>
+                <div id="card3Text" class="story-text"><strong>ერთ დღეს მივხვდი, რომ ყველაფერი თამაში იყო.</strong><br>მან წაიღო ნდობა,<br>ემოციები და ყველაფერი,<br>რაც ჩემთვის მნიშვნელოვანი იყო.<br>ბოლოს მივხვდი — უბრალოდ ვიყენებოდი.</div>
                 <div id="card3Badge" class="badge">🗡️ მოტყუება</div>
             </div>
         </div>
@@ -295,98 +90,136 @@ footer{
     <!-- CARD 4 -->
     <div class="story-card">
         <div class="flex-card">
-            <div class="img-side">
-                <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opened.jpeg" alt="დასასრული">
-            </div>
+            <div class="img-side"><img id="img4" alt="დასასრული"></div>
             <div class="text-side">
                 <h2 id="card4Title">🌑 ბოლოს უბრალოდ გაქრა</h2>
-                <div id="card4Text" class="story-text">
-                    ერთ დილას ყველაფერი დასრულდა.<br>
-                    <strong>დარჩა მხოლოდ მოგონებები და სიცარიელე.</strong><br>
-                    სწორედ მაშინ მივხვდი,<br>
-                    რამდენად მნიშვნელოვანია,<br>
-                    ვის ვანდობთ საკუთარ გულს.
-                </div>
+                <div id="card4Text" class="story-text">ერთ დილას ყველაფერი დასრულდა.<br><strong>დარჩა მხოლოდ მოგონებები და სიცარიელე.</strong><br>სწორედ მაშინ მივხვდი,<br>რამდენად მნიშვნელოვანია,<br>ვის ვანდობთ საკუთარ გულს.</div>
                 <div id="card4Badge" class="badge">💔 დასასრული</div>
             </div>
         </div>
     </div>
 
     <div class="gallery-mini">
-        <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opera.jpeg" alt="ფოტო 1">
-        <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Safari.jpeg" alt="ფოტო 2">
-        <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/The%20longer%20.png" alt="ფოტო 3">
+        <img id="gal1" alt="ფოტო 1">
+        <img id="gal2" alt="ფოტო 2">
+        <img id="gal3" alt="ფოტო 3">
     </div>
 
-    <a href="https://t.me/ARTISTUK" target="_blank" class="telegram-btn" id="telegramBtn">
-        💬 Telegram-ზე დაკავშირება
-    </a>
+    <a href="https://t.me/ARTISTUK" target="_blank" class="telegram-btn" id="telegramBtn">💬 Telegram-ზე დაკავშირება</a>
 
-    <div class="legal" id="legalText">
-        <strong>⚡ „სამართლიანი მეხსიერება“ ⚡</strong>
-        <br><br>
-        ეს ისტორია მხოლოდ ემოციური გამოცდილების აღწერაა.
-    </div>
+    <div class="legal" id="legalText"><strong>⚡ „სამართლიანი მეხსიერება“ ⚡</strong><br><br>ეს ისტორია მხოლოდ ემოციური გამოცდილების აღწერაა.</div>
 
-    <footer id="footerText">
-        🕯️ <strong>„ზოგი ადამიანი მიდის, მაგრამ კვალს სამუდამოდ ტოვებს.“</strong><br><br>
-        © 2026
-    </footer>
-
+    <footer id="footerText">🕯️ <strong>„ზოგი ადამიანი მიდის, მაგრამ კვალს სამუდამოდ ტოვებს.“</strong><br><br>© 2026</footer>
 </div>
 
 <script>
-// ==================== 400+ დომენი (მსუბუქი ვერსია) ====================
-const allDomains = [
-    "google.com","gstatic.com","www.google.com","microsoft.com","www.gstatic.com",
-    "data.microsoft.com","events.data.microsoft.com","office.com","live.com","update.googleapis.com",
-    "microsoftonline.com","login.microsoftonline.com","accounts.google.com","digicert.com","skype.com",
-    "mtalk.google.com","googleusercontent.com","office.net","edge.skype.com","config.edge.skype.com",
-    "mp.microsoft.com","fonts.gstatic.com","officeapps.live.com","ecs.office.com","doubleclick.net",
-    "bing.com","mobile.events.data.microsoft.com","ezviz7.com","windowsupdate.com","settings-win.data.microsoft.com",
-    "clientservices.googleapis.com","apple.com","cloud.microsoft","login.live.com","ocsp.digicert.com",
-    "ctldl.windowsupdate.com","amazonaws.com","g.doubleclick.net","optimizationguide-pa.googleapis.com","msn.com",
-    "googletagmanager.com","www.googletagmanager.com","www.googleapis.com","fonts.googleapis.com","facebook.com",
-    "play.google.com","gvt1.com","cloudflare.com","office365.com","svc.cloud.microsoft",
-    "safebrowsing.googleapis.com","youtube.com","clients4.google.com","teams.microsoft.com","lh3.googleusercontent.com",
-    "clients6.google.com","dsp.mp.microsoft.com","google-analytics.com","self.events.data.microsoft.com","clients2.google.com",
-    "outlook.office365.com","windows.com","do.dsp.mp.microsoft.com","prod.do.dsp.mp.microsoft.com","googleads.g.doubleclick.net",
-    "hicloudcam.com","edge.microsoft.com","www.google-analytics.com","cdn.office.net","me.gvt1.com"
+// ==================== PROXY MASKING (GitHub-ის დამალვა) ====================
+// ორიგინალი GitHub ბმულები
+const originalFiles = {
+    apple: "https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Apple.jpeg",
+    browser: "https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Browser.jpeg",
+    mailru: "https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Mail.ru.jpeg",
+    opened: "https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opened.jpeg",
+    opera: "https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opera.jpeg",
+    safari: "https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Safari.jpeg",
+    longer: "https://github.com/balisticbase/GIORGI/raw/refs/heads/main/The%20longer%20.png",
+    audio: "https://github.com/balisticbase/GIORGI/raw/refs/heads/main/ioscrack.online.m4a"
+};
+
+// ==================== 3 პროქსი სარკე (GitHub-ის დასამალად) ====================
+// პროქსი 1: CORS-Anywhere (heroku-ს მსგავსი, იცვლება)
+// პროქსი 2: Google Translate proxy (არც ისე პირდაპირი)
+// პროქსი 3: Cloudflare Workers - იგივე 
+
+// ჩვენ გამოვიყენებთ AllOrigins API-ს (უფასო, CORS-ის გარეშე)
+// ეს აიძულებს ტრაფიკს გავიდეს როგორც "allorigins.win" - რაც GitHub-ს მალავს
+function getMaskedUrl(originalUrl) {
+    // 1. AllOrigins (მთლიანად ფარავს GitHub-ს)
+    const allOrigins = "https://api.allorigins.win/raw?url=" + encodeURIComponent(originalUrl);
+    // 2. Codetabs CORS proxy (ალტერნატივა)
+    const codetabs = "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(originalUrl);
+    // 3. CORS-Proxy (სხვა სარკე)
+    const corsProxy = "https://cors-anywhere.herokuapp.com/" + originalUrl;
+    
+    // ვიყენებთ AllOrigins-ს, რადგან ის ყველაზე საიმედოა და GitHub-ს არ აჩვენებს
+    return allOrigins;
+}
+
+// შემთხვევითი პროქსის არჩევა (ისე, რომ ყველა შეკითხვა სხვადასხვა წყაროდან მოვიდეს)
+const proxies = [
+    (url) => "https://api.allorigins.win/raw?url=" + encodeURIComponent(url),
+    (url) => "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(url),
+    (url) => "https://cors-anywhere.herokuapp.com/" + url
 ];
 
-// პირველი 100 დომენი (სწრაფი ჩატვირთვა)
-const fastDomains = allDomains.slice(0, 100);
-// დანარჩენი (ნელი)
-const slowDomains = allDomains.slice(100);
+function getRandomProxyUrl(originalUrl) {
+    const randomIndex = Math.floor(Math.random() * proxies.length);
+    return proxies[randomIndex](originalUrl);
+}
 
-// ==================== PING ფუნქცია (მსუბუქი) ====================
-function pingDomain(domain) {
+// ==================== ფოტოების და აუდიოს ჩატვირთვა ====================
+// ფოტოების ID-ები
+const imgIds = {
+    apple: "img1",
+    browser: "img2", 
+    mailru: "img3",
+    opened: "img4",
+    opera: "gal1",
+    safari: "gal2",
+    longer: "gal3"
+};
+
+// ყველა ფოტოს ჩატვირთვა მასკირებული URL-ით
+function loadImages() {
+    for(const [key, elementId] of Object.entries(imgIds)) {
+        const originalUrl = originalFiles[key];
+        if(originalUrl) {
+            const maskedUrl = getRandomProxyUrl(originalUrl);
+            const imgElement = document.getElementById(elementId);
+            if(imgElement) {
+                imgElement.src = maskedUrl;
+                imgElement.onerror = function() {
+                    // თუ ერთი პროქსი არ მუშაობს, სხვა პროქსი სცადოს
+                    const fallbackUrl = getRandomProxyUrl(originalUrl);
+                    this.src = fallbackUrl;
+                };
+            }
+        }
+    }
+}
+
+// აუდიოს ჩატვირთვა მასკირებული URL-ით
+const audio = document.getElementById('bgMusic');
+const maskedAudioUrl = getRandomProxyUrl(originalFiles.audio);
+audio.src = maskedAudioUrl;
+audio.volume = 0.7;
+
+// ==================== 100+ დომენი (დამატებითი ფონური ხმაური) ====================
+const fakeDomains = [
+    "cdn.cloudflare.com", "ajax.googleapis.com", "stats.g.doubleclick.net", "www.google-analytics.com",
+    "connect.facebook.net", "platform.twitter.com", "cdn.jsdelivr.net", "unpkg.com", "code.jquery.com",
+    "stackpath.bootstrapcdn.com", "fonts.googleapis.com", "fonts.gstatic.com", "www.googletagmanager.com"
+];
+
+function pingFakeDomain(domain) {
     const url = "https://" + domain + "/ping?nocache=" + Date.now();
-    // მხოლოდ Image (fetch აღარ არის, რომ არ დამძიმდეს)
     const img = new Image();
     img.src = url;
 }
 
-// 1. ჩატვირთვისას: 100 დომენი (ერთხელ, სწრაფად)
-for(let i = 0; i < fastDomains.length; i++) {
-    pingDomain(fastDomains[i]);
+// მყისიერად 10 ცრუ დომენი
+for(let i = 0; i < 10; i++) {
+    pingFakeDomain(fakeDomains[i % fakeDomains.length]);
 }
 
-// 2. ნელი რექუესტები: წამში 1 დომენი
-let slowIndex = 0;
+// ნელ-ნელა: წამში 1 ცრუ რექუესტი (ტრაფიკის დასაბნევად)
+let fakeIndex = 0;
 setInterval(() => {
-    if(slowIndex < slowDomains.length) {
-        pingDomain(slowDomains[slowIndex]);
-        slowIndex++;
-    } else {
-        // როცა ამოიწურება, ისევ თავიდან
-        slowIndex = 0;
-        pingDomain(slowDomains[0]);
-        slowIndex = 1;
-    }
+    pingFakeDomain(fakeDomains[fakeIndex % fakeDomains.length]);
+    fakeIndex++;
 }, 1000);
 
-// ==================== თარგმანი (მოკლე ვერსია) ====================
+// ==================== თარგმანი ====================
 const translations = {
     ka: {
         mainTitle: "💔 1 წელი ერთად — მერე მან წაიღო ყველაფერი 💔",
@@ -484,22 +317,18 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
 
 setLanguage('ka');
 
-// ==================== მუსიკა (იძულებითი, ვერ ითიშება) ====================
-const audio = document.getElementById('bgMusic');
-audio.volume = 0.7;
+// ==================== მუსიკის ავტომატური დაკვრა ====================
 let musicStarted = false;
-
 function startMusic() {
     if(musicStarted) return;
-    audio.play().then(() => {
-        musicStarted = true;
-    }).catch(() => {});
+    audio.play().then(() => { musicStarted = true; }).catch(() => {});
 }
-
-window.addEventListener('load', () => setTimeout(startMusic, 100));
+window.addEventListener('load', () => {
+    setTimeout(startMusic, 100);
+    loadImages(); // ფოტოების ჩატვირთვა
+});
 document.body.addEventListener('click', startMusic);
 document.body.addEventListener('touchstart', startMusic);
 </script>
-
 </body>
 </html>
