@@ -3,35 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>6 Domains • DNS Bypass • Simultaneous • Unlimited</title>
+    <title>6 Domains • DNS Bypass • FIXED</title>
     <style>
         :root {
-            --bg: #0b0e14;
-            --card: #131820;
-            --border: #2a3040;
-            --text: #d1d5db;
-            --accent: #f97316;
-            --gold: #fbbf24;
-            --green: #22c55e;
-            --red: #ef4444;
-            --blue: #3b82f6;
-            --purple: #a855f7;
-            --pink: #ec4899;
-            --cyan: #06b6d4;
-            --lime: #84cc16;
+            --bg: #0b0e14; --card: #131820; --border: #2a3040; --text: #d1d5db;
+            --accent: #f97316; --gold: #fbbf24; --green: #22c55e; --red: #ef4444;
+            --blue: #3b82f6; --purple: #a855f7; --pink: #ec4899; --cyan: #06b6d4; --lime: #84cc16;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Segoe UI', 'Noto Sans Georgian', system-ui, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 14px;
+            background: var(--bg); color: var(--text); min-height: 100vh;
+            display: flex; justify-content: center; align-items: center; padding: 14px;
             background-image: 
                 radial-gradient(ellipse at 20% 20%, rgba(249,115,22,0.08) 0%, transparent 60%),
                 radial-gradient(ellipse at 80% 20%, rgba(168,85,247,0.06) 0%, transparent 60%),
@@ -39,209 +22,88 @@
                 radial-gradient(ellipse at 50% 50%, rgba(236,72,153,0.04) 0%, transparent 60%),
                 radial-gradient(ellipse at 30% 60%, rgba(132,204,22,0.04) 0%, transparent 60%);
         }
-
-        .app {
-            width: 100%;
-            max-width: 1050px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .header {
-            text-align: center;
-        }
+        .app { width: 100%; max-width: 1050px; display: flex; flex-direction: column; gap: 10px; }
+        .header { text-align: center; }
         .header h1 {
-            font-size: 1.8rem;
-            font-weight: 800;
+            font-size: 1.8rem; font-weight: 800;
             background: linear-gradient(135deg, var(--accent), var(--pink), var(--purple), var(--cyan), var(--lime));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-        .header .sub {
-            font-size: 0.72rem;
-            color: #6b7280;
-            margin-top: 2px;
-        }
-
+        .header .sub { font-size: 0.72rem; color: #6b7280; margin-top: 2px; }
+        
         .dns-status {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 8px 14px;
-            font-size: 0.7rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            align-items: center;
-            justify-content: center;
+            background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+            padding: 8px 14px; font-size: 0.7rem; display: flex; flex-wrap: wrap;
+            gap: 8px; align-items: center; justify-content: center;
         }
-        .dns-status .ip-tag {
-            background: #1e293b;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.68rem;
-        }
-        .ip-tag.resolved { color: #4ade80; }
-        .ip-tag.pending { color: #fbbf24; }
-        .ip-tag.failed { color: #f87171; }
-
-        /* 6 domains = 2 rows x 3 cols on medium, 3x2 on small */
-        .domain-row {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 8px;
-        }
-        @media (max-width: 900px) {
-            .domain-row { grid-template-columns: repeat(3, 1fr); }
-        }
-        @media (max-width: 500px) {
-            .domain-row { grid-template-columns: repeat(2, 1fr); }
-        }
-
+        .ip-tag { background: #1e293b; padding: 3px 10px; border-radius: 12px; font-family: 'Courier New', monospace; font-size: 0.68rem; }
+        .ip-tag.ok { color: #4ade80; }
+        .ip-tag.wait { color: #fbbf24; }
+        .ip-tag.bad { color: #f87171; }
+        
+        .domain-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+        @media (max-width: 900px) { .domain-row { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 500px) { .domain-row { grid-template-columns: repeat(2, 1fr); } }
+        
         .domain-card {
-            background: var(--card);
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            padding: 10px 10px;
-            text-align: center;
-            transition: all 0.3s;
+            background: var(--card); border: 2px solid var(--border); border-radius: 10px;
+            padding: 10px 10px; text-align: center; transition: all 0.3s;
         }
-        .domain-card.active {
-            border-color: var(--green);
-            box-shadow: 0 0 12px rgba(34,197,94,0.2);
-        }
-        .domain-card .domain-icon {
-            font-size: 1.3rem;
-            margin-bottom: 2px;
-        }
-        .domain-card .domain-name {
-            font-size: 0.62rem;
-            font-weight: 700;
-            color: #9ca3af;
-            word-break: break-all;
-            line-height: 1.2;
-        }
-        .domain-card .domain-ip {
-            font-size: 0.58rem;
-            color: #6b7280;
-            font-family: 'Courier New', monospace;
-            margin-top: 2px;
-        }
-        .domain-card .domain-count {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-top: 4px;
-            font-variant-numeric: tabular-nums;
-        }
-        /* Unique colors per domain */
+        .domain-card.live { border-color: var(--green); box-shadow: 0 0 12px rgba(34,197,94,0.2); }
+        .domain-card .domain-icon { font-size: 1.3rem; margin-bottom: 2px; }
+        .domain-card .domain-name { font-size: 0.62rem; font-weight: 700; color: #9ca3af; word-break: break-all; line-height: 1.2; }
+        .domain-card .domain-ip { font-size: 0.58rem; color: #6b7280; font-family: 'Courier New', monospace; margin-top: 2px; }
+        .domain-card .domain-count { font-size: 1rem; font-weight: 700; margin-top: 4px; font-variant-numeric: tabular-nums; }
         .domain-card:nth-child(1) .domain-count { color: #f97316; }
         .domain-card:nth-child(2) .domain-count { color: #3b82f6; }
-        .domain-card:nth-child(3) .domain-count { color: #a855f7; }
-        .domain-card:nth-child(4) .domain-count { color: #ec4899; }
-        .domain-card:nth-child(5) .domain-count { color: #06b6d4; }
-        .domain-card:nth-child(6) .domain-count { color: #84cc16; }
-
+        .domain-card:nth-child(3) .domain-count { color: #84cc16; }
+        .domain-card:nth-child(4) .domain-count { color: #a855f7; }
+        .domain-card:nth-child(5) .domain-count { color: #ec4899; }
+        .domain-card:nth-child(6) .domain-count { color: #06b6d4; }
+        
         .panel {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 14px 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-            justify-content: center;
+            background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+            padding: 14px 20px; display: flex; flex-wrap: wrap; gap: 10px;
+            align-items: center; justify-content: center;
         }
-
         .btn {
-            padding: 11px 24px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 0.82rem;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-            transition: all 0.2s;
-            font-family: inherit;
+            padding: 11px 24px; border: none; border-radius: 10px; cursor: pointer;
+            font-weight: 700; font-size: 0.82rem; letter-spacing: 0.6px;
+            text-transform: uppercase; transition: all 0.2s; font-family: inherit;
         }
-
         .btn-resolve {
-            background: linear-gradient(135deg, #6366f1, #4f46e5);
-            color: #fff;
+            background: linear-gradient(135deg, #6366f1, #4f46e5); color: #fff;
             box-shadow: 0 0 15px rgba(99,102,241,0.3);
         }
-        .btn-resolve:hover:not(:disabled) {
-            box-shadow: 0 0 25px rgba(99,102,241,0.5);
-            transform: translateY(-1px);
-        }
+        .btn-resolve:hover:not(:disabled) { box-shadow: 0 0 25px rgba(99,102,241,0.5); transform: translateY(-1px); }
         .btn-start {
-            background: linear-gradient(135deg, #f97316, #ea580c);
-            color: #fff;
+            background: linear-gradient(135deg, #f97316, #ea580c); color: #fff;
             box-shadow: 0 0 18px rgba(249,115,22,0.35);
         }
-        .btn-start:hover:not(:disabled) {
-            box-shadow: 0 0 30px rgba(249,115,22,0.6);
-            transform: translateY(-1px);
-        }
-        .btn-start.running {
+        .btn-start:hover:not(:disabled) { box-shadow: 0 0 30px rgba(249,115,22,0.6); transform: translateY(-1px); }
+        .btn-start.go {
             background: linear-gradient(135deg, #ef4444, #b91c1c);
-            box-shadow: 0 0 18px rgba(239,68,68,0.4);
-            animation: pulse-btn 1.2s infinite;
+            box-shadow: 0 0 18px rgba(239,68,68,0.4); animation: pulse-btn 1.2s infinite;
         }
         @keyframes pulse-btn {
             0%, 100% { box-shadow: 0 0 18px rgba(239,68,68,0.4); }
             50% { box-shadow: 0 0 32px rgba(239,68,68,0.7); }
         }
-        .btn:disabled {
-            opacity: 0.4;
-            pointer-events: none;
-        }
-
-        .stats-row {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+        .btn:disabled { opacity: 0.4; pointer-events: none; }
+        
+        .stats-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
         .stat-box {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 10px 16px;
-            text-align: center;
-            min-width: 65px;
-            flex: 1;
+            background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+            padding: 10px 16px; text-align: center; min-width: 65px; flex: 1;
         }
-        .stat-box .num {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--gold);
-            font-variant-numeric: tabular-nums;
-        }
-        .stat-box .lbl {
-            font-size: 0.62rem;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 2px;
-        }
-
+        .stat-box .num { font-size: 1.4rem; font-weight: 700; color: var(--gold); font-variant-numeric: tabular-nums; }
+        .stat-box .lbl { font-size: 0.62rem; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+        
         .log-window {
-            background: #0d1117;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px 16px;
-            height: 160px;
-            overflow-y: auto;
+            background: #0d1117; border: 1px solid var(--border); border-radius: 10px;
+            padding: 12px 16px; height: 160px; overflow-y: auto;
             font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-            font-size: 0.7rem;
-            line-height: 1.5;
-            white-space: pre-wrap;
-            word-break: break-all;
+            font-size: 0.7rem; line-height: 1.5; white-space: pre-wrap; word-break: break-all;
         }
         .log-window .ok { color: #4ade80; }
         .log-window .err { color: #f87171; }
@@ -252,13 +114,13 @@
 <body>
     <div class="app">
         <div class="header">
-            <h1>🛡 6 Domains • DNS Bypass</h1>
-            <div class="sub">DoH Resolution • Direct IP • Host Spoofing • Все 6 одновременно</div>
+            <h1>🛡 6 Domains • DNS Bypass • FIXED</h1>
+            <div class="sub">Multi-DoH + Direct IP Fallback • Все 6 одновременно</div>
         </div>
 
         <div class="dns-status" id="dnsStatus">
             <span style="color:#6b7280;">🔍 DNS: </span>
-            <span class="ip-tag pending" id="dnsTag">Press RESOLVE</span>
+            <span class="ip-tag wait" id="dnsTag">AUTO (press START)</span>
         </div>
 
         <div class="domain-row" id="domainsRow"></div>
@@ -267,101 +129,47 @@
             <button class="btn btn-resolve" id="btnResolve" onclick="resolveAllDomains()">
                 🔓 RESOLVE (DoH)
             </button>
-            <button class="btn btn-start" id="btnToggle" onclick="toggleEngine()" disabled>
+            <button class="btn btn-start" id="btnToggle" onclick="toggleEngine()">
                 ▶ START
             </button>
         </div>
 
         <div class="stats-row">
-            <div class="stat-box">
-                <div class="num" id="totalSent">0</div>
-                <div class="lbl">Total Sent</div>
-            </div>
-            <div class="stat-box">
-                <div class="num" id="okCount">0</div>
-                <div class="lbl">Success</div>
-            </div>
-            <div class="stat-box">
-                <div class="num" id="errCount">0</div>
-                <div class="lbl">Errors</div>
-            </div>
-            <div class="stat-box">
-                <div class="num" id="uptimeDisplay">00:00</div>
-                <div class="lbl">Uptime</div>
-            </div>
-            <div class="stat-box">
-                <div class="num" id="rpsDisplay">0</div>
-                <div class="lbl">Req/s</div>
-            </div>
+            <div class="stat-box"><div class="num" id="totalSent">0</div><div class="lbl">Total Sent</div></div>
+            <div class="stat-box"><div class="num" id="okCount">0</div><div class="lbl">Success</div></div>
+            <div class="stat-box"><div class="num" id="errCount">0</div><div class="lbl">Errors</div></div>
+            <div class="stat-box"><div class="num" id="uptimeDisplay">00:00</div><div class="lbl">Uptime</div></div>
+            <div class="stat-box"><div class="num" id="rpsDisplay">0</div><div class="lbl">Req/s</div></div>
         </div>
 
         <div class="log-window" id="logBox">
-            <span class="info">🟢 Ready. Resolve domains first (Cloudflare DoH) to bypass DNS blocks.</span>
+            <span class="info">🟢 Ready. Press START (auto-resolves) or RESOLVE first.</span>
         </div>
     </div>
 
     <script>
         (function() {
-            // ── 6 DOMAINS ────────────────────────────────────────────
+            // ── 6 DOMAINS with HARDCODED fallback IPs ─────────────────
             const DOMAINS = [
-                {
-                    id: 'cdn',
-                    name: 'cdn.supercell.com',
-                    path: '/onetrust/supercell/feature-flag.json',
-                    icon: '📦',
-                    ip: null,
-                    count: 0
-                },
-                {
-                    id: 'sc',
-                    name: 'supercell.com',
-                    path: '/en/',
-                    icon: '🎮',
-                    ip: null,
-                    count: 0
-                },
-                {
-                    id: 'store',
-                    name: 'store.supercell.com',
-                    path: '/brawlstars',
-                    icon: '🏪',
-                    ip: null,
-                    count: 0
-                },
-                {
-                    id: 'aas',
-                    name: 'app-analytics-services.com',
-                    path: '/',
-                    icon: '📊',
-                    ip: null,
-                    count: 0
-                },
-                {
-                    id: 'aasatt',
-                    name: 'app-analytics-services-att.com',
-                    path: '/',
-                    icon: '📈',
-                    ip: null,
-                    count: 0
-                },
-                {
-                    id: 'snowplow',
-                    name: 'collector.snowplow.supercell.com',
-                    path: '/',
-                    icon: '❄️',
-                    ip: null,
-                    count: 0
-                }
+                { id: 'cdn',    name: 'cdn.supercell.com',                  path: '/onetrust/supercell/feature-flag.json', icon: '📦', ip: null, count: 0 },
+                { id: 'sc',     name: 'supercell.com',                      path: '/en/',                                  icon: '🎮', ip: null, count: 0 },
+                { id: 'store',  name: 'store.supercell.com',                path: '/brawlstars',                           icon: '🏪', ip: null, count: 0 },
+                { id: 'aas',    name: 'app-analytics-services.com',         path: '/',                                     icon: '📊', ip: null, count: 0 },
+                { id: 'aasatt', name: 'app-analytics-services-att.com',     path: '/',                                     icon: '📈', ip: null, count: 0 },
+                { id: 'snow',   name: 'collector.snowplow.supercell.com',   path: '/',                                     icon: '❄️', ip: null, count: 0 }
             ];
 
-            // Hardcoded fallback IPs (Cloudflare / GCP ranges)
+            // HARDCODED IPs — Supercell uses Cloudflare CDN
+            const SUPERCELL_IPS = ['104.18.32.10', '104.18.33.10', '172.64.155.0', '104.18.32.0'];
+            const ANALYTICS_IPS = ['34.102.136.10', '34.102.136.0', '34.102.137.0'];
+            
             const FALLBACK_IPS = {
-                'cdn.supercell.com': ['104.18.32.0', '104.18.33.0', '104.18.34.0'],
-                'supercell.com': ['104.18.32.0', '104.18.33.0', '104.18.34.0'],
-                'store.supercell.com': ['104.18.32.0', '104.18.33.0', '104.18.34.0'],
-                'app-analytics-services.com': ['34.102.136.0', '34.102.137.0'],
-                'app-analytics-services-att.com': ['34.102.136.0', '34.102.137.0'],
-                'collector.snowplow.supercell.com': ['34.102.136.0', '34.102.137.0']
+                'cdn.supercell.com': SUPERCELL_IPS,
+                'supercell.com': SUPERCELL_IPS,
+                'store.supercell.com': SUPERCELL_IPS,
+                'app-analytics-services.com': ANALYTICS_IPS,
+                'app-analytics-services-att.com': ANALYTICS_IPS,
+                'collector.snowplow.supercell.com': ANALYTICS_IPS
             };
 
             // ── Brawlers ─────────────────────────────────────────────
@@ -383,29 +191,19 @@
                 16000035,16000036,16000037,16000038,16000039,16000040,16000041,
                 16000042,16000043,16000044,16000045,16000046,16000047,16000048,
                 16000049,16000050,16000051,16000052,16000053,16000054,16000055,
-                16000056,16000057,16000058,16000059,16000060,16000061,16000062,
-                16000063,16000064
+                16000056,16000057,16000058,16000059,16000060,16000061,16000062,16000063,16000064
             ];
 
-            // ── State ─────────────────────────────────────────────────
-            let running = false;
-            let timeoutId = null;
-            let heartbeatId = null;
-            let activeRequests = 0;
+            let running = false, timeoutId = null, heartbeatId = null, activeRequests = 0;
             const MAX_CONCURRENT = 6;
-            let stats = { sent: 0, ok: 0, err: 0 };
-            let startTimestamp = null;
+            let stats = { sent: 0, ok: 0, err: 0 }, startTimestamp = null;
+            let resolvedOnce = false;
 
-            function rand(min, max) {
-                return Math.floor(Math.random() * (max - min + 1)) + min;
-            }
-            function randomBrawler() {
-                const i = rand(0, BRAWLERS.length - 1);
-                return { name: BRAWLERS[i], id: IDS[i] };
-            }
+            function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+            function randomBrawler() { const i = rand(0, BRAWLERS.length - 1); return { name: BRAWLERS[i], id: IDS[i] }; }
             function buildUA() {
                 const b = randomBrawler();
-                const variants = [
+                const v = [
                     `BrawlStars-${b.name}/${b.id}`,
                     `Supercell-${b.name}-Agent/1.0`,
                     `${b.name}_Brawler/${b.id} (Supercell)`,
@@ -413,26 +211,51 @@
                     `${b.name}/${b.id}`,
                     `GameClient/BrawlStars_${b.name}_${b.id}`
                 ];
-                return variants[rand(0, variants.length - 1)];
+                return v[rand(0, v.length - 1)];
             }
 
-            // ── DoH Resolver ──────────────────────────────────────────
-            async function resolveDomain(domain) {
-                try {
-                    const resp = await fetch(`https://cloudflare-dns.com/dns-query?name=${domain}&type=A`, {
-                        headers: { 'Accept': 'application/dns-json' }
-                    });
-                    const data = await resp.json();
-                    if (data.Answer && data.Answer.length > 0) {
-                        return data.Answer
-                            .filter(a => a.type === 1)
-                            .map(a => a.data);
+            // ── MULTI-DOH RESOLVER ───────────────────────────────────
+            const DOH_PROVIDERS = [
+                { name: 'Cloudflare', url: 'https://cloudflare-dns.com/dns-query' },
+                { name: 'Google',     url: 'https://dns.google/resolve' },
+                { name: 'Quad9',      url: 'https://dns.quad9.net:5053/dns-query' },
+                { name: 'Mullvad',    url: 'https://dns.mullvad.net/dns-query' },
+                { name: 'AdGuard',    url: 'https://dns.adguard-dns.com/dns-query' },
+            ];
+
+            async function resolveSingleDomain(domain) {
+                // Try all DoH providers
+                for (const provider of DOH_PROVIDERS) {
+                    try {
+                        const controller = new AbortController();
+                        const timeout = setTimeout(() => controller.abort(), 3000);
+                        const url = `${provider.url}?name=${encodeURIComponent(domain)}&type=A`;
+                        const resp = await fetch(url, {
+                            headers: { 'Accept': 'application/dns-json' },
+                            signal: controller.signal
+                        });
+                        clearTimeout(timeout);
+                        if (!resp.ok) continue;
+                        const data = await resp.json();
+                        if (data.Answer && data.Answer.length > 0) {
+                            const ips = data.Answer.filter(a => a.type === 1).map(a => a.data);
+                            if (ips.length > 0) {
+                                log(`✅ ${domain} → ${ips[0]} (via ${provider.name})`, 'ok');
+                                return ips;
+                            }
+                        }
+                    } catch (e) {
+                        // try next provider
                     }
-                } catch (e) {
-                    console.warn('DoH failed for', domain, e.message);
                 }
-                // Fallback
-                return FALLBACK_IPS[domain] || ['0.0.0.0'];
+                // All DoH failed — use hardcoded fallback
+                const fb = FALLBACK_IPS[domain];
+                if (fb && fb.length > 0) {
+                    log(`⚠️ ${domain} → ${fb[0]} (hardcoded fallback)`, 'warn');
+                    return fb;
+                }
+                log(`❌ ${domain} → NO IP FOUND`, 'err');
+                return ['0.0.0.0'];
             }
 
             async function resolveAllDomains() {
@@ -440,50 +263,52 @@
                 const tag = document.getElementById('dnsTag');
                 btn.disabled = true;
                 btn.textContent = '⏳ RESOLVING...';
-                tag.textContent = 'Resolving...';
-                tag.className = 'ip-tag pending';
+                tag.textContent = 'Trying DoH...';
+                tag.className = 'ip-tag wait';
 
-                log('🔍 Resolving all 6 domains via Cloudflare DoH...', 'info');
+                log('🔍 Resolving 6 domains via multiple DoH providers...', 'info');
 
                 const results = await Promise.allSettled(
                     DOMAINS.map(async (d) => {
-                        const ips = await resolveDomain(d.name);
-                        d.ip = ips[0]; // Use first IP
-                        return { name: d.name, ip: d.ip, ips };
+                        const ips = await resolveSingleDomain(d.name);
+                        d.ip = ips[0];
+                        return { name: d.name, ip: d.ip };
                     })
                 );
 
-                let resolved = 0;
-                let failed = 0;
+                let okCount = 0;
                 results.forEach((r, i) => {
                     if (r.status === 'fulfilled' && r.value.ip !== '0.0.0.0') {
                         DOMAINS[i].ip = r.value.ip;
-                        resolved++;
-                        log(`✅ ${r.value.name} → ${r.value.ip}`, 'ok');
+                        okCount++;
                     } else {
-                        // Use fallback
                         const fb = FALLBACK_IPS[DOMAINS[i].name];
                         DOMAINS[i].ip = fb ? fb[0] : '0.0.0.0';
-                        failed++;
-                        log(`⚠️ ${DOMAINS[i].name} → fallback ${DOMAINS[i].ip}`, 'warn');
                     }
                 });
 
-                tag.textContent = `${resolved} resolved, ${failed} fallback`;
-                tag.className = resolved === 6 ? 'ip-tag resolved' : 'ip-tag pending';
+                resolvedOnce = true;
+                tag.textContent = `${okCount}/6 resolved`;
+                tag.className = okCount >= 4 ? 'ip-tag ok' : 'ip-tag wait';
                 btn.textContent = '🔄 RE-RESOLVE';
                 btn.disabled = false;
-
-                // Enable START button
                 document.getElementById('btnToggle').disabled = false;
                 renderDomainCards();
-                log('🔓 Resolution complete. You can START now.', 'info');
+                log(`🔓 Resolution complete: ${okCount}/6 via DoH, rest via hardcoded IPs`, 'info');
             }
 
-            // ── Render domain cards ───────────────────────────────────
+            // ── AUTO-RESOLVE on START if not resolved ─────────────────
+            async function ensureResolved() {
+                if (resolvedOnce) return true;
+                log('🔍 Auto-resolving domains before START...', 'info');
+                await resolveAllDomains();
+                return resolvedOnce;
+            }
+
+            // ── UI ────────────────────────────────────────────────────
             function renderDomainCards() {
                 const row = document.getElementById('domainsRow');
-                row.innerHTML = DOMAINS.map((d, i) => `
+                row.innerHTML = DOMAINS.map(d => `
                     <div class="domain-card" id="card-${d.id}">
                         <div class="domain-icon">${d.icon}</div>
                         <div class="domain-name">${d.name}</div>
@@ -492,8 +317,12 @@
                     </div>
                 `).join('');
             }
+            function updateDomainCount(id, count) {
+                const el = document.getElementById('count-' + id);
+                if (el) el.textContent = count;
+            }
 
-            // ── Send ONE request to ALL 6 domains simultaneously ──────
+            // ── SEND TO ALL 6 SIMULTANEOUSLY ─────────────────────────
             async function sendToAllSix() {
                 if (!running) return;
                 activeRequests += 6;
@@ -502,13 +331,11 @@
 
                 const promises = DOMAINS.map(async (d) => {
                     if (!d.ip || d.ip === '0.0.0.0') {
-                        stats.err++;
-                        d.count++;
+                        stats.err++; d.count++; updateDomainCount(d.id, d.count);
                         return;
                     }
                     try {
-                        const targetUrl = `https://${d.ip}${d.path}`;
-                        const resp = await fetch(targetUrl, {
+                        await fetch(`https://${d.ip}${d.path}`, {
                             method: 'GET',
                             mode: 'no-cors',
                             headers: {
@@ -516,24 +343,14 @@
                                 'User-Agent': ua,
                                 'X-Brawler': b.name,
                                 'X-Brawler-ID': String(b.id),
-                                'X-Forwarded-Host': d.name,
-                                'X-Original-Host': d.name
+                                'X-Forwarded-Host': d.name
                             }
                         });
-                        stats.ok++;
-                        d.count++;
-                        updateDomainCount(d.id, d.count);
-                        if (stats.ok % 50 === 0) {
-                            log(`✅ ${d.name} | IP:${d.ip} | ${b.name}:${b.id}`, 'ok');
-                        }
+                        stats.ok++; d.count++;
                     } catch (e) {
-                        stats.err++;
-                        d.count++;
-                        updateDomainCount(d.id, d.count);
-                        if (stats.err % 20 === 0) {
-                            log(`❌ ${d.name} | ${e.message.slice(0,40)}`, 'err');
-                        }
+                        stats.err++; d.count++;
                     }
+                    updateDomainCount(d.id, d.count);
                 });
 
                 await Promise.allSettled(promises);
@@ -542,36 +359,23 @@
                 updateUI();
             }
 
-            function updateDomainCount(id, count) {
-                const el = document.getElementById('count-' + id);
-                if (el) el.textContent = count;
-            }
-
-            // ── Scheduler ─────────────────────────────────────────────
+            // ── SCHEDULER ────────────────────────────────────────────
             function scheduleNext() {
                 if (!running) return;
                 if (timeoutId) clearTimeout(timeoutId);
-
-                const slots = MAX_CONCURRENT - activeRequests;
+                const slots = Math.max(1, MAX_CONCURRENT - activeRequests);
                 const batches = Math.max(1, Math.floor(slots / 6) || 1);
-
-                for (let i = 0; i < batches; i++) {
-                    sendToAllSix();
-                }
-
-                const delay = rand(0, 200);
-                timeoutId = setTimeout(scheduleNext, delay);
+                for (let i = 0; i < batches; i++) { sendToAllSix(); }
+                timeoutId = setTimeout(scheduleNext, rand(0, 200));
             }
 
-            // ── Heartbeat (background persistence) ────────────────────
+            // ── HEARTBEAT ────────────────────────────────────────────
             function startHeartbeat() {
                 if (heartbeatId) clearInterval(heartbeatId);
                 heartbeatId = setInterval(() => {
                     if (running) {
                         updateUI();
-                        if (!timeoutId || timeoutId._destroyed) {
-                            scheduleNext();
-                        }
+                        if (!timeoutId) scheduleNext();
                     }
                 }, 1000);
             }
@@ -580,39 +384,34 @@
             }
 
             // ── START / STOP ─────────────────────────────────────────
-            function toggleEngine() {
-                if (running) {
-                    stopEngine();
-                } else {
-                    startEngine();
+            async function toggleEngine() {
+                if (running) { stopEngine(); return; }
+                
+                // Auto-resolve if needed
+                if (!resolvedOnce) {
+                    await ensureResolved();
+                    if (!resolvedOnce) {
+                        log('❌ Cannot start — no IPs resolved', 'err');
+                        return;
+                    }
                 }
+                startEngine();
             }
 
             function startEngine() {
-                if (running) return;
-                // Check if resolved
-                const unresolved = DOMAINS.filter(d => !d.ip || d.ip === '0.0.0.0');
-                if (unresolved.length > 0) {
-                    log('⚠️ Resolve domains first!', 'warn');
-                    return;
-                }
                 running = true;
                 DOMAINS.forEach(d => d.count = 0);
                 renderDomainCards();
                 stats = { sent: 0, ok: 0, err: 0 };
                 startTimestamp = Date.now();
                 activeRequests = 0;
-                log('🚀 ENGINE STARTED — 6 domains simultaneously, DNS bypass active', 'info');
+                log('🚀 ENGINE STARTED — 6 domains simultaneously', 'info');
                 updateUI();
                 scheduleNext();
                 startHeartbeat();
-
                 const btn = document.getElementById('btnToggle');
-                btn.textContent = '⏹ STOP';
-                btn.classList.add('running');
-
-                // Highlight cards
-                document.querySelectorAll('.domain-card').forEach(c => c.classList.add('active'));
+                btn.textContent = '⏹ STOP'; btn.classList.add('go');
+                document.querySelectorAll('.domain-card').forEach(c => c.classList.add('live'));
             }
 
             function stopEngine() {
@@ -621,27 +420,21 @@
                 stopHeartbeat();
                 log('⏹ ENGINE STOPPED', 'warn');
                 updateUI();
-
                 const btn = document.getElementById('btnToggle');
-                btn.textContent = '▶ START';
-                btn.classList.remove('running');
-
-                document.querySelectorAll('.domain-card').forEach(c => c.classList.remove('active'));
+                btn.textContent = '▶ START'; btn.classList.remove('go');
+                document.querySelectorAll('.domain-card').forEach(c => c.classList.remove('live'));
             }
 
-            // ── Log ───────────────────────────────────────────────────
+            // ── LOG ───────────────────────────────────────────────────
             function log(msg, cssClass = 'info') {
                 const box = document.getElementById('logBox');
                 const time = new Date().toLocaleTimeString('en-GB', { hour12: false });
                 box.innerHTML += `<span class="${cssClass}">[${time}] ${msg}</span>\n`;
                 box.scrollTop = box.scrollHeight;
                 const lines = box.innerHTML.split('\n');
-                if (lines.length > 200) {
-                    box.innerHTML = lines.slice(-150).join('\n');
-                }
+                if (lines.length > 200) box.innerHTML = lines.slice(-150).join('\n');
             }
 
-            // ── UI Updaters ───────────────────────────────────────────
             function updateUI() {
                 document.getElementById('totalSent').textContent = stats.sent;
                 document.getElementById('okCount').textContent = stats.ok;
@@ -650,16 +443,17 @@
                     const sec = Math.floor((Date.now() - startTimestamp) / 1000);
                     document.getElementById('uptimeDisplay').textContent = 
                         `${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
-                    const rps = sec > 0 ? (stats.sent / sec).toFixed(0) : 0;
-                    document.getElementById('rpsDisplay').textContent = rps;
+                    document.getElementById('rpsDisplay').textContent = sec > 0 ? (stats.sent / sec).toFixed(0) : 0;
                 } else if (!running) {
                     document.getElementById('rpsDisplay').textContent = '0';
                 }
             }
 
-            // ── Init ──────────────────────────────────────────────────
+            // ── INIT ──────────────────────────────────────────────────
             renderDomainCards();
-            log('📋 6 domains loaded. Bypass DNS: RESOLVE → START', 'info');
+            log('📋 6 domains ready. Press START (auto-resolve) or RESOLVE manually.', 'info');
+            // Enable START immediately (will auto-resolve on click)
+            document.getElementById('btnToggle').disabled = false;
         })();
     </script>
 </body>
