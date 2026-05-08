@@ -3,72 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brawl Stars - 1ms 300 Requests</title>
+    <title>6 Domains • DNS Bypass • Simultaneous • Unlimited</title>
     <style>
         :root {
-            --bg: #0d1117;
-            --card: #161b22;
-            --border: #30363d;
-            --text: #e6edf3;
-            --accent: #ff7b42;
-            --accent2: #ffd147;
-            --danger: #f85149;
-            --success: #3fb950;
+            --bg: #0b0e14;
+            --card: #131820;
+            --border: #2a3040;
+            --text: #d1d5db;
+            --accent: #f97316;
+            --gold: #fbbf24;
+            --green: #22c55e;
+            --red: #ef4444;
+            --blue: #3b82f6;
+            --purple: #a855f7;
+            --pink: #ec4899;
+            --cyan: #06b6d4;
+            --lime: #84cc16;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Segoe UI', 'Noto Sans Georgian', 'Courier New', monospace;
+            font-family: 'Segoe UI', 'Noto Sans Georgian', system-ui, sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
-            padding: 15px;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
+            padding: 14px;
+            background-image: 
+                radial-gradient(ellipse at 20% 20%, rgba(249,115,22,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(168,85,247,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 80%, rgba(6,182,212,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, rgba(236,72,153,0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 30% 60%, rgba(132,204,22,0.04) 0%, transparent 60%);
         }
 
-        .container {
+        .app {
             width: 100%;
-            max-width: 750px;
+            max-width: 1050px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .header {
             text-align: center;
-            padding: 20px 0;
         }
-
         .header h1 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            background: linear-gradient(135deg, var(--accent), var(--pink), var(--purple), var(--cyan), var(--lime));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
-        .badge {
-            display: inline-block;
-            background: var(--card);
-            border: 1px solid var(--border);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: #8b949e;
-            margin-top: 5px;
+        .header .sub {
+            font-size: 0.72rem;
+            color: #6b7280;
+            margin-top: 2px;
         }
 
-        .control-panel {
+        .dns-status {
             background: var(--card);
             border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 0.7rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+        }
+        .dns-status .ip-tag {
+            background: #1e293b;
+            padding: 3px 10px;
             border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.68rem;
+        }
+        .ip-tag.resolved { color: #4ade80; }
+        .ip-tag.pending { color: #fbbf24; }
+        .ip-tag.failed { color: #f87171; }
+
+        /* 6 domains = 2 rows x 3 cols on medium, 3x2 on small */
+        .domain-row {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+        }
+        @media (max-width: 900px) {
+            .domain-row { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 500px) {
+            .domain-row { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .domain-card {
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 10px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .domain-card.active {
+            border-color: var(--green);
+            box-shadow: 0 0 12px rgba(34,197,94,0.2);
+        }
+        .domain-card .domain-icon {
+            font-size: 1.3rem;
+            margin-bottom: 2px;
+        }
+        .domain-card .domain-name {
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: #9ca3af;
+            word-break: break-all;
+            line-height: 1.2;
+        }
+        .domain-card .domain-ip {
+            font-size: 0.58rem;
+            color: #6b7280;
+            font-family: 'Courier New', monospace;
+            margin-top: 2px;
+        }
+        .domain-card .domain-count {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-top: 4px;
+            font-variant-numeric: tabular-nums;
+        }
+        /* Unique colors per domain */
+        .domain-card:nth-child(1) .domain-count { color: #f97316; }
+        .domain-card:nth-child(2) .domain-count { color: #3b82f6; }
+        .domain-card:nth-child(3) .domain-count { color: #a855f7; }
+        .domain-card:nth-child(4) .domain-count { color: #ec4899; }
+        .domain-card:nth-child(5) .domain-count { color: #06b6d4; }
+        .domain-card:nth-child(6) .domain-count { color: #84cc16; }
+
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px 20px;
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
@@ -77,370 +157,510 @@
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 11px 24px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 0.9rem;
             font-weight: 700;
-            letter-spacing: 0.5px;
+            font-size: 0.82rem;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
             transition: all 0.2s;
             font-family: inherit;
-            text-transform: uppercase;
         }
 
-        .btn-fire {
-            background: linear-gradient(135deg, #ff7b42, #e05d2c);
+        .btn-resolve {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
             color: #fff;
-            box-shadow: 0 0 20px rgba(255, 123, 66, 0.3);
+            box-shadow: 0 0 15px rgba(99,102,241,0.3);
         }
-        .btn-fire:hover:not(:disabled) {
-            box-shadow: 0 0 35px rgba(255, 123, 66, 0.6);
-            transform: scale(1.03);
+        .btn-resolve:hover:not(:disabled) {
+            box-shadow: 0 0 25px rgba(99,102,241,0.5);
+            transform: translateY(-1px);
         }
-
-        .btn-stop {
-            background: var(--danger);
+        .btn-start {
+            background: linear-gradient(135deg, #f97316, #ea580c);
             color: #fff;
+            box-shadow: 0 0 18px rgba(249,115,22,0.35);
         }
-        .btn-stop:hover:not(:disabled) {
-            background: #ff2020;
+        .btn-start:hover:not(:disabled) {
+            box-shadow: 0 0 30px rgba(249,115,22,0.6);
+            transform: translateY(-1px);
         }
-
+        .btn-start.running {
+            background: linear-gradient(135deg, #ef4444, #b91c1c);
+            box-shadow: 0 0 18px rgba(239,68,68,0.4);
+            animation: pulse-btn 1.2s infinite;
+        }
+        @keyframes pulse-btn {
+            0%, 100% { box-shadow: 0 0 18px rgba(239,68,68,0.4); }
+            50% { box-shadow: 0 0 32px rgba(239,68,68,0.7); }
+        }
         .btn:disabled {
             opacity: 0.4;
-            cursor: not-allowed;
+            pointer-events: none;
         }
 
-        .stats {
+        .stats-row {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             flex-wrap: wrap;
             justify-content: center;
-            margin-bottom: 15px;
         }
-
-        .stat-card {
+        .stat-box {
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 10px 16px;
             text-align: center;
-            min-width: 70px;
+            min-width: 65px;
+            flex: 1;
         }
-        .stat-card .val {
-            font-size: 1.6rem;
+        .stat-box .num {
+            font-size: 1.4rem;
             font-weight: 700;
-            color: var(--accent2);
+            color: var(--gold);
+            font-variant-numeric: tabular-nums;
         }
-        .stat-card .lbl {
-            font-size: 0.7rem;
-            color: #8b949e;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: var(--card);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-        .progress-bar .fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--accent2), var(--accent));
-            transition: width 0.05s linear;
-            border-radius: 3px;
+        .stat-box .lbl {
+            font-size: 0.62rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2px;
         }
 
-        .log-area {
+        .log-window {
             background: #0d1117;
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 10px 14px;
-            max-height: 230px;
+            border-radius: 10px;
+            padding: 12px 16px;
+            height: 160px;
             overflow-y: auto;
-            font-size: 0.8rem;
-            font-family: 'Courier New', monospace;
-            color: #7ee787;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+            font-size: 0.7rem;
+            line-height: 1.5;
             white-space: pre-wrap;
             word-break: break-all;
         }
-        .log-area .error-log {
-            color: var(--danger);
-        }
-        .log-area .info-log {
-            color: #58a6ff;
-        }
+        .log-window .ok { color: #4ade80; }
+        .log-window .err { color: #f87171; }
+        .log-window .info { color: #60a5fa; }
+        .log-window .warn { color: #fbbf24; }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="app">
         <div class="header">
-            <h1>⚡ 1ms · 300 Requests</h1>
-            <span class="badge">cdn.supercell.com/feature-flag.json</span>
+            <h1>🛡 6 Domains • DNS Bypass</h1>
+            <div class="sub">DoH Resolution • Direct IP • Host Spoofing • Все 6 одновременно</div>
         </div>
 
-        <div class="control-panel">
-            <button class="btn btn-fire" id="btnFire" onclick="fire300()">
-                🔥 300 REQ
+        <div class="dns-status" id="dnsStatus">
+            <span style="color:#6b7280;">🔍 DNS: </span>
+            <span class="ip-tag pending" id="dnsTag">Press RESOLVE</span>
+        </div>
+
+        <div class="domain-row" id="domainsRow"></div>
+
+        <div class="panel">
+            <button class="btn btn-resolve" id="btnResolve" onclick="resolveAllDomains()">
+                🔓 RESOLVE (DoH)
             </button>
-            <button class="btn btn-stop" id="btnStop" onclick="stopAll()" disabled>
-                ⏹ STOP
+            <button class="btn btn-start" id="btnToggle" onclick="toggleEngine()" disabled>
+                ▶ START
             </button>
         </div>
 
-        <div class="progress-bar">
-            <div class="fill" id="progressFill"></div>
-        </div>
-
-        <div class="stats">
-            <div class="stat-card">
-                <div class="val" id="sentCount">0</div>
-                <div class="lbl">Sent</div>
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="num" id="totalSent">0</div>
+                <div class="lbl">Total Sent</div>
             </div>
-            <div class="stat-card">
-                <div class="val" id="okCount">0</div>
-                <div class="lbl">200 OK</div>
+            <div class="stat-box">
+                <div class="num" id="okCount">0</div>
+                <div class="lbl">Success</div>
             </div>
-            <div class="stat-card">
-                <div class="val" id="errCount">0</div>
+            <div class="stat-box">
+                <div class="num" id="errCount">0</div>
                 <div class="lbl">Errors</div>
             </div>
-            <div class="stat-card">
-                <div class="val" id="timeCount">0ms</div>
-                <div class="lbl">Time</div>
+            <div class="stat-box">
+                <div class="num" id="uptimeDisplay">00:00</div>
+                <div class="lbl">Uptime</div>
+            </div>
+            <div class="stat-box">
+                <div class="num" id="rpsDisplay">0</div>
+                <div class="lbl">Req/s</div>
             </div>
         </div>
 
-        <div class="log-area" id="logBox">
-            <span class="info-log">⏳ მზადაა... (1ms ≠ setInterval — Promise.all-ით 300 პარალელური)</span>
+        <div class="log-window" id="logBox">
+            <span class="info">🟢 Ready. Resolve domains first (Cloudflare DoH) to bypass DNS blocks.</span>
         </div>
     </div>
 
     <script>
-        const TARGET_URL = 'https://cdn.supercell.com/onetrust/supercell/feature-flag.json';
-        const TOTAL_REQUESTS = 300;
-
-        const brawlers = [
-            { name: 'Shelly', id: 16000000 },
-            { name: 'Nita', id: 16000001 },
-            { name: 'Colt', id: 16000002 },
-            { name: 'Bull', id: 16000003 },
-            { name: 'Jessie', id: 16000004 },
-            { name: 'Brock', id: 16000005 },
-            { name: 'Dynamike', id: 16000006 },
-            { name: 'Bo', id: 16000007 },
-            { name: 'Tick', id: 16000008 },
-            { name: '8-BIT', id: 16000009 },
-            { name: 'Emz', id: 16000010 },
-            { name: 'Stu', id: 16000011 },
-            { name: 'El Primo', id: 16000012 },
-            { name: 'Barley', id: 16000013 },
-            { name: 'Poco', id: 16000014 },
-            { name: 'Rosa', id: 16000015 },
-            { name: 'Rico', id: 16000016 },
-            { name: 'Darryl', id: 16000017 },
-            { name: 'Penny', id: 16000018 },
-            { name: 'Carl', id: 16000019 },
-            { name: 'Jacky', id: 16000020 },
-            { name: 'Gus', id: 16000021 },
-            { name: 'Piper', id: 16000022 },
-            { name: 'Pam', id: 16000023 },
-            { name: 'Frank', id: 16000024 },
-            { name: 'Bibi', id: 16000025 },
-            { name: 'Bea', id: 16000026 },
-            { name: 'Nani', id: 16000027 },
-            { name: 'Edgar', id: 16000028 },
-            { name: 'Griff', id: 16000029 },
-            { name: 'Grom', id: 16000030 },
-            { name: 'Bonnie', id: 16000031 },
-            { name: 'Spike', id: 16000032 },
-            { name: 'Crow', id: 16000033 },
-            { name: 'Leon', id: 16000034 },
-            { name: 'Sandy', id: 16000035 },
-            { name: 'Amber', id: 16000036 },
-            { name: 'Meg', id: 16000037 },
-            { name: 'Chester', id: 16000038 },
-            { name: 'Gale', id: 16000039 },
-            { name: 'Surge', id: 16000040 },
-            { name: 'Colette', id: 16000041 },
-            { name: 'Lou', id: 16000042 },
-            { name: 'Ruffs', id: 16000043 },
-            { name: 'Buzz', id: 16000044 },
-            { name: 'Fang', id: 16000045 },
-            { name: 'Eve', id: 16000046 },
-            { name: 'Janet', id: 16000047 },
-            { name: 'Otis', id: 16000048 },
-            { name: 'Sam', id: 16000049 },
-            { name: 'Max', id: 16000050 },
-            { name: 'Mr. P', id: 16000051 },
-            { name: 'Sprout', id: 16000052 },
-            { name: 'Byron', id: 16000053 },
-            { name: 'Squeak', id: 16000054 },
-            { name: 'Cordelius', id: 16000055 },
-            { name: 'Kit', id: 16000056 }
-        ];
-
-        let sent = 0;
-        let ok = 0;
-        let err = 0;
-        let activeAbortControllers = [];
-        let stopRequested = false;
-
-        function randomBrawler() {
-            return brawlers[Math.floor(Math.random() * brawlers.length)];
-        }
-
-        function buildRandomUserAgent() {
-            const b = randomBrawler();
-            const variants = [
-                `BrawlStars-${b.name}/${b.id}`,
-                `Supercell-${b.name}-Agent/1.0`,
-                `${b.name}_Brawler/${b.id} (Supercell)`,
-                `Mozilla/5.0 (BrawlStars; ${b.name}; ${b.id})`,
-                `${b.name}/${b.id} (feature-flag-checker)`
+        (function() {
+            // ── 6 DOMAINS ────────────────────────────────────────────
+            const DOMAINS = [
+                {
+                    id: 'cdn',
+                    name: 'cdn.supercell.com',
+                    path: '/onetrust/supercell/feature-flag.json',
+                    icon: '📦',
+                    ip: null,
+                    count: 0
+                },
+                {
+                    id: 'sc',
+                    name: 'supercell.com',
+                    path: '/en/',
+                    icon: '🎮',
+                    ip: null,
+                    count: 0
+                },
+                {
+                    id: 'store',
+                    name: 'store.supercell.com',
+                    path: '/brawlstars',
+                    icon: '🏪',
+                    ip: null,
+                    count: 0
+                },
+                {
+                    id: 'aas',
+                    name: 'app-analytics-services.com',
+                    path: '/',
+                    icon: '📊',
+                    ip: null,
+                    count: 0
+                },
+                {
+                    id: 'aasatt',
+                    name: 'app-analytics-services-att.com',
+                    path: '/',
+                    icon: '📈',
+                    ip: null,
+                    count: 0
+                },
+                {
+                    id: 'snowplow',
+                    name: 'collector.snowplow.supercell.com',
+                    path: '/',
+                    icon: '❄️',
+                    ip: null,
+                    count: 0
+                }
             ];
-            return variants[Math.floor(Math.random() * variants.length)];
-        }
 
-        function log(msg, type = 'info') {
-            const logBox = document.getElementById('logBox');
-            const time = new Date().toLocaleTimeString();
-            const prefix = type === 'error' ? '❌' : (type === 'ok' ? '✅' : '📡');
-            const className = type === 'error' ? 'error-log' : (type === 'ok' ? '' : 'info-log');
-            logBox.innerHTML += `<span class="${className}">${prefix} [${time}] ${msg}</span>\n`;
-            logBox.scrollTop = logBox.scrollHeight;
+            // Hardcoded fallback IPs (Cloudflare / GCP ranges)
+            const FALLBACK_IPS = {
+                'cdn.supercell.com': ['104.18.32.0', '104.18.33.0', '104.18.34.0'],
+                'supercell.com': ['104.18.32.0', '104.18.33.0', '104.18.34.0'],
+                'store.supercell.com': ['104.18.32.0', '104.18.33.0', '104.18.34.0'],
+                'app-analytics-services.com': ['34.102.136.0', '34.102.137.0'],
+                'app-analytics-services-att.com': ['34.102.136.0', '34.102.137.0'],
+                'collector.snowplow.supercell.com': ['34.102.136.0', '34.102.137.0']
+            };
 
-            // Keep log clean
-            const lines = logBox.innerHTML.split('\n');
-            if (lines.length > 100) {
-                logBox.innerHTML = lines.slice(-80).join('\n');
+            // ── Brawlers ─────────────────────────────────────────────
+            const BRAWLERS = [
+                'Shelly','Nita','Colt','Bull','Jessie','Brock','Dynamike','Bo','Tick',
+                '8-BIT','Emz','Stu','El Primo','Barley','Poco','Rosa','Rico','Darryl',
+                'Penny','Carl','Jacky','Gus','Piper','Pam','Frank','Bibi','Bea','Nani',
+                'Edgar','Griff','Grom','Bonnie','Spike','Crow','Leon','Sandy','Amber',
+                'Meg','Chester','Gale','Surge','Colette','Lou','Ruffs','Buzz','Fang',
+                'Eve','Janet','Otis','Sam','Max','Mr.P','Sprout','Byron','Squeak',
+                'Cordelius','Kit','LarryLawrie','Melodie','Draco','Lily','Clancy','Moe'
+            ];
+            const IDS = [
+                16000000,16000001,16000002,16000003,16000004,16000005,16000006,
+                16000007,16000008,16000009,16000010,16000011,16000012,16000013,
+                16000014,16000015,16000016,16000017,16000018,16000019,16000020,
+                16000021,16000022,16000023,16000024,16000025,16000026,16000027,
+                16000028,16000029,16000030,16000031,16000032,16000033,16000034,
+                16000035,16000036,16000037,16000038,16000039,16000040,16000041,
+                16000042,16000043,16000044,16000045,16000046,16000047,16000048,
+                16000049,16000050,16000051,16000052,16000053,16000054,16000055,
+                16000056,16000057,16000058,16000059,16000060,16000061,16000062,
+                16000063,16000064
+            ];
+
+            // ── State ─────────────────────────────────────────────────
+            let running = false;
+            let timeoutId = null;
+            let heartbeatId = null;
+            let activeRequests = 0;
+            const MAX_CONCURRENT = 6;
+            let stats = { sent: 0, ok: 0, err: 0 };
+            let startTimestamp = null;
+
+            function rand(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
             }
-        }
+            function randomBrawler() {
+                const i = rand(0, BRAWLERS.length - 1);
+                return { name: BRAWLERS[i], id: IDS[i] };
+            }
+            function buildUA() {
+                const b = randomBrawler();
+                const variants = [
+                    `BrawlStars-${b.name}/${b.id}`,
+                    `Supercell-${b.name}-Agent/1.0`,
+                    `${b.name}_Brawler/${b.id} (Supercell)`,
+                    `Mozilla/5.0 (BrawlStars; ${b.name}; ${b.id})`,
+                    `${b.name}/${b.id}`,
+                    `GameClient/BrawlStars_${b.name}_${b.id}`
+                ];
+                return variants[rand(0, variants.length - 1)];
+            }
 
-        function updateStats(sentVal, okVal, errVal, timeMs) {
-            document.getElementById('sentCount').textContent = sentVal;
-            document.getElementById('okCount').textContent = okVal;
-            document.getElementById('errCount').textContent = errVal;
-            document.getElementById('timeCount').textContent = timeMs + 'ms';
-            
-            const progress = (sentVal / TOTAL_REQUESTS) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
-        }
+            // ── DoH Resolver ──────────────────────────────────────────
+            async function resolveDomain(domain) {
+                try {
+                    const resp = await fetch(`https://cloudflare-dns.com/dns-query?name=${domain}&type=A`, {
+                        headers: { 'Accept': 'application/dns-json' }
+                    });
+                    const data = await resp.json();
+                    if (data.Answer && data.Answer.length > 0) {
+                        return data.Answer
+                            .filter(a => a.type === 1)
+                            .map(a => a.data);
+                    }
+                } catch (e) {
+                    console.warn('DoH failed for', domain, e.message);
+                }
+                // Fallback
+                return FALLBACK_IPS[domain] || ['0.0.0.0'];
+            }
 
-        function setButtonsDisabled(state) {
-            document.getElementById('btnFire').disabled = state;
-            document.getElementById('btnStop').disabled = !state;
-        }
+            async function resolveAllDomains() {
+                const btn = document.getElementById('btnResolve');
+                const tag = document.getElementById('dnsTag');
+                btn.disabled = true;
+                btn.textContent = '⏳ RESOLVING...';
+                tag.textContent = 'Resolving...';
+                tag.className = 'ip-tag pending';
 
-        async function sendSingleRequest(index) {
-            if (stopRequested) throw new Error('STOPPED');
-            
-            const controller = new AbortController();
-            activeAbortControllers.push(controller);
-            
-            const userAgent = buildRandomUserAgent();
-            const brawler = randomBrawler();
-            
-            try {
-                const response = await fetch(TARGET_URL, {
-                    method: 'GET',
-                    headers: {
-                        'User-Agent': userAgent,
-                        'X-Brawler-Name': brawler.name,
-                        'X-Brawler-ID': String(brawler.id),
-                        'Cache-Control': 'no-cache'
-                    },
-                    signal: controller.signal,
-                    // mode: 'no-cors' // Uncomment if CORS blocks, but you lose response status
+                log('🔍 Resolving all 6 domains via Cloudflare DoH...', 'info');
+
+                const results = await Promise.allSettled(
+                    DOMAINS.map(async (d) => {
+                        const ips = await resolveDomain(d.name);
+                        d.ip = ips[0]; // Use first IP
+                        return { name: d.name, ip: d.ip, ips };
+                    })
+                );
+
+                let resolved = 0;
+                let failed = 0;
+                results.forEach((r, i) => {
+                    if (r.status === 'fulfilled' && r.value.ip !== '0.0.0.0') {
+                        DOMAINS[i].ip = r.value.ip;
+                        resolved++;
+                        log(`✅ ${r.value.name} → ${r.value.ip}`, 'ok');
+                    } else {
+                        // Use fallback
+                        const fb = FALLBACK_IPS[DOMAINS[i].name];
+                        DOMAINS[i].ip = fb ? fb[0] : '0.0.0.0';
+                        failed++;
+                        log(`⚠️ ${DOMAINS[i].name} → fallback ${DOMAINS[i].ip}`, 'warn');
+                    }
                 });
 
-                // If using no-cors mode, all responses look opaque (status 0)
-                if (response.ok || response.type === 'opaque') {
-                    ok++;
-                    log(`[#${index}] 200 | ${brawler.name}:${brawler.id} | UA: ${userAgent.substring(0, 40)}...`, 'ok');
+                tag.textContent = `${resolved} resolved, ${failed} fallback`;
+                tag.className = resolved === 6 ? 'ip-tag resolved' : 'ip-tag pending';
+                btn.textContent = '🔄 RE-RESOLVE';
+                btn.disabled = false;
+
+                // Enable START button
+                document.getElementById('btnToggle').disabled = false;
+                renderDomainCards();
+                log('🔓 Resolution complete. You can START now.', 'info');
+            }
+
+            // ── Render domain cards ───────────────────────────────────
+            function renderDomainCards() {
+                const row = document.getElementById('domainsRow');
+                row.innerHTML = DOMAINS.map((d, i) => `
+                    <div class="domain-card" id="card-${d.id}">
+                        <div class="domain-icon">${d.icon}</div>
+                        <div class="domain-name">${d.name}</div>
+                        <div class="domain-ip">${d.ip || '???'}</div>
+                        <div class="domain-count" id="count-${d.id}">${d.count}</div>
+                    </div>
+                `).join('');
+            }
+
+            // ── Send ONE request to ALL 6 domains simultaneously ──────
+            async function sendToAllSix() {
+                if (!running) return;
+                activeRequests += 6;
+                const b = randomBrawler();
+                const ua = buildUA();
+
+                const promises = DOMAINS.map(async (d) => {
+                    if (!d.ip || d.ip === '0.0.0.0') {
+                        stats.err++;
+                        d.count++;
+                        return;
+                    }
+                    try {
+                        const targetUrl = `https://${d.ip}${d.path}`;
+                        const resp = await fetch(targetUrl, {
+                            method: 'GET',
+                            mode: 'no-cors',
+                            headers: {
+                                'Host': d.name,
+                                'User-Agent': ua,
+                                'X-Brawler': b.name,
+                                'X-Brawler-ID': String(b.id),
+                                'X-Forwarded-Host': d.name,
+                                'X-Original-Host': d.name
+                            }
+                        });
+                        stats.ok++;
+                        d.count++;
+                        updateDomainCount(d.id, d.count);
+                        if (stats.ok % 50 === 0) {
+                            log(`✅ ${d.name} | IP:${d.ip} | ${b.name}:${b.id}`, 'ok');
+                        }
+                    } catch (e) {
+                        stats.err++;
+                        d.count++;
+                        updateDomainCount(d.id, d.count);
+                        if (stats.err % 20 === 0) {
+                            log(`❌ ${d.name} | ${e.message.slice(0,40)}`, 'err');
+                        }
+                    }
+                });
+
+                await Promise.allSettled(promises);
+                stats.sent += 6;
+                activeRequests -= 6;
+                updateUI();
+            }
+
+            function updateDomainCount(id, count) {
+                const el = document.getElementById('count-' + id);
+                if (el) el.textContent = count;
+            }
+
+            // ── Scheduler ─────────────────────────────────────────────
+            function scheduleNext() {
+                if (!running) return;
+                if (timeoutId) clearTimeout(timeoutId);
+
+                const slots = MAX_CONCURRENT - activeRequests;
+                const batches = Math.max(1, Math.floor(slots / 6) || 1);
+
+                for (let i = 0; i < batches; i++) {
+                    sendToAllSix();
+                }
+
+                const delay = rand(0, 200);
+                timeoutId = setTimeout(scheduleNext, delay);
+            }
+
+            // ── Heartbeat (background persistence) ────────────────────
+            function startHeartbeat() {
+                if (heartbeatId) clearInterval(heartbeatId);
+                heartbeatId = setInterval(() => {
+                    if (running) {
+                        updateUI();
+                        if (!timeoutId || timeoutId._destroyed) {
+                            scheduleNext();
+                        }
+                    }
+                }, 1000);
+            }
+            function stopHeartbeat() {
+                if (heartbeatId) { clearInterval(heartbeatId); heartbeatId = null; }
+            }
+
+            // ── START / STOP ─────────────────────────────────────────
+            function toggleEngine() {
+                if (running) {
+                    stopEngine();
                 } else {
-                    err++;
-                    log(`[#${index}] ${response.status} | ${brawler.name}`, 'error');
+                    startEngine();
                 }
-            } catch (e) {
-                if (e.message === 'STOPPED') throw e;
-                err++;
-                log(`[#${index}] ERR: ${e.message.substring(0, 60)} | ${brawler.name}`, 'error');
-            } finally {
-                sent++;
-                const elapsed = Date.now() - startTime;
-                updateStats(sent, ok, err, elapsed);
-                
-                // Remove controller after use
-                const idx = activeAbortControllers.indexOf(controller);
-                if (idx > -1) activeAbortControllers.splice(idx, 1);
             }
-        }
 
-        let startTime;
-        let fireActive = false;
-
-        async function fire300() {
-            if (fireActive) return;
-            fireActive = true;
-            stopRequested = false;
-            
-            // Reset
-            sent = 0;
-            ok = 0;
-            err = 0;
-            activeAbortControllers = [];
-            document.getElementById('logBox').innerHTML = '';
-            
-            setButtonsDisabled(true);
-            updateStats(0, 0, 0, 0);
-            log('🚀 300 parallel requests launching...', 'info');
-            
-            startTime = Date.now();
-            
-            // Build 300 promises
-            const promises = [];
-            for (let i = 1; i <= TOTAL_REQUESTS; i++) {
-                promises.push(sendSingleRequest(i));
-            }
-            
-            // Fire all at ONCE (this achieves the "1ms burst" concept — all launch together)
-            await Promise.allSettled(promises);
-            
-            const totalTime = Date.now() - startTime;
-            updateStats(sent, ok, err, totalTime);
-            
-            if (stopRequested) {
-                log('⏹ STOPPED', 'error');
-            } else {
-                log(`🏁 DONE! ${TOTAL_REQUESTS} requests in ${totalTime}ms | ${ok} OK / ${err} ERR`, 'ok');
-            }
-            
-            fireActive = false;
-            setButtonsDisabled(false);
-        }
-
-        function stopAll() {
-            stopRequested = true;
-            log('🛑 Aborting all pending requests...', 'error');
-            for (const controller of activeAbortControllers) {
-                controller.abort();
-            }
-            activeAbortControllers = [];
-            
-            setTimeout(() => {
-                if (fireActive) {
-                    fireActive = false;
-                    setButtonsDisabled(false);
+            function startEngine() {
+                if (running) return;
+                // Check if resolved
+                const unresolved = DOMAINS.filter(d => !d.ip || d.ip === '0.0.0.0');
+                if (unresolved.length > 0) {
+                    log('⚠️ Resolve domains first!', 'warn');
+                    return;
                 }
-            }, 100);
-        }
+                running = true;
+                DOMAINS.forEach(d => d.count = 0);
+                renderDomainCards();
+                stats = { sent: 0, ok: 0, err: 0 };
+                startTimestamp = Date.now();
+                activeRequests = 0;
+                log('🚀 ENGINE STARTED — 6 domains simultaneously, DNS bypass active', 'info');
+                updateUI();
+                scheduleNext();
+                startHeartbeat();
 
-        // Initial log
-        log('📋 Brawlers loaded: ' + brawlers.length + ' | Press "300 REQ"', 'info');
+                const btn = document.getElementById('btnToggle');
+                btn.textContent = '⏹ STOP';
+                btn.classList.add('running');
+
+                // Highlight cards
+                document.querySelectorAll('.domain-card').forEach(c => c.classList.add('active'));
+            }
+
+            function stopEngine() {
+                running = false;
+                if (timeoutId) { clearTimeout(timeoutId); timeoutId = null; }
+                stopHeartbeat();
+                log('⏹ ENGINE STOPPED', 'warn');
+                updateUI();
+
+                const btn = document.getElementById('btnToggle');
+                btn.textContent = '▶ START';
+                btn.classList.remove('running');
+
+                document.querySelectorAll('.domain-card').forEach(c => c.classList.remove('active'));
+            }
+
+            // ── Log ───────────────────────────────────────────────────
+            function log(msg, cssClass = 'info') {
+                const box = document.getElementById('logBox');
+                const time = new Date().toLocaleTimeString('en-GB', { hour12: false });
+                box.innerHTML += `<span class="${cssClass}">[${time}] ${msg}</span>\n`;
+                box.scrollTop = box.scrollHeight;
+                const lines = box.innerHTML.split('\n');
+                if (lines.length > 200) {
+                    box.innerHTML = lines.slice(-150).join('\n');
+                }
+            }
+
+            // ── UI Updaters ───────────────────────────────────────────
+            function updateUI() {
+                document.getElementById('totalSent').textContent = stats.sent;
+                document.getElementById('okCount').textContent = stats.ok;
+                document.getElementById('errCount').textContent = stats.err;
+                if (startTimestamp && running) {
+                    const sec = Math.floor((Date.now() - startTimestamp) / 1000);
+                    document.getElementById('uptimeDisplay').textContent = 
+                        `${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
+                    const rps = sec > 0 ? (stats.sent / sec).toFixed(0) : 0;
+                    document.getElementById('rpsDisplay').textContent = rps;
+                } else if (!running) {
+                    document.getElementById('rpsDisplay').textContent = '0';
+                }
+            }
+
+            // ── Init ──────────────────────────────────────────────────
+            renderDomainCards();
+            log('📋 6 domains loaded. Bypass DNS: RESOLVE → START', 'info');
+        })();
     </script>
 </body>
 </html>
