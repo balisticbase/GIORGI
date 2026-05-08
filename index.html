@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brawl Stars - 1ms 300 Requests</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --border: #30363d;
+            --text: #e6edf3;
+            --accent: #ff7b42;
+            --accent2: #ffd147;
+            --danger: #f85149;
+            --success: #3fb950;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Georgian', 'Courier New', monospace;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 750px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #8b949e;
+            margin-top: 5px;
+        }
+
+        .control-panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+            font-family: inherit;
+            text-transform: uppercase;
+        }
+
+        .btn-fire {
+            background: linear-gradient(135deg, #ff7b42, #e05d2c);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(255, 123, 66, 0.3);
+        }
+        .btn-fire:hover:not(:disabled) {
+            box-shadow: 0 0 35px rgba(255, 123, 66, 0.6);
+            transform: scale(1.03);
+        }
+
+        .btn-stop {
+            background: var(--danger);
+            color: #fff;
+        }
+        .btn-stop:hover:not(:disabled) {
+            background: #ff2020;
+        }
+
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .stats {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 16px;
+            text-align: center;
+            min-width: 70px;
+        }
+        .stat-card .val {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent2);
+        }
+        .stat-card .lbl {
+            font-size: 0.7rem;
+            color: #8b949e;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--card);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        .progress-bar .fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent2), var(--accent));
+            transition: width 0.05s linear;
+            border-radius: 3px;
+        }
+
+        .log-area {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            max-height: 230px;
+            overflow-y: auto;
+            font-size: 0.8rem;
+            font-family: 'Courier New', monospace;
+            color: #7ee787;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .log-area .error-log {
+            color: var(--danger);
+        }
+        .log-area .info-log {
+            color: #58a6ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ 1ms · 300 Requests</h1>
+            <span class="badge">cdn.supercell.com/feature-flag.json</span>
+        </div>
+
+        <div class="control-panel">
+            <button class="btn btn-fire" id="btnFire" onclick="fire300()">
+                🔥 300 REQ
+            </button>
+            <button class="btn btn-stop" id="btnStop" onclick="stopAll()" disabled>
+                ⏹ STOP
+            </button>
+        </div>
+
+        <div class="progress-bar">
+            <div class="fill" id="progressFill"></div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="val" id="sentCount">0</div>
+                <div class="lbl">Sent</div>
+            </div>
+            <div class="stat-card">
+                <div class="val" id="okCount">0</div>
+                <div class="lbl">200 OK</div>
+            </div>
+            <div class="stat-card">
+                <div class="val" id="errCount">0</div>
+                <div class="lbl">Errors</div>
+            </div>
+            <div class="stat-card">
+                <div class="val" id="timeCount">0ms</div>
+                <div class="lbl">Time</div>
+            </div>
+        </div>
+
+        <div class="log-area" id="logBox">
+            <span class="info-log">⏳ მზადაა... (1ms ≠ setInterval — Promise.all-ით 300 პარალელური)</span>
+        </div>
+    </div>
+
+    <script>
+        const TARGET_URL = 'https://cdn.supercell.com/onetrust/supercell/feature-flag.json';
+        const TOTAL_REQUESTS = 300;
+
+        const brawlers = [
+            { name: 'Shelly', id: 16000000 },
+            { name: 'Nita', id: 16000001 },
+            { name: 'Colt', id: 16000002 },
+            { name: 'Bull', id: 16000003 },
+            { name: 'Jessie', id: 16000004 },
+            { name: 'Brock', id: 16000005 },
+            { name: 'Dynamike', id: 16000006 },
+            { name: 'Bo', id: 16000007 },
+            { name: 'Tick', id: 16000008 },
+            { name: '8-BIT', id: 16000009 },
+            { name: 'Emz', id: 16000010 },
+            { name: 'Stu', id: 16000011 },
+            { name: 'El Primo', id: 16000012 },
+            { name: 'Barley', id: 16000013 },
+            { name: 'Poco', id: 16000014 },
+            { name: 'Rosa', id: 16000015 },
+            { name: 'Rico', id: 16000016 },
+            { name: 'Darryl', id: 16000017 },
+            { name: 'Penny', id: 16000018 },
+            { name: 'Carl', id: 16000019 },
+            { name: 'Jacky', id: 16000020 },
+            { name: 'Gus', id: 16000021 },
+            { name: 'Piper', id: 16000022 },
+            { name: 'Pam', id: 16000023 },
+            { name: 'Frank', id: 16000024 },
+            { name: 'Bibi', id: 16000025 },
+            { name: 'Bea', id: 16000026 },
+            { name: 'Nani', id: 16000027 },
+            { name: 'Edgar', id: 16000028 },
+            { name: 'Griff', id: 16000029 },
+            { name: 'Grom', id: 16000030 },
+            { name: 'Bonnie', id: 16000031 },
+            { name: 'Spike', id: 16000032 },
+            { name: 'Crow', id: 16000033 },
+            { name: 'Leon', id: 16000034 },
+            { name: 'Sandy', id: 16000035 },
+            { name: 'Amber', id: 16000036 },
+            { name: 'Meg', id: 16000037 },
+            { name: 'Chester', id: 16000038 },
+            { name: 'Gale', id: 16000039 },
+            { name: 'Surge', id: 16000040 },
+            { name: 'Colette', id: 16000041 },
+            { name: 'Lou', id: 16000042 },
+            { name: 'Ruffs', id: 16000043 },
+            { name: 'Buzz', id: 16000044 },
+            { name: 'Fang', id: 16000045 },
+            { name: 'Eve', id: 16000046 },
+            { name: 'Janet', id: 16000047 },
+            { name: 'Otis', id: 16000048 },
+            { name: 'Sam', id: 16000049 },
+            { name: 'Max', id: 16000050 },
+            { name: 'Mr. P', id: 16000051 },
+            { name: 'Sprout', id: 16000052 },
+            { name: 'Byron', id: 16000053 },
+            { name: 'Squeak', id: 16000054 },
+            { name: 'Cordelius', id: 16000055 },
+            { name: 'Kit', id: 16000056 }
+        ];
+
+        let sent = 0;
+        let ok = 0;
+        let err = 0;
+        let activeAbortControllers = [];
+        let stopRequested = false;
+
+        function randomBrawler() {
+            return brawlers[Math.floor(Math.random() * brawlers.length)];
+        }
+
+        function buildRandomUserAgent() {
+            const b = randomBrawler();
+            const variants = [
+                `BrawlStars-${b.name}/${b.id}`,
+                `Supercell-${b.name}-Agent/1.0`,
+                `${b.name}_Brawler/${b.id} (Supercell)`,
+                `Mozilla/5.0 (BrawlStars; ${b.name}; ${b.id})`,
+                `${b.name}/${b.id} (feature-flag-checker)`
+            ];
+            return variants[Math.floor(Math.random() * variants.length)];
+        }
+
+        function log(msg, type = 'info') {
+            const logBox = document.getElementById('logBox');
+            const time = new Date().toLocaleTimeString();
+            const prefix = type === 'error' ? '❌' : (type === 'ok' ? '✅' : '📡');
+            const className = type === 'error' ? 'error-log' : (type === 'ok' ? '' : 'info-log');
+            logBox.innerHTML += `<span class="${className}">${prefix} [${time}] ${msg}</span>\n`;
+            logBox.scrollTop = logBox.scrollHeight;
+
+            // Keep log clean
+            const lines = logBox.innerHTML.split('\n');
+            if (lines.length > 100) {
+                logBox.innerHTML = lines.slice(-80).join('\n');
+            }
+        }
+
+        function updateStats(sentVal, okVal, errVal, timeMs) {
+            document.getElementById('sentCount').textContent = sentVal;
+            document.getElementById('okCount').textContent = okVal;
+            document.getElementById('errCount').textContent = errVal;
+            document.getElementById('timeCount').textContent = timeMs + 'ms';
+            
+            const progress = (sentVal / TOTAL_REQUESTS) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function setButtonsDisabled(state) {
+            document.getElementById('btnFire').disabled = state;
+            document.getElementById('btnStop').disabled = !state;
+        }
+
+        async function sendSingleRequest(index) {
+            if (stopRequested) throw new Error('STOPPED');
+            
+            const controller = new AbortController();
+            activeAbortControllers.push(controller);
+            
+            const userAgent = buildRandomUserAgent();
+            const brawler = randomBrawler();
+            
+            try {
+                const response = await fetch(TARGET_URL, {
+                    method: 'GET',
+                    headers: {
+                        'User-Agent': userAgent,
+                        'X-Brawler-Name': brawler.name,
+                        'X-Brawler-ID': String(brawler.id),
+                        'Cache-Control': 'no-cache'
+                    },
+                    signal: controller.signal,
+                    // mode: 'no-cors' // Uncomment if CORS blocks, but you lose response status
+                });
+
+                // If using no-cors mode, all responses look opaque (status 0)
+                if (response.ok || response.type === 'opaque') {
+                    ok++;
+                    log(`[#${index}] 200 | ${brawler.name}:${brawler.id} | UA: ${userAgent.substring(0, 40)}...`, 'ok');
+                } else {
+                    err++;
+                    log(`[#${index}] ${response.status} | ${brawler.name}`, 'error');
+                }
+            } catch (e) {
+                if (e.message === 'STOPPED') throw e;
+                err++;
+                log(`[#${index}] ERR: ${e.message.substring(0, 60)} | ${brawler.name}`, 'error');
+            } finally {
+                sent++;
+                const elapsed = Date.now() - startTime;
+                updateStats(sent, ok, err, elapsed);
+                
+                // Remove controller after use
+                const idx = activeAbortControllers.indexOf(controller);
+                if (idx > -1) activeAbortControllers.splice(idx, 1);
+            }
+        }
+
+        let startTime;
+        let fireActive = false;
+
+        async function fire300() {
+            if (fireActive) return;
+            fireActive = true;
+            stopRequested = false;
+            
+            // Reset
+            sent = 0;
+            ok = 0;
+            err = 0;
+            activeAbortControllers = [];
+            document.getElementById('logBox').innerHTML = '';
+            
+            setButtonsDisabled(true);
+            updateStats(0, 0, 0, 0);
+            log('🚀 300 parallel requests launching...', 'info');
+            
+            startTime = Date.now();
+            
+            // Build 300 promises
+            const promises = [];
+            for (let i = 1; i <= TOTAL_REQUESTS; i++) {
+                promises.push(sendSingleRequest(i));
+            }
+            
+            // Fire all at ONCE (this achieves the "1ms burst" concept — all launch together)
+            await Promise.allSettled(promises);
+            
+            const totalTime = Date.now() - startTime;
+            updateStats(sent, ok, err, totalTime);
+            
+            if (stopRequested) {
+                log('⏹ STOPPED', 'error');
+            } else {
+                log(`🏁 DONE! ${TOTAL_REQUESTS} requests in ${totalTime}ms | ${ok} OK / ${err} ERR`, 'ok');
+            }
+            
+            fireActive = false;
+            setButtonsDisabled(false);
+        }
+
+        function stopAll() {
+            stopRequested = true;
+            log('🛑 Aborting all pending requests...', 'error');
+            for (const controller of activeAbortControllers) {
+                controller.abort();
+            }
+            activeAbortControllers = [];
+            
+            setTimeout(() => {
+                if (fireActive) {
+                    fireActive = false;
+                    setButtonsDisabled(false);
+                }
+            }, 100);
+        }
+
+        // Initial log
+        log('📋 Brawlers loaded: ' + brawlers.length + ' | Press "300 REQ"', 'info');
+    </script>
+</body>
+</html>
