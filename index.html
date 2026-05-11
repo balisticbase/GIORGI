@@ -1,563 +1,295 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Luminous Nebula | Interactive Particle Animation</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      user-select: none;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Broken Feelings</title>
 
-    body {
-      background: radial-gradient(circle at center, #0a0f1e 0%, #03050a 100%);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Segoe UI', 'Poppins', 'Inter', system-ui, -apple-system, 'BlinkMacSystemFont', sans-serif;
-      overflow: hidden;
-      touch-action: none; /* Improves performance on touch devices */
-    }
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-    /* main canvas container */
-    .canvas-wrapper {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 25px 45px rgba(0,0,0,0.5);
-    }
+body{
+  font-family: Arial, sans-serif;
+  background:#050505;
+  overflow-x:hidden;
+  color:white;
+}
 
-    canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-      cursor: crosshair;
-      transition: filter 0.3s ease;
-    }
+/* animated background */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    linear-gradient(rgba(0,0,0,.72), rgba(0,0,0,.85)),
+    url('https://github.com/balisticbase/GIORGI/raw/refs/heads/main/The%20longer%20.png');
+  background-size:cover;
+  background-position:center;
+  z-index:-2;
+  animation:bgZoom 18s infinite alternate ease-in-out;
+}
 
-    /* UI overlay - minimalist glass panel */
-    .info-panel {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      right: 20px;
-      background: rgba(10, 20, 40, 0.65);
-      backdrop-filter: blur(12px);
-      border-radius: 2rem;
-      padding: 0.8rem 1.5rem;
-      border: 1px solid rgba(100, 150, 255, 0.3);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.85rem;
-      letter-spacing: 0.3px;
-      color: #eef5ff;
-      font-weight: 500;
-      z-index: 20;
-      pointer-events: none;
-    }
+@keyframes bgZoom{
+  from{
+    transform:scale(1);
+  }
+  to{
+    transform:scale(1.08);
+  }
+}
 
-    .stats {
-      display: flex;
-      gap: 20px;
-      background: rgba(0,0,0,0.4);
-      padding: 5px 14px;
-      border-radius: 40px;
-      backdrop-filter: blur(4px);
-    }
+.overlayGlow{
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at top left, rgba(255,0,80,.15), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(0,120,255,.12), transparent 35%);
+  z-index:-1;
+}
 
-    .stats span {
-      color: #9bc0ff;
-      font-weight: 600;
-      margin-left: 6px;
-    }
+/* header */
+header{
+  text-align:center;
+  padding:60px 20px 30px;
+}
 
-    .title {
-      font-weight: 600;
-      background: linear-gradient(135deg, #fff, #9cb8ff);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      letter-spacing: -0.2px;
-    }
+header h1{
+  font-size:3rem;
+  letter-spacing:2px;
+  color:#ffb6c1;
+  text-shadow:0 0 20px rgba(255,80,120,.5);
+}
 
-    .interaction-hint {
-      font-size: 0.7rem;
-      background: rgba(30,40,70,0.7);
-      padding: 5px 14px;
-      border-radius: 40px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+header p{
+  margin-top:12px;
+  color:#d8c6cb;
+  opacity:.8;
+  font-size:1rem;
+}
 
-    .interaction-hint i {
-      font-style: normal;
-      font-size: 1.1rem;
-    }
+/* gallery */
+.gallery{
+  width:100%;
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:28px;
+}
 
-    @media (max-width: 680px) {
-      .info-panel {
-        flex-direction: column;
-        align-items: flex-start;
-        bottom: 15px;
-        left: 15px;
-        right: 15px;
-        padding: 0.8rem 1rem;
-        border-radius: 1.5rem;
-      }
-      .stats {
-        width: 100%;
-        justify-content: space-between;
-      }
-      .title {
-        font-size: 0.9rem;
-      }
-      .interaction-hint {
-        font-size: 0.65rem;
-      }
-    }
+.card{
+  background:rgba(18,18,18,.72);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:22px;
+  overflow:hidden;
+  backdrop-filter:blur(8px);
+  transition:.35s;
+  box-shadow:0 10px 35px rgba(0,0,0,.5);
+}
 
-    /* subtle glow effect for canvas edge */
-    .canvas-wrapper::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      box-shadow: inset 0 0 50px rgba(0, 20, 60, 0.5);
-      border-radius: inherit;
-      z-index: 5;
-    }
-  </style>
+.card:hover{
+  transform:translateY(-6px) scale(1.02);
+  border-color:rgba(255,120,140,.35);
+  box-shadow:0 15px 40px rgba(255,0,80,.2);
+}
+
+.card img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+  display:block;
+  transition:.4s;
+}
+
+.card:hover img{
+  transform:scale(1.04);
+  filter:brightness(1.05);
+}
+
+.content{
+  padding:20px;
+}
+
+.content h2{
+  margin-bottom:10px;
+  color:#ffd5dc;
+  font-size:1.3rem;
+}
+
+.content p{
+  color:#d5d5d5;
+  line-height:1.6;
+  font-size:.95rem;
+}
+
+.tag{
+  display:inline-block;
+  margin-top:14px;
+  padding:6px 12px;
+  border-radius:30px;
+  background:#2b1117;
+  color:#ff9fb1;
+  font-size:.75rem;
+}
+
+/* footer */
+footer{
+  text-align:center;
+  padding:50px 20px;
+  color:#8a7177;
+  font-size:.85rem;
+}
+
+/* mobile */
+@media(max-width:700px){
+
+  header h1{
+    font-size:2rem;
+  }
+
+  .card img{
+    height:220px;
+  }
+
+}
+</style>
 </head>
+
 <body>
-<div class="canvas-wrapper">
-  <canvas id="particleCanvas"></canvas>
-  <div class="info-panel">
-    <div class="title">✨ LUMINOUS NEBULA • DYNAMIC PARTICLES</div>
-    <div class="stats">
-      <div>🌀 PARTICLES: <span id="particleCount">0</span></div>
-      <div>🎨 ATTRACTION: <span id="forceStrength">MEDIUM</span></div>
-    </div>
-    <div class="interaction-hint">
-      <i>🖱️</i> MOVE MOUSE / TOUCH → ATTRACTION &nbsp;&nbsp;|&nbsp;&nbsp; <i>🎯</i> CLICK → BURST
+
+<div class="overlayGlow"></div>
+
+<!-- background music -->
+<audio autoplay loop>
+  <source src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/ioscrack.online.m4a" type="audio/mp4">
+</audio>
+
+<header>
+  <h1>🩸 BROKEN FEELINGS</h1>
+  <p>dark memories • emotional collapse • cruel love</p>
+</header>
+
+<section class="gallery">
+
+  <div class="card">
+    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Apple.jpeg" alt="">
+    <div class="content">
+      <h2>Cold Silence</h2>
+      <p>
+        She looked through me like I never existed.
+        Every message became shorter.
+        Every touch disappeared.
+        But I still waited.
+      </p>
+      <span class="tag">Emotional damage</span>
     </div>
   </div>
-</div>
+
+  <div class="card">
+    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Browser.jpeg" alt="">
+    <div class="content">
+      <h2>Hidden Tabs</h2>
+      <p>
+        I found conversations she promised never existed.
+        Smiles for strangers.
+        Lies for me.
+      </p>
+      <span class="tag">Betrayal</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Mail.ru.jpeg" alt="">
+    <div class="content">
+      <h2>Unread Goodbye</h2>
+      <p>
+        I wrote long messages at 3AM.
+        She read them.
+        Never answered.
+      </p>
+      <span class="tag">Manipulation</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opened.jpeg" alt="">
+    <div class="content">
+      <h2>Opened</h2>
+      <p>
+        The worst feeling was not hate.
+        It was watching someone become cold
+        after once calling you home.
+      </p>
+      <span class="tag">Mental trauma</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opera.jpeg" alt="">
+    <div class="content">
+      <h2>Opera of Lies</h2>
+      <p>
+        Beautiful words.
+        Perfect acting.
+        But behind every kiss was another secret.
+      </p>
+      <span class="tag">False love</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Safari.jpeg" alt="">
+    <div class="content">
+      <h2>Last Search</h2>
+      <p>
+        “How to stop loving someone
+        who destroys you?”
+      </p>
+      <span class="tag">Heartbreak</span>
+    </div>
+  </div>
+
+</section>
+
+<footer>
+  ⚡ some memories never disappear ⚡
+</footer>
 
 <script>
-  (function() {
-    // ========== ADVANCED PARTICLE SYSTEM ==========
-    const canvas = document.getElementById('particleCanvas');
-    let ctx = canvas.getContext('2d');
 
-    // Dimensions
-    let width, height;
+/* simple fade animation */
 
-    // Particle configuration
-    const PARTICLE_COUNT = 220;
-    const BASE_RADIUS = 1.8;
-    const MAX_RADIUS = 3.5;
+const cards = document.querySelectorAll('.card');
 
-    // Physics parameters
-    let mouseX = -1000, mouseY = -1000;
-    let mouseActive = false;
-    let mouseClickForce = 0;        // extra repulsion/attraction on click burst
-    let clickDecay = 0;
+cards.forEach((card, index) => {
 
-    // Dynamic force factor (attraction strength) - changes over time or based on interaction
-    let attractionFactor = 0.45;     // range 0.2 to 0.9
-    let forceDirection = 'attract';   // attractive by default, but click can cause repulse burst
-    
-    // For smooth time-varying force mood
-    let timeAcc = 0;
+  card.style.opacity = "0";
+  card.style.transform = "translateY(30px)";
 
-    // Store particles
-    let particles = [];
+  setTimeout(() => {
+    card.style.transition = "0.7s";
+    card.style.opacity = "1";
+    card.style.transform = "translateY(0)";
+  }, index * 180);
 
-    // UI elements
-    const particleCountSpan = document.getElementById('particleCount');
-    const forceStrengthSpan = document.getElementById('forceStrength');
+});
 
-    // Helper to update UI text
-    function updateUI() {
-      particleCountSpan.innerText = particles.length;
-      let strengthLabel = '';
-      if (attractionFactor < 0.3) strengthLabel = 'GENTLE';
-      else if (attractionFactor < 0.6) strengthLabel = 'MEDIUM';
-      else strengthLabel = 'INTENSE';
-      forceStrengthSpan.innerText = strengthLabel;
-    }
+/* image fallback */
 
-    // ========== PARTICLE CLASS ==========
-    class Particle {
-      constructor(x, y, vx, vy, radius, hue) {
-        this.x = x;
-        this.y = y;
-        this.vx = vx;
-        this.vy = vy;
-        this.radius = radius;
-        this.baseHue = hue;
-        this.saturation = 70 + Math.random() * 25;   // 70-95%
-        this.lightness = 55 + Math.random() * 30;    // 55-85%
-        this.alpha = 0.7 + Math.random() * 0.3;
-        this.glowIntensity = 0.6 + Math.random() * 0.8;
-      }
+document.querySelectorAll("img").forEach(img => {
 
-      // update physics: forces from mouse, boundary, and slight damping + noise
-      update(attract, mouseX, mouseY, mouseActiveFlag, extraBurstForceX, extraBurstForceY) {
-        // Damping (air resistance)
-        this.vx *= 0.99;
-        this.vy *= 0.99;
+  img.onerror = function(){
+    this.src = "https://picsum.photos/800/600?grayscale";
+  };
 
-        // Mouse interaction (attraction or repulsion based on click status)
-        if (mouseActiveFlag && (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height)) {
-          let dx = mouseX - this.x;
-          let dy = mouseY - this.y;
-          let dist = Math.hypot(dx, dy);
-          let maxDist = 150;
-          if (dist < maxDist) {
-            let force = attract * (1 - dist / maxDist);  // stronger when close
-            // direction: attraction (normalized)
-            let dirX = dx / (dist + 0.001);
-            let dirY = dy / (dist + 0.001);
-            // if extraBurstForce (click) overrides direction: repulsion or attraction? we create blast away
-            // but we combine: extra burst force is added separately.
-            this.vx += dirX * force * 0.9;
-            this.vy += dirY * force * 0.9;
-          }
-        }
+});
 
-        // Apply extra burst (click repulsion / explosion)
-        if (extraBurstForceX !== 0 || extraBurstForceY !== 0) {
-          // relative influence: each particle gets radial burst away from mouse
-          // but we have already computed per-particle specific burst effect: we'll compute inside loop improved
-          // Actually we will apply the burst forces individually in the main loop for better directionality.
-          // but for safety: we add generic based on distance.
-          let dxb = this.x - mouseX;
-          let dyb = this.y - mouseY;
-          let distB = Math.hypot(dxb, dyb);
-          if (distB < 200 && extraBurstForceX !== 0) {
-            let strength = (1 - distB / 220) * 6.2;
-            let normX = dxb / (distB + 0.001);
-            let normY = dyb / (distB + 0.001);
-            this.vx += normX * strength;
-            this.vy += normY * strength;
-          }
-        }
-
-        // Add slight random Brownian motion for life
-        this.vx += (Math.random() - 0.5) * 0.15;
-        this.vy += (Math.random() - 0.5) * 0.15;
-
-        // Update position
-        this.x += this.vx;
-        this.y += this.vy;
-
-        // smart boundaries: soft elastic bounce with edge friction and radius offset
-        const margin = this.radius + 2;
-        if (this.x < margin) {
-          this.x = margin + (margin - this.x);
-          this.vx *= -0.92;
-        }
-        if (this.x > width - margin) {
-          this.x = width - margin - (this.x - (width - margin));
-          this.vx *= -0.92;
-        }
-        if (this.y < margin) {
-          this.y = margin + (margin - this.y);
-          this.vy *= -0.92;
-        }
-        if (this.y > height - margin) {
-          this.y = height - margin - (this.y - (height - margin));
-          this.vy *= -0.92;
-        }
-
-        // limit speed
-        let maxSpeed = 8;
-        if (Math.abs(this.vx) > maxSpeed) this.vx = this.vx > 0 ? maxSpeed : -maxSpeed;
-        if (Math.abs(this.vy) > maxSpeed) this.vy = this.vy > 0 ? maxSpeed : -maxSpeed;
-      }
-
-      draw(ctx, time) {
-        // glow effect via shadow blur
-        ctx.save();
-        ctx.shadowBlur = this.glowIntensity * 7;
-        ctx.shadowColor = `hsla(${this.baseHue}, 85%, 65%, 0.7)`;
-        ctx.beginPath();
-        // dynamic radius based on velocity or just constant
-        let dynRadius = this.radius + (Math.abs(this.vx) + Math.abs(this.vy)) * 0.12;
-        dynRadius = Math.min(dynRadius, MAX_RADIUS + 1.2);
-        ctx.arc(this.x, this.y, dynRadius, 0, Math.PI * 2);
-        let hueShift = (time * 0.02 + this.baseHue) % 360;
-        let sat = this.saturation;
-        let lit = this.lightness;
-        // color blending with a hint of rainbow based on position
-        let finalHue = (hueShift + this.x * 0.2) % 360;
-        let gradient = ctx.createRadialGradient(this.x-1, this.y-1, 1, this.x, this.y, dynRadius*1.5);
-        gradient.addColorStop(0, `hsla(${finalHue}, ${sat}%, ${lit+10}%, ${this.alpha})`);
-        gradient.addColorStop(1, `hsla(${finalHue+20}, ${sat-15}%, ${lit-15}%, ${this.alpha*0.8})`);
-        ctx.fillStyle = gradient;
-        ctx.fill();
-        ctx.restore();
-      }
-    }
-
-    // ========== INITIALIZE PARTICLES ==========
-    function initParticles() {
-      particles = [];
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
-        let x = Math.random() * width;
-        let y = Math.random() * height;
-        let angle = Math.random() * Math.PI * 2;
-        let speed = 0.2 + Math.random() * 1.2;
-        let vx = Math.cos(angle) * speed * (Math.random() - 0.5);
-        let vy = Math.sin(angle) * speed * (Math.random() - 0.5);
-        let radius = BASE_RADIUS + Math.random() * 1.6;
-        let hue = (Math.random() * 360);
-        particles.push(new Particle(x, y, vx, vy, radius, hue));
-      }
-      updateUI();
-    }
-
-    // Resize canvas and reinitialize particles keeping proportions roughly
-    function resizeCanvas() {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-      if (particles.length === 0) {
-        initParticles();
-      } else {
-        // adjust positions to new dimensions (clamp particles within new bounds)
-        for (let p of particles) {
-          p.x = Math.min(width - 5, Math.max(5, p.x));
-          p.y = Math.min(height - 5, Math.max(5, p.y));
-          // tiny reset if out of range
-          if (p.x > width) p.x = width - 10;
-          if (p.y > height) p.y = height - 10;
-        }
-      }
-    }
-
-    // Burst effect on click: create repulsion wave
-    function handleClickBurst(e) {
-      // get accurate mouse/touch coordinates relative to canvas
-      let rect = canvas.getBoundingClientRect();
-      let scaleX = canvas.width / rect.width;
-      let scaleY = canvas.height / rect.height;
-      let clientX, clientY;
-      if (e.touches) {
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
-      } else {
-        clientX = e.clientX;
-        clientY = e.clientY;
-      }
-      let canvasX = (clientX - rect.left) * scaleX;
-      let canvasY = (clientY - rect.top) * scaleY;
-      if (canvasX >= 0 && canvasX <= width && canvasY >= 0 && canvasY <= height) {
-        mouseX = canvasX;
-        mouseY = canvasY;
-        mouseActive = true;
-        
-        // Apply strong radial impulse to all particles from click point
-        for (let p of particles) {
-          let dx = p.x - mouseX;
-          let dy = p.y - mouseY;
-          let dist = Math.hypot(dx, dy);
-          if (dist < 220) {
-            let strength = (1 - dist / 230) * 7.8;
-            let angle = Math.atan2(dy, dx);
-            let forceX = Math.cos(angle) * strength;
-            let forceY = Math.sin(angle) * strength;
-            p.vx += forceX;
-            p.vy += forceY;
-            // add tiny random tangential component for chaos
-            p.vx += (Math.random() - 0.5) * 1.4;
-            p.vy += (Math.random() - 0.5) * 1.4;
-          }
-        }
-        // temporary change attraction to create dramatic effect
-        let originalAttract = attractionFactor;
-        attractionFactor = 0.2; // briefly low attraction to allow dispersal
-        setTimeout(() => {
-          attractionFactor = originalAttract;
-        }, 280);
-        
-        // little visual feedback: flash effect, but lightweight
-        canvas.style.filter = 'brightness(1.06) contrast(1.04)';
-        setTimeout(() => {
-          canvas.style.filter = '';
-        }, 120);
-      }
-    }
-
-    // Mouse / touch move for continuous attraction
-    function handleMouseMove(e) {
-      let rect = canvas.getBoundingClientRect();
-      let scaleX = canvas.width / rect.width;
-      let scaleY = canvas.height / rect.height;
-      let clientX, clientY;
-      if (e.touches) {
-        clientX = e.touches[0].clientX;
-        clientY = e.touches[0].clientY;
-        e.preventDefault();
-      } else {
-        clientX = e.clientX;
-        clientY = e.clientY;
-      }
-      let canvasX = (clientX - rect.left) * scaleX;
-      let canvasY = (clientY - rect.top) * scaleY;
-      if (canvasX >= 0 && canvasX <= width && canvasY >= 0 && canvasY <= height) {
-        mouseX = canvasX;
-        mouseY = canvasY;
-        mouseActive = true;
-      }
-    }
-
-    function handleMouseLeave() {
-      mouseActive = false;
-      // don't reset mouse position, but deactivate attraction
-      mouseX = -1000;
-      mouseY = -1000;
-    }
-
-    // dynamic attraction factor that breathes over time and also adjusts based on density
-    function updateAttractionDynamics() {
-      timeAcc += 0.008;
-      // gentle sinusoidal variation: 0.3 to 0.72
-      let breath = 0.4 + Math.sin(timeAcc) * 0.2;
-      // default is around median, but UI displays realistic
-      // if attraction factor temporarily changed from click burst, let it revert, else apply gentle shift
-      if (!window._tempForceLock) {
-        attractionFactor = 0.42 + breath * 0.28;
-      } else {
-        // lock only for short time after click
-        setTimeout(() => { window._tempForceLock = false; }, 400);
-      }
-      updateUI();
-    }
-
-    // Animation loop
-    let animationFrame;
-    let lastTimestamp = 0;
-
-    function animate() {
-      if (!ctx) return;
-      // Clear canvas with semi-transparent black for trailing effect (light motion blur)
-      ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = 'rgba(3, 5, 12, 0.22)';
-      ctx.fillRect(0, 0, width, height);
-      
-      // subtle starfield overlay effect (tiny sparkles)
-      ctx.fillStyle = 'rgba(255,240,210,0.08)';
-      for (let i=0; i<70; i++) {
-        if (i%2 === 0) continue; // lazy stars, not performance heavy
-      }
-      
-      // Update attraction factor dynamically (organic behavior)
-      updateAttractionDynamics();
-      
-      // For each particle, apply forces and extra burst if any (no per-frame persistent extra burst, but we recalc if click residual)
-      // click residual forces are not present per frame because we already applied in click event.
-      let burstX = 0, burstY = 0; // no residual per frame, only through handleClickBurst
-      
-      for (let p of particles) {
-        // pass mouse state, attraction factor and also check if click burst should be repeated? no, burst only once per click.
-        // However we want a subtle "mouse attraction" that uses current attractionFactor.
-        let effectiveAttraction = mouseActive ? attractionFactor : 0;
-        p.update(effectiveAttraction, mouseX, mouseY, mouseActive, 0, 0);
-      }
-      
-      // Draw connections (light web between particles very close)
-      ctx.save();
-      ctx.globalCompositeOperation = 'lighter';
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          let dx = particles[i].x - particles[j].x;
-          let dy = particles[i].y - particles[j].y;
-          let dist = Math.hypot(dx, dy);
-          if (dist < 52) {
-            let intensity = 1 - dist / 55;
-            let alphaLine = intensity * 0.28;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            let hueLine = (particles[i].baseHue + particles[j].baseHue) / 2;
-            ctx.strokeStyle = `hsla(${hueLine}, 80%, 65%, ${alphaLine})`;
-            ctx.lineWidth = 1.2;
-            ctx.stroke();
-          }
-        }
-      }
-      ctx.restore();
-      
-      // Draw particles in order
-      let currentTime = performance.now() / 30;
-      for (let p of particles) {
-        p.draw(ctx, currentTime);
-      }
-      
-      // Draw mouse interactive glow if active
-      if (mouseActive && mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
-        ctx.beginPath();
-        let gradient = ctx.createRadialGradient(mouseX, mouseY, 5, mouseX, mouseY, 70);
-        gradient.addColorStop(0, 'rgba(180, 200, 255, 0.2)');
-        gradient.addColorStop(1, 'rgba(80, 120, 210, 0)');
-        ctx.fillStyle = gradient;
-        ctx.arc(mouseX, mouseY, 65, 0, Math.PI*2);
-        ctx.fill();
-      }
-      
-      animationFrame = requestAnimationFrame(animate);
-    }
-
-    // attach events with passive false where needed
-    function attachEvents() {
-      window.addEventListener('resize', () => {
-        resizeCanvas();
-      });
-      canvas.addEventListener('mousemove', handleMouseMove);
-      canvas.addEventListener('mouseleave', handleMouseLeave);
-      canvas.addEventListener('click', handleClickBurst);
-      // touch events
-      canvas.addEventListener('touchmove', (e) => {
-        e.preventDefault();
-        handleMouseMove(e);
-      }, { passive: false });
-      canvas.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        handleClickBurst(e);
-        handleMouseMove(e);
-      }, { passive: false });
-      canvas.addEventListener('touchend', () => {
-        mouseActive = false;
-        mouseX = -1000;
-        mouseY = -1000;
-      });
-    }
-
-    // start application
-    function start() {
-      resizeCanvas();
-      initParticles();
-      attachEvents();
-      animate();
-    }
-    
-    start();
-  })();
 </script>
+
 </body>
 </html>
