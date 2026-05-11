@@ -1,39 +1,47 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
 <title>Broken Feelings</title>
 
 <style>
+
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
 }
 
-body{
-  font-family: Arial, sans-serif;
-  background:#050505;
+html,body{
+  width:100%;
+  min-height:100%;
   overflow-x:hidden;
+  font-family:Arial,sans-serif;
+  background:#050505;
   color:white;
 }
 
 /* animated background */
+
 body::before{
   content:"";
   position:fixed;
   inset:0;
+
   background:
-    linear-gradient(rgba(0,0,0,.72), rgba(0,0,0,.85)),
-    url('https://github.com/balisticbase/GIORGI/raw/refs/heads/main/The%20longer%20.png');
+  linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.88)),
+  url('https://github.com/balisticbase/GIORGI/raw/refs/heads/main/The%20longer%20.png');
+
   background-size:cover;
   background-position:center;
   z-index:-2;
-  animation:bgZoom 18s infinite alternate ease-in-out;
+
+  animation:bgAnim 18s ease-in-out infinite alternate;
 }
 
-@keyframes bgZoom{
+@keyframes bgAnim{
   from{
     transform:scale(1);
   }
@@ -42,16 +50,25 @@ body::before{
   }
 }
 
-.overlayGlow{
+/* glow */
+
+.glow{
   position:fixed;
   inset:0;
-  background:
-    radial-gradient(circle at top left, rgba(255,0,80,.15), transparent 35%),
-    radial-gradient(circle at bottom right, rgba(0,120,255,.12), transparent 35%);
   z-index:-1;
+
+  background:
+  radial-gradient(circle at top left,
+  rgba(255,0,80,.15),
+  transparent 35%),
+
+  radial-gradient(circle at bottom right,
+  rgba(0,120,255,.12),
+  transparent 35%);
 }
 
 /* header */
+
 header{
   text-align:center;
   padding:60px 20px 30px;
@@ -59,43 +76,73 @@ header{
 
 header h1{
   font-size:3rem;
-  letter-spacing:2px;
   color:#ffb6c1;
-  text-shadow:0 0 20px rgba(255,80,120,.5);
+  letter-spacing:2px;
+
+  text-shadow:
+  0 0 10px rgba(255,120,140,.4),
+  0 0 25px rgba(255,0,80,.35);
 }
 
 header p{
   margin-top:12px;
-  color:#d8c6cb;
-  opacity:.8;
-  font-size:1rem;
+  color:#d5c3c7;
+  opacity:.85;
 }
 
 /* gallery */
+
 .gallery{
   width:100%;
   max-width:1200px;
   margin:auto;
   padding:20px;
+
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  grid-template-columns:
+  repeat(auto-fit,minmax(280px,1fr));
+
   gap:28px;
 }
 
+/* card */
+
 .card{
   background:rgba(18,18,18,.72);
-  border:1px solid rgba(255,255,255,.08);
+
+  border:
+  1px solid rgba(255,255,255,.08);
+
   border-radius:22px;
+
   overflow:hidden;
+
   backdrop-filter:blur(8px);
+
   transition:.35s;
-  box-shadow:0 10px 35px rgba(0,0,0,.5);
+
+  box-shadow:
+  0 10px 35px rgba(0,0,0,.55);
+
+  opacity:0;
+  transform:translateY(30px);
+}
+
+.card.show{
+  opacity:1;
+  transform:translateY(0);
 }
 
 .card:hover{
-  transform:translateY(-6px) scale(1.02);
-  border-color:rgba(255,120,140,.35);
-  box-shadow:0 15px 40px rgba(255,0,80,.2);
+  transform:
+  translateY(-6px)
+  scale(1.02);
+
+  border-color:
+  rgba(255,120,140,.35);
+
+  box-shadow:
+  0 15px 40px rgba(255,0,80,.2);
 }
 
 .card img{
@@ -103,6 +150,7 @@ header p{
   height:260px;
   object-fit:cover;
   display:block;
+
   transition:.4s;
 }
 
@@ -110,6 +158,8 @@ header p{
   transform:scale(1.04);
   filter:brightness(1.05);
 }
+
+/* content */
 
 .content{
   padding:20px;
@@ -122,30 +172,38 @@ header p{
 }
 
 .content p{
-  color:#d5d5d5;
+  color:#dddddd;
   line-height:1.6;
   font-size:.95rem;
 }
 
 .tag{
   display:inline-block;
-  margin-top:14px;
+
+  margin-top:15px;
+
   padding:6px 12px;
-  border-radius:30px;
+
+  border-radius:999px;
+
   background:#2b1117;
+
   color:#ff9fb1;
+
   font-size:.75rem;
 }
 
 /* footer */
+
 footer{
   text-align:center;
   padding:50px 20px;
-  color:#8a7177;
+  color:#8f747a;
   font-size:.85rem;
 }
 
 /* mobile */
+
 @media(max-width:700px){
 
   header h1{
@@ -157,99 +215,117 @@ footer{
   }
 
 }
+
 </style>
 </head>
 
 <body>
 
-<div class="overlayGlow"></div>
+<div class="glow"></div>
 
-<!-- background music -->
-<audio autoplay loop>
+<!-- MUSIC -->
+
+<audio id="bgMusic" loop playsinline preload="auto">
   <source src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/ioscrack.online.m4a" type="audio/mp4">
 </audio>
 
 <header>
   <h1>🩸 BROKEN FEELINGS</h1>
-  <p>dark memories • emotional collapse • cruel love</p>
+  <p>dark memories • cruel love • emotional collapse</p>
 </header>
 
 <section class="gallery">
 
   <div class="card">
-    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Apple.jpeg" alt="">
+    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Apple.jpeg">
+
     <div class="content">
       <h2>Cold Silence</h2>
+
       <p>
-        She looked through me like I never existed.
-        Every message became shorter.
-        Every touch disappeared.
-        But I still waited.
+        She slowly became colder every day.
+        I watched love disappear in her eyes
+        while pretending nothing changed.
       </p>
-      <span class="tag">Emotional damage</span>
+
+      <span class="tag">Emotional Damage</span>
     </div>
   </div>
 
   <div class="card">
-    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Browser.jpeg" alt="">
+    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Browser.jpeg">
+
     <div class="content">
       <h2>Hidden Tabs</h2>
+
       <p>
-        I found conversations she promised never existed.
-        Smiles for strangers.
-        Lies for me.
+        The truth was hidden behind passwords,
+        deleted messages and fake smiles.
       </p>
+
       <span class="tag">Betrayal</span>
     </div>
   </div>
 
   <div class="card">
-    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Mail.ru.jpeg" alt="">
+    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Mail.ru.jpeg">
+
     <div class="content">
       <h2>Unread Goodbye</h2>
+
       <p>
-        I wrote long messages at 3AM.
-        She read them.
+        I kept sending messages at night.
+        She saw every one of them.
         Never answered.
       </p>
+
       <span class="tag">Manipulation</span>
     </div>
   </div>
 
   <div class="card">
-    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opened.jpeg" alt="">
+    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opened.jpeg">
+
     <div class="content">
       <h2>Opened</h2>
+
       <p>
-        The worst feeling was not hate.
-        It was watching someone become cold
-        after once calling you home.
+        The most painful thing
+        was not hatred.
+        It was indifference.
       </p>
-      <span class="tag">Mental trauma</span>
+
+      <span class="tag">Mental Trauma</span>
     </div>
   </div>
 
   <div class="card">
-    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opera.jpeg" alt="">
+    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opera.jpeg">
+
     <div class="content">
-      <h2>Opera of Lies</h2>
+      <h2>Opera Of Lies</h2>
+
       <p>
-        Beautiful words.
-        Perfect acting.
-        But behind every kiss was another secret.
+        Beautiful acting.
+        Perfect manipulation.
+        Every kiss hid another secret.
       </p>
-      <span class="tag">False love</span>
+
+      <span class="tag">False Love</span>
     </div>
   </div>
 
   <div class="card">
-    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Safari.jpeg" alt="">
+    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Safari.jpeg">
+
     <div class="content">
       <h2>Last Search</h2>
+
       <p>
         “How to stop loving someone
         who destroys you?”
       </p>
+
       <span class="tag">Heartbreak</span>
     </div>
   </div>
@@ -257,37 +333,135 @@ footer{
 </section>
 
 <footer>
-  ⚡ some memories never disappear ⚡
+⚡ some memories never disappear ⚡
 </footer>
 
 <script>
 
-/* simple fade animation */
+/* ===== CARD ANIMATION ===== */
 
-const cards = document.querySelectorAll('.card');
+const cards = document.querySelectorAll(".card");
 
-cards.forEach((card, index) => {
+cards.forEach((card,index)=>{
 
-  card.style.opacity = "0";
-  card.style.transform = "translateY(30px)";
+  setTimeout(()=>{
 
-  setTimeout(() => {
-    card.style.transition = "0.7s";
-    card.style.opacity = "1";
-    card.style.transform = "translateY(0)";
+    card.classList.add("show");
+
   }, index * 180);
 
 });
 
-/* image fallback */
+/* ===== IMAGE FALLBACK ===== */
 
-document.querySelectorAll("img").forEach(img => {
+document.querySelectorAll("img").forEach(img=>{
 
   img.onerror = function(){
-    this.src = "https://picsum.photos/800/600?grayscale";
+
+    this.src =
+    "https://picsum.photos/800/600?grayscale";
+
   };
 
 });
+
+/* ===== MUSIC SYSTEM ===== */
+
+const music =
+document.getElementById("bgMusic");
+
+music.volume = 1.0;
+
+/* force play */
+
+async function forcePlay(){
+
+  try{
+
+    await music.play();
+
+  }catch(e){}
+
+}
+
+/* aggressive anti-pause */
+
+[
+"click",
+"touchstart",
+"touchend",
+"mousemove",
+"keydown",
+"scroll"
+].forEach(event=>{
+
+  document.addEventListener(
+    event,
+    forcePlay,
+    { passive:true }
+  );
+
+});
+
+/* if tab active again */
+
+document.addEventListener(
+"visibilitychange",
+()=>{
+
+  if(!document.hidden){
+
+    forcePlay();
+
+  }
+
+});
+
+/* if browser paused */
+
+music.addEventListener(
+"pause",
+()=>{
+
+  setTimeout(()=>{
+
+    forcePlay();
+
+  },500);
+
+});
+
+/* constant checking */
+
+setInterval(()=>{
+
+  if(music.paused){
+
+    forcePlay();
+
+  }
+
+},2000);
+
+/* startup */
+
+window.addEventListener(
+"load",
+()=>{
+
+  forcePlay();
+
+});
+
+/* ios unlock */
+
+document.body.addEventListener(
+"touchstart",
+()=>{
+
+  forcePlay();
+
+},{ once:true });
 
 </script>
 
