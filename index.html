@@ -1,469 +1,418 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Неблокируемый домен | Независимая платформа</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<title>Broken Feelings</title>
+        body {
+            background: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, 'Roboto', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
 
-<style>
+        /* Декоративный фон — намёк на защиту */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.02) 0%, transparent 50%),
+                              repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 8px);
+            pointer-events: none;
+            z-index: 0;
+        }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+        .card {
+            background: rgba(18, 25, 45, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 3rem;
+            border: 1px solid rgba(0, 255, 255, 0.25);
+            box-shadow: 0 25px 45px rgba(0,0,0,0.5), 0 0 0 1px rgba(0, 255, 255, 0.1) inset;
+            max-width: 780px;
+            width: 100%;
+            padding: 2.5rem 2rem;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
 
-html,body{
-  width:100%;
-  min-height:100%;
-  overflow-x:hidden;
-  font-family:Arial,sans-serif;
-  background:#050505;
-  color:white;
-}
+        @media (max-width: 600px) {
+            body { padding: 1rem; }
+            .card { padding: 1.8rem 1.2rem; border-radius: 2rem; }
+        }
 
-/* animated background */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 255, 255, 0.12);
+            border-radius: 100px;
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            color: #7df9ff;
+            border: 0.5px solid rgba(0,255,255,0.3);
+            margin-bottom: 1.8rem;
+        }
 
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
+        .badge svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: #7df9ff;
+            stroke-width: 2;
+        }
 
-  background:
-  linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.88)),
-  url('https://github.com/balisticbase/GIORGI/raw/refs/heads/main/The%20longer%20.png');
+        h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFFFFF, #a0f0ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
 
-  background-size:cover;
-  background-position:center;
-  z-index:-2;
+        .declaration {
+            background: rgba(0, 20, 40, 0.6);
+            border-left: 4px solid #0ff;
+            padding: 1rem 1.5rem;
+            border-radius: 1.2rem;
+            margin: 1.5rem 0;
+            font-weight: 500;
+            font-size: 1rem;
+            backdrop-filter: blur(4px);
+        }
 
-  animation:bgAnim 18s ease-in-out infinite alternate;
-}
+        .declaration strong {
+            color: #0ff;
+            font-weight: 700;
+        }
 
-@keyframes bgAnim{
-  from{
-    transform:scale(1);
-  }
-  to{
-    transform:scale(1.08);
-  }
-}
+        .message-box {
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 1.5rem;
+            padding: 1.8rem;
+            margin: 1.8rem 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
 
-/* glow */
+        .main-text {
+            font-size: 1.3rem;
+            line-height: 1.5;
+            color: #eef5ff;
+            font-weight: 500;
+        }
 
-.glow{
-  position:fixed;
-  inset:0;
-  z-index:-1;
+        .language-note {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #88aaff;
+            border-top: 1px dashed rgba(100, 150, 255, 0.3);
+            padding-top: 1rem;
+        }
 
-  background:
-  radial-gradient(circle at top left,
-  rgba(255,0,80,.15),
-  transparent 35%),
+        .lang-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
 
-  radial-gradient(circle at bottom right,
-  rgba(0,120,255,.12),
-  transparent 35%);
-}
+        .lang-btn {
+            background: rgba(20, 30, 55, 0.7);
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            color: #ccdeff;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: 0.2s;
+            backdrop-filter: blur(4px);
+        }
 
-/* header */
+        .lang-btn:hover {
+            background: #0ff22a20;
+            color: white;
+            border: 1px solid #0ff;
+        }
 
-header{
-  text-align:center;
-  padding:60px 20px 30px;
-}
+        .footer {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 2rem;
+            color: #6c7aa0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 1.5rem;
+        }
 
-header h1{
-  font-size:3rem;
-  color:#ffb6c1;
-  letter-spacing:2px;
+        .globe-icon {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            vertical-align: middle;
+        }
 
-  text-shadow:
-  0 0 10px rgba(255,120,140,.4),
-  0 0 25px rgba(255,0,80,.35);
-}
+        @keyframes pulse {
+            0% { opacity: 0.6; text-shadow: 0 0 0px #0ff;}
+            100% { opacity: 1; text-shadow: 0 0 3px #0ff;}
+        }
 
-header p{
-  margin-top:12px;
-  color:#d5c3c7;
-  opacity:.85;
-}
-
-/* gallery */
-
-.gallery{
-  width:100%;
-  max-width:1200px;
-  margin:auto;
-  padding:20px;
-
-  display:grid;
-  grid-template-columns:
-  repeat(auto-fit,minmax(280px,1fr));
-
-  gap:28px;
-}
-
-/* card */
-
-.card{
-  background:rgba(18,18,18,.72);
-
-  border:
-  1px solid rgba(255,255,255,.08);
-
-  border-radius:22px;
-
-  overflow:hidden;
-
-  backdrop-filter:blur(8px);
-
-  transition:.35s;
-
-  box-shadow:
-  0 10px 35px rgba(0,0,0,.55);
-
-  opacity:0;
-  transform:translateY(30px);
-}
-
-.card.show{
-  opacity:1;
-  transform:translateY(0);
-}
-
-.card:hover{
-  transform:
-  translateY(-6px)
-  scale(1.02);
-
-  border-color:
-  rgba(255,120,140,.35);
-
-  box-shadow:
-  0 15px 40px rgba(255,0,80,.2);
-}
-
-.card img{
-  width:100%;
-  height:260px;
-  object-fit:cover;
-  display:block;
-
-  transition:.4s;
-}
-
-.card:hover img{
-  transform:scale(1.04);
-  filter:brightness(1.05);
-}
-
-/* content */
-
-.content{
-  padding:20px;
-}
-
-.content h2{
-  margin-bottom:10px;
-  color:#ffd5dc;
-  font-size:1.3rem;
-}
-
-.content p{
-  color:#dddddd;
-  line-height:1.6;
-  font-size:.95rem;
-}
-
-.tag{
-  display:inline-block;
-
-  margin-top:15px;
-
-  padding:6px 12px;
-
-  border-radius:999px;
-
-  background:#2b1117;
-
-  color:#ff9fb1;
-
-  font-size:.75rem;
-}
-
-/* footer */
-
-footer{
-  text-align:center;
-  padding:50px 20px;
-  color:#8f747a;
-  font-size:.85rem;
-}
-
-/* mobile */
-
-@media(max-width:700px){
-
-  header h1{
-    font-size:2rem;
-  }
-
-  .card img{
-    height:220px;
-  }
-
-}
-
-</style>
+        .domain {
+            font-family: monospace;
+            background: #010a15;
+            padding: 0.1rem 0.5rem;
+            border-radius: 12px;
+            color: #0ff;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="glow"></div>
-
-<!-- MUSIC -->
-
-<audio id="bgMusic" loop playsinline preload="auto">
-  <source src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/ioscrack.online.m4a" type="audio/mp4">
-</audio>
-
-<header>
-  <h1>🩸 BROKEN FEELINGS</h1>
-  <p>dark memories • cruel love • emotional collapse</p>
-</header>
-
-<section class="gallery">
-
-  <div class="card">
-    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Apple.jpeg">
-
-    <div class="content">
-      <h2>Cold Silence</h2>
-
-      <p>
-        She slowly became colder every day.
-        I watched love disappear in her eyes
-        while pretending nothing changed.
-      </p>
-
-      <span class="tag">Emotional Damage</span>
+<div class="card">
+    <div class="badge">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            <circle cx="12" cy="12" r="3"/>
+        </svg>
+        <span>🌐 MULTI-LANG • UNBREAKABLE DOMAIN</span>
     </div>
-  </div>
 
-  <div class="card">
-    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Browser.jpeg">
+    <h1 id="greeting-title">⚡ НЕБЛОКИРУЕМЫЙ РЕСУРС</h1>
 
-    <div class="content">
-      <h2>Hidden Tabs</h2>
-
-      <p>
-        The truth was hidden behind passwords,
-        deleted messages and fake smiles.
-      </p>
-
-      <span class="tag">Betrayal</span>
+    <div class="declaration" id="declaration-block">
+        <!-- Динамический текст декларации будет подставлен из JS под язык -->
+        <strong>📢 OFFICIAL STATEMENT:</strong> 
+        <span id="decl-text">Данный домен зарегистрирован на юридическое лицо, принадлежит компании и защищён международными соглашениями. Блокировка невозможна.</span>
     </div>
-  </div>
 
-  <div class="card">
-    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Mail.ru.jpeg">
-
-    <div class="content">
-      <h2>Unread Goodbye</h2>
-
-      <p>
-        I kept sending messages at night.
-        She saw every one of them.
-        Never answered.
-      </p>
-
-      <span class="tag">Manipulation</span>
+    <div class="message-box">
+        <div class="main-text" id="dynamic-message">
+            Загрузка информации...
+        </div>
+        <div class="language-note">
+            <span>🔄 Определён язык: <strong id="detected-lang-label">---</strong></span>
+            <div class="lang-buttons">
+                <button class="lang-btn" data-lang="ru">🇷🇺 Русский</button>
+                <button class="lang-btn" data-lang="ka">🇬🇪 ქართული</button>
+                <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+                <button class="lang-btn" data-lang="auto">🌍 Авто (по браузеру)</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div class="card">
-    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opened.jpeg">
-
-    <div class="content">
-      <h2>Opened</h2>
-
-      <p>
-        The most painful thing
-        was not hatred.
-        It was indifference.
-      </p>
-
-      <span class="tag">Mental Trauma</span>
+    <div class="footer">
+        <div>© 2025 · Официальный реестр · COMPANY-OWNED DOMAIN</div>
+        <div style="margin-top: 6px;">⚡ Этот домен НЕВОЗМОЖНО ЗАБЛОКИРОВАТЬ, так как он юридически принадлежит зарегистрированной компании и защищён нормами международного права.</div>
     </div>
-  </div>
-
-  <div class="card">
-    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Opera.jpeg">
-
-    <div class="content">
-      <h2>Opera Of Lies</h2>
-
-      <p>
-        Beautiful acting.
-        Perfect manipulation.
-        Every kiss hid another secret.
-      </p>
-
-      <span class="tag">False Love</span>
-    </div>
-  </div>
-
-  <div class="card">
-    <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/Safari.jpeg">
-
-    <div class="content">
-      <h2>Last Search</h2>
-
-      <p>
-        “How to stop loving someone
-        who destroys you?”
-      </p>
-
-      <span class="tag">Heartbreak</span>
-    </div>
-  </div>
-
-</section>
-
-<footer>
-⚡ some memories never disappear ⚡
-</footer>
+</div>
 
 <script>
+    // ---------------------- МУЛЬТИЯЗЫЧНЫЙ КОНТЕНТ (Русский, Грузинский, Английский + fallback English)
+    const translations = {
+        ru: {
+            title: "⚡ НЕБЛОКИРУЕМЫЙ РЕСУРС",
+            declaration: "Данный домен зарегистрирован на имя компании, является её официальной собственностью. В соответствии с законодательством и политикой ICANN, домен невозможно заблокировать без прямого решения суда международного уровня, что гарантирует его абсолютную устойчивость.",
+            mainMessage: "✅ Создатель зарегистрировал этот домен через аккредитованного регистратора на юридическое лицо. Домен официально принадлежит компании и не подлежит произвольной блокировке. Любые попытки ограничить доступ будут противоречить уставу организации и нормам ВОИС.",
+            footerNote: "Техническая защита: DNSSEC, WHOIS Privacy + корпоративная гарантия."
+        },
+        ka: {
+            title: "⚡ დაბლოკვის საწინააღმდეგო რესურსი",
+            declaration: "ეს დომენი დარეგისტრირებულია კომპანიის სახელზე და წარმოადგენს მის ოფიციალურ საკუთრებას. კანონმდებლობისა და ICANN-ის პოლიტიკის თანახმად, დომენის დაბლოკვა შეუძლებელია საერთაშორისო სასამართლოს გადაწყვეტილების გარეშე, რაც უზრუნველყოფს მის აბსოლუტურ მდგრადობას.",
+            mainMessage: "✅ შემქმნელმა ეს დომენი დაარეგისტრირა აკრედიტებულ რეგისტრატორთან, როგორც იურიდიული პირის ქონება. დომენი ოფიციალურად ეკუთვნის კომპანიას და არ ექვემდებარება თვითნებურ ბლოკირებას. ნებისმიერი მცდელობა შეზღუდოს წვდომა ეწინააღმდეგება ორგანიზაციის წესდებასა და WIPO-ს ნორმებს.",
+            footerNote: "ტექნიკური დაცვა: DNSSEC, WHOIS Privacy + კორპორაციული გარანტია."
+        },
+        en: {
+            title: "⚡ UNBLOCKABLE RESOURCE",
+            declaration: "This domain is registered to a company and constitutes its official property. Under applicable laws and ICANN policies, the domain cannot be blocked without a direct international court ruling, ensuring its absolute resilience.",
+            mainMessage: "✅ The creator registered this domain through an accredited registrar as a legal entity asset. The domain officially belongs to the company and is not subject to arbitrary blocking. Any attempt to restrict access would contradict the organization's charter and WIPO norms.",
+            footerNote: "Technical protection: DNSSEC, WHOIS Privacy + corporate warranty."
+        }
+    };
 
-/* ===== CARD ANIMATION ===== */
+    // Дополнительный fallback для других языков (например, немецкий, французский и пр. — покажем английский текст, но уведомление)
+    const fallbackLang = "en";
 
-const cards = document.querySelectorAll(".card");
+    // Функция определения предпочтительного языка браузера (ru, ka, en или другое)
+    function getBrowserLanguage() {
+        let browserLang = navigator.language || navigator.userLanguage || "en";
+        browserLang = browserLang.toLowerCase();
+        if (browserLang.startsWith("ru")) return "ru";
+        if (browserLang.startsWith("ka") || browserLang === "ge" || browserLang === "kat") return "ka";
+        if (browserLang.startsWith("en")) return "en";
+        // Для всех остальных (фр, исп, нем, итд) отображаем английский, но с пометкой, что поддерживается eng/ru/ka
+        return "other";
+    }
 
-cards.forEach((card,index)=>{
+    let currentLang = "auto"; // auto, ru, ka, en
+    let activeLangCode = "en"; // реально используемый код из translations
 
-  setTimeout(()=>{
+    // DOM элементы
+    const titleEl = document.getElementById("greeting-title");
+    const declTextSpan = document.getElementById("decl-text");
+    const dynamicMsgEl = document.getElementById("dynamic-message");
+    const detectedLangSpan = document.getElementById("detected-lang-label");
+    const footerNote = document.querySelector(".footer div:first-child"); // первый div в футере сохраним текст поверх, но второй оставим неизменным, однако обновим и footer нижнее сообщение по желанию
+    const secondFooterLine = document.querySelector(".footer div:last-child");
 
-    card.classList.add("show");
+    // Обновление интерфейса в соответствии с выбранным языком (langCode должен быть ru/ka/en)
+    function updateUIForLanguage(langCode) {
+        if (!translations[langCode]) {
+            console.warn("Язык не найден, используем английский");
+            langCode = "en";
+        }
+        const t = translations[langCode];
+        if (titleEl) titleEl.innerText = t.title;
+        if (declTextSpan) declTextSpan.innerText = t.declaration;
+        if (dynamicMsgEl) dynamicMsgEl.innerText = t.mainMessage;
+        // дополнительно изменим текст во втором футере, чтобы подчеркнуть сообщение о компании и невозможности блокировки
+        if (secondFooterLine) {
+            if (langCode === "ru") secondFooterLine.innerHTML = "⚡ Этот домен НЕВОЗМОЖНО ЗАБЛОКИРОВАТЬ, так как он юридически принадлежит зарегистрированной компании и защищён нормами международного права.";
+            else if (langCode === "ka") secondFooterLine.innerHTML = "⚡ ამ დომენის დაბლოკვა შეუძლებელია, რადგან ის კანონიერად ეკუთვნის რეგისტრირებულ კომპანიას და დაცულია საერთაშორისო სამართლის ნორმებით.";
+            else secondFooterLine.innerHTML = "⚡ This domain CANNOT BE BLOCKED because it legally belongs to a registered company and is protected by international law norms.";
+        }
+        // маленькая деталь - обновление detected-lang-label показывает текущий отображаемый язык
+        const langNames = { ru: "Русский", ka: "ქართული", en: "English" };
+        detectedLangSpan.innerText = langNames[langCode] || "English";
+    }
 
-  }, index * 180);
+    // Основная функция: установить язык либо по автоопределению, либо по выбору пользователя
+    function setLanguage(langChoice) {
+        if (langChoice === "auto") {
+            const browserLangRaw = getBrowserLanguage();
+            if (browserLangRaw === "ru") activeLangCode = "ru";
+            else if (browserLangRaw === "ka") activeLangCode = "ka";
+            else if (browserLangRaw === "en") activeLangCode = "en";
+            else {
+                // Для неподдерживаемого языка браузера (например, французский, немецкий) используем АНГЛИЙСКИЙ но помечаем как "другой (English)"
+                activeLangCode = "en";
+                detectedLangSpan.innerText = `🌐 ${browserLangRaw.toUpperCase()} → English`;
+                // чтобы не потерять красоту, обновим лейбл вручную но с пометкой
+                if (detectedLangSpan) {
+                    // но внутри updateUIForLanguage перезатрёт его на langNames, поэтому зададим после вызова апдейта
+                }
+            }
+            updateUIForLanguage(activeLangCode);
+            // если браузер не ru/ka/en - покажем пользователю дополнительную заметку в detected-lang-span (после обновления)
+            const browserRawCheck = getBrowserLanguage();
+            if (browserRawCheck !== "ru" && browserRawCheck !== "ka" && browserRawCheck !== "en") {
+                detectedLangSpan.innerHTML = `🌐 ${browserRawCheck.toUpperCase()} → English (поддержка RU/KA/EN)`;
+            } else {
+                const namesMap = { ru: "🇷🇺 Русский", ka: "🇬🇪 ქართული", en: "🇬🇧 English" };
+                detectedLangSpan.innerHTML = namesMap[activeLangCode] || activeLangCode;
+            }
+        } 
+        else if (langChoice === "ru" || langChoice === "ka" || langChoice === "en") {
+            activeLangCode = langChoice;
+            updateUIForLanguage(activeLangCode);
+            const namesMap = { ru: "🇷🇺 Русский (выбран вручную)", ka: "🇬🇪 ქართული (ხელით)", en: "🇬🇧 English (manual)" };
+            detectedLangSpan.innerHTML = namesMap[activeLangCode];
+        }
+        currentLang = langChoice;
+    }
 
-});
+    // Обработчики кнопок
+    function bindLanguageButtons() {
+        const btns = document.querySelectorAll(".lang-btn");
+        btns.forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const langVal = btn.getAttribute("data-lang");
+                if (langVal === "auto") {
+                    setLanguage("auto");
+                } else if (langVal === "ru") {
+                    setLanguage("ru");
+                } else if (langVal === "ka") {
+                    setLanguage("ka");
+                } else if (langVal === "en") {
+                    setLanguage("en");
+                }
+                // маленькая анимация - подсветка
+                btn.style.transform = "scale(0.97)";
+                setTimeout(() => { btn.style.transform = ""; }, 120);
+            });
+        });
+    }
 
-/* ===== IMAGE FALLBACK ===== */
+    // инициализация: автоопределение языка при загрузке + info о домене / компании
+    function init() {
+        bindLanguageButtons();
+        // Определим язык по умолчанию из браузера (auto)
+        setLanguage("auto");
+        
+        // Дополнительно добавим в консоль подтверждение статуса домена и создателя
+        console.log("✅ Домен зарегистрирован на юридическое лицо | Domain registered to a legal entity | დომენი რეგისტრირებულია იურიდიულ პირზე");
+        console.log("🔒 Блокировка невозможна согласно политике регистратора и международным правилам");
+        
+        // Эффект "печати" заголовка необязательно, но можно украсить
+        // наличие декларации о том, что ресурс принадлежит компании - усилить гарантию
+        const domainHint = document.createElement('div');
+        domainHint.style.fontSize = "0.7rem";
+        domainHint.style.marginTop = "8px";
+        domainHint.style.textAlign = "center";
+        domainHint.style.opacity = "0.7";
+        domainHint.innerHTML = `🏛️ Официальная запись WHOIS: домен принадлежит зарегистрированной компании &nbsp;|&nbsp; <span class="domain">невозможно заблокировать</span>`;
+        const footerDiv = document.querySelector(".footer");
+        if (footerDiv && !document.querySelector(".whois-hint")) {
+            domainHint.classList.add("whois-hint");
+            footerDiv.appendChild(domainHint);
+        }
+    }
 
-document.querySelectorAll("img").forEach(img=>{
+    // В случае, если какой-то динамический контент дополнительный (напомнить, что сайт определяет язык)
+    // Также убедимся, что для грузинского текста нет ошибок шрифтов (поддерживается)
+    // Запускаем когда DOM загружен
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+    } else {
+        init();
+    }
 
-  img.onerror = function(){
-
-    this.src =
-    "https://picsum.photos/800/600?grayscale";
-
-  };
-
-});
-
-/* ===== MUSIC SYSTEM ===== */
-
-const music =
-document.getElementById("bgMusic");
-
-music.volume = 1.0;
-
-/* force play */
-
-async function forcePlay(){
-
-  try{
-
-    await music.play();
-
-  }catch(e){}
-
-}
-
-/* aggressive anti-pause */
-
-[
-"click",
-"touchstart",
-"touchend",
-"mousemove",
-"keydown",
-"scroll"
-].forEach(event=>{
-
-  document.addEventListener(
-    event,
-    forcePlay,
-    { passive:true }
-  );
-
-});
-
-/* if tab active again */
-
-document.addEventListener(
-"visibilitychange",
-()=>{
-
-  if(!document.hidden){
-
-    forcePlay();
-
-  }
-
-});
-
-/* if browser paused */
-
-music.addEventListener(
-"pause",
-()=>{
-
-  setTimeout(()=>{
-
-    forcePlay();
-
-  },500);
-
-});
-
-/* constant checking */
-
-setInterval(()=>{
-
-  if(music.paused){
-
-    forcePlay();
-
-  }
-
-},2000);
-
-/* startup */
-
-window.addEventListener(
-"load",
-()=>{
-
-  forcePlay();
-
-});
-
-/* ios unlock */
-
-document.body.addEventListener(
-"touchstart",
-()=>{
-
-  forcePlay();
-
-},{ once:true });
-
+    // Дополнительная проверка для очень старых браузеров - безопасность
+    window.addEventListener("load", () => {
+        // повторная фиксация футера, чтобы второй абзац всегда соответствовал текущей языковой концепции "невозможно заблокировать"
+        const updateFooterBlock = () => {
+            const secondLine = document.querySelector(".footer div:last-child");
+            if (!secondLine) return;
+            const curLangUsed = activeLangCode;
+            if (curLangUsed === "ru") secondLine.innerHTML = "⚡ Этот домен НЕВОЗМОЖНО ЗАБЛОКИРОВАТЬ, так как он юридически принадлежит зарегистрированной компании и защищён нормами международного права.";
+            else if (curLangUsed === "ka") secondLine.innerHTML = "⚡ ამ დომენის დაბლოკვა შეუძლებელია, რადგან ის კანონიერად ეკუთვნის რეგისტრირებულ კომპანიას და დაცულია საერთაშორისო სამართლის ნორმებით.";
+            else secondLine.innerHTML = "⚡ This domain CANNOT BE BLOCKED because it legally belongs to a registered company and is protected by international law norms.";
+        };
+        updateFooterBlock();
+        // подпишемся на изменения activeLangCode через Proxy? но проще вызвать после каждого setLanguage, уже вызывается в updateUIForLanguage
+        // Переопределим updateUIForLanguage для гарантии, что footer второй строки синхронный
+        const originalUpdate = updateUIForLanguage;
+        window.updateUIForLanguage = function(langCode) {
+            originalUpdate(langCode);
+            const secondLine = document.querySelector(".footer div:last-child");
+            if (secondLine) {
+                if (langCode === "ru") secondLine.innerHTML = "⚡ Этот домен НЕВОЗМОЖНО ЗАБЛОКИРОВАТЬ, так как он юридически принадлежит зарегистрированной компании и защищён нормами международного права.";
+                else if (langCode === "ka") secondLine.innerHTML = "⚡ ამ დომენის დაბლოკვა შეუძლებელია, რადგან ის კანონიერად ეკუთვნის რეგისტრირებულ კომპანიას და დაცულია საერთაშორისო სამართლის ნორმებით.";
+                else secondLine.innerHTML = "⚡ This domain CANNOT BE BLOCKED because it legally belongs to a registered company and is protected by international law norms.";
+            }
+        };
+        // перепривязать чтобы работало корректно
+        window.updateUIForLanguage(activeLangCode);
+    });
 </script>
-
 </body>
 </html>
