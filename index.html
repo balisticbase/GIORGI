@@ -2,8 +2,8 @@
 <html lang="ka">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUPERCELL MONITOR - CORS-გამართული</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Supercell Monitor - Dynamic Rate & Domains</title>
     <style>
         * {
             margin: 0;
@@ -12,10 +12,10 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0a0e1a 0%, #0c1222 100%);
-            font-family: 'Courier New', 'Segoe UI', monospace;
+            background: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
+            font-family: 'Segoe UI', 'Inter', system-ui, monospace;
             padding: 1.5rem;
-            color: #e0e5f0;
+            color: #eef2ff;
             min-height: 100vh;
         }
 
@@ -24,288 +24,247 @@
             margin: 0 auto;
         }
 
+        /* Header */
         .header {
             text-align: center;
             margin-bottom: 2rem;
-            padding: 1.5rem;
-            background: rgba(10, 20, 30, 0.5);
-            border-radius: 30px;
-            backdrop-filter: blur(10px);
         }
-
         h1 {
-            font-size: 2rem;
+            font-size: 1.9rem;
             background: linear-gradient(135deg, #fff, #7b9eff);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
         }
-
         .sub {
             color: #8a99c0;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+        }
+        .badge {
+            background: #1e2a3e;
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
             margin-top: 0.5rem;
-            font-size: 0.85rem;
         }
 
+        /* control panel */
         .control-panel {
-            background: rgba(18, 25, 45, 0.8);
-            border-radius: 25px;
-            padding: 1.2rem;
-            margin-bottom: 1.5rem;
+            background: rgba(18, 25, 45, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.8rem;
             display: flex;
             flex-wrap: wrap;
-            gap: 1rem;
             justify-content: space-between;
             align-items: center;
+            gap: 1rem;
         }
-
         .rate-box {
             background: #0f1422;
-            padding: 0.5rem 1.2rem;
-            border-radius: 50px;
+            padding: 0.4rem 1rem;
+            border-radius: 60px;
             display: flex;
-            gap: 12px;
-            align-items: center;
+            gap: 10px;
+            align-items: baseline;
         }
-
         .rate-box input {
-            background: #1e2a3a;
-            border: 1px solid #4a6a8a;
+            background: #1f2a44;
+            border: 1px solid #4a6085;
             color: #0f0;
-            padding: 0.4rem 0.8rem;
+            padding: 0.3rem 0.6rem;
             border-radius: 30px;
             width: 80px;
             text-align: center;
             font-weight: bold;
         }
-
         button {
             background: #2a3a60;
             border: none;
-            padding: 0.6rem 1.3rem;
+            padding: 0.5rem 1.2rem;
             border-radius: 40px;
             color: white;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             transition: 0.2s;
         }
-
-        .btn-start {
-            background: #1f5a3a;
-            box-shadow: 0 0 10px #1f5a3a80;
+        .btn-start { background: #1f5a3a; box-shadow: 0 2px 8px #1f5a3a50; }
+        .btn-stop { background: #8b3a3a; }
+        .status-text {
+            background: #0f1725;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-family: monospace;
+            font-size: 0.8rem;
         }
 
-        .btn-stop {
-            background: #8b3a3a;
-        }
-
+        /* stats */
         .stats {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
+            gap: 0.8rem;
             margin-bottom: 1.5rem;
         }
-
         .stat-card {
             background: #0f1422cc;
-            padding: 1rem;
-            text-align: center;
             border-radius: 20px;
+            padding: 0.8rem;
+            text-align: center;
             border: 1px solid #2a3855;
         }
-
         .stat-number {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: #7b9eff;
         }
 
+        /* domains grid */
         .domains-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
             gap: 0.8rem;
-            max-height: 450px;
+            max-height: 460px;
             overflow-y: auto;
-            padding: 0.3rem;
+            padding: 0.2rem;
         }
-
         .domain-card {
             background: #0d1220;
+            border-radius: 16px;
             padding: 0.8rem;
-            border-radius: 15px;
-            border: 1px solid #2a3855;
+            border: 1px solid #2d3a60;
         }
-
         .domain-name {
             font-family: monospace;
             font-size: 0.75rem;
             word-break: break-all;
             color: #bbd4ff;
         }
-
         .req-count {
             font-size: 1.5rem;
             font-weight: bold;
-            margin: 5px 0;
+            margin: 6px 0;
         }
-
         .status {
             display: inline-block;
             padding: 0.2rem 0.6rem;
             border-radius: 20px;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
         }
-
-        .online {
-            background: #1f543d;
-            color: #a5f0c0;
-        }
-
-        .offline {
-            background: #6b2e2e;
-            color: #ffbcb0;
-        }
-
-        .loader {
-            text-align: center;
-            padding: 2rem;
-            color: #ffaa66;
-        }
+        .online { background: #1f543d; color: #a5f0c0; }
+        .offline { background: #6b2e2e; color: #ffbcb0; }
+        .pending { background: #4a4a2a; color: #ffffaa; }
 
         .footer {
             text-align: center;
-            margin-top: 1.5rem;
+            margin-top: 1.8rem;
             font-size: 0.7rem;
             color: #6a7894;
-            padding: 1rem;
         }
-
-        .success-msg {
-            color: #0f0;
-        }
-
-        .error-msg {
-            color: #f66;
+        .loader {
+            text-align: center;
+            padding: 2rem;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1>⚡ SUPERCELL DOMAIN MONITOR</h1>
-        <div class="sub">✅ CORS პროქსით ჩატვირთვა · ფონური აუდიო · სიჩქარის კონტროლი</div>
+        <h1>⚡ SUPERCELL · ADAPTIVE MONITOR</h1>
+        <div class="sub">📡 დომენები ჩაიტვირთა GitHub-დან · ფონური აუდიო (YouTube-style)</div>
+        <div class="badge" id="domainBadge">🌐 იტვირთება...</div>
     </div>
 
     <div class="control-panel">
         <div class="rate-box">
-            <span>🎯 რექ/წმ:</span>
-            <input type="number" id="reqPerSec" min="1" max="100" value="10">
+            <span>🎯 რექუესტი / წამში:</span>
+            <input type="number" id="rateInput" min="1" max="100" value="12">
         </div>
         <div style="display: flex; gap: 10px;">
-            <button id="startBtn" class="btn-start">▶ START</button>
+            <button id="startBtn" class="btn-start">▶ START (ფონი)</button>
             <button id="stopBtn" class="btn-stop">⏹ STOP</button>
-            <button id="resetBtn">🔄 RESET</button>
-            <button id="reloadBtn">📥 დომენების ხელახლა ჩატვირთვა</button>
+            <button id="resetBtn">🔄 ნულირება</button>
         </div>
+        <div class="status-text" id="globalStatus">⚙ მზადაა</div>
     </div>
 
     <div class="stats">
         <div class="stat-card"><div class="stat-number" id="total">0</div><div>📊 ჯამში</div></div>
         <div class="stat-card"><div class="stat-number" id="success">0</div><div>✅ წარმატება</div></div>
         <div class="stat-card"><div class="stat-number" id="fail">0</div><div>❌ შეცდომა</div></div>
-        <div class="stat-card"><div class="stat-number" id="rate">0</div><div>🚀 რექ/წმ (რეალური)</div></div>
+        <div class="stat-card"><div class="stat-number" id="realRate">0</div><div>🚀 რექ/წმ (რეალური)</div></div>
     </div>
 
     <div id="domainsContainer" class="domains-grid">
-        <div class="loader">⏳ დომენების ჩატვირთვა...</div>
+        <div class="loader">⏳ დომენების ჩატვირთვა GitHub-დან...</div>
     </div>
     <div class="footer">
-        🎵 ფონური აუდიოს წყალობით მუშაობს ჩახურულ ჩანართზეც (YouTube-ს მსგავსად)<br>
-        🔧 CORS პრობლემა მოგვარებულია - იყენებს პროქსი სერვერს
+        🎵 ჩუმი აუდიოს წყალობით მუშაობს ჩახურულ ჩანართზეც (როგორც YouTube).<br>
+        🔗 დომენები ავტომატურად ჩაიტვირთა ლინკიდან: gameserver
     </div>
 </div>
 
 <script>
-    // ============ კონფიგურაცია ============
-    const GITHUB_URL = 'https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/GAMEDOMIN.txt';
-    // CORS პროქსი (რომ GitHub-დან ჩაიტვირთოს)
+    // ======================== კონფიგი ========================
+    const GITHUB_RAW_URL = 'https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/gameserver';
     const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
-    
+
     let domains = [];
     let domainCounts = {};
     let domainStatus = {};
-    
+
     let total = 0, success = 0, fail = 0;
     let isActive = false;
     let intervalId = null;
     let timestamps = [];
-    let currentIndex = 0;
-    
-    // აუდიო background trick
+    let currentRoundRobin = 0;
+
+    // Audio background
     let audioCtx = null;
     let audioPlaying = false;
-    
-    // DOM ელემენტები
+
+    // DOM elements
     const domainsContainer = document.getElementById('domainsContainer');
     const totalSpan = document.getElementById('total');
     const successSpan = document.getElementById('success');
     const failSpan = document.getElementById('fail');
-    const rateSpan = document.getElementById('rate');
+    const realRateSpan = document.getElementById('realRate');
+    const globalStatusSpan = document.getElementById('globalStatus');
+    const domainBadge = document.getElementById('domainBadge');
+
     const startBtn = document.getElementById('startBtn');
     const stopBtn = document.getElementById('stopBtn');
     const resetBtn = document.getElementById('resetBtn');
-    const reloadBtn = document.getElementById('reloadBtn');
-    const reqPerSecInput = document.getElementById('reqPerSec');
-    
-    // ============ დომენების ჩატვირთვა CORS პროქსით ============
-    async function loadDomains() {
-        domainsContainer.innerHTML = '<div class="loader">📥 ჩატვირთვა GitHub-დან (CORS პროქსი)...</div>';
-        try {
-            const proxyUrl = CORS_PROXY + encodeURIComponent(GITHUB_URL);
-            const response = await fetch(proxyUrl, {
-                method: 'GET',
-                headers: { 'Content-Type': 'text/plain' }
-            });
-            
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const text = await response.text();
-            
-            // გაფილტვრა
-            const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0 && !l.startsWith('#'));
-            
-            if (lines.length === 0) throw new Error('ფაილი ცარიელია');
-            
-            domains = [...new Set(lines)];
-            
-            // ინიციალიზაცია
-            domains.forEach(domain => {
-                domainCounts[domain] = 0;
-                domainStatus[domain] = null;
-            });
-            
-            renderDomains();
-            document.querySelector('.loader')?.remove();
-            console.log(`✅ ჩატვირთულია ${domains.length} დომენი`);
-            return true;
-        } catch (err) {
-            console.error(err);
-            domainsContainer.innerHTML = `<div class="loader" style="color:#ff8888;">❌ ვერ ჩაიტვირთა: ${err.message}<br>🔁 სცადეთ "დომენების ხელახლა ჩატვირთვა"</div>`;
-            return false;
-        }
+    const rateInput = document.getElementById('rateInput');
+
+    // ======================== ფუნქციები ========================
+    function updateStatsUI() {
+        totalSpan.innerText = total;
+        successSpan.innerText = success;
+        failSpan.innerText = fail;
+        timestamps = timestamps.filter(ts => Date.now() - ts < 1000);
+        realRateSpan.innerText = timestamps.length;
     }
-    
-    // ============ UI რენდერი ============
+
     function renderDomains() {
         if (!domains.length) {
-            domainsContainer.innerHTML = '<div class="loader">📭 დომენები ვერ მოიძებნა</div>';
+            domainsContainer.innerHTML = '<div class="loader">📭 დომენები არ არის</div>';
             return;
         }
-        
         domainsContainer.innerHTML = domains.map(domain => {
             const safeId = domain.replace(/[\.\-]/g, '_');
             const count = domainCounts[domain] || 0;
-            const statusClass = domainStatus[domain] === 'online' ? 'online' : (domainStatus[domain] === 'offline' ? 'offline' : '');
-            const statusText = domainStatus[domain] === 'online' ? '🟢 ONLINE' : (domainStatus[domain] === 'offline' ? '🔴 OFFLINE' : '⚪ ლოდინი');
+            let statusClass = 'pending';
+            let statusText = '⏳ ლოდინი';
+            if (domainStatus[domain] === 'online') {
+                statusClass = 'online';
+                statusText = '🟢 ONLINE';
+            } else if (domainStatus[domain] === 'offline') {
+                statusClass = 'offline';
+                statusText = '🔴 OFFLINE';
+            }
             return `
                 <div class="domain-card" id="dom_${safeId}">
                     <div class="domain-name">🌐 ${domain}</div>
@@ -315,12 +274,11 @@
             `;
         }).join('');
     }
-    
-    function updateDomainUI(domain) {
+
+    function updateSingleDomainUI(domain) {
         const safeId = domain.replace(/[\.\-]/g, '_');
         const cntSpan = document.getElementById(`cnt_${safeId}`);
         if (cntSpan) cntSpan.innerText = domainCounts[domain] || 0;
-        
         const card = document.getElementById(`dom_${safeId}`);
         if (card) {
             const statusSpan = card.querySelector('.status');
@@ -331,17 +289,7 @@
             }
         }
     }
-    
-    // ============ სტატისტიკა ============
-    function updateStats() {
-        totalSpan.innerText = total;
-        successSpan.innerText = success;
-        failSpan.innerText = fail;
-        timestamps = timestamps.filter(ts => Date.now() - ts < 1000);
-        rateSpan.innerText = timestamps.length;
-    }
-    
-    // ============ ერთი რექუესტი ============
+
     async function sendRequest(domain) {
         if (!isActive) return;
         try {
@@ -363,47 +311,49 @@
         total++;
         domainCounts[domain] = (domainCounts[domain] || 0) + 1;
         timestamps.push(Date.now());
-        
-        updateStats();
-        updateDomainUI(domain);
+
+        updateStatsUI();
+        updateSingleDomainUI(domain);
     }
-    
-    // ============ მონიტორინგის ციკლი (სიჩქარით) ============
-    function startMonitor() {
+
+    function adjustInterval() {
+        if (intervalId) clearInterval(intervalId);
+        let targetRPS = parseInt(rateInput.value);
+        if (isNaN(targetRPS) || targetRPS < 1) targetRPS = 10;
+        targetRPS = Math.min(100, targetRPS);
+        const intervalMs = 1000 / targetRPS;
+
+        intervalId = setInterval(() => {
+            if (!isActive || domains.length === 0) return;
+            const domain = domains[currentRoundRobin % domains.length];
+            sendRequest(domain);
+            currentRoundRobin++;
+        }, intervalMs);
+    }
+
+    function startMonitoring() {
         if (domains.length === 0) {
-            alert('ჯერ დომენები არ არის ჩატვირთული! დააჭირეთ "დომენების ხელახლა ჩატვირთვა"');
+            globalStatusSpan.innerText = '❌ დომენები არ არის!';
             return;
         }
         if (isActive) return;
         isActive = true;
-        currentIndex = 0;
         adjustInterval();
+        globalStatusSpan.innerText = `🟢 მონიტორინგი: ${rateInput.value} req/s`;
+        // გავაღვიძოთ აუდიო
+        if (audioCtx && !audioPlaying) audioCtx.resume().catch(e=>console.warn);
     }
-    
-    function adjustInterval() {
-        if (intervalId) clearInterval(intervalId);
-        let targetRPS = parseInt(reqPerSecInput.value);
-        if (isNaN(targetRPS) || targetRPS < 1) targetRPS = 10;
-        targetRPS = Math.min(100, targetRPS);
-        const intervalMs = 1000 / targetRPS;
-        
-        intervalId = setInterval(() => {
-            if (!isActive || domains.length === 0) return;
-            const domain = domains[currentIndex % domains.length];
-            sendRequest(domain);
-            currentIndex++;
-        }, intervalMs);
-    }
-    
-    function stopMonitor() {
+
+    function stopMonitoring() {
         isActive = false;
         if (intervalId) {
             clearInterval(intervalId);
             intervalId = null;
         }
+        globalStatusSpan.innerText = '🔴 გაჩერებულია';
     }
-    
-    function resetAll() {
+
+    function resetCounters() {
         total = 0;
         success = 0;
         fail = 0;
@@ -412,11 +362,41 @@
             domainCounts[d] = 0;
             domainStatus[d] = null;
         });
-        updateStats();
+        updateStatsUI();
         renderDomains();
+        globalStatusSpan.innerText = '🔄 სტატისტიკა განულდა';
     }
-    
-    // ============ BACKGROUND AUDIO (YouTube-style) ============
+
+    // ======================== ჩატვირთვა GitHub-დან ========================
+    async function loadDomainsFromGit() {
+        domainsContainer.innerHTML = '<div class="loader">📥 ჩატვირთვა GitHub-დან (gameserver)...</div>';
+        try {
+            const response = await fetch(CORS_PROXY + encodeURIComponent(GITHUB_RAW_URL));
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const text = await response.text();
+            const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0 && !l.startsWith('#'));
+            if (lines.length === 0) throw new Error('ფაილი ცარიელია');
+            
+            domains = [...new Set(lines)];
+            // ინიციალიზაცია
+            domainCounts = {};
+            domainStatus = {};
+            domains.forEach(d => {
+                domainCounts[d] = 0;
+                domainStatus[d] = null;
+            });
+            
+            renderDomains();
+            domainBadge.innerText = `🌐 დომენები: ${domains.length}`;
+            globalStatusSpan.innerText = `✅ ჩატვირთულია ${domains.length} დომენი`;
+        } catch (err) {
+            console.error(err);
+            domainsContainer.innerHTML = `<div class="loader" style="color:#ff8888;">❌ ვერ ჩაიტვირთა: ${err.message}<br>🔁 განაახლეთ გვერდი</div>`;
+            globalStatusSpan.innerText = '⚠️ შეცდომა ჩატვირთვისას';
+        }
+    }
+
+    // ======================== BACKGROUND AUDIO (YouTube trick) ========================
     async function initBackgroundAudio() {
         try {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -424,58 +404,46 @@
             const buffer = audioCtx.createBuffer(1, bufferLen, audioCtx.sampleRate);
             const data = buffer.getChannelData(0);
             for (let i = 0; i < bufferLen; i++) data[i] = 0;
-            
             const source = audioCtx.createBufferSource();
             source.buffer = buffer;
             source.loop = true;
             source.connect(audioCtx.destination);
             source.start(0);
             
-            // ავტომატურად არ ვრთავთ, მომხმარებლის პირველ კლიკზე
-            const enable = async () => {
+            const enableAudio = async () => {
                 if (audioCtx && !audioPlaying) {
                     await audioCtx.resume();
                     audioPlaying = true;
-                    console.log('🎵 Background audio activated');
+                    console.log('🎵 background audio activated');
                 }
-                document.removeEventListener('click', enable);
-                document.removeEventListener('touchstart', enable);
+                document.removeEventListener('click', enableAudio);
+                document.removeEventListener('touchstart', enableAudio);
             };
-            document.addEventListener('click', enable);
-            document.addEventListener('touchstart', enable);
-            
+            document.addEventListener('click', enableAudio);
+            document.addEventListener('touchstart', enableAudio);
+            // ავტომატური მცდელობა 2 წამში
             setTimeout(() => {
                 if (audioCtx && !audioPlaying) audioCtx.resume().catch(()=>{});
             }, 2000);
         } catch(e) {
-            console.warn('Audio not supported:', e);
+            console.warn('AudioContext not supported:', e);
         }
     }
-    
-    // ============ ივენთები ============
-    startBtn.onclick = startMonitor;
-    stopBtn.onclick = stopMonitor;
-    resetBtn.onclick = resetAll;
-    reloadBtn.onclick = async () => {
-        const wasActive = isActive;
-        if (wasActive) stopMonitor();
-        await loadDomains();
-        resetAll();
-        if (wasActive) startMonitor();
-    };
-    
-    reqPerSecInput.oninput = () => {
+
+    // ======================== ივენთები ========================
+    startBtn.onclick = startMonitoring;
+    stopBtn.onclick = stopMonitoring;
+    resetBtn.onclick = resetCounters;
+    rateInput.oninput = () => {
         if (isActive) adjustInterval();
     };
-    
-    // ============ ინიციალიზაცია ============
+
+    // ======================== ინიციალიზაცია ========================
     async function init() {
         await initBackgroundAudio();
-        await loadDomains();
+        await loadDomainsFromGit();
     }
-    
     init();
 </script>
 </body>
-
 </html>
