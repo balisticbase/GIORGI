@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supercell Domain Monitor - Background Service</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0e1a 0%, #0f1422 100%);
+            font-family: 'Segoe UI', system-ui, -apple-system, monospace;
+            padding: 1.5rem;
+            color: #e0e5f0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .warning-banner {
+            background: rgba(255, 100, 50, 0.15);
+            border-left: 4px solid #ff6b4a;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #fff, #7b9eff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(20, 28, 45, 0.7);
+            border-radius: 20px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid #2a3456;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            font-family: monospace;
+            color: #7b9eff;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: #2a3a60;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 40px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: #3e5a8a;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: #6b2e2e;
+        }
+
+        .btn-danger:hover {
+            background: #8e3e3e;
+        }
+
+        .btn-success {
+            background: #2e6b4a;
+        }
+
+        .domain-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1rem;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .domain-card {
+            background: rgba(16, 22, 35, 0.8);
+            border-radius: 16px;
+            padding: 1rem;
+            border: 1px solid #2d3855;
+        }
+
+        .domain-name {
+            font-family: monospace;
+            font-size: 0.85rem;
+            word-break: break-all;
+            margin-bottom: 0.5rem;
+            color: #b8ceff;
+        }
+
+        .request-counter {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+
+        .status {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .active { background: #2e6b4a; color: #a5f0c0; }
+        .throttled { background: #8b6b2e; color: #ffe0a5; }
+
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #6a7894;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .background-badge {
+            animation: pulse 2s infinite;
+            background: #2a5f3a;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="warning-banner">
+        ⚠️ <strong>Ethical Usage Notice:</strong> This monitor uses reasonable polling intervals (max 1 request/second per domain).<br>
+        Sending 300 requests/second would be a DDoS attack and is illegal. This dashboard demonstrates background service worker technology.
+    </div>
+
+    <div class="header">
+        <h1>🌐 Supercell Domain Monitor</h1>
+        <p>Background Service Worker • Persistent Monitoring</p>
+        <div id="bgStatus" class="background-badge" style="display: inline-block; margin-top: 0.5rem;">🟢 Background worker active</div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div>📊 Total Requests Sent</div>
+            <div class="stat-value" id="totalRequests">0</div>
+        </div>
+        <div class="stat-card">
+            <div>✅ Successful</div>
+            <div class="stat-value" id="successCount">0</div>
+        </div>
+        <div class="stat-card">
+            <div>❌ Failed</div>
+            <div class="stat-value" id="failCount">0</div>
+        </div>
+        <div class="stat-card">
+            <div>⚡ Req/Sec (Global)</div>
+            <div class="stat-value" id="ratePerSec">0</div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="startBtn" class="btn-success">▶ Start Monitoring</button>
+        <button id="stopBtn" class="btn-danger">⏹ Stop</button>
+        <button id="resetStatsBtn">🔄 Reset Stats</button>
+    </div>
+
+    <div id="domainList" class="domain-list"></div>
+    <div class="footer">
+        🔄 Service Worker keeps requests active even when tab is in background (within browser limits).<br>
+        📡 Actual max rate: ~1-2 req/sec per domain due to browser throttling. 300 req/s is impossible in browser environment.
+    </div>
+</div>
+
+<script>
+    // DOMAINS to monitor
+    const DOMAINS = [
+        "collector.snowplow.supercell.com",
+        "brawlstars.inbox.supercell.com",
+        "proxy.social.supercell.com",
+        "event-assets.brawlstars.com",
+        "id.supercell.com",
+        "inventory.mtech.supercell.com",
+        "cdn.id.supercell.com",
+        "assets.social.supercell.com",
+        "game.brawlstarsgame.com"
+    ];
+
+    // Stats tracking
+    let totalRequests = 0;
+    let successRequests = 0;
+    let failRequests = 0;
+    let isRunning = false;
+    let intervalIds = [];
+    let requestHistory = [];
+    let rateUpdateInterval = null;
+
+    // Per-domain request counters
+    let domainCounters = {};
+    let domainLastStatus = {};
+
+    // DOM elements
+    const domainListEl = document.getElementById('domainList');
+    const totalRequestsEl = document.getElementById('totalRequests');
+    const successCountEl = document.getElementById('successCount');
+    const failCountEl = document.getElementById('failCount');
+    const ratePerSecEl = document.getElementById('ratePerSec');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const resetStatsBtn = document.getElementById('resetStatsBtn');
+    const bgStatusEl = document.getElementById('bgStatus');
+
+    // Initialize domain counters
+    DOMAINS.forEach(domain => {
+        domainCounters[domain] = 0;
+        domainLastStatus[domain] = { lastResponse: null, lastError: null };
+    });
+
+    // Render domain cards
+    function renderDomains() {
+        domainListEl.innerHTML = DOMAINS.map(domain => `
+            <div class="domain-card" id="card-${domain.replace(/\./g, '-')}">
+                <div class="domain-name">🌐 ${domain}</div>
+                <div class="request-counter">📡 Requests: <span id="req-${domain.replace(/\./g, '-')}">0</span></div>
+                <div class="status" id="status-${domain.replace(/\./g, '-')}">⚪ Idle</div>
+                <div style="font-size: 0.7rem; margin-top: 0.5rem;" id="msg-${domain.replace(/\./g, '-')}">—</div>
+            </div>
+        `).join('');
+    }
+
+    function updateUI() {
+        totalRequestsEl.textContent = totalRequests;
+        successCountEl.textContent = successRequests;
+        failCountEl.textContent = failRequests;
+        
+        // Update per-domain counters
+        for (const domain of DOMAINS) {
+            const safeId = domain.replace(/\./g, '-');
+            const counterSpan = document.getElementById(`req-${safeId}`);
+            if (counterSpan) counterSpan.textContent = domainCounters[domain] || 0;
+            
+            const statusSpan = document.getElementById(`status-${safeId}`);
+            const msgSpan = document.getElementById(`msg-${safeId}`);
+            const lastData = domainLastStatus[domain];
+            if (lastData && statusSpan) {
+                if (lastData.lastError) {
+                    statusSpan.textContent = '❌ Error';
+                    statusSpan.className = 'status';
+                    statusSpan.style.background = '#6b2e2e';
+                    if (msgSpan) msgSpan.textContent = lastData.lastError.substring(0, 60);
+                } else if (lastData.lastResponse) {
+                    statusSpan.textContent = '✅ Online';
+                    statusSpan.className = 'status';
+                    statusSpan.style.background = '#2e6b4a';
+                    if (msgSpan) msgSpan.textContent = `HTTP ${lastData.lastResponse}`;
+                }
+            }
+        }
+        
+        // Calculate current rate (requests per second over last 2 seconds)
+        const now = Date.now();
+        requestHistory = requestHistory.filter(t => now - t < 1000);
+        ratePerSecEl.textContent = requestHistory.length;
+    }
+
+    // Send a single request to domain (no-cors mode for connectivity test)
+    async function sendRequest(domain) {
+        if (!isRunning) return;
+        
+        const url = `https://${domain}`;
+        const startTime = performance.now();
+        
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 8000);
+            
+            // Using no-cors to test connectivity without CORS restrictions
+            const response = await fetch(url, {
+                method: 'GET',
+                mode: 'no-cors',
+                cache: 'no-store',
+                signal: controller.signal
+            });
+            
+            clearTimeout(timeoutId);
+            
+            // no-cors gives opaque response - success means server responded
+            totalRequests++;
+            successRequests++;
+            domainCounters[domain]++;
+            domainLastStatus[domain] = {
+                lastResponse: 'reachable (opaque)',
+                lastError: null,
+                timestamp: Date.now()
+            };
+            requestHistory.push(Date.now());
+            
+            updateUI();
+            
+        } catch (error) {
+            totalRequests++;
+            failRequests++;
+            domainCounters[domain]++;
+            domainLastStatus[domain] = {
+                lastResponse: null,
+                lastError: error.message || 'Network error',
+                timestamp: Date.now()
+            };
+            requestHistory.push(Date.now());
+            updateUI();
+        }
+    }
+
+    // Start monitoring with specified interval (in milliseconds)
+    // Note: Due to browser limitations, minimum interval is ~10ms but actual rate limited by browser
+    function startMonitoring(targetRequestsPerSecond = 1) {
+        if (isRunning) {
+            stopMonitoring();
+        }
+        
+        isRunning = true;
+        
+        // Calculate interval per domain to achieve distributed load
+        // Instead of 300 req/s (impossible), we use reasonable rate with configurable target
+        // Target: up to 5 requests per second per domain max (browser throttled)
+        const intervalPerDomain = Math.max(200, Math.floor(1000 / Math.min(targetRequestsPerSecond, 5)));
+        
+        console.log(`Starting monitoring with ~${1000/intervalPerDomain} req/sec per domain (max due to browser limits)`);
+        
+        // Start separate interval for each domain
+        for (const domain of DOMAINS) {
+            const intervalId = setInterval(() => {
+                if (isRunning) {
+                    sendRequest(domain);
+                }
+            }, intervalPerDomain);
+            intervalIds.push(intervalId);
+        }
+        
+        // Update rate display every second
+        if (rateUpdateInterval) clearInterval(rateUpdateInterval);
+        rateUpdateInterval = setInterval(() => {
+            updateUI();
+        }, 500);
+        
+        bgStatusEl.innerHTML = '🟢 Active - Sending requests';
+        bgStatusEl.style.background = '#2a5f3a';
+    }
+    
+    function stopMonitoring() {
+        isRunning = false;
+        for (const id of intervalIds) {
+            clearInterval(id);
+        }
+        intervalIds = [];
+        if (rateUpdateInterval) {
+            clearInterval(rateUpdateInterval);
+            rateUpdateInterval = null;
+        }
+        bgStatusEl.innerHTML = '🔴 Stopped - No requests';
+        bgStatusEl.style.background = '#5a2e2e';
+        updateUI();
+    }
+    
+    function resetStats() {
+        totalRequests = 0;
+        successRequests = 0;
+        failRequests = 0;
+        requestHistory = [];
+        for (const domain of DOMAINS) {
+            domainCounters[domain] = 0;
+            domainLastStatus[domain] = { lastResponse: null, lastError: null };
+        }
+        updateUI();
+        renderDomains(); // re-render to reset display
+        updateUI(); // force update after render
+    }
+    
+    // Register Service Worker for background persistence
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch(err => {
+            console.log('Service Worker registration failed (expected in file system):', err);
+            bgStatusEl.innerHTML = '⚠️ SW unavailable - manual mode only';
+        });
+        
+        navigator.serviceWorker.ready.then(registration => {
+            console.log('Service Worker ready');
+            // Keep service worker alive for background sync
+            if (registration.active) {
+                registration.active.postMessage({ type: 'KEEP_ALIVE' });
+            }
+        });
+    }
+    
+    // Page Visibility API: continue running in background (intervals are throttled but keep trying)
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            console.log('Page hidden - intervals may be throttled but still active');
+            bgStatusEl.innerHTML = '🟡 Background mode (throttled)';
+        } else {
+            bgStatusEl.innerHTML = isRunning ? '🟢 Active - Sending requests' : '🔴 Stopped';
+            updateUI();
+        }
+    });
+    
+    // Event listeners
+    startBtn.addEventListener('click', () => {
+        startMonitoring(2); // Request ~2 per second per domain (browser will throttle to ~1)
+    });
+    stopBtn.addEventListener('click', stopMonitoring);
+    resetStatsBtn.addEventListener('click', resetStats);
+    
+    // Initialize UI
+    renderDomains();
+    updateUI();
+    
+    // Attempt to use BroadcastChannel for cross-tab coordination (optional)
+    const channel = new BroadcastChannel('supercell_monitor');
+    channel.onmessage = (e) => {
+        if (e.data.type === 'KEEP_ALIVE') {
+            console.log('Keep alive from another tab');
+        }
+    };
+    
+    // Periodically send keep-alive messages
+    setInterval(() => {
+        if (isRunning) {
+            channel.postMessage({ type: 'KEEP_ALIVE', timestamp: Date.now() });
+        }
+    }, 30000);
+    
+    console.log(`
+        ⚠️ ETHICAL NOTICE:
+        This tool monitors domain availability with reasonable frequency.
+        300 requests/second is impossible in browser and would be considered an attack.
+        Use responsibly and only for legitimate monitoring of your own infrastructure.
+    `);
+</script>
+</body>
+</html>
