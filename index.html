@@ -2,8 +2,8 @@
 <html lang="ka">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>SUPERCELL MONITOR PRO - რექუესტების სიჩქარის კონტროლი</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUPERCELL MONITOR - CORS-გამართული</title>
     <style>
         * {
             margin: 0;
@@ -12,10 +12,10 @@
         }
 
         body {
-            background: linear-gradient(145deg, #0b0f1a 0%, #0a0c16 100%);
-            font-family: 'Inter', 'Segoe UI', system-ui, monospace;
+            background: linear-gradient(135deg, #0a0e1a 0%, #0c1222 100%);
+            font-family: 'Courier New', 'Segoe UI', monospace;
             padding: 1.5rem;
-            color: #eef2ff;
+            color: #e0e5f0;
             min-height: 100vh;
         }
 
@@ -24,347 +24,326 @@
             margin: 0 auto;
         }
 
-        /* header & badges */
         .header {
             text-align: center;
             margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(10, 20, 30, 0.5);
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
         }
+
         h1 {
-            font-size: 1.9rem;
-            background: linear-gradient(135deg, #FFFFFF, #7aa2f7);
+            font-size: 2rem;
+            background: linear-gradient(135deg, #fff, #7b9eff);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            letter-spacing: -0.5px;
-        }
-        .sub {
-            color: #8a99c0;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-        }
-        .badge-container {
-            margin-top: 0.8rem;
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .badge {
-            background: #1e2a3e;
-            padding: 0.3rem 1rem;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            border: 1px solid #334155;
         }
 
-        /* control panel */
-        .control-panel {
-            background: rgba(18, 25, 45, 0.7);
-            backdrop-filter: blur(12px);
-            border-radius: 28px;
-            padding: 1.3rem 1.8rem;
-            margin-bottom: 2rem;
-            border: 1px solid #2d3a5e;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-        }
-        .rate-control {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: #0f1422;
-            padding: 0.5rem 1.2rem;
-            border-radius: 60px;
-        }
-        .rate-control label {
-            font-weight: 600;
+        .sub {
+            color: #8a99c0;
+            margin-top: 0.5rem;
             font-size: 0.85rem;
         }
-        .rate-control input {
-            background: #1f2a44;
-            border: 1px solid #4a6085;
-            color: white;
+
+        .control-panel {
+            background: rgba(18, 25, 45, 0.8);
+            border-radius: 25px;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rate-box {
+            background: #0f1422;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .rate-box input {
+            background: #1e2a3a;
+            border: 1px solid #4a6a8a;
+            color: #0f0;
             padding: 0.4rem 0.8rem;
             border-radius: 30px;
-            width: 90px;
+            width: 80px;
             text-align: center;
             font-weight: bold;
-            font-family: monospace;
         }
+
         button {
-            background: #2c4c8c;
+            background: #2a3a60;
             border: none;
-            padding: 0.6rem 1.5rem;
+            padding: 0.6rem 1.3rem;
             border-radius: 40px;
-            font-weight: bold;
             color: white;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            transition: 0.2s;
         }
+
         .btn-start {
             background: #1f5a3a;
-            box-shadow: 0 2px 8px #1f5a3a50;
+            box-shadow: 0 0 10px #1f5a3a80;
         }
+
         .btn-stop {
             background: #8b3a3a;
         }
-        button:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.05);
-        }
-        .status-text {
-            font-family: monospace;
-            background: #0f1725;
-            padding: 0.4rem 1.2rem;
-            border-radius: 40px;
-            border-left: 3px solid #4c9aff;
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
-        /* stats grid */
-        .stats {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 1.8rem;
-        }
         .stat-card {
-            background: rgba(12, 20, 32, 0.7);
-            border-radius: 24px;
-            padding: 0.7rem 1.2rem;
-            flex: 1;
-            min-width: 110px;
+            background: #0f1422cc;
+            padding: 1rem;
             text-align: center;
+            border-radius: 20px;
             border: 1px solid #2a3855;
         }
+
         .stat-number {
-            font-size: 1.7rem;
-            font-weight: 800;
-            font-family: monospace;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #7b9eff;
         }
 
-        /* domains list */
         .domains-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-            gap: 1rem;
-            max-height: 460px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 0.8rem;
+            max-height: 450px;
             overflow-y: auto;
-            padding: 0.2rem;
+            padding: 0.3rem;
         }
+
         .domain-card {
-            background: #0f1422cc;
-            backdrop-filter: blur(4px);
-            border-radius: 20px;
-            padding: 0.9rem;
-            border: 1px solid #2d3a60;
-            transition: 0.1s;
+            background: #0d1220;
+            padding: 0.8rem;
+            border-radius: 15px;
+            border: 1px solid #2a3855;
         }
+
         .domain-name {
             font-family: monospace;
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-size: 0.75rem;
             word-break: break-all;
             color: #bbd4ff;
         }
-        .req-counter {
-            font-size: 1.8rem;
+
+        .req-count {
+            font-size: 1.5rem;
             font-weight: bold;
-            margin: 8px 0;
+            margin: 5px 0;
         }
-        .status-chip {
-            font-size: 0.7rem;
-            padding: 0.2rem 0.7rem;
-            border-radius: 20px;
+
+        .status {
             display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
         }
+
         .online {
             background: #1f543d;
-            color: #b7f0cf;
+            color: #a5f0c0;
         }
+
         .offline {
-            background: #732c2c;
+            background: #6b2e2e;
             color: #ffbcb0;
         }
-        .footer {
-            margin-top: 2rem;
-            text-align: center;
-            font-size: 0.7rem;
-            color: #6f7d9e;
-            border-top: 1px solid #1f2a44;
-            padding-top: 1.5rem;
-        }
-        @keyframes pulse {
-            0% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
+
         .loader {
             text-align: center;
             padding: 2rem;
-            color: #7e8db0;
+            color: #ffaa66;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.7rem;
+            color: #6a7894;
+            padding: 1rem;
+        }
+
+        .success-msg {
+            color: #0f0;
+        }
+
+        .error-msg {
+            color: #f66;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1>⚡ SUPERCELL · ADAPTIVE MONITOR</h1>
-        <div class="sub">დომენები იტვირთება GitHub-დან · ფონური აუდიო ტრეკი</div>
-        <div class="badge-container">
-            <div class="badge" id="domainCountBadge">📡 დომენები: 0</div>
-            <div class="badge" id="bgAudioBadge">🎵 ჩუმი აუდიო: ინიციალიზაცია...</div>
-        </div>
+        <h1>⚡ SUPERCELL DOMAIN MONITOR</h1>
+        <div class="sub">✅ CORS პროქსით ჩატვირთვა · ფონური აუდიო · სიჩქარის კონტროლი</div>
     </div>
 
-    <!-- მართვის პანელი -->
     <div class="control-panel">
-        <div class="rate-control">
-            <label>🎯 რექუესტი / წამში:</label>
-            <input type="number" id="reqPerSec" min="1" max="120" value="15" step="1">
-            <span style="font-size:0.75rem;">(მაქს. 120)</span>
+        <div class="rate-box">
+            <span>🎯 რექ/წმ:</span>
+            <input type="number" id="reqPerSec" min="1" max="100" value="10">
         </div>
-        <div style="display: flex; gap: 12px;">
-            <button id="startBtn" class="btn-start">▶ დაწყება (ფონი)</button>
-            <button id="stopBtn" class="btn-stop">⏹ გაჩერება</button>
-            <button id="resetBtn">🔄 ნულირება</button>
+        <div style="display: flex; gap: 10px;">
+            <button id="startBtn" class="btn-start">▶ START</button>
+            <button id="stopBtn" class="btn-stop">⏹ STOP</button>
+            <button id="resetBtn">🔄 RESET</button>
+            <button id="reloadBtn">📥 დომენების ხელახლა ჩატვირთვა</button>
         </div>
-        <div class="status-text" id="globalStatus">⚙ მზადაა - აირჩიეთ სიხშირე</div>
     </div>
 
-    <!-- სტატისტიკა -->
     <div class="stats">
-        <div class="stat-card"><div class="stat-number" id="totalReq">0</div><div>📊 მთლიანი</div></div>
-        <div class="stat-card"><div class="stat-number" id="successReq">0</div><div>✅ წარმატება</div></div>
-        <div class="stat-card"><div class="stat-number" id="failReq">0</div><div>❌ შეცდომა</div></div>
-        <div class="stat-card"><div class="stat-number" id="instantRate">0</div><div>🚀 რექ/წმ (რეალური)</div></div>
+        <div class="stat-card"><div class="stat-number" id="total">0</div><div>📊 ჯამში</div></div>
+        <div class="stat-card"><div class="stat-number" id="success">0</div><div>✅ წარმატება</div></div>
+        <div class="stat-card"><div class="stat-number" id="fail">0</div><div>❌ შეცდომა</div></div>
+        <div class="stat-card"><div class="stat-number" id="rate">0</div><div>🚀 რექ/წმ (რეალური)</div></div>
     </div>
 
-    <!-- დომენების სია -->
     <div id="domainsContainer" class="domains-grid">
-        <div class="loader">⏳ დომენების ჩატვირთვა GitHub-დან...</div>
+        <div class="loader">⏳ დომენების ჩატვირთვა...</div>
     </div>
     <div class="footer">
-        🧠 მუშაობს ფონური აუდიოს წყალობით (YouTube-ს მსგავსად). ბრაუზერის დახურვისას ითიშება.<br>
-        📡 დომენები სინქრონიზდება თქვენი txt ფაილიდან. რექუესტების სიხშირეს არეგულირებთ ინტერფეისით.
+        🎵 ფონური აუდიოს წყალობით მუშაობს ჩახურულ ჩანართზეც (YouTube-ს მსგავსად)<br>
+        🔧 CORS პრობლემა მოგვარებულია - იყენებს პროქსი სერვერს
     </div>
 </div>
 
 <script>
-    // ---------- ГЛОБАЛУРი ცვლადები ----------
-    let domainsList = [];               // ჩატვირთული დომენები
-    let domainCounters = {};           // თითო დომენზე რექუესტების რაოდენობა
-    let domainStatus = {};             // { domain: 'online' / 'offline' / null }
+    // ============ კონფიგურაცია ============
+    const GITHUB_URL = 'https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/GAMEDOMIN.txt';
+    // CORS პროქსი (რომ GitHub-დან ჩაიტვირთოს)
+    const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
     
-    let totalReqs = 0, successReqs = 0, failReqs = 0;
-    let isMonitoring = false;
+    let domains = [];
+    let domainCounts = {};
+    let domainStatus = {};
+    
+    let total = 0, success = 0, fail = 0;
+    let isActive = false;
     let intervalId = null;
-    let reqTimestamps = [];             // რექუესტების დროის შტამპები (რეალური სიჩქარისთვის)
+    let timestamps = [];
+    let currentIndex = 0;
     
-    // აუდიოს გლობალები (background trick)
-    let audioContext = null;
-    let silentSource = null;
-    let audioActive = false;
+    // აუდიო background trick
+    let audioCtx = null;
+    let audioPlaying = false;
     
     // DOM ელემენტები
     const domainsContainer = document.getElementById('domainsContainer');
-    const totalReqSpan = document.getElementById('totalReq');
-    const successReqSpan = document.getElementById('successReq');
-    const failReqSpan = document.getElementById('failReq');
-    const instantRateSpan = document.getElementById('instantRate');
-    const globalStatusSpan = document.getElementById('globalStatus');
-    const domainCountBadge = document.getElementById('domainCountBadge');
-    const bgAudioBadge = document.getElementById('bgAudioBadge');
-    
+    const totalSpan = document.getElementById('total');
+    const successSpan = document.getElementById('success');
+    const failSpan = document.getElementById('fail');
+    const rateSpan = document.getElementById('rate');
     const startBtn = document.getElementById('startBtn');
     const stopBtn = document.getElementById('stopBtn');
     const resetBtn = document.getElementById('resetBtn');
+    const reloadBtn = document.getElementById('reloadBtn');
     const reqPerSecInput = document.getElementById('reqPerSec');
     
-    // ---------- ფუნქცია: დომენების ჩატვირთვა GitHub raw ლინკიდან ----------
-    async function loadDomainsFromGitHub() {
-        domainsContainer.innerHTML = '<div class="loader">📥 ჩატვირთვა: GAMEDOMIN.txt ...</div>';
-        const url = 'https://github.com/balisticbase/GIORGI/raw/refs/heads/main/GAMEDOMIN.txt';
+    // ============ დომენების ჩატვირთვა CORS პროქსით ============
+    async function loadDomains() {
+        domainsContainer.innerHTML = '<div class="loader">📥 ჩატვირთვა GitHub-დან (CORS პროქსი)...</div>';
         try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 8000);
-            const response = await fetch(url, { signal: controller.signal });
-            clearTimeout(timeoutId);
+            const proxyUrl = CORS_PROXY + encodeURIComponent(GITHUB_URL);
+            const response = await fetch(proxyUrl, {
+                method: 'GET',
+                headers: { 'Content-Type': 'text/plain' }
+            });
+            
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const text = await response.text();
-            // გავფილტროთ ცარიელი ხაზები და დამატებითი whitespace
+            
+            // გაფილტვრა
             const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0 && !l.startsWith('#'));
+            
             if (lines.length === 0) throw new Error('ფაილი ცარიელია');
-            domainsList = [...new Set(lines)]; // უნიკალური დომენები
+            
+            domains = [...new Set(lines)];
+            
             // ინიციალიზაცია
-            domainsList.forEach(domain => {
-                domainCounters[domain] = 0;
+            domains.forEach(domain => {
+                domainCounts[domain] = 0;
                 domainStatus[domain] = null;
             });
-            domainCountBadge.innerText = `📡 დომენები: ${domainsList.length}`;
+            
             renderDomains();
-            globalStatusSpan.innerText = `✅ ჩატვირთულია ${domainsList.length} დომენი. დააჭირეთ დაწყებას.`;
+            document.querySelector('.loader')?.remove();
+            console.log(`✅ ჩატვირთულია ${domains.length} დომენი`);
+            return true;
         } catch (err) {
             console.error(err);
-            domainsContainer.innerHTML = `<div class="loader" style="color:#ffaaaa;">❕ ვერ მოხერხდა ჩატვირთვა: ${err.message}<br>⚠️ შეამოწმეთ ლინკი ან ქსელი</div>`;
-            globalStatusSpan.innerText = '⚠️ შეცდომა ფაილის ჩატვირთვაში';
+            domainsContainer.innerHTML = `<div class="loader" style="color:#ff8888;">❌ ვერ ჩაიტვირთა: ${err.message}<br>🔁 სცადეთ "დომენების ხელახლა ჩატვირთვა"</div>`;
+            return false;
         }
     }
     
-    // დომენების ვიზუალიზაცია
+    // ============ UI რენდერი ============
     function renderDomains() {
-        if (!domainsList.length) {
-            domainsContainer.innerHTML = '<div class="loader">📭 დომენები არ არის</div>';
+        if (!domains.length) {
+            domainsContainer.innerHTML = '<div class="loader">📭 დომენები ვერ მოიძებნა</div>';
             return;
         }
-        domainsContainer.innerHTML = domainsList.map(domain => {
+        
+        domainsContainer.innerHTML = domains.map(domain => {
             const safeId = domain.replace(/[\.\-]/g, '_');
-            const counterVal = domainCounters[domain] || 0;
+            const count = domainCounts[domain] || 0;
             const statusClass = domainStatus[domain] === 'online' ? 'online' : (domainStatus[domain] === 'offline' ? 'offline' : '');
             const statusText = domainStatus[domain] === 'online' ? '🟢 ONLINE' : (domainStatus[domain] === 'offline' ? '🔴 OFFLINE' : '⚪ ლოდინი');
             return `
                 <div class="domain-card" id="dom_${safeId}">
                     <div class="domain-name">🌐 ${domain}</div>
-                    <div class="req-counter">📡 <span id="counter_${safeId}">${counterVal}</span></div>
-                    <div><span class="status-chip ${statusClass}">${statusText}</span></div>
+                    <div class="req-count">📡 <span id="cnt_${safeId}">${count}</span></div>
+                    <div><span class="status ${statusClass}">${statusText}</span></div>
                 </div>
             `;
         }).join('');
     }
     
-    function updateSingleDomainUI(domain) {
+    function updateDomainUI(domain) {
         const safeId = domain.replace(/[\.\-]/g, '_');
-        const counterSpan = document.getElementById(`counter_${safeId}`);
-        if (counterSpan) counterSpan.innerText = domainCounters[domain] || 0;
+        const cntSpan = document.getElementById(`cnt_${safeId}`);
+        if (cntSpan) cntSpan.innerText = domainCounts[domain] || 0;
+        
         const card = document.getElementById(`dom_${safeId}`);
-        if (!card) return;
-        const chip = card.querySelector('.status-chip');
-        if (chip) {
-            const isOnline = domainStatus[domain] === 'online';
-            chip.innerText = isOnline ? '🟢 ONLINE' : '🔴 OFFLINE';
-            chip.className = `status-chip ${isOnline ? 'online' : 'offline'}`;
+        if (card) {
+            const statusSpan = card.querySelector('.status');
+            if (statusSpan) {
+                const isOnline = domainStatus[domain] === 'online';
+                statusSpan.innerText = isOnline ? '🟢 ONLINE' : '🔴 OFFLINE';
+                statusSpan.className = `status ${isOnline ? 'online' : 'offline'}`;
+            }
         }
     }
     
-    // სტატისტიკის განახლება
-    function updateStatsUI() {
-        totalReqSpan.innerText = totalReqs;
-        successReqSpan.innerText = successReqs;
-        failReqSpan.innerText = failReqs;
-        const now = Date.now();
-        reqTimestamps = reqTimestamps.filter(ts => now - ts < 1000);
-        instantRateSpan.innerText = reqTimestamps.length;
+    // ============ სტატისტიკა ============
+    function updateStats() {
+        totalSpan.innerText = total;
+        successSpan.innerText = success;
+        failSpan.innerText = fail;
+        timestamps = timestamps.filter(ts => Date.now() - ts < 1000);
+        rateSpan.innerText = timestamps.length;
     }
     
-    // ერთი რექუესტი
-    async function fireRequest(domain) {
-        if (!isMonitoring) return;
-        const start = Date.now();
+    // ============ ერთი რექუესტი ============
+    async function sendRequest(domain) {
+        if (!isActive) return;
         try {
             const controller = new AbortController();
             const timeout = setTimeout(() => controller.abort(), 5000);
@@ -375,139 +354,127 @@
                 signal: controller.signal
             });
             clearTimeout(timeout);
-            successReqs++;
+            success++;
             domainStatus[domain] = 'online';
         } catch (err) {
-            failReqs++;
+            fail++;
             domainStatus[domain] = 'offline';
         }
-        totalReqs++;
-        domainCounters[domain] = (domainCounters[domain] || 0) + 1;
-        reqTimestamps.push(Date.now());
+        total++;
+        domainCounts[domain] = (domainCounts[domain] || 0) + 1;
+        timestamps.push(Date.now());
         
-        updateStatsUI();
-        updateSingleDomainUI(domain);
+        updateStats();
+        updateDomainUI(domain);
     }
     
-    // მთავარი ციკლი – გაგზავნის N რექუესტს წამში (adjustable)
-    let currentIntervalMs = null;
-    function adjustInterval() {
-        if (!isMonitoring) return;
-        let targetRPS = parseInt(reqPerSecInput.value);
-        if (isNaN(targetRPS)) targetRPS = 10;
-        targetRPS = Math.min(120, Math.max(1, targetRPS));
-        if (targetRPS <= 0) targetRPS = 1;
-        const intervalMs = 1000 / targetRPS; // ინტერვალი თითო რექუესტს შორის
-        if (intervalId) clearInterval(intervalId);
-        // ახალი ინტერვალი: ყოველ intervalMs მილიწამში ვაგზავნით ერთ რექუესტს (რაუნდ რობინი)
-        let currentIndex = 0;
-        intervalId = setInterval(() => {
-            if (!isMonitoring || domainsList.length === 0) return;
-            const domain = domainsList[currentIndex % domainsList.length];
-            fireRequest(domain);
-            currentIndex++;
-        }, intervalMs);
-        currentIntervalMs = intervalMs;
-        globalStatusSpan.innerText = `⚡ აქტიური: ~${targetRPS} req/sec (ინტერვალი ${intervalMs.toFixed(0)}ms) · Background audio: ${audioActive ? '✅' : '⏳'}`;
-    }
-    
-    // მონიტორინგის დაწყება
-    function startMonitoring() {
-        if (domainsList.length === 0) {
-            globalStatusSpan.innerText = '❯❯ ჯერ დომენები არ არის ჩატვირთული... გთხოვთ დაელოდეთ';
+    // ============ მონიტორინგის ციკლი (სიჩქარით) ============
+    function startMonitor() {
+        if (domains.length === 0) {
+            alert('ჯერ დომენები არ არის ჩატვირთული! დააჭირეთ "დომენების ხელახლა ჩატვირთვა"');
             return;
         }
-        if (isMonitoring) return;
-        isMonitoring = true;
-        adjustInterval(); // იწყებს ინტერვალს მიმდინარე RPS-ით
-        // აუდიოს გააქტიურება (თუ უკვე არ არის)
-        if (audioContext && !audioActive) {
-            audioContext.resume().catch(e=>console.warn);
-        }
-        globalStatusSpan.innerText = `🟢 მონიტორინგი ჩართულია (${reqPerSecInput.value} req/s)`;
+        if (isActive) return;
+        isActive = true;
+        currentIndex = 0;
+        adjustInterval();
     }
     
-    function stopMonitoring() {
-        if (!isMonitoring) return;
-        isMonitoring = false;
+    function adjustInterval() {
+        if (intervalId) clearInterval(intervalId);
+        let targetRPS = parseInt(reqPerSecInput.value);
+        if (isNaN(targetRPS) || targetRPS < 1) targetRPS = 10;
+        targetRPS = Math.min(100, targetRPS);
+        const intervalMs = 1000 / targetRPS;
+        
+        intervalId = setInterval(() => {
+            if (!isActive || domains.length === 0) return;
+            const domain = domains[currentIndex % domains.length];
+            sendRequest(domain);
+            currentIndex++;
+        }, intervalMs);
+    }
+    
+    function stopMonitor() {
+        isActive = false;
         if (intervalId) {
             clearInterval(intervalId);
             intervalId = null;
         }
-        globalStatusSpan.innerText = '🔴 მონიტორინგი გაჩერებულია. დააჭირეთ "დაწყებას"';
     }
     
-    function resetCounters() {
-        totalReqs = 0;
-        successReqs = 0;
-        failReqs = 0;
-        reqTimestamps = [];
-        for (let domain of domainsList) {
-            domainCounters[domain] = 0;
-            domainStatus[domain] = null;
-        }
-        updateStatsUI();
+    function resetAll() {
+        total = 0;
+        success = 0;
+        fail = 0;
+        timestamps = [];
+        domains.forEach(d => {
+            domainCounts[d] = 0;
+            domainStatus[d] = null;
+        });
+        updateStats();
         renderDomains();
-        globalStatusSpan.innerText = '🔄 სტატისტიკა განულდა';
     }
     
-    // ---------- BACKGROUND AUDIO (YouTube-style) ----------
-    async function initSilentAudio() {
+    // ============ BACKGROUND AUDIO (YouTube-style) ============
+    async function initBackgroundAudio() {
         try {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const sampleRate = audioContext.sampleRate;
-            const bufferLength = sampleRate * 0.2;
-            const buffer = audioContext.createBuffer(1, bufferLength, sampleRate);
-            const channel = buffer.getChannelData(0);
-            for (let i = 0; i < bufferLength; i++) channel[i] = 0;
-            silentSource = audioContext.createBufferSource();
-            silentSource.buffer = buffer;
-            silentSource.loop = true;
-            silentSource.connect(audioContext.destination);
-            silentSource.start(0);
-            // არ ვრთავთ resume()-ს მაშინვე, მომხმარებლის პირველი ურთიერთქმედება სჭირდება
-            bgAudioBadge.innerText = '🎵 ჩუმი აუდიო: მზადაა (დააჭირეთ ღილაკს)';
-            audioActive = false;
-            // მცირე ხრიკი: start ღილაკზე გააქტიურდება
-            const enableAudio = async () => {
-                if (audioContext && !audioActive) {
-                    await audioContext.resume();
-                    audioActive = true;
-                    bgAudioBadge.innerText = '🎵 ფონური აუდიო: აქტიურია (ჩანართი ფონზე იმუშავებს)';
-                    bgAudioBadge.style.background = '#1f543d';
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const bufferLen = audioCtx.sampleRate * 0.2;
+            const buffer = audioCtx.createBuffer(1, bufferLen, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferLen; i++) data[i] = 0;
+            
+            const source = audioCtx.createBufferSource();
+            source.buffer = buffer;
+            source.loop = true;
+            source.connect(audioCtx.destination);
+            source.start(0);
+            
+            // ავტომატურად არ ვრთავთ, მომხმარებლის პირველ კლიკზე
+            const enable = async () => {
+                if (audioCtx && !audioPlaying) {
+                    await audioCtx.resume();
+                    audioPlaying = true;
+                    console.log('🎵 Background audio activated');
                 }
-                document.removeEventListener('click', enableAudio);
-                document.removeEventListener('touchstart', enableAudio);
+                document.removeEventListener('click', enable);
+                document.removeEventListener('touchstart', enable);
             };
-            document.addEventListener('click', enableAudio);
-            document.addEventListener('touchstart', enableAudio);
+            document.addEventListener('click', enable);
+            document.addEventListener('touchstart', enable);
+            
             setTimeout(() => {
-                if (audioContext && !audioActive) audioContext.resume().catch(()=>{});
+                if (audioCtx && !audioPlaying) audioCtx.resume().catch(()=>{});
             }, 2000);
         } catch(e) {
-            console.warn("Audio not supported:", e);
-            bgAudioBadge.innerText = '⚠️ აუდიო მიუწვდომელია, ფონი შეზღუდული';
+            console.warn('Audio not supported:', e);
         }
     }
     
-    // ---------- სიხშირის ცვლილება მუშაობის დროს ----------
-    reqPerSecInput.addEventListener('input', () => {
-        if (isMonitoring) {
-            adjustInterval(); // დინამიურად არეგულირებს ინტერვალს
-            globalStatusSpan.innerText = `⚡ სიხშირე შეცვლილია → ${reqPerSecInput.value} req/s`;
-        }
-    });
+    // ============ ივენთები ============
+    startBtn.onclick = startMonitor;
+    stopBtn.onclick = stopMonitor;
+    resetBtn.onclick = resetAll;
+    reloadBtn.onclick = async () => {
+        const wasActive = isActive;
+        if (wasActive) stopMonitor();
+        await loadDomains();
+        resetAll();
+        if (wasActive) startMonitor();
+    };
     
-    startBtn.addEventListener('click', startMonitoring);
-    stopBtn.addEventListener('click', stopMonitoring);
-    resetBtn.addEventListener('click', resetCounters);
+    reqPerSecInput.oninput = () => {
+        if (isActive) adjustInterval();
+    };
     
-    // ინიციალიზაცია
-    async function bootstrap() {
-        await initSilentAudio();
-        await loadDomainsFromGitHub();
+    // ============ ინიციალიზაცია ============
+    async function init() {
+        await initBackgroundAudio();
+        await loadDomains();
     }
-    bootstrap();
+    
+    init();
 </script>
 </body>
 </html>
