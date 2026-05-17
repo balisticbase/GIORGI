@@ -1,20 +1,50 @@
 <!DOCTYPE html>
-<html lang="ka">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Redirect</title>
+  <title>Blocklist Redirect</title>
 
-  <!-- ავტომატური გადაგდება -->
+  <!-- 1) Instant redirect -->
   <script>
-    window.location.href = "https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist";
+    window.location.replace("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist");
   </script>
+
+  <!-- 2) Meta fallback redirect -->
+  <meta http-equiv="refresh" content="0; url=https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 80px;
+      background: #111;
+      color: #fff;
+    }
+    a {
+      display: block;
+      margin: 10px;
+      color: #00c3ff;
+      font-size: 18px;
+    }
+    .box {
+      padding: 20px;
+      border: 1px solid #333;
+      display: inline-block;
+      border-radius: 10px;
+      background: #1a1a1a;
+    }
+  </style>
 </head>
 
 <body>
-  <h3>თუ ავტომატურად არ გადაგიყვანა, დააჭირე ერთ-ერთს:</h3>
+  <div class="box">
+    <h2>Redirecting to Blocklist...</h2>
 
-  <a href="https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">Link 1</a><br><br>
-  <a href="https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">Link 2</a><br><br>
-  <a href="https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">Link 3</a>
+    <p>If not redirected automatically:</p>
+
+    <a href="https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">Open Blocklist</a>
+    <a href="https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">Mirror Link 2</a>
+    <a href="https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">Mirror Link 3</a>
+  </div>
 </body>
 </html>
