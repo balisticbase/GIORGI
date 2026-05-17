@@ -1,39 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>iOSCrack Filters</title>
+RewriteEngine On
 
-  <!-- Redirect to raw blocklist -->
-  <script>
-    window.location.replace("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist");
-  </script>
+# Blocklist redirect to GitHub raw
+RewriteRule ^blocklist\.txt$ https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist [L,R=302]
 
-  <!-- fallback redirect -->
-  <meta http-equiv="refresh" content="0; url=https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">
-
-  <style>
-    body {
-      font-family: Arial;
-      background: #111;
-      color: white;
-      text-align: center;
-      margin-top: 80px;
-    }
-    a {
-      color: #00c3ff;
-      display: block;
-      margin-top: 10px;
-    }
-  </style>
-</head>
-
-<body>
-  <h2>Loading Filters...</h2>
-  <p>If not redirected:</p>
-
-  <a href="https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">
-    Open Blocklist
-  </a>
-</body>
-</html>
+# Ensure correct MIME type
+<Files "blocklist.txt">
+  ForceType text/plain
+  Header set Content-Type "text/plain"
+</Files>
