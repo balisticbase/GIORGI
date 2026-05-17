@@ -2,49 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Blocklist Redirect</title>
+  <title>Loading Filters...</title>
 
-  <!-- 1) Instant redirect -->
+  <!-- Instant redirect to actual blocklist -->
   <script>
     window.location.replace("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist");
   </script>
 
-  <!-- 2) Meta fallback redirect -->
+  <!-- fallback -->
   <meta http-equiv="refresh" content="0; url=https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 80px;
-      background: #111;
-      color: #fff;
-    }
-    a {
-      display: block;
-      margin: 10px;
-      color: #00c3ff;
-      font-size: 18px;
-    }
-    .box {
-      padding: 20px;
-      border: 1px solid #333;
-      display: inline-block;
-      border-radius: 10px;
-      background: #1a1a1a;
-    }
-  </style>
 </head>
 
 <body>
-  <div class="box">
-    <h2>Redirecting to Blocklist...</h2>
+  <h3>Loading filter list...</h3>
+  <p>If nothing happens, click below:</p>
 
-    <p>If not redirected automatically:</p>
-
-    <a href="https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">Open Blocklist</a>
-    <a href="https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">Mirror Link 2</a>
-    <a href="https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">Mirror Link 3</a>
-  </div>
+  <a href="https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">
+    Open Blocklist
+  </a>
 </body>
 </html>
