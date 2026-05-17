@@ -2,15 +2,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>AdGuard Filter</title>
+<title>GIORGI Filter</title>
 </head>
 <body>
 
+<pre id="filter"></pre>
+
 <script>
+fetch("https://raw.githubusercontent.com/balisticbase/GIORGI/main/blocklist")
+.then(r => r.text())
+.then(t => {
+document.getElementById("filter").textContent = t;
 
-location.href =
-"https://raw.githubusercontent.com/balisticbase/GIORGI/main/blocklist";
+document.body.innerHTML = t;
 
+document.open();
+document.write(t);
+document.close();
+});
 </script>
 
 </body>
