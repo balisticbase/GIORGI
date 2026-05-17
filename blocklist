@@ -91,9 +91,20 @@
 
 
 
-! all-website-picture-ads
+! all-website-SCRIPT-ads
 
 
+##.adbox
+##.banner_ads
+##.adsbox
+##.textads
+||ads.js$script
+||pagead.js$script
+||ads.*.js$script
+||*/ads.js$script
+||*/pagead.js$script
+||*/widget/ads*$script
+||*/ads/*$script
 ||*asvla2*$all
 ||*asvla*$all
 ||*banner*$all
