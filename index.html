@@ -2,21 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Loading Filters...</title>
+  <title>iOSCrack Filters</title>
 
-  <!-- Instant redirect to actual blocklist -->
+  <!-- Redirect to raw blocklist -->
   <script>
     window.location.replace("https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist");
   </script>
 
-  <!-- fallback -->
+  <!-- fallback redirect -->
   <meta http-equiv="refresh" content="0; url=https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">
 
+  <style>
+    body {
+      font-family: Arial;
+      background: #111;
+      color: white;
+      text-align: center;
+      margin-top: 80px;
+    }
+    a {
+      color: #00c3ff;
+      display: block;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 
 <body>
-  <h3>Loading filter list...</h3>
-  <p>If nothing happens, click below:</p>
+  <h2>Loading Filters...</h2>
+  <p>If not redirected:</p>
 
   <a href="https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">
     Open Blocklist
