@@ -1,6 +1,3 @@
-RewriteEngine On
-
-# Blocklist redirect to GitHub raw
 RewriteRule ^blocklist\.txt$ https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist [L,R=302]
 
 # Ensure correct MIME type
