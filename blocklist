@@ -5,6 +5,7 @@
 
 ! virus-domin-ad-direct-virus
 
+ 
 
 ||*greatis.com^$all
 ||*vbf77.top^$all
@@ -159,7 +160,7 @@
 
 ! kinogo.org
 
-||*vvru.spdmpgcdn.com^$all
+||*vvru.spdmpgcdn.com*$all
 
 
 ! uyure.net
