@@ -134,8 +134,8 @@
 ##.sponsored
 ##.tracking
 ##.analytics
-||advertisement.js^
-||analytics.js^
+||*advertisement.js^
+||*analytics.js^
 ##.adbox
 ##.banner_ads
 ##.adsbox
