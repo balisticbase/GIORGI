@@ -87,15 +87,55 @@
 ||*inspectionrefutation.com^$all
 ||*dr3.newhill.workers.dev^$all
 ||*stats.temptcdn.com^$all
-
-
-
+||sstats.adobe.com^
+||api.raygun.io^
+||acjs.aliyun.com^
+||wcs.naver.net^
+||vk-ads.com^
+||adobe.com^$third-party
+||omtrdc.net^
+||2o7.net^
+||raygun.io^
+||raygun.com^
+||api.raygun.io^
+||cdn.raygun.io^
+||acjs.aliyun.com^
+||aliyun.com^$third-party
+||wcs.naver.net^
+||naver.net^$third-party
+||vk-ads.com^
+||ads.vk.com^
+||vk.com^$third-party
+||google-analytics.com^
+||googletagmanager.com^
+||doubleclick.net^
+||facebook.net^
+||connect.facebook.net^
+||stats.g.doubleclick.net^
+||pagead2.googlesyndication.com^
 
 
 
 ! all-website-SCRIPT-ads
 
 
+
+*$script,domain=~localhost
+##script[src*="analytics"]
+##script[src*="advertisement"]
+##script[src*="raygun"]
+##script[src*="vk-ads"]
+##script[src*="adobe"]
+##script[src*="naver"]
+##script[src*="aliyun"]
+##.ads
+##.advertisement
+##.ad-banner
+##.sponsored
+##.tracking
+##.analytics
+||advertisement.js^
+||analytics.js^
 ##.adbox
 ##.banner_ads
 ##.adsbox
