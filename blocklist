@@ -119,38 +119,38 @@
 ! all-website-SCRIPT-ads
 
 
-##*advertisement.js
-##*analytics.js
+*/advertisement.js
+*/analytics.js
 *$script,domain=~localhost
-##*script[src*="analytics"]
-##*script[src*="advertisement"]
-##*script[src*="raygun"]
-##*script[src*="vk-ads"]
-##*script[src*="adobe"]
-##*script[src*="naver"]
-##*script[src*="aliyun"]
-##*.ads
-##*.advertisement
-##*.ad-banner
-##*.sponsored
-##*.tracking
-##*.analytics
-##*.adbox
-##*.banner_ads
-##*.adsbox
-##*.textads
-##*ads.js$script
-##*pagead.js$script
-##*ads.*.js$script
-##*ads.js$script
-##*pagead.js$script
-##*widget/ads*$script
-##*/ads/*$script
-##*asvla2*$all
-##*asvla*$all
-##*banner*$all
-##*adjarabet_ge*$all
-##*asvla-cards*$all
+*/script[src*="analytics"]
+*/script[src*="advertisement"]
+*/script[src*="raygun"]
+*/script[src*="vk-ads"]
+*/script[src*="adobe"]
+*/script[src*="naver"]
+*/script[src*="aliyun"]
+*/.ads
+*/.advertisement
+*/.ad-banner
+*/.sponsored
+*/.tracking
+*/.analytics
+*/.adbox
+*/.banner_ads
+*/.adsbox
+*/.textads
+*/ads.js$script
+*/pagead.js$script
+*/ads.*.js$script
+*/ads.js$script
+*/pagead.js$script
+*/widget/ads*$script
+*/ads/*$script
+*/asvla2*$all
+*/asvla*$all
+*/banner*$all
+*/adjarabet_ge*$all
+*/asvla-cards*$all
 
 
 
