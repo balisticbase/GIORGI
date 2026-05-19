@@ -6,8 +6,6 @@
 ! virus-domin-ad-direct-virus
 
  
-##.textads
-##.adbox.banner_ads
 ||*greatis.com*$all
 ||*vbf77.top*$all
 ||cnbvnc.win*$all
@@ -118,6 +116,9 @@
 ! all-website-SCRIPT-ads
 
 
+
+##.textads
+##.adbox.banner_ads
 ||*advertisement.js*$all
 ||*/analytics.js
 ||*/script[src*="analytics"]$script
