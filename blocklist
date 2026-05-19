@@ -117,6 +117,8 @@
 
 
 
+adblock.turtlecute.org##.adbox.banner_ads.adsbox
+adblock.turtlecute.org##.textads
 ##.textads
 ##.adbox.banner_ads.adsbox
 ||*advertisement.js*$all
