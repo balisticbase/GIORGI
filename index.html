@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>კომედიები | არანაირი რეკლამა | ჩაშენებული პლეერი</title>
+    <title>კომედიები | 200+ ფილმი | Search</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700;900&display=swap');
 
@@ -136,6 +136,70 @@
             z-index: 1;
         }
 
+        /* ====== SEARCH ველი ====== */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #0f0f0f;
+            border: 1px solid #2a2a2a;
+            border-radius: 30px;
+            padding: 6px 6px 6px 20px;
+            transition: all 0.3s ease;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .search-box:focus-within {
+            border-color: #ffaa00;
+            box-shadow: 0 0 20px rgba(255,170,0,0.15);
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: #e0e0e0;
+            font-size: 15px;
+            font-family: 'Oswald', sans-serif;
+            padding: 8px 10px;
+            width: 100%;
+            outline: none;
+            letter-spacing: 0.5px;
+        }
+
+        .search-box input::placeholder {
+            color: #666;
+            letter-spacing: 1px;
+        }
+
+        .search-box button {
+            background: #ffaa00;
+            border: none;
+            border-radius: 30px;
+            color: #000;
+            font-weight: 700;
+            padding: 8px 18px;
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .search-box button:hover {
+            background: #ffcc00;
+            box-shadow: 0 0 20px rgba(255,170,0,0.4);
+        }
+
+        /* ====== ფილმების ბადე ====== */
         .movies-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -415,6 +479,9 @@
             .close-modal {
                 font-size: 28px;
             }
+            .search-box {
+                max-width: 100%;
+            }
         }
 
         body.modal-open {
@@ -427,6 +494,14 @@
     <!-- ლოგო -->
     <div class="logo-area center">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrjptwUyVHu6sQCzCzE9jQ5tOQyCDM6-1i7GCFY-FUFJhs4DSLXVl627jlIW140RAD9-y4lZg6gO1q8WtO6clFAGygv13urv5nJhhLUB8&s=10" alt="ლოგო">
+    </div>
+
+    <!-- SEARCH ველი -->
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 ფილმის ძებნა..." />
+            <button id="searchBtn">ძებნა</button>
+        </div>
     </div>
 
     <!-- ზედა ტექსტები -->
@@ -461,7 +536,7 @@
     </div>
 
     <script>
-        // ==================== 1000 ფილმის მონაცემები ====================
+        // ==================== 208 ფილმი (8 შევსებული + 200 ცარიელი) ====================
         const moviesData = [
             // ====== პირველი 8 ფილმი (შევსებულია) ======
             {
@@ -519,12 +594,57 @@
                 poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_jpXzD8S3v4Atex7XLPGRBunjhV0ZE56FOhf9Gy61HQ&s=10",
                 embedUrl: "https://videodb.stream/play/?type=movie&id=193893&name=movie&img=https://static.moviege.com/movies/bg/big/mYooLfghVZnOAF7HoSyKWNkwDXD.jpg&lang=ka&referer=&v=3.0.29&p=l.txt",
                 isDirect: true
-            }
+            },
+
+            // ====== 200 ცარიელი ფილმი (id: 9-დან 208-მდე) ======
+            // ზუსტად იგივე ფორმატით, შენ შეგიძლია შეავსო embedUrl მოგვიანებით
+            { id: 9, title: "ფილმი #9", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 10, title: "ფილმი #10", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 11, title: "ფილმი #11", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 12, title: "ფილმი #12", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 13, title: "ფილმი #13", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 14, title: "ფილმი #14", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 15, title: "ფილმი #15", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 16, title: "ფილმი #16", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 17, title: "ფილმი #17", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 18, title: "ფილმი #18", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 19, title: "ფილმი #19", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 20, title: "ფილმი #20", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 21, title: "ფილმი #21", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 22, title: "ფილმი #22", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 23, title: "ფილმი #23", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 24, title: "ფილმი #24", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 25, title: "ფილმი #25", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 26, title: "ფილმი #26", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 27, title: "ფილმი #27", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 28, title: "ფილმი #28", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 29, title: "ფილმი #29", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 30, title: "ფილმი #30", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 31, title: "ფილმი #31", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 32, title: "ფილმი #32", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 33, title: "ფილმი #33", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 34, title: "ფილმი #34", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 35, title: "ფილმი #35", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 36, title: "ფილმი #36", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 37, title: "ფილმი #37", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 38, title: "ფილმი #38", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 39, title: "ფილმი #39", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 40, title: "ფილმი #40", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 41, title: "ფილმი #41", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 42, title: "ფილმი #42", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 43, title: "ფილმი #43", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 44, title: "ფილმი #44", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 45, title: "ფილმი #45", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 46, title: "ფილმი #46", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 47, title: "ფილმი #47", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 48, title: "ფილმი #48", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 49, title: "ფილმი #49", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            { id: 50, title: "ფილმი #50", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
+            // ... 208-მდე ყველა იგივე ფორმატით
         ];
 
-        // ====== 992 ცარიელი ფილმის დამატება (id: 9-დან 1000-მდე) ======
-        // ეს ფილმები არ ჩანს, რადგან embedUrl = "#"
-        for (let i = 9; i <= 1000; i++) {
+        // ====== დანარჩენი ფილმების დამატება 51-დან 208-მდე ======
+        for (let i = 51; i <= 208; i++) {
             moviesData.push({
                 id: i,
                 title: `ფილმი #${i}`,
@@ -535,12 +655,9 @@
         }
 
         // ==================== ფილმების ფილტრაცია და დალაგება ====================
-        // 1. ვტოვებთ მხოლოდ ის ფილმები, რომლებსაც აქვს რეალური embedUrl
-        const validMovies = moviesData.filter(movie => 
+        let validMovies = moviesData.filter(movie => 
             movie.embedUrl && movie.embedUrl !== '#'
         );
-
-        // 2. ვალაგებთ უკუღმა (მაღალი ID ზემოთ, დაბალი ID ქვემოთ)
         validMovies.sort((a, b) => b.id - a.id);
 
         // ==================== HTML ელემენტები ====================
@@ -549,12 +666,17 @@
         const modalTitle = document.getElementById('modalMovieTitle');
         const iframe = document.getElementById('movieIframe');
         const closeModalBtn = document.getElementById('closeModalBtn');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
         
         // ==================== ფილმების ბადის აგება ====================
-        function buildMoviesGrid() {
+        function renderMovies(movies) {
             moviesGrid.innerHTML = '';
-            
-            validMovies.forEach(movie => {
+            if (movies.length === 0) {
+                moviesGrid.innerHTML = '<div style="text-align:center;color:#777;grid-column:1/-1;padding:40px;font-size:20px;letter-spacing:2px;">🎭 ფილმი ვერ მოიძებნა</div>';
+                return;
+            }
+            movies.forEach(movie => {
                 const card = document.createElement('div');
                 card.className = 'movie-card';
                 
@@ -580,6 +702,17 @@
                 
                 moviesGrid.appendChild(card);
             });
+        }
+        
+        // ==================== ძებნის ფუნქცია ====================
+        function searchMovies() {
+            const query = searchInput.value.trim().toLowerCase();
+            if (query === '') {
+                renderMovies(validMovies);
+                return;
+            }
+            const filtered = validMovies.filter(m => m.title.toLowerCase().includes(query));
+            renderMovies(filtered);
         }
         
         // ==================== მოდალის მართვა ====================
@@ -612,9 +745,16 @@
                 closeVideoModal();
             }
         });
+
+        searchBtn.addEventListener('click', searchMovies);
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                searchMovies();
+            }
+        });
         
         // ==================== გვერდის ჩატვირთვა ====================
-        buildMoviesGrid();
+        renderMovies(validMovies);
         
         console.log('საიტი მზად არის!');
         console.log(`სულ ფილმები მასივში: ${moviesData.length}`);
