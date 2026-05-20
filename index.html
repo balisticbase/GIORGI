@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>კომედიები | ტესტირება</title>
+    <title>კომედიები | კატა</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700;900&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -12,96 +14,211 @@
         }
 
         body {
-            background: #0d0d0d;
-            font-family: 'Segoe UI', 'Arial', 'Noto Sans Georgian', sans-serif;
+            /* ====== შენი ფოტო ფონად ====== */
+            background-image: url('https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0418.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            /* ====== მუქი ფენა ფოტოზე ====== */
+            background-color: #0a0a0a;
+            background-blend-mode: overlay;
+            /* ====== */
+            font-family: 'Oswald', 'Noto Sans Georgian', sans-serif;
             min-height: 100vh;
             padding: 20px;
-            color: #ffffff;
+            color: #e0e0e0;
+            letter-spacing: 0.5px;
         }
 
-        /* ====== ლოგოს ადგილი ====== */
+        /* ====== დამცავი მუქი ფენა ====== */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ====== კატის თვალების ეფექტი ====== */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(ellipse, rgba(255,170,0,0.05) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ====== ლოგო ====== */
         .logo-area {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         .logo-area img {
-            width: 150px;
+            width: 130px;
             height: auto;
+            filter: drop-shadow(0 0 25px rgba(255,170,0,0.6));
+            transition: filter 0.3s;
+        }
+
+        .logo-area img:hover {
+            filter: drop-shadow(0 0 40px rgba(255,170,0,0.9));
         }
 
         /* ====== ზედა ბანერი ====== */
         .top-banner {
-            background: #ffaa00;
-            color: #000000;
+            background: #000000;
+            color: #ffaa00;
             font-weight: 900;
-            font-size: 15px;
-            letter-spacing: 2px;
-            padding: 12px 25px;
+            font-size: 14px;
+            letter-spacing: 5px;
+            padding: 14px 35px;
             display: inline-block;
             margin-bottom: 15px;
             text-transform: uppercase;
+            border: 1px solid #ffaa00;
+            border-radius: 3px;
+            box-shadow: 
+                0 0 30px rgba(255,170,0,0.2),
+                inset 0 0 30px rgba(255,170,0,0.03);
+            text-shadow: 0 0 10px rgba(255,170,0,0.7);
+            position: relative;
+            z-index: 1;
         }
 
         .center {
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
 
         h1 {
-            font-size: 32px;
+            font-size: 46px;
             font-weight: 900;
-            color: #ffaa00;
-            margin-bottom: 8px;
+            color: #ffffff;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 
+                0 0 40px rgba(255,170,0,0.9),
+                0 0 80px rgba(255,170,0,0.4),
+                0 3px 0 #000;
         }
 
         .no-ads {
-            color: #ff0000;
+            color: #ff4400;
             font-weight: 900;
-            font-size: 18px;
+            font-size: 16px;
             margin-bottom: 8px;
-            letter-spacing: 1px;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(255,68,0,0.7);
         }
 
         .info-text {
-            color: #aaaaaa;
-            font-size: 14px;
-            margin-bottom: 40px;
+            color: #999999;
+            font-size: 13px;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* ====== კატის კლანჭები ====== */
+        .claw-divider {
+            text-align: center;
+            margin: 15px 0 35px;
+            color: #ffaa00;
+            font-size: 22px;
+            letter-spacing: 10px;
+            opacity: 0.6;
+            position: relative;
+            z-index: 1;
         }
 
         /* ====== ფილმების ბადე ====== */
         .movies-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 25px;
-            max-width: 1100px;
+            gap: 22px;
+            max-width: 1050px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         /* ====== ფილმის ბარათი ====== */
         .movie-card {
-            background: #1a1a1a;
-            border: 2px solid #333333;
-            border-radius: 6px;
+            background: rgba(15, 15, 15, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid #2a2a2a;
+            border-radius: 4px;
             overflow: hidden;
-            transition: border-color 0.2s;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .movie-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            z-index: 2;
+            pointer-events: none;
         }
 
         .movie-card:hover {
             border-color: #ffaa00;
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(255,170,0,0.2);
+            background: rgba(20, 20, 20, 0.95);
         }
 
-        /* ====== ფილმის ფოტოს ადგილი ====== */
+        .movie-card:hover::before {
+            border-color: #ffaa00;
+            box-shadow: inset 0 0 30px rgba(255,170,0,0.1);
+        }
+
+        /* ====== ფილმის პოსტერი ====== */
         .movie-poster {
             width: 100%;
-            height: 280px;
-            background: #222222;
+            height: 300px;
+            background: #111111;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #555555;
-            font-size: 14px;
+            color: #444444;
+            font-size: 13px;
             text-align: center;
             padding: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .movie-poster::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 70%, rgba(255,170,0,0.05) 100%);
+            pointer-events: none;
         }
 
         .movie-poster img {
@@ -109,43 +226,108 @@
             height: 100%;
             object-fit: cover;
             display: block;
+            transition: transform 0.4s ease;
         }
 
-        /* ====== ბმული ღილაკი ====== */
+        .movie-card:hover .movie-poster img {
+            transform: scale(1.05);
+        }
+
+        /* ====== ფილმის ბმული ====== */
         .movie-link {
             display: block;
-            background: #ffaa00;
-            color: #000000;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(5px);
+            color: #ffaa00;
             text-align: center;
-            padding: 14px 10px;
-            font-weight: 900;
-            font-size: 16px;
+            padding: 15px 10px;
+            font-weight: 700;
+            font-size: 15px;
             text-decoration: none;
             letter-spacing: 1px;
-            transition: background 0.2s;
+            text-transform: uppercase;
+            border-top: 1px solid #1a1a1a;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 3;
         }
 
-        .movie-link:hover {
-            background: #ffbb22;
+        .movie-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: #ffaa00;
+            transition: width 0.3s ease;
+        }
+
+        .movie-card:hover .movie-link {
+            background: rgba(0, 0, 0, 0.95);
+            color: #ffcc00;
+            text-shadow: 0 0 15px rgba(255,170,0,0.6);
+        }
+
+        .movie-card:hover .movie-link::before {
+            width: 80%;
         }
 
         /* ====== ქვედა ტექსტი ====== */
         .footer-note {
             text-align: center;
             margin-top: 50px;
-            color: #666666;
-            font-size: 13px;
+            color: #777777;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-note::before {
+            content: '▲ ▼ ▲ ▼ ▲';
+            display: block;
+            color: #ffaa00;
+            opacity: 0.3;
+            margin-bottom: 10px;
+            letter-spacing: 8px;
+            font-size: 10px;
+        }
+
+        /* ====== მობილური ====== */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 28px;
+                letter-spacing: 2px;
+            }
+            .movies-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .movie-poster {
+                height: 200px;
+            }
+            .movie-link {
+                font-size: 12px;
+                padding: 12px 6px;
+            }
+            .top-banner {
+                font-size: 11px;
+                padding: 10px 20px;
+                letter-spacing: 3px;
+            }
         }
     </style>
 </head>
 <body>
 
     <!-- ======================== -->
-    <!-- 👇 აქ ჩასვი ლოგო -->
+    <!-- 👇 ლოგო -->
     <!-- ======================== -->
     <div class="logo-area center">
-        <!-- ლოგოს სურათი: შეცვალე src="" შენი ლოგოთი -->
-        <img src="https://via.placeholder.com/150x60/000000/ffaa00?text=შენი+ლოგო" alt="ლოგო">
+        <img src="https://via.placeholder.com/130x50/000000/ffaa00?text=კატა" alt="კატა ლოგო">
     </div>
 
     <!-- ======================== -->
@@ -153,9 +335,10 @@
     <!-- ======================== -->
     <div class="center" style="margin-bottom: 30px;">
         <div class="top-banner">ტესტირება</div>
-        <h1>კომედიების საიტი</h1>
-        <div class="no-ads">● არანაირი რეკლამა ●</div>
-        <p class="info-text">მხოლოდ კინოკომედიები • უამრავი ფილმი</p>
+        <h1>კომედიები</h1>
+        <div class="no-ads">● რეკლამის გარეშე ●</div>
+        <p class="info-text">მხოლოდ კატის კინოკომედიები • უამრავი ფილმი</p>
+        <div class="claw-divider">▼ ▲ ▼ ▲ ▼</div>
     </div>
 
     <!-- ======================== -->
@@ -166,45 +349,33 @@
         <!-- ====== ფილმი 1 ====== -->
         <div class="movie-card">
             <div class="movie-poster">
-                <!-- 👇 აქ ჩასვი ფილმის ფოტო -->
-                <img src="https://via.placeholder.com/300x400/222222/ffaa00?text=ფილმის+ფოტო" alt="ფილმი 1">
+                <img src="https://via.placeholder.com/300x400/1a1a1a/ffaa00?text=კატა+1" alt="ფილმი 1">
             </div>
-            <!-- 👇 აქ ჩაწერე ფილმის სახელი -->
-            <!-- 👇 href="" -ში ჩასვი ბმული ფილმზე -->
-            <a href="https://example.com/ფილმი1" class="movie-link">🎬 აქ ჩაწერე ფილმის სახელი</a>
+            <a href="https://example.com/ფილმი1" class="movie-link">🎬 ფილმის სახელი 1</a>
         </div>
 
         <!-- ====== ფილმი 2 ====== -->
         <div class="movie-card">
             <div class="movie-poster">
-                <!-- 👇 აქ ჩასვი ფილმის ფოტო -->
-                <img src="https://via.placeholder.com/300x400/222222/ffaa00?text=ფილმის+ფოტო" alt="ფილმი 2">
+                <img src="https://via.placeholder.com/300x400/1a1a1a/ffaa00?text=კატა+2" alt="ფილმი 2">
             </div>
-            <!-- 👇 აქ ჩაწერე ფილმის სახელი -->
-            <!-- 👇 href="" -ში ჩასვი ბმული ფილმზე -->
-            <a href="https://example.com/ფილმი2" class="movie-link">🎬 აქ ჩაწერე ფილმის სახელი</a>
+            <a href="https://example.com/ფილმი2" class="movie-link">🎬 ფილმის სახელი 2</a>
         </div>
 
         <!-- ====== ფილმი 3 ====== -->
         <div class="movie-card">
             <div class="movie-poster">
-                <!-- 👇 აქ ჩასვი ფილმის ფოტო -->
-                <img src="https://via.placeholder.com/300x400/222222/ffaa00?text=ფილმის+ფოტო" alt="ფილმი 3">
+                <img src="https://via.placeholder.com/300x400/1a1a1a/ffaa00?text=კატა+3" alt="ფილმი 3">
             </div>
-            <!-- 👇 აქ ჩაწერე ფილმის სახელი -->
-            <!-- 👇 href="" -ში ჩასვი ბმული ფილმზე -->
-            <a href="https://example.com/ფილმი3" class="movie-link">🎬 აქ ჩაწერე ფილმის სახელი</a>
+            <a href="https://example.com/ფილმი3" class="movie-link">🎬 ფილმის სახელი 3</a>
         </div>
 
         <!-- ====== ფილმი 4 ====== -->
         <div class="movie-card">
             <div class="movie-poster">
-                <!-- 👇 აქ ჩასვი ფილმის ფოტო -->
-                <img src="https://via.placeholder.com/300x400/222222/ffaa00?text=ფილმის+ფოტო" alt="ფილმი 4">
+                <img src="https://via.placeholder.com/300x400/1a1a1a/ffaa00?text=კატა+4" alt="ფილმი 4">
             </div>
-            <!-- 👇 აქ ჩაწერე ფილმის სახელი -->
-            <!-- 👇 href="" -ში ჩასვი ბმული ფილმზე -->
-            <a href="https://example.com/ფილმი4" class="movie-link">🎬 აქ ჩაწერე ფილმის სახელი</a>
+            <a href="https://example.com/ფილმი4" class="movie-link">🎬 ფილმის სახელი 4</a>
         </div>
 
     </div>
@@ -213,7 +384,7 @@
     <!-- ======================== -->
     <!-- ქვედა ტექსტი -->
     <!-- ======================== -->
-    <div class="footer-note">ტესტირება მიმდინარეობს • მალე ამოქმედდება</div>
+    <div class="footer-note">კატა • ტესტირება მიმდინარეობს • მალე ამოქმედდება</div>
 
 </body>
 </html>
