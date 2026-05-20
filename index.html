@@ -39,7 +39,6 @@
             z-index: 0;
         }
 
-        /* ====== ლოგო ====== */
         .logo-area {
             text-align: center;
             margin-bottom: 20px;
@@ -70,7 +69,6 @@
             transform: scale(1.05);
         }
 
-        /* ====== ზედა ბანერი ====== */
         .top-banner {
             background: #000000;
             color: #ffaa00;
@@ -127,7 +125,6 @@
             text-transform: uppercase;
         }
 
-        /* ====== კატის კლანჭები ====== */
         .claw-divider {
             text-align: center;
             margin: 15px 0 35px;
@@ -139,7 +136,6 @@
             z-index: 1;
         }
 
-        /* ====== ფილმების ბადე ====== */
         .movies-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -150,7 +146,6 @@
             z-index: 1;
         }
 
-        /* ====== ფილმის ბარათი ====== */
         .movie-card {
             background: #0f0f0f;
             border: 1px solid #2a2a2a;
@@ -186,7 +181,6 @@
             box-shadow: inset 0 0 30px rgba(255,170,0,0.08);
         }
 
-        /* ====== ფილმის პოსტერი ====== */
         .movie-poster {
             width: 100%;
             height: 300px;
@@ -225,7 +219,6 @@
             transform: scale(1.05);
         }
 
-        /* ====== ფილმის ბმული ====== */
         .movie-link {
             display: block;
             background: #0a0a0a;
@@ -266,7 +259,6 @@
             width: 80%;
         }
 
-        /* ====== ჩაშენებული ვიდეო პლეერის მოდალი ====== */
         .video-modal {
             display: none;
             position: fixed;
@@ -371,7 +363,6 @@
             letter-spacing: 1px;
         }
 
-        /* ====== ქვედა ტექსტი ====== */
         .footer-note {
             text-align: center;
             margin-top: 30px;
@@ -393,7 +384,6 @@
             font-size: 10px;
         }
 
-        /* მობილური */
         @media (max-width: 600px) {
             h1 {
                 font-size: 28px;
@@ -434,7 +424,7 @@
 </head>
 <body>
 
-    <!-- ლოგოს არეალი - ახლა მხოლოდ ერთი ლოგოა -->
+    <!-- ლოგო -->
     <div class="logo-area center">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrjptwUyVHu6sQCzCzE9jQ5tOQyCDM6-1i7GCFY-FUFJhs4DSLXVl627jlIW140RAD9-y4lZg6gO1q8WtO6clFAGygv13urv5nJhhLUB8&s=10" alt="ლოგო">
     </div>
@@ -454,25 +444,26 @@
     <!-- ქვედა ტექსტი -->
     <div class="footer-note">• ტესტირება მიმდინარეობს • მალე ამოქმედდება</div>
 
-    <!-- ========== ჩაშენებული მოდალური ვიდეო პლეერი ========== -->
+    <!-- ვიდეო მოდალი -->
     <div id="videoModal" class="video-modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 id="modalMovieTitle">ფილმის დასახელება</h3>
                 <button class="close-modal" id="closeModalBtn">&times;</button>
             </div>
-            <div class="video-container" id="videoContainer">
+            <div class="video-container">
                 <iframe id="movieIframe" src="" allowfullscreen allow="autoplay; fullscreen"></iframe>
             </div>
             <div class="modal-footer">
-                🎬 უყურეთ უფასოდ • არანაირი რეკლამა • 
+                🎬 უყურეთ უფასოდ • არანაირი რეკლამა
             </div>
         </div>
     </div>
 
     <script>
-        // ფილმების მონაცემები
+        // ==================== 1000 ფილმის მონაცემები ====================
         const moviesData = [
+            // ====== პირველი 8 ფილმი (შევსებულია) ======
             {
                 id: 1,
                 title: "წინა ღამის შესახებ",
@@ -531,19 +522,42 @@
             }
         ];
 
-        // ფილმების ბადის აგება
+        // ====== 992 ცარიელი ფილმის დამატება (id: 9-დან 1000-მდე) ======
+        // ეს ფილმები არ ჩანს, რადგან embedUrl = "#"
+        for (let i = 9; i <= 1000; i++) {
+            moviesData.push({
+                id: i,
+                title: `ფილმი #${i}`,
+                poster: `https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება`,
+                embedUrl: "#",
+                isDirect: true
+            });
+        }
+
+        // ==================== ფილმების ფილტრაცია და დალაგება ====================
+        // 1. ვტოვებთ მხოლოდ ის ფილმები, რომლებსაც აქვს რეალური embedUrl
+        const validMovies = moviesData.filter(movie => 
+            movie.embedUrl && movie.embedUrl !== '#'
+        );
+
+        // 2. ვალაგებთ უკუღმა (მაღალი ID ზემოთ, დაბალი ID ქვემოთ)
+        validMovies.sort((a, b) => b.id - a.id);
+
+        // ==================== HTML ელემენტები ====================
         const moviesGrid = document.getElementById('moviesGrid');
+        const modal = document.getElementById('videoModal');
+        const modalTitle = document.getElementById('modalMovieTitle');
+        const iframe = document.getElementById('movieIframe');
+        const closeModalBtn = document.getElementById('closeModalBtn');
         
+        // ==================== ფილმების ბადის აგება ====================
         function buildMoviesGrid() {
             moviesGrid.innerHTML = '';
-            moviesData.forEach(movie => {
+            
+            validMovies.forEach(movie => {
                 const card = document.createElement('div');
                 card.className = 'movie-card';
-                card.setAttribute('data-id', movie.id);
-                card.setAttribute('data-title', movie.title);
-                card.setAttribute('data-embed', movie.embedUrl);
                 
-                // პოსტერი
                 const posterDiv = document.createElement('div');
                 posterDiv.className = 'movie-poster';
                 const img = document.createElement('img');
@@ -552,7 +566,6 @@
                 img.loading = 'lazy';
                 posterDiv.appendChild(img);
                 
-                // ღილაკი
                 const linkDiv = document.createElement('div');
                 linkDiv.className = 'movie-link';
                 linkDiv.innerHTML = `🎬 ${movie.title}`;
@@ -560,7 +573,6 @@
                 card.appendChild(posterDiv);
                 card.appendChild(linkDiv);
                 
-                // დაჭერის მოვლენა
                 card.addEventListener('click', (e) => {
                     e.stopPropagation();
                     openVideoModal(movie.title, movie.embedUrl);
@@ -570,13 +582,7 @@
             });
         }
         
-        // მოდალის ელემენტები
-        const modal = document.getElementById('videoModal');
-        const modalTitle = document.getElementById('modalMovieTitle');
-        const iframe = document.getElementById('movieIframe');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        
-        // მოდალის გახსნის ფუნქცია
+        // ==================== მოდალის მართვა ====================
         function openVideoModal(title, embedUrl) {
             modalTitle.innerText = title;
             iframe.src = embedUrl;
@@ -585,7 +591,6 @@
             document.body.classList.add('modal-open');
         }
         
-        // მოდალის დახურვის ფუნქცია
         function closeVideoModal() {
             modal.classList.remove('active');
             iframe.src = '';
@@ -593,25 +598,28 @@
             document.body.classList.remove('modal-open');
         }
         
-        // დახურვის ღილაკი
+        // ==================== მოვლენები ====================
         closeModalBtn.addEventListener('click', closeVideoModal);
         
-        // მოდალის გარეთ დაჭერა
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 closeVideoModal();
             }
         });
         
-        // ESC ღილაკი
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && modal.classList.contains('active')) {
                 closeVideoModal();
             }
         });
         
-        // ფილმების ბადის აგება
+        // ==================== გვერდის ჩატვირთვა ====================
         buildMoviesGrid();
+        
+        console.log('საიტი მზად არის!');
+        console.log(`სულ ფილმები მასივში: ${moviesData.length}`);
+        console.log(`შევსებული ფილმები (ჩანს): ${validMovies.length}`);
+        console.log(`ნაჩვენები ფილმები გვერდზე: ${document.querySelectorAll('.movie-card').length}`);
     </script>
 </body>
 </html>
