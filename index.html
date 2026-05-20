@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>კომედიები | ტესტირება</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0d0d0d;
+            font-family: 'Segoe UI', 'Arial', 'Noto Sans Georgian', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        /* ====== ლოგოს ადგილი ====== */
+        .logo-area {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .logo-area img {
+            width: 150px;
+            height: auto;
+        }
+
+        /* ====== ზედა ბანერი ====== */
+        .top-banner {
+            background: #ffaa00;
+            color: #000000;
+            font-weight: 900;
+            font-size: 15px;
+            letter-spacing: 2px;
+            padding: 12px 25px;
+            display: inline-block;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 900;
+            color: #ffaa00;
+            margin-bottom: 8px;
+        }
+
+        .no-ads {
+            color: #ff0000;
+            font-weight: 900;
+            font-size: 18px;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .info-text {
+            color: #aaaaaa;
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+
+        /* ====== ფილმების ბადე ====== */
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* ====== ფილმის ბარათი ====== */
+        .movie-card {
+            background: #1a1a1a;
+            border: 2px solid #333333;
+            border-radius: 6px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .movie-card:hover {
+            border-color: #ffaa00;
+        }
+
+        /* ====== ფილმის ფოტოს ადგილი ====== */
+        .movie-poster {
+            width: 100%;
+            height: 280px;
+            background: #222222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555555;
+            font-size: 14px;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .movie-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* ====== ბმული ღილაკი ====== */
+        .movie-link {
+            display: block;
+            background: #ffaa00;
+            color: #000000;
+            text-align: center;
+            padding: 14px 10px;
+            font-weight: 900;
+            font-size: 16px;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+
+        .movie-link:hover {
+            background: #ffbb22;
+        }
+
+        /* ====== ქვედა ტექსტი ====== */
+        .footer-note {
+            text-align: center;
+            margin-top: 50px;
+            color: #666666;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ======================== -->
+    <!-- 👇 აქ ჩასვი ლოგო -->
+    <!-- ======================== -->
+    <div class="logo-area center">
+        <!-- ლოგოს სურათი: შეცვალე src="" შენი ლოგოთი -->
+        <img src="https://via.placeholder.com/150x60/000000/ffaa00?text=შენი+ლოგო" alt="ლოგო">
+    </div>
+
+    <!-- ======================== -->
+    <!-- ზედა ტექსტები -->
+    <!-- ======================== -->
+    <div class="center" style="margin-bottom: 30px;">
+        <div class="top-banner">ტესტირება</div>
+        <h1>კომედიების საიტი</h1>
+        <div class="no-ads">● არანაირი რეკლამა ●</div>
+        <p class="info-text">მხოლოდ კინოკომედიები • უამრავი ფილმი</p>
+    </div>
+
+    <!-- ======================== -->
+    <!-- ფილმების ბადე -->
+    <!-- ======================== -->
+    <div class="movies-grid">
+
+        <!-- ====== ფილმი 1 ====== -->
+        <div class="movie-card">
+            <div class="movie-poster">
+                <!-- 👇 აქ ჩასვი ფილმის ფოტო -->
+                <img src="https://via.placeholder.com/300x400/222222/ffaa00?text=ფილმის+ფოტო" alt="ფილმი 1">
+            </div>
+            <!-- 👇 აქ ჩაწერე ფილმის სახელი -->
+            <!-- 👇 href="" -ში ჩასვი ბმული ფილმზე -->
+            <a href="https://example.com/ფილმი1" class="movie-link">🎬 აქ ჩაწერე ფილმის სახელი</a>
+        </div>
+
+        <!-- ====== ფილმი 2 ====== -->
+        <div class="movie-card">
+            <div class="movie-poster">
+                <!-- 👇 აქ ჩასვი ფილმის ფოტო -->
+                <img src="https://via.placeholder.com/300x400/222222/ffaa00?text=ფილმის+ფოტო" alt="ფილმი 2">
+            </div>
+            <!-- 👇 აქ ჩაწერე ფილმის სახელი -->
+            <!-- 👇 href="" -ში ჩასვი ბმული ფილმზე -->
+            <a href="https://example.com/ფილმი2" class="movie-link">🎬 აქ ჩაწერე ფილმის სახელი</a>
+        </div>
+
+        <!-- ====== ფილმი 3 ====== -->
+        <div class="movie-card">
+            <div class="movie-poster">
+                <!-- 👇 აქ ჩასვი ფილმის ფოტო -->
+                <img src="https://via.placeholder.com/300x400/222222/ffaa00?text=ფილმის+ფოტო" alt="ფილმი 3">
+            </div>
+            <!-- 👇 აქ ჩაწერე ფილმის სახელი -->
+            <!-- 👇 href="" -ში ჩასვი ბმული ფილმზე -->
+            <a href="https://example.com/ფილმი3" class="movie-link">🎬 აქ ჩაწერე ფილმის სახელი</a>
+        </div>
+
+        <!-- ====== ფილმი 4 ====== -->
+        <div class="movie-card">
+            <div class="movie-poster">
+                <!-- 👇 აქ ჩასვი ფილმის ფოტო -->
+                <img src="https://via.placeholder.com/300x400/222222/ffaa00?text=ფილმის+ფოტო" alt="ფილმი 4">
+            </div>
+            <!-- 👇 აქ ჩაწერე ფილმის სახელი -->
+            <!-- 👇 href="" -ში ჩასვი ბმული ფილმზე -->
+            <a href="https://example.com/ფილმი4" class="movie-link">🎬 აქ ჩაწერე ფილმის სახელი</a>
+        </div>
+
+    </div>
+    <!-- ფილმების ბადის დასასრული -->
+
+    <!-- ======================== -->
+    <!-- ქვედა ტექსტი -->
+    <!-- ======================== -->
+    <div class="footer-note">ტესტირება მიმდინარეობს • მალე ამოქმედდება</div>
+
+</body>
+</html>
