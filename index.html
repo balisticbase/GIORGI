@@ -70,16 +70,6 @@
             transform: scale(1.05);
         }
 
-        @keyframes logoFade {
-            0% { opacity: 0.4; transform: scale(0.9); }
-            50% { opacity: 1; transform: scale(1.02); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        .logo-area img.logo-changing {
-            animation: logoFade 0.8s ease;
-        }
-
         /* ====== ზედა ბანერი ====== */
         .top-banner {
             background: #000000;
@@ -235,7 +225,7 @@
             transform: scale(1.05);
         }
 
-        /* ====== ფილმის ბმული (ახლა ღილაკი, მაგრამ არა ბმული - JS მართავს) ====== */
+        /* ====== ფილმის ბმული ====== */
         .movie-link {
             display: block;
             background: #0a0a0a;
@@ -276,7 +266,7 @@
             width: 80%;
         }
 
-        /* ====== ჩაშენებული ვიდეო პლეერის მოდალი (OVERLAY) ====== */
+        /* ====== ჩაშენებული ვიდეო პლეერის მოდალი ====== */
         .video-modal {
             display: none;
             position: fixed;
@@ -358,7 +348,7 @@
         .video-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            padding-bottom: 56.25%;
             background: #000;
         }
 
@@ -437,7 +427,6 @@
             }
         }
 
-        /* დამატებითი წვრილმანი */
         body.modal-open {
             overflow: hidden;
         }
@@ -445,9 +434,9 @@
 </head>
 <body>
 
-    <!-- ლოგოს არეალი -->
+    <!-- ლოგოს არეალი - ახლა მხოლოდ ერთი ლოგოა -->
     <div class="logo-area center">
-        <img id="randomLogo" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrjptwUyVHu6sQCzCzE9jQ5tOQyCDM6-1i7GCFY-FUFJhs4DSLXVl627jlIW140RAD9-y4lZg6gO1q8WtO6clFAGygv13urv5nJhhLUB8&s=10" alt="ლოგო">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrjptwUyVHu6sQCzCzE9jQ5tOQyCDM6-1i7GCFY-FUFJhs4DSLXVl627jlIW140RAD9-y4lZg6gO1q8WtO6clFAGygv13urv5nJhhLUB8&s=10" alt="ლოგო">
     </div>
 
     <!-- ზედა ტექსტები -->
@@ -482,25 +471,20 @@
     </div>
 
     <script>
-        // --------------------------------------------------------------
-        // 1. ფილმების მონაცემები (ID, პოსტერი, სათაური, ვიდეო ბმული EMBED)
-        //    აი აქ მოცემულია რეალური ჩაშენებული ლინკები (OK.RU, YouTube embed და სხვა)
-        //    რომ არ მოხდეს საიტიდან გასვლა, ყველა iframe-ში იტვირთება.
-        //    დამატებულია წინა ღამის შესახებ + სხვა კომედიები.
-        // --------------------------------------------------------------
+        // ფილმების მონაცემები
         const moviesData = [
             {
                 id: 1,
                 title: "წინა ღამის შესახებ",
                 poster: "https://geosaitebi.online/uploads/posts/2020-07/1593981847_wina-gamis-shesaxeb-qartulad.jpg",
-                embedUrl: "https://www.stormo.online/embed/545721/",   // ok.ru embed, არ გადამისამართებს
+                embedUrl: "https://www.stormo.online/embed/545721/",
                 isDirect: true
             },
             {
                 id: 2,
                 title: "მამაკაცები გოგოებთან",
                 poster: "https://via.placeholder.com/300x400/1a1a1a/ffaa00?text=კომედია+2",
-                embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0",  // მაგალითი (შეცვალეთ თქვენი ლინკით)
+                embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0",
                 isDirect: true
             },
             {
@@ -547,9 +531,7 @@
             }
         ];
 
-        // ------------------------------------------------
-        // 2. ფილმების ბადის აგება JavaScript-ით
-        // ------------------------------------------------
+        // ფილმების ბადის აგება
         const moviesGrid = document.getElementById('moviesGrid');
         
         function buildMoviesGrid() {
@@ -570,7 +552,7 @@
                 img.loading = 'lazy';
                 posterDiv.appendChild(img);
                 
-                // ღილაკი / ლინკი (დივი, მაგრამ სტილით იგივე)
+                // ღილაკი
                 const linkDiv = document.createElement('div');
                 linkDiv.className = 'movie-link';
                 linkDiv.innerHTML = `🎬 ${movie.title}`;
@@ -578,7 +560,7 @@
                 card.appendChild(posterDiv);
                 card.appendChild(linkDiv);
                 
-                // დაჭერის მოვლენა - ჩაშენებული მოდალი გახსნა
+                // დაჭერის მოვლენა
                 card.addEventListener('click', (e) => {
                     e.stopPropagation();
                     openVideoModal(movie.title, movie.embedUrl);
@@ -596,11 +578,8 @@
         
         // მოდალის გახსნის ფუნქცია
         function openVideoModal(title, embedUrl) {
-            // გავჩერდეთ თუ უკვე ღიაა (მაგრამ ისევ ვაახლებთ)
             modalTitle.innerText = title;
-            // iframe-ის src დავსტაეთ. მნიშვნელოვანია: წინა ვიდეოს გასუფთავება
             iframe.src = embedUrl;
-            // მოდალის ჩვენება
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
             document.body.classList.add('modal-open');
@@ -609,89 +588,30 @@
         // მოდალის დახურვის ფუნქცია
         function closeVideoModal() {
             modal.classList.remove('active');
-            // iframe-ის src-ის გასუფთავება, რომ ვიდეო შეჩერდეს
             iframe.src = '';
             document.body.style.overflow = '';
             document.body.classList.remove('modal-open');
         }
         
-        // დახურვის ღილაკზე მოვლენა
+        // დახურვის ღილაკი
         closeModalBtn.addEventListener('click', closeVideoModal);
         
-        // მოდალის გარეთ დაჭერით დახურვა (backdrop)
+        // მოდალის გარეთ დაჭერა
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 closeVideoModal();
             }
         });
         
-        // ESC ღილაკით დახურვა
+        // ESC ღილაკი
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && modal.classList.contains('active')) {
                 closeVideoModal();
             }
         });
         
-        // ------------------------------------------------
-        // 3. ლოგოს რანდომული შეცვლა (ყოველ 3 წამში)
-        // ------------------------------------------------
-        // ლამაზი, მრავალფეროვანი ლოგო ბმულების სია (მაღალი ხარისხის)
-        const logoImages = [
-            'https://media.istockphoto.com/id/1154922467/photo/close-up-of-water-falling-on-transparent-water-surface.jpg?s=612x612&w=0&k=20&c=T_OGMfI4e1cCLY7ySL4hIFumnz7rSXgblryRt9Kroew=',
-            'https://media.istockphoto.com/id/1312587953/photo/abstract-white-background-with-dynamic-waves-3d-rendering.jpg?s=612x612&w=0&k=20&c=ouuQfJOBAsIr3Yw0DxjC8zdSuVf3W6B2q9j1C57OcPg=',
-            'https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=DjFLC96SJN6QY9VYX8jBUkRqPQXoIBN97gO3PZxP0WU=',
-            'https://media.istockphoto.com/id/1403500817/photo/the-craggies-in-the-blue-ridge-mountains.jpg?s=612x612&w=0&k=20&c=LNkR5y3KBz3D-sZZIvtI-e_Xmsp1k3eCl1t0SrmgYVg=',
-            'https://media.istockphoto.com/id/1146517111/photo/taj-mahal-mausoleum-in-agra.jpg?s=612x612&w=0&k=20&c=0K9MQVtp1Zc88qB_zVQJ6hwJFFrPC9eK8PFq4L9dD08=',
-            'https://media.istockphoto.com/id/1182499638/photo/panoramic-view-of-sunset-over-the-high-tatra-mountains-slovakia.jpg?s=612x612&w=0&k=20&c=IZwSz4PPYgN8lETD76lpkC3aFqQkQhPMzYI_4tUp3-A=',
-            'https://media.istockphoto.com/id/1334640890/photo/mountain-landscape-with-larches-in-autumn.jpg?s=612x612&w=0&k=20&c=1uHEgSk5LWZ5NioAKG6hrF8iTceCcP6Pq4uOcYxN97U='
-        ];
-        
-        const logoElement = document.getElementById('randomLogo');
-        let lastIndex = -1;
-        
-        function getRandomIndex() {
-            let randomIndex;
-            do {
-                randomIndex = Math.floor(Math.random() * logoImages.length);
-            } while (randomIndex === lastIndex && logoImages.length > 1);
-            lastIndex = randomIndex;
-            return randomIndex;
-        }
-        
-        function changeLogo() {
-            const newIndex = getRandomIndex();
-            logoElement.classList.add('logo-changing');
-            logoElement.src = logoImages[newIndex];
-            setTimeout(() => {
-                logoElement.classList.remove('logo-changing');
-            }, 800);
-        }
-        
-        setInterval(changeLogo, 3000);
-        
-        // ------------------------------------------------
-        // 4. ფილმების ბადის აგება + შესაძლო "დამატებითი" ინტერაქცია
-        //    იმ შემთხვევაში თუ ok.ru ვიდეოები არ იტვირთება iframe-ში? იტვირთება წესიერად.
-        //    ყველა embed ლინკი მუშაობს, მაგრამ youtube ან ok.ru-სთვის მოქმედებს.
-        //    პირველი ფილმი (წინა ღამის შესახებ) უკვე ჩაშენებული ლინკითაა.
-        //    სხვა მაგალითები შეგიძლიათ ჩაანაცვლოთ თქვენი რეალური embed ლინკებით.
-        //    ყურადღება: OK.RU ვიდეოებს iframe-ში ჩასმა შესაძლებელია.
-        // ------------------------------------------------
+        // ფილმების ბადის აგება
         buildMoviesGrid();
-        
-        // მობილურზე ან დესკტოპზე, დარწმუნებული ვართ, რომ არცერთი ბმული არ გადამისამართდება.
-        // დამატებით, ყველა .movie-card იყენებს openVideoModal-ს, არა window.open ან href.
-        // ანუ მთლიანად ჩაშენებული სისტემა.
-        
-        // (დამატება) თუ მომხმარებელს სურს, მაგრამ პირველი ფილმი უკვე მზადაა ok.ru-დან.
-        // იმედია ყველაფერი მუშაობს იდეალურად, არ გადადის სხვა საიტზე.
-        
-        // მცირე გაფრთხილება: Youtube embed-ები შეიძლება დაბლოკოს ზოგიერთი ბრაუზერი, მაგრამ ეს უკვე მომხმარებლის პასუხისმგებლობაა.
-        // ვებ-გვერდი სრულად ფუნქციონალურია, "არანაირი რეკლამა" და ჩაშენებული პლეერი.
-        
-        // 3.0: უზრუნველყოფს, რომ მოდალი რომ დაიხუროს, ვიდეო ჩერდება.
-        // Bonus: თუ iframe-ზე დაჭერისას მაინც მოხდა ფანჯრის გახსნა? არა, embed iframe-ები უსაფრთხოა.
-        console.log('საიტი სრულად მზადაა, ფილმები იხსნება იმავე გვერდზე (modal)');
     </script>
 </body>
 </html>
