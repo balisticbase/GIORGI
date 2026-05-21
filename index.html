@@ -1,818 +1,188 @@
 <!DOCTYPE html>
 <html lang="ka">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BenAI - Local Brain</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #0a0a0f;
-            color: #e2e8f0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .header {
-            padding: 15px 20px;
-            background: #131320;
-            border-bottom: 1px solid #1e1e30;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .logo {
-            font-size: 1.2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .stats-row {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .stat {
-            font-size: 0.7rem;
-            background: #0a0a0f;
-            padding: 5px 10px;
-            border-radius: 12px;
-            border: 1px solid #1e1e30;
-        }
-        .chat-box {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .chat-box::-webkit-scrollbar {
-            width: 3px;
-        }
-        .chat-box::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .chat-box::-webkit-scrollbar-thumb {
-            background: #1e1e30;
-            border-radius: 10px;
-        }
-        .msg {
-            padding: 12px 16px;
-            border-radius: 14px;
-            max-width: 88%;
-            line-height: 1.5;
-            font-size: 0.88rem;
-            animation: pop 0.25s ease;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        @keyframes pop {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .msg.user {
-            background: #6366f1;
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
-        }
-        .msg.bot {
-            background: #131320;
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-            border: 1px solid #1e1e30;
-        }
-        .code-snippet {
-            background: #0d0d1a;
-            padding: 12px;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.78rem;
-            margin: 8px 0;
-            border: 1px solid #1e1e30;
-            overflow-x: auto;
-            color: #a5b4fc;
-        }
-        .btn-row {
-            display: flex;
-            gap: 6px;
-            padding: 8px 16px;
-            flex-wrap: wrap;
-            border-top: 1px solid #1e1e30;
-            background: #0d0d15;
-        }
-        .btn {
-            padding: 6px 12px;
-            border: 1px solid #1e1e30;
-            border-radius: 15px;
-            background: #131320;
-            color: #94a3b8;
-            cursor: pointer;
-            font-size: 0.7rem;
-            transition: all 0.2s;
-        }
-        .btn:hover {
-            background: #1e1e30;
-            color: white;
-        }
-        .btn.danger {
-            border-color: #7f1d1d;
-            color: #fca5a5;
-        }
-        .btn.danger:hover {
-            background: #450a0a;
-            color: #fecaca;
-        }
-        .input-row {
-            display: flex;
-            padding: 12px 16px;
-            background: #0d0d15;
-            border-top: 1px solid #1e1e30;
-            gap: 8px;
-        }
-        #msgInput {
-            flex: 1;
-            padding: 10px 16px;
-            border: 2px solid #1e1e30;
-            border-radius: 20px;
-            background: #0a0a0f;
-            color: white;
-            font-size: 0.85rem;
-            outline: none;
-            font-family: inherit;
-            transition: 0.3s;
-        }
-        #msgInput:focus {
-            border-color: #6366f1;
-        }
-        #sendBtn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
-            background: #6366f1;
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85rem;
-            transition: 0.3s;
-        }
-        #sendBtn:hover {
-            background: #4f46e5;
-        }
-        #sendBtn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-        .toast {
-            position: fixed;
-            top: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #131320;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            z-index: 999;
-            border: 1px solid #1e1e30;
-            display: none;
-        }
-        .toast.show {
-            display: block;
-            animation: pop 0.3s ease;
-        }
-        .toast.ok {
-            border-color: #10b981;
-            background: #064e3b;
-        }
-        .toast.err {
-            border-color: #ef4444;
-            background: #450a0a;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BenAI Smart Brain</title>
+
+<style>
+body{
+margin:0;
+font-family:Segoe UI;
+background:#0a0a0f;
+color:#e5e7eb;
+display:flex;
+flex-direction:column;
+height:100vh;
+}
+
+header{
+padding:12px 16px;
+background:#131320;
+border-bottom:1px solid #1e1e30;
+display:flex;
+justify-content:space-between;
+}
+
+.chat{
+flex:1;
+padding:12px;
+overflow:auto;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.msg{
+padding:10px 12px;
+border-radius:12px;
+max-width:85%;
+white-space:pre-wrap;
+}
+
+.user{background:#6366f1;align-self:flex-end}
+.bot{background:#131320;border:1px solid #1e1e30}
+
+.input{
+display:flex;
+padding:10px;
+background:#0d0d15;
+border-top:1px solid #1e1e30;
+}
+
+input{
+flex:1;
+padding:10px;
+border-radius:20px;
+border:1px solid #2a2a40;
+background:#0a0a0f;
+color:white;
+}
+
+button{
+margin-left:8px;
+padding:10px 14px;
+border-radius:20px;
+border:none;
+background:#6366f1;
+color:white;
+cursor:pointer;
+}
+</style>
 </head>
+
 <body>
 
-    <div class="toast" id="toast"></div>
+<header>
+<div>🧠 BenAI SMART</div>
+<div id="stats">📦0 📝0 ⭐1</div>
+</header>
 
-    <div class="header">
-        <span class="logo">🧠 BenAI Local Brain</span>
-        <div class="stats-row">
-            <span class="stat" id="statCodes">📦 0 კოდი</span>
-            <span class="stat" id="statFacts">📝 0 ფაქტი</span>
-            <span class="stat" id="statUsers">👥 1</span>
-            <span class="stat" id="statLevel">⭐ Lv.1</span>
-        </div>
-    </div>
+<div class="chat" id="chat"></div>
 
-    <div class="chat-box" id="chatBox"></div>
+<div class="input">
+<input id="msg" placeholder="დაწერე რამე..." onkeydown="if(event.key==='Enter')send()">
+<button onclick="send()">🚀</button>
+</div>
 
-    <div class="btn-row">
-        <button class="btn" onclick="showStats()">📊 სტატისტიკა</button>
-        <button class="btn" onclick="showLibrary()">📚 ბიბლიოთეკა</button>
-        <button class="btn" onclick="showFacts()">🧾 ფაქტები</button>
-        <button class="btn" onclick="exportData()">📤 შენახვა</button>
-        <button class="btn" onclick="importData()">📥 ჩატვირთვა</button>
-        <button class="btn danger" onclick="resetAll()">🗑️ წაშლა</button>
-    </div>
+<script>
+const KEY="benai_smart_v1";
 
-    <div class="input-row">
-        <input id="msgInput" placeholder="დაწერე რამე... კოდი, ფაქტი, კითხვა..." onkeydown="if(event.key==='Enter')sendMsg()">
-        <button id="sendBtn" onclick="sendMsg()">🚀</button>
-    </div>
+let brain=JSON.parse(localStorage.getItem(KEY))||{
+codes:[],
+facts:[],
+level:1
+};
 
-    <script>
-        // ========== მეხსიერების მენეჯერი ==========
-        const STORAGE_KEY = 'benai_local_brain';
-        const COOKIE_KEY = 'benai_local_cookie';
-        const USER_KEY = 'benai_user_count';
-        const SESSION_KEY = 'benai_session';
+const chat=document.getElementById("chat");
+const msg=document.getElementById("msg");
 
-        // მეხსიერების ჩატვირთვა
-        function loadBrain() {
-            // ჯერ localStorage
-            let raw = localStorage.getItem(STORAGE_KEY);
-            if (raw) {
-                try { return JSON.parse(raw); } catch (e) {}
-            }
-            // მერე Cookie
-            let cookieRaw = getCookie(COOKIE_KEY);
-            if (cookieRaw) {
-                try {
-                    let data = JSON.parse(cookieRaw);
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-                    return data;
-                } catch (e) {}
-            }
-            // ახალი ტვინი
-            return {
-                codes: [],
-                facts: [],
-                messages: [],
-                users: 1,
-                totalLearned: 0,
-                level: 1,
-                created: new Date().toISOString()
-            };
-        }
+function save(){
+localStorage.setItem(KEY,JSON.stringify(brain));
+}
 
-        function saveBrain(brain) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(brain));
-            setCookie(COOKIE_KEY, JSON.stringify(brain), 365);
-        }
+function add(text,cls){
+let d=document.createElement("div");
+d.className="msg "+cls;
+d.textContent=text;
+chat.appendChild(d);
+chat.scrollTop=chat.scrollHeight;
+}
 
-        // Cookie ფუნქციები
-        function setCookie(name, value, days) {
-            let exp = '';
-            if (days) {
-                let d = new Date();
-                d.setTime(d.getTime() + days * 86400000);
-                exp = '; expires=' + d.toUTCString();
-            }
-            document.cookie = name + '=' + encodeURIComponent(value) + exp + '; path=/; SameSite=Lax';
-        }
+function detectCode(t){
+return /<|function|class|const|let|var|def|#include|console/.test(t);
+}
 
-        function getCookie(name) {
-            let n = name + '=';
-            let ca = document.cookie.split(';');
-            for (let c of ca) {
-                while (c.charAt(0) === ' ') c = c.substring(1);
-                if (c.indexOf(n) === 0) return decodeURIComponent(c.substring(n.length));
-            }
-            return null;
-        }
+function extractFacts(t){
+let facts=[];
+if(/მე ვარ (.+)/i.test(t)) facts.push("identity");
+if(/მიყვარს (.+)/i.test(t)) facts.push("like");
+if(/ვმუშაობ (.+)/i.test(t)) facts.push("job");
+return facts;
+}
 
-        // სესიის ინიციალიზაცია
-        function initSession(brain) {
-            let sess = sessionStorage.getItem(SESSION_KEY);
-            if (!sess) {
-                sess = 'sess_' + Date.now();
-                sessionStorage.setItem(SESSION_KEY, sess);
-                brain.users++;
-                let total = parseInt(localStorage.getItem(USER_KEY) || '1');
-                total++;
-                localStorage.setItem(USER_KEY, total.toString());
-                saveBrain(brain);
-            }
-        }
+function smartReply(t){
+let text=t.toLowerCase();
 
-        // ========== კოდის დეტექტორი ==========
-        function isCode(text) {
-            const codePatterns = [
-                /```[\s\S]*```/,
-                /function\s+\w+\s*\(/,
-                /class\s+\w+/,
-                /def\s+\w+\s*\(/,
-                /<(!DOCTYPE|html|head|body|div|script|style)/i,
-                /const\s+\w+\s*=/,
-                /let\s+\w+\s*=/,
-                /var\s+\w+\s*=/,
-                /import\s+.*from/,
-                /require\(/,
-                /console\.(log|error)/,
-                /\.addEventListener/,
-                /document\./,
-                /fetch\(/,
-                /async\s+function/,
-                /export\s+(default\s+)?/,
-            ];
-            return codePatterns.some(p => p.test(text));
-        }
+if(text.includes("გამარჯობა")||text.includes("hello"))
+return "გამარჯობა 👋 მე ვარ BenAI Smart";
 
-        function detectLanguage(code) {
-            if (/<(!DOCTYPE|html|head|body|div)/i.test(code)) return 'html';
-            if (/def\s+\w+\s*\(|import\s+\w+/.test(code) && !/{/.test(code)) return 'python';
-            if (/function|const|let|var|console\.log|document\./.test(code)) return 'javascript';
-            if (/@media|@keyframes|{[\s\S]*}/.test(code) && /:|;/.test(code)) return 'css';
-            return 'code';
-        }
+if(text.includes("html"))
+return "🌐 HTML არის ვებ სტრუქტურა — გინდა მაგალითი?";
 
-        // ========== ფაქტების ამომცნობი ==========
-        function extractFacts(text) {
-            let facts = [];
-            let patterns = [
-                { regex: /მე ვარ (.+?)(\.|,|$)/i, type: 'ვინაობა' },
-                { regex: /ჩემი სახელია (.+?)(\.|,|$)/i, type: 'სახელი' },
-                { regex: /ვცხოვრობ (.+?)(\.|,|$)/i, type: 'მდებარეობა' },
-                { regex: /ვმუშაობ (.+?)(\.|,|$)/i, type: 'სამსახური' },
-                { regex: /მიყვარს (.+?)(\.|,|$)/i, type: 'მოწონება' },
-                { regex: /არ მიყვარს (.+?)(\.|,|$)/i, type: 'არმოწონება' },
-                { regex: /ვსწავლობ (.+?)(\.|,|$)/i, type: 'სწავლა' },
-                { regex: /ვარ (\d+) წლის/i, type: 'ასაკი' },
-            ];
-            patterns.forEach(p => {
-                let m = text.match(p.regex);
-                if (m && m[1].trim().length > 1) {
-                    facts.push({ text: m[1].trim(), type: p.type, time: new Date().toISOString() });
-                }
-            });
-            return facts;
-        }
+if(text.includes("css"))
+return "🎨 CSS მართავს დიზაინს — შემიძლია დაგიწერო";
 
-        // ========== AI ლოგიკა ==========
-        function generateReply(msg, brain) {
-            let lower = msg.toLowerCase().trim();
+if(text.includes("js")||text.includes("javascript"))
+return "⚡ JavaScript აძლევს ლოგიკას — გინდა კოდი?";
 
-            // 1. კოდის მოთხოვნა
-            if (lower.includes('html') && (lower.includes('კოდი') || lower.includes('მაგალითი') || lower.includes(
-                    'დაწერე') || lower.includes('მაჩვენე'))) {
-                return {
-                    text: '✅ აი HTML კოდი:',
-                    code: getHTMLTemplate(),
-                    lang: 'html'
-                };
-            }
-            if (lower.includes('css') && (lower.includes('კოდი') || lower.includes('მაგალითი') || lower.includes(
-                'სტილი'))) {
-                return {
-                    text: '✅ აი CSS კოდი:',
-                    code: getCSSTemplate(),
-                    lang: 'css'
-                };
-            }
-            if ((lower.includes('javascript') || lower.includes('js')) && (lower.includes('კოდი') || lower.includes(
-                    'მაგალითი') || lower.includes('ფუნქცია'))) {
-                return {
-                    text: '✅ აი JavaScript კოდი:',
-                    code: getJSTemplate(),
-                    lang: 'javascript'
-                };
-            }
-            if (lower.includes('python') && (lower.includes('კოდი') || lower.includes('მაგალითი'))) {
-                return {
-                    text: '✅ აი Python კოდი:',
-                    code: getPythonTemplate(),
-                    lang: 'python'
-                };
-            }
+if(text.includes("?"))
+return "🤔 კარგი კითხვა! ვაანალიზებ და ვსწავლობ ამას.";
 
-            // 2. ბიბლიოთეკიდან ძებნა
-            if (brain.codes.length > 0) {
-                let found = brain.codes.filter(c =>
-                    c.code.toLowerCase().includes(lower) ||
-                    c.lang.toLowerCase().includes(lower) ||
-                    (c.desc && c.desc.toLowerCase().includes(lower))
-                ).slice(-3);
-                if (found.length > 0) {
-                    let reply = '📚 **ნაპოვნია ბიბლიოთეკაში:**\n\n';
-                    found.forEach((c, i) => {
-                        reply +=
-                            `🔹 კოდი #${i+1} (${c.lang})\nდამატებულია: ${new Date(c.time).toLocaleDateString('ka-GE')}\n\n`;
-                    });
-                    reply += '💡 მოგწონს რომელიმე? დაწერე "მაჩვენე #1"';
-                    return { text: reply };
-                }
-            }
+return "🧠 დავიმახსოვრე და ვამუშავებ ამ ინფორმაციას";
+}
 
-            // 3. მისალმება
-            if (lower.match(/გამარჯობა|სალამი|hello|hi|hey/)) {
-                let name = brain.facts.find(f => f.type === 'სახელი');
-                let greet = name ? `გამარჯობა, ${name.text}! 👋` : 'გამარჯობა! 👋';
-                return {
-                    text: greet + '\n\nმე ვარ BenAI — შენი ლოკალური AI. მომეცი კოდი ან ინფორმაცია, მე დავიმახსოვრებ!'
-                };
-            }
+function updateStats(){
+document.getElementById("stats").textContent=
+`📦${brain.codes.length} 📝${brain.facts.length} ⭐${brain.level}`;
+}
 
-            // 4. კითხვა
-            if (lower.includes('?')) {
-                let reply = '🤔 კარგი კითხვაა!\n\n';
-                reply += 'მე ვსწავლობ ყველაფერს რასაც მეუბნები. ';
-                reply += 'რაც უფრო მეტ ინფორმაციას მაძლევ, მით უფრო ჭკვიანი ვხდები.\n\n';
-                reply += '💡 **სცადე:** მომეცი კოდი, ფაქტი, ან უბრალოდ მითხარი რამე შენს შესახებ!';
-                return { text: reply };
-            }
+function levelUp(){
+let total=brain.codes.length+brain.facts.length;
+brain.level=Math.floor(total/5)+1;
+}
 
-            // 5. სტანდარტული პასუხი
-            let reply = '✅ **მივიღე!**\n\n';
-            reply += 'მე ვსწავლობ ყველაფერს:\n';
-            reply += '• კოდებს — ვინახავ ბიბლიოთეკაში\n';
-            reply += '• ფაქტებს — ვიმახსოვრებ\n';
-            reply += '• მითითებებს — ვუმჯობესდები\n\n';
-            reply += '💬 **სცადე:** "HTML კოდი", "CSS მაგალითი", "JavaScript ფუნქცია"';
-            return { text: reply };
-        }
+function send(){
+let text=msg.value.trim();
+if(!text)return;
 
-        // ========== კოდის თემფლეიტები ==========
-        function getHTMLTemplate() {
-            return `<!DOCTYPE html>
-        <html lang="ka">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>ჩემი გვერდი</title>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    background: #f0f0f0;
-                    padding: 20px;
-                    text-align: center;
-                }
-                h1 { color: #333; }
-                .box {
-                    background: white;
-                    padding: 20px;
-                    border-radius: 10px;
-                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                    display: inline-block;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="box">
-                <h1>გამარჯობა სამყარო!</h1>
-                <p>ეს გვერდი BenAI-მ შექმნა</p>
-            </div>
-        </body>
-        </html>`;
-        }
+add(text,"user");
+msg.value="";
 
-        function getCSSTemplate() {
-            return `/* BenAI CSS */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #0f172a;
-            color: #e2e8f0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .card {
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 16px;
-            border: 1px solid #334155;
-            text-align: center;
-            max-width: 400px;
-        }
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transition: all 0.3s;
-        }
-        .btn {
-            padding: 12px 24px;
-            background: #3b82f6;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        .btn:hover {
-            background: #2563eb;
-        }`;
-        }
+// code memory
+if(detectCode(text)){
+brain.codes.push(text);
+}
 
-        function getJSTemplate() {
-            return `// BenAI JavaScript
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('გვერდი ჩაიტვირთა!');
+// facts memory
+let facts=extractFacts(text);
+if(facts.length){
+brain.facts.push(...facts);
+}
 
-            const btn = document.querySelector('.btn');
-            if (btn) {
-                btn.addEventListener('click', function() {
-                    alert('ღილაკზე დააჭირე!');
-                });
-            }
+// AI reply
+setTimeout(()=>{
+add(smartReply(text),"bot");
+},200);
 
-            // მარტივი ფუნქცია
-            function greet(name) {
-                return 'გამარჯობა, ' + name + '!';
-            }
+levelUp();
+save();
+updateStats();
+}
 
-            console.log(greet('მეგობარო'));
-        });`;
-        }
+add("👋 BenAI Smart მზადაა","bot");
+updateStats();
+</script>
 
-        function getPythonTemplate() {
-            return `# BenAI Python
-        def greet(name):
-            return f"გამარჯობა, {name}!"
-
-        def calculate_sum(numbers):
-            return sum(numbers)
-
-        # მთავარი კოდი
-        if __name__ == "__main__":
-            print(greet("მეგობარო"))
-
-            numbers = [1, 2, 3, 4, 5]
-            result = calculate_sum(numbers)
-            print(f"ჯამი: {result}")`;
-        }
-
-        // ========== UI ==========
-        const chatBox = document.getElementById('chatBox');
-        const msgInput = document.getElementById('msgInput');
-        const sendBtn = document.getElementById('sendBtn');
-        let brain = loadBrain();
-
-        function addMsg(text, cls, codeBlock = null, lang = '') {
-            let div = document.createElement('div');
-            div.className = 'msg ' + cls;
-            div.textContent = text;
-            if (codeBlock) {
-                let codeDiv = document.createElement('div');
-                codeDiv.className = 'code-snippet';
-                codeDiv.textContent = codeBlock;
-                div.appendChild(codeDiv);
-            }
-            chatBox.appendChild(div);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        function toast(msg, type = '') {
-            let t = document.getElementById('toast');
-            t.textContent = msg;
-            t.className = 'toast ' + type + ' show';
-            setTimeout(() => { t.className = 'toast'; }, 2500);
-        }
-
-        function updateStats() {
-            document.getElementById('statCodes').textContent = '📦 ' + brain.codes.length + ' კოდი';
-            document.getElementById('statFacts').textContent = '📝 ' + brain.facts.length + ' ფაქტი';
-            document.getElementById('statUsers').textContent = '👥 ' + brain.users;
-            document.getElementById('statLevel').textContent = '⭐ Lv.' + brain.level;
-        }
-
-        function checkLevelUp() {
-            let total = brain.codes.length + brain.facts.length;
-            let newLevel = Math.floor(total / 5) + 1;
-            if (newLevel > brain.level) {
-                brain.level = newLevel;
-                saveBrain(brain);
-                updateStats();
-                toast('🎉 დონე აიწია! ახალი დონე: ' + newLevel, 'ok');
-                addMsg('🎉 **დონე აიწია!** ახლა ვარ Lv.' + newLevel + ' ⭐', 'bot');
-            }
-        }
-
-        function sendMsg() {
-            let msg = msgInput.value.trim();
-            if (!msg) return;
-
-            addMsg(msg, 'user');
-            msgInput.value = '';
-            sendBtn.disabled = true;
-            brain.messages.push({ role: 'user', text: msg, time: new Date().toISOString() });
-
-            // კოდის შემოწმება
-            if (isCode(msg)) {
-                let lang = detectLanguage(msg);
-                brain.codes.push({
-                    code: msg,
-                    lang: lang,
-                    desc: msg.substring(0, 100),
-                    time: new Date().toISOString(),
-                    from: sessionStorage.getItem(SESSION_KEY) || 'anon'
-                });
-                if (brain.codes.length > 500) brain.codes = brain.codes.slice(-500);
-                brain.totalLearned++;
-                saveBrain(brain);
-                addMsg('✅ **კოდი შენახულია!** (' + lang + ')\n📦 სულ კოდები: ' + brain.codes.length, 'bot');
-                toast('✅ კოდი დამახსოვრდა!', 'ok');
-                checkLevelUp();
-                updateStats();
-            }
-
-            // ფაქტების ამოღება
-            let facts = extractFacts(msg);
-            facts.forEach(f => {
-                let exists = brain.facts.some(bf => bf.text === f.text && bf.type === f.type);
-                if (!exists) {
-                    brain.facts.push(f);
-                    if (brain.facts.length > 500) brain.facts = brain.facts.slice(-500);
-                    brain.totalLearned++;
-                }
-            });
-            if (facts.length > 0) {
-                saveBrain(brain);
-                toast('🧠 ფაქტები დამახსოვრდა!', 'ok');
-                checkLevelUp();
-                updateStats();
-            }
-
-            // AI პასუხის გენერაცია
-            setTimeout(() => {
-                let reply = generateReply(msg, brain);
-                if (reply.code) {
-                    addMsg(reply.text, 'bot', reply.code, reply.lang);
-                } else {
-                    addMsg(reply.text, 'bot');
-                }
-                brain.messages.push({ role: 'bot', text: reply.text, time: new Date().toISOString() });
-                if (brain.messages.length > 500) brain.messages = brain.messages.slice(-500);
-                saveBrain(brain);
-                sendBtn.disabled = false;
-                msgInput.focus();
-            }, 300);
-        }
-
-        function showStats() {
-            let info = '📊 **BenAI სტატისტიკა**\n\n';
-            info += '⭐ დონე: ' + brain.level + '\n';
-            info += '📦 კოდები: ' + brain.codes.length + '\n';
-            info += '📝 ფაქტები: ' + brain.facts.length + '\n';
-            info += '💬 მესიჯები: ' + brain.messages.length + '\n';
-            info += '👥 მომხმარებლები: ' + brain.users + '\n';
-            info += '📅 შექმნილია: ' + new Date(brain.created).toLocaleDateString('ka-GE') + '\n';
-            info += '📚 სულ ნასწავლი: ' + brain.totalLearned;
-            addMsg(info, 'bot');
-        }
-
-        function showLibrary() {
-            if (brain.codes.length === 0) {
-                addMsg('📚 ბიბლიოთეკა ცარიელია. მომეცი კოდი!', 'bot');
-                return;
-            }
-            let info = '📚 **კოდების ბიბლიოთეკა**\n\n';
-            let langs = {};
-            brain.codes.forEach(c => {
-                langs[c.lang] = (langs[c.lang] || 0) + 1;
-            });
-            for (let [lang, count] of Object.entries(langs)) {
-                info += '• ' + lang + ': ' + count + ' კოდი\n';
-            }
-            info += '\n💡 დაწერე "HTML კოდი" ან "CSS მაგალითი"';
-            addMsg(info, 'bot');
-        }
-
-        function showFacts() {
-            if (brain.facts.length === 0) {
-                addMsg('🧾 ფაქტები ცარიელია. მითხარი რამე შენს შესახებ!', 'bot');
-                return;
-            }
-            let info = '🧾 **დამახსოვრებული ფაქტები**\n\n';
-            brain.facts.slice(-20).reverse().forEach(f => {
-                info += '• [' + f.type + '] ' + f.text + '\n';
-            });
-            if (brain.facts.length > 20) info += '\n... და კიდევ ' + (brain.facts.length - 20) + ' ფაქტი';
-            addMsg(info, 'bot');
-        }
-
-        function exportData() {
-            let data = JSON.stringify(brain, null, 2);
-            let blob = new Blob([data], { type: 'application/json' });
-            let url = URL.createObjectURL(blob);
-            let a = document.createElement('a');
-            a.href = url;
-            a.download = 'benai-brain-' + Date.now() + '.json';
-            a.click();
-            URL.revokeObjectURL(url);
-            toast('📤 მონაცემები გადმოწერილია!', 'ok');
-        }
-
-        function importData() {
-            let inp = document.createElement('input');
-            inp.type = 'file';
-            inp.accept = '.json';
-            inp.onchange = function(e) {
-                let file = e.target.files[0];
-                let reader = new FileReader();
-                reader.onload = function(ev) {
-                    try {
-                        let data = JSON.parse(ev.target.result);
-                        if (data.codes && data.facts && confirm('ჩატვირთო მონაცემები?')) {
-                            brain = data;
-                            saveBrain(brain);
-                            chatBox.innerHTML = '';
-                            updateStats();
-                            addMsg('📥 მონაცემები ჩატვირთულია!', 'bot');
-                            toast('📥 ჩატვირთულია!', 'ok');
-                        }
-                    } catch (err) {
-                        toast('❌ არასწორი ფაილი', 'err');
-                    }
-                };
-                reader.readAsText(file);
-            };
-            inp.click();
-        }
-
-        function resetAll() {
-            if (confirm('⚠️ წაიშლება ყველა კოდი, ფაქტი და მესიჯი. გინდა?')) {
-                brain = {
-                    codes: [],
-                    facts: [],
-                    messages: [],
-                    users: brain.users,
-                    totalLearned: brain.totalLearned,
-                    level: 1,
-                    created: new Date().toISOString()
-                };
-                saveBrain(brain);
-                document.cookie = COOKIE_KEY + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-                chatBox.innerHTML = '';
-                updateStats();
-                addMsg('🗑️ ყველაფერი წაშლილია. ახალი დასაწყისი!\n\nმომეცი კოდი ან ინფორმაცია — დავიმახსოვრებ.', 'bot');
-                toast('🗑️ წაშლილია', 'err');
-            }
-        }
-
-        // ========== ისტორიის ჩატვირთვა ==========
-        function loadHistory() {
-            if (brain.messages.length > 0) {
-                brain.messages.slice(-30).forEach(m => {
-                    addMsg(m.text, m.role === 'user' ? 'user' : 'bot');
-                });
-            }
-        }
-
-        // ========== ინიციალიზაცია ==========
-        function init() {
-            initSession(brain);
-            saveBrain(brain);
-            updateStats();
-
-            if (brain.messages.length > 0) {
-                loadHistory();
-            } else {
-                addMsg('👋 **გამარჯობა! მე ვარ BenAI — შენი ლოკალური AI.**\n\n' +
-                    '🔹 არ ვიყენებ გარე API-ებს\n' +
-                    '🔹 ვსწავლობ მხოლოდ შენგან\n' +
-                    '🔹 ვინახავ localStorage + Cookie\n\n' +
-                    '💡 **სცადე:**\n' +
-                    '• "HTML კოდი" — დაგიწერ\n' +
-                    '• "CSS მაგალითი" — დაგიგენერირებ\n' +
-                    '• "JavaScript ფუნქცია" — მოგცემ\n' +
-                    '• ჩააგდე კოდი — დავიმახსოვრებ\n' +
-                    '• მითხარი რამე — ვისწავლი', 'bot');
-            }
-
-            msgInput.focus();
-
-            // Cookie-ში შენახვა ყოველ 5 წუთში
-            setInterval(() => {
-                setCookie(COOKIE_KEY, JSON.stringify(brain), 365);
-            }, 300000);
-
-            console.log('🧠 BenAI Local Brain — მზადაა');
-            console.log('📦 localStorage:', localStorage.getItem(STORAGE_KEY) ? 'აქტიური' : 'ცარიელი');
-            console.log('🍪 Cookie:', getCookie(COOKIE_KEY) ? 'აქტიური' : 'ცარიელი');
-            console.log('👥 მომხმარებლები:', brain.users);
-        }
-
-        init();
-    </script>
 </body>
 </html>
