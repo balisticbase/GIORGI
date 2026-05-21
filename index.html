@@ -1,807 +1,196 @@
 <!DOCTYPE html>
-<html lang="ka">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>კომედიები | 200+ ფილმი | Search</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700;900&display=swap');
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Messenger</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:Arial,sans-serif;
+    }
 
-        body {
-            background: #050505;
-            background-image: 
-                radial-gradient(ellipse at center, rgba(255,170,0,0.02) 0%, transparent 70%),
-                radial-gradient(ellipse at top left, rgba(255,50,0,0.04) 0%, transparent 50%),
-                radial-gradient(ellipse at bottom right, rgba(255,170,0,0.03) 0%, transparent 60%);
-            font-family: 'Oswald', 'Noto Sans Georgian', sans-serif;
-            min-height: 100vh;
-            padding: 20px;
-            color: #e0e0e0;
-            letter-spacing: 0.5px;
-        }
+    body{
+        background:#0f172a;
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(ellipse, rgba(255,170,0,0.04) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
+    .chat{
+        width:100%;
+        max-width:420px;
+        height:90vh;
+        background:#111827;
+        border-radius:20px;
+        overflow:hidden;
+        display:flex;
+        flex-direction:column;
+        border:1px solid #1f2937;
+    }
 
-        .logo-area {
-            text-align: center;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-        }
+    .top{
+        padding:18px;
+        background:#1e293b;
+        color:white;
+        font-size:20px;
+        font-weight:bold;
+        text-align:center;
+    }
 
-        .logo-area img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid #ffaa00;
-            box-shadow: 
-                0 0 30px rgba(255,170,0,0.6),
-                0 0 60px rgba(255,170,0,0.3),
-                0 0 100px rgba(255,170,0,0.15);
-            transition: all 0.5s ease;
-            filter: brightness(1.1) contrast(1.1);
-        }
+    .messages{
+        flex:1;
+        overflow-y:auto;
+        padding:15px;
+        display:flex;
+        flex-direction:column;
+        gap:12px;
+    }
 
-        .logo-area img:hover {
-            border-color: #ffcc00;
-            box-shadow: 
-                0 0 50px rgba(255,170,0,0.9),
-                0 0 90px rgba(255,170,0,0.5),
-                0 0 140px rgba(255,170,0,0.25);
-            transform: scale(1.05);
-        }
+    .msg{
+        padding:12px 14px;
+        border-radius:14px;
+        max-width:80%;
+        line-height:1.4;
+        word-wrap:break-word;
+    }
 
-        .top-banner {
-            background: #000000;
-            color: #ffaa00;
-            font-weight: 900;
-            font-size: 14px;
-            letter-spacing: 5px;
-            padding: 14px 35px;
-            display: inline-block;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            border: 1px solid #ffaa00;
-            border-radius: 3px;
-            box-shadow: 
-                0 0 30px rgba(255,170,0,0.2),
-                inset 0 0 30px rgba(255,170,0,0.03);
-            text-shadow: 0 0 10px rgba(255,170,0,0.7);
-            position: relative;
-            z-index: 1;
-        }
+    .user{
+        background:#2563eb;
+        color:white;
+        align-self:flex-end;
+    }
 
-        .center {
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
+    .ai{
+        background:#374151;
+        color:white;
+        align-self:flex-start;
+    }
 
-        h1 {
-            font-size: 46px;
-            font-weight: 900;
-            color: #ffffff;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            text-shadow: 
-                0 0 40px rgba(255,170,0,0.9),
-                0 0 80px rgba(255,170,0,0.4),
-                0 3px 0 #000;
-        }
+    .bottom{
+        display:flex;
+        padding:12px;
+        gap:10px;
+        background:#1e293b;
+    }
 
-        .no-ads {
-            color: #ff4400;
-            font-weight: 900;
-            font-size: 16px;
-            margin-bottom: 8px;
-            letter-spacing: 3px;
-            text-shadow: 0 0 15px rgba(255,68,0,0.7);
-        }
+    input{
+        flex:1;
+        padding:14px;
+        border:none;
+        border-radius:12px;
+        outline:none;
+        background:#111827;
+        color:white;
+        font-size:15px;
+    }
 
-        .info-text {
-            color: #777777;
-            font-size: 13px;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
+    button{
+        border:none;
+        background:#2563eb;
+        color:white;
+        padding:0 18px;
+        border-radius:12px;
+        cursor:pointer;
+        font-size:15px;
+    }
 
-        .claw-divider {
-            text-align: center;
-            margin: 15px 0 35px;
-            color: #ffaa00;
-            font-size: 22px;
-            letter-spacing: 10px;
-            opacity: 0.6;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* ====== SEARCH ველი ====== */
-        .search-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 25px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            background: #0f0f0f;
-            border: 1px solid #2a2a2a;
-            border-radius: 30px;
-            padding: 6px 6px 6px 20px;
-            transition: all 0.3s ease;
-            max-width: 400px;
-            width: 100%;
-        }
-
-        .search-box:focus-within {
-            border-color: #ffaa00;
-            box-shadow: 0 0 20px rgba(255,170,0,0.15);
-        }
-
-        .search-box input {
-            background: transparent;
-            border: none;
-            color: #e0e0e0;
-            font-size: 15px;
-            font-family: 'Oswald', sans-serif;
-            padding: 8px 10px;
-            width: 100%;
-            outline: none;
-            letter-spacing: 0.5px;
-        }
-
-        .search-box input::placeholder {
-            color: #666;
-            letter-spacing: 1px;
-        }
-
-        .search-box button {
-            background: #ffaa00;
-            border: none;
-            border-radius: 30px;
-            color: #000;
-            font-weight: 700;
-            padding: 8px 18px;
-            cursor: pointer;
-            font-family: 'Oswald', sans-serif;
-            font-size: 14px;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .search-box button:hover {
-            background: #ffcc00;
-            box-shadow: 0 0 20px rgba(255,170,0,0.4);
-        }
-
-        /* ====== ფილმების ბადე ====== */
-        .movies-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 22px;
-            max-width: 1050px;
-            margin: 0 auto 40px auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .movie-card {
-            background: #0f0f0f;
-            border: 1px solid #2a2a2a;
-            border-radius: 4px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .movie-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .movie-card:hover {
-            border-color: #ffaa00;
-            transform: translateY(-4px);
-            box-shadow: 0 15px 40px rgba(255,170,0,0.15);
-        }
-
-        .movie-card:hover::before {
-            border-color: #ffaa00;
-            box-shadow: inset 0 0 30px rgba(255,170,0,0.08);
-        }
-
-        .movie-poster {
-            width: 100%;
-            height: 300px;
-            background: #111111;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #444444;
-            font-size: 13px;
-            text-align: center;
-            padding: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .movie-poster::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to bottom, transparent 70%, rgba(255,170,0,0.05) 100%);
-            pointer-events: none;
-        }
-
-        .movie-poster img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.4s ease;
-        }
-
-        .movie-card:hover .movie-poster img {
-            transform: scale(1.05);
-        }
-
-        .movie-link {
-            display: block;
-            background: #0a0a0a;
-            color: #ffaa00;
-            text-align: center;
-            padding: 15px 10px;
-            font-weight: 700;
-            font-size: 15px;
-            text-decoration: none;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-top: 1px solid #1a1a1a;
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 3;
-            cursor: pointer;
-        }
-
-        .movie-link::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2px;
-            background: #ffaa00;
-            transition: width 0.3s ease;
-        }
-
-        .movie-card:hover .movie-link {
-            background: #000000;
-            color: #ffcc00;
-            text-shadow: 0 0 15px rgba(255,170,0,0.6);
-        }
-
-        .movie-card:hover .movie-link::before {
-            width: 80%;
-        }
-
-        .video-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.94);
-            backdrop-filter: blur(12px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.3s ease;
-            padding: 20px;
-        }
-
-        .video-modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            max-width: 1100px;
-            width: 100%;
-            background: #0a0a0a;
-            border-radius: 12px;
-            border: 1px solid #ffaa00;
-            box-shadow: 0 0 50px rgba(255,170,0,0.4);
-            overflow: hidden;
-            position: relative;
-            animation: slideUp 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(40px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            background: #000000;
-            border-bottom: 1px solid #ffaa00;
-        }
-
-        .modal-header h3 {
-            color: #ffaa00;
-            font-weight: 700;
-            letter-spacing: 1px;
-            font-size: 1.3rem;
-            text-transform: uppercase;
-            margin: 0;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            color: #ffaa00;
-            font-size: 32px;
-            cursor: pointer;
-            line-height: 1;
-            padding: 0 8px;
-            transition: all 0.2s;
-            font-weight: bold;
-        }
-
-        .close-modal:hover {
-            color: #ff4400;
-            transform: scale(1.2);
-            text-shadow: 0 0 8px #ff4400;
-        }
-
-        .video-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%;
-            background: #000;
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .modal-footer {
-            padding: 12px 20px;
-            background: #050505;
-            color: #aaa;
-            font-size: 14px;
-            text-align: center;
-            border-top: 1px solid #2a2a2a;
-            letter-spacing: 1px;
-        }
-
-        .footer-note {
-            text-align: center;
-            margin-top: 30px;
-            color: #555555;
-            font-size: 12px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            position: relative;
-            z-index: 1;
-        }
-
-        .footer-note::before {
-            content: '▲ ▼ ▲ ▼ ▲';
-            display: block;
-            color: #ffaa00;
-            opacity: 0.3;
-            margin-bottom: 10px;
-            letter-spacing: 8px;
-            font-size: 10px;
-        }
-
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 28px;
-                letter-spacing: 2px;
-            }
-            .movies-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-            .movie-poster {
-                height: 200px;
-            }
-            .movie-link {
-                font-size: 12px;
-                padding: 12px 6px;
-            }
-            .top-banner {
-                font-size: 11px;
-                padding: 10px 20px;
-                letter-spacing: 3px;
-            }
-            .logo-area img {
-                width: 110px;
-                height: 110px;
-            }
-            .modal-header h3 {
-                font-size: 1rem;
-            }
-            .close-modal {
-                font-size: 28px;
-            }
-            .search-box {
-                max-width: 100%;
-            }
-        }
-
-        body.modal-open {
-            overflow: hidden;
-        }
-    </style>
+    button:hover{
+        background:#1d4ed8;
+    }
+</style>
 </head>
 <body>
 
-    <!-- ლოგო -->
-    <div class="logo-area center">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrjptwUyVHu6sQCzCzE9jQ5tOQyCDM6-1i7GCFY-FUFJhs4DSLXVl627jlIW140RAD9-y4lZg6gO1q8WtO6clFAGygv13urv5nJhhLUB8&s=10" alt="ლოგო">
+<div class="chat">
+
+    <div class="top">
+        AI Messenger
     </div>
 
-    <!-- SEARCH ველი -->
-    <div class="search-container">
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="🔍 ფილმის ძებნა..." />
-            <button id="searchBtn">ძებნა</button>
-        </div>
+    <div class="messages" id="messages"></div>
+
+    <div class="bottom">
+        <input type="text" id="input" placeholder="Write message..." />
+        <button onclick="sendMessage()">Send</button>
     </div>
 
-    <!-- ზედა ტექსტები -->
-    <div class="center" style="margin-bottom: 30px;">
-        <div class="top-banner">ტესტირება</div>
-        <h1>კომედიები</h1>
-        <div class="no-ads">● რეკლამის გარეშე ●</div>
-        <p class="info-text">მხოლოდ კინოკომედიები • ჩაშენებული პლეერი</p>
-        <div class="claw-divider">▼ ▲ ▼ ▲ ▼</div>
-    </div>
+</div>
 
-    <!-- ფილმების ბადე -->
-    <div class="movies-grid" id="moviesGrid"></div>
+<script>
+const API_KEY = "sk-c0375bc5981e4fbfbdd9c4d288db6737";
 
-    <!-- ქვედა ტექსტი -->
-    <div class="footer-note">• ტესტირება მიმდინარეობს • მალე ამოქმედდება</div>
+const messages = document.getElementById("messages");
+const input = document.getElementById("input");
 
-    <!-- ვიდეო მოდალი -->
-    <div id="videoModal" class="video-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalMovieTitle">ფილმის დასახელება</h3>
-                <button class="close-modal" id="closeModalBtn">&times;</button>
-            </div>
-            <div class="video-container">
-                <iframe id="movieIframe" src="" allowfullscreen allow="autoplay; fullscreen"></iframe>
-            </div>
-            <div class="modal-footer">
-                🎬 უყურეთ უფასოდ • არანაირი რეკლამა
-            </div>
-        </div>
-    </div>
+function addMessage(text, type){
+    const div = document.createElement("div");
+    div.className = "msg " + type;
+    div.innerText = text;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+}
 
-    <script>
-        // ==================== 208 ფილმი (8 შევსებული + 200 ცარიელი) ====================
-        const moviesData = [
-            // ====== პირველი 8 ფილმი (შევსებულია) ======
-            {
-                id: 1,
-                title: "წინა ღამის შესახებ",
-                poster: "https://geosaitebi.online/uploads/posts/2020-07/1593981847_wina-gamis-shesaxeb-qartulad.jpg",
-                embedUrl: "https://www.stormo.online",
-                isDirect: true
-            },
-            {
-                id: 2,
-                title: "რატომ ის",
-                poster: "https://img.mykadri.click/uploads/posts/2023-11/thumbs/eezfokz7bxgdbjeieecyjfxpksu.jpg",
-                embedUrl: "https://em.filmix.watch/play/?type=movie&id=356305&name=movie&img=https://static.moviege.com",
-                isDirect: true
-            },
-            {
-                id: 3,
-                title: "ბილწი ბაბუ Dirty Grandpa",
-                poster: "https://img.mykadri.click/uploads/posts/2020-03/1584209176_1419524m0f9y8xe.jpg",
-                embedUrl: "https://em.filmx.my/play/?type=movie&id=291870&name=movie&img=https://static.moviege.com",
-                isDirect: true
-            },
-            {
-                id: 4,
-                title: "ამერიკელი სნაიპერი",
-                poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgoZpPj3R_8qF_SqL3TY2muIAw2FT8XfgN68eEPk86BQ&s=10",
-                embedUrl: "https://em.filmix.watch",
-                isDirect: true
-            },
-            {
-                id: 5,
-                title: "პოლეტი",
-                poster: "https://www.imovs.ge/uploads/posts/2019-06/1559490238_r.jpg",
-                embedUrl: "https://adjaraneti.მმ",
-                isDirect: true
-            },
-            {
-                id: 6,
-                title: "ბორატი",
-                poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu2FX4A4psvDniXEvyEt-EaCw9JU_3TmCxPredOHNTvRvesFrx4QvdGudFCsIKKKACC0Ug-TgTB6mfseQRVoyHC7LEl5wSk9HckNxTCC-w&s=10",
-                embedUrl: "https://videodb.stream",
-                isDirect: true
-            },
-            {
-                id: 7,
-                title: "ბორატი 2",
-                poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBb0rai-rSHCIaJjRMszXfTkLzEjrz_p9mn2GzGne25w&s=10",
-                embedUrl: "https://www.secvideo1.online",
-                isDirect: true
-            },
-            {
-                id: 8,
-                title: "მოდი ვიყოთ პოლიციელები",
-                poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_jpXzD8S3v4Atex7XLPGRBunjhV0ZE56FOhf9Gy61HQ&s=10",
-                embedUrl: "https://videodb.stream",
-                isDirect: true
-            },
+async function sendMessage(){
 
-            // ====== 200 ცარიელი ფილმი (id: 9-დან 208-მდე) ======
-            // ზუსტად იგივე ფორმატით, შენ შეგიძლია შეავსო embedUrl მოგვიანებით
-            { id: 9, title: "დიქტატორი", poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTopWEG-AzC26ygvGFUHdVmV8QmsGuhN171wS-S6TaT_A&s=10", embedUrl: "https://em.filmx.my", isDirect: true },
-            { id: 10, title: "ზოგს მელოტებიც მოსწონს", poster: "https://geosaitebi.online/uploads/posts/2026-02/filmi-zogs-melotebic-moswons-qartulad.jpg", embedUrl: "https://minochinos.com", isDirect: true },
-            { id: 11, title: "ფილმი #11", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 12, title: "ფილმი #12", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 13, title: "ფილმი #13", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 14, title: "ფილმი #14", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 15, title: "ფილმი #15", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 16, title: "ფილმი #16", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 17, title: "ფილმი #17", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 18, title: "ფილმი #18", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 19, title: "ფილმი #19", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 20, title: "ფილმი #20", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 21, title: "ფილმი #21", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 22, title: "ფილმი #22", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 23, title: "ფილმი #23", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 24, title: "ფილმი #24", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 25, title: "ფილმი #25", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 26, title: "ფილმი #26", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 27, title: "ფილმი #27", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 28, title: "ფილმი #28", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 29, title: "ფილმი #29", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 30, title: "ფილმი #30", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 31, title: "ფილმი #31", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 32, title: "ფილმი #32", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 33, title: "ფილმი #33", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 34, title: "ფილმი #34", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 35, title: "ფილმი #35", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 36, title: "ფილმი #36", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 37, title: "ფილმი #37", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 38, title: "ფილმი #38", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 39, title: "ფილმი #39", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 40, title: "ფილმი #40", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 41, title: "ფილმი #41", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 42, title: "ფილმი #42", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 43, title: "ფილმი #43", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 44, title: "ფილმი #44", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 45, title: "ფილმი #45", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 46, title: "ფილმი #46", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 47, title: "ფილმი #47", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 48, title: "ფილმი #48", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 49, title: "ფილმი #49", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 50, title: "ფილმი #50", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 51, title: "ფილმი #9", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 52, title: "ფილმი #10", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 53, title: "ფილმი #11", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 54, title: "ფილმი #12", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 55, title: "ფილმი #13", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 56, title: "ფილმი #14", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 57, title: "ფილმი #15", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 58, title: "ფილმი #16", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 59, title: "ფილმი #17", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 60, title: "ფილმი #18", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 61, title: "ფილმი #19", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 62, title: "ფილმი #20", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 63, title: "ფილმი #21", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 64, title: "ფილმი #22", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 65, title: "ფილმი #23", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 66, title: "ფილმი #24", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 67, title: "ფილმი #25", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 68, title: "ფილმი #26", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 69, title: "ფილმი #27", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 70, title: "ფილმი #28", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 71, title: "ფილმი #29", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 72, title: "ფილმი #30", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 73, title: "ფილმი #31", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 74, title: "ფილმი #32", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 75, title: "ფილმი #33", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 76, title: "ფილმი #34", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 77, title: "ფილმი #35", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 78, title: "ფილმი #36", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 79, title: "ფილმი #37", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 80, title: "ფილმი #38", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 81, title: "ფილმი #39", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 82, title: "ფილმი #40", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 83, title: "ფილმი #41", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 84, title: "ფილმი #42", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 85, title: "ფილმი #43", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 86, title: "ფილმი #44", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 87, title: "ფილმი #45", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 88, title: "ფილმი #46", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 89, title: "ფილმი #47", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 90, title: "ფილმი #48", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 91, title: "ფილმი #49", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-            { id: 92, title: "ფილმი #50", poster: "https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება", embedUrl: "#", isDirect: true },
-             // ... 208-მდე ყველა იგივე ფორმატით
-        ];
+    const text = input.value.trim();
 
-        // ====== დანარჩენი ფილმების დამატება 51-დან 208-მდე ======
-        for (let i = 51; i <= 208; i++) {
-            moviesData.push({
-                id: i,
-                title: `ფილმი #${i}`,
-                poster: `https://via.placeholder.com/300x450/1a1a1a/ffaa00?text=პოსტერი+მალე+დაემატება`,
-                embedUrl: "#",
-                isDirect: true
-            });
-        }
+    if(!text) return;
 
-        // ==================== ფილმების ფილტრაცია და დალაგება ====================
-        let validMovies = moviesData.filter(movie => 
-            movie.embedUrl && movie.embedUrl !== '#'
-        );
-        validMovies.sort((a, b) => b.id - a.id);
+    addMessage(text, "user");
+    input.value = "";
 
-        // ==================== HTML ელემენტები ====================
-        const moviesGrid = document.getElementById('moviesGrid');
-        const modal = document.getElementById('videoModal');
-        const modalTitle = document.getElementById('modalMovieTitle');
-        const iframe = document.getElementById('movieIframe');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const searchInput = document.getElementById('searchInput');
-        const searchBtn = document.getElementById('searchBtn');
-        
-        // ==================== ფილმების ბადის აგება ====================
-        function renderMovies(movies) {
-            moviesGrid.innerHTML = '';
-            if (movies.length === 0) {
-                moviesGrid.innerHTML = '<div style="text-align:center;color:#777;grid-column:1/-1;padding:40px;font-size:20px;letter-spacing:2px;">🎭 ფილმი ვერ მოიძებნა</div>';
-                return;
-            }
-            movies.forEach(movie => {
-                const card = document.createElement('div');
-                card.className = 'movie-card';
-                
-                const posterDiv = document.createElement('div');
-                posterDiv.className = 'movie-poster';
-                const img = document.createElement('img');
-                img.src = movie.poster;
-                img.alt = movie.title;
-                img.loading = 'lazy';
-                posterDiv.appendChild(img);
-                
-                const linkDiv = document.createElement('div');
-                linkDiv.className = 'movie-link';
-                linkDiv.innerHTML = `🎬 ${movie.title}`;
-                
-                card.appendChild(posterDiv);
-                card.appendChild(linkDiv);
-                
-                card.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    openVideoModal(movie.title, movie.embedUrl);
-                });
-                
-                moviesGrid.appendChild(card);
-            });
-        }
-        
-        // ==================== ძებნის ფუნქცია ====================
-        function searchMovies() {
-            const query = searchInput.value.trim().toLowerCase();
-            if (query === '') {
-                renderMovies(validMovies);
-                return;
-            }
-            const filtered = validMovies.filter(m => m.title.toLowerCase().includes(query));
-            renderMovies(filtered);
-        }
-        
-        // ==================== მოდალის მართვა ====================
-        function openVideoModal(title, embedUrl) {
-            modalTitle.innerText = title;
-            iframe.src = embedUrl;
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            document.body.classList.add('modal-open');
-        }
-        
-        function closeVideoModal() {
-            modal.classList.remove('active');
-            iframe.src = '';
-            document.body.style.overflow = '';
-            document.body.classList.remove('modal-open');
-        }
-        
-        // ==================== მოვლენები ====================
-        closeModalBtn.addEventListener('click', closeVideoModal);
-        
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeVideoModal();
-            }
-        });
-        
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('active')) {
-                closeVideoModal();
-            }
+    addMessage("Typing...", "ai");
+
+    try{
+
+        const response = await fetch("https://api.openai.com/v1/chat/completions",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer " + API_KEY
+            },
+            body:JSON.stringify({
+                model:"gpt-4o-mini",
+                messages:[
+                    {
+                        role:"user",
+                        content:text
+                    }
+                ]
+            })
         });
 
-        searchBtn.addEventListener('click', searchMovies);
-        searchInput.addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') {
-                searchMovies();
-            }
-        });
-        
-        // ==================== გვერდის ჩატვირთვა ====================
-        renderMovies(validMovies);
-        
-        console.log('საიტი მზად არის!');
-        console.log(`სულ ფილმები მასივში: ${moviesData.length}`);
-        console.log(`შევსებული ფილმები (ჩანს): ${validMovies.length}`);
-        console.log(`ნაჩვენები ფილმები გვერდზე: ${document.querySelectorAll('.movie-card').length}`);
-    </script>
+        const data = await response.json();
+
+        document.querySelector(".ai:last-child").remove();
+
+        const reply =
+            data.choices?.[0]?.message?.content ||
+            "Error";
+
+        addMessage(reply, "ai");
+
+    }catch(err){
+
+        document.querySelector(".ai:last-child").remove();
+
+        addMessage("Connection error", "ai");
+
+        console.error(err);
+    }
+}
+
+input.addEventListener("keypress",function(e){
+    if(e.key === "Enter"){
+        sendMessage();
+    }
+});
+</script>
+
 </body>
 </html>
