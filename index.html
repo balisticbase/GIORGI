@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>30 STREAM VIEWER</title>
+<title>TikTok Multi Live Viewer</title>
 
 <style>
 
@@ -20,8 +20,8 @@ body{
     position:fixed;
     top:0;
     width:100%;
-    padding:10px;
     background:#111;
+    padding:10px;
     z-index:10;
 }
 
@@ -32,25 +32,16 @@ textarea{
     color:white;
     border:none;
     padding:10px;
-    resize:none;
 }
 
-button{
-    margin-top:5px;
-    padding:10px 15px;
-    background:lime;
-    border:none;
-    cursor:pointer;
-}
-
-/* ===== GRID 30 STREAM ===== */
+/* ===== GRID ===== */
 
 .grid{
     margin-top:160px;
     display:grid;
 
     grid-template-columns:
-    repeat(auto-fill, minmax(320px, 1fr));
+    repeat(auto-fill, minmax(300px, 1fr));
 
     gap:10px;
     padding:10px;
@@ -64,10 +55,21 @@ button{
     overflow:hidden;
 }
 
+/* TikTok embed style */
+
 iframe{
     width:100%;
-    height:220px;
+    height:500px;
     border:none;
+}
+
+button{
+    margin-top:5px;
+    padding:10px;
+    background:#ff0050;
+    border:none;
+    color:white;
+    cursor:pointer;
 }
 
 </style>
@@ -78,9 +80,11 @@ iframe{
 <div class="top">
 
 <textarea id="links"
-placeholder="ჩასვი 30 ლინკი (ერთი ხაზზე)"></textarea>
+placeholder="TikTok LIVE links (one per line)
+https://www.tiktok.com/@username/live">
+</textarea>
 
-<button onclick="load()">LOAD STREAMS</button>
+<button onclick="load()">LOAD LIVE</button>
 
 </div>
 
@@ -88,7 +92,7 @@ placeholder="ჩასვი 30 ლინკი (ერთი ხაზზე)">
 
 <script>
 
-/* ===== LOAD STREAMS ===== */
+/* ===== LOAD ===== */
 
 function load(){
 
@@ -101,40 +105,26 @@ const links =
 document.getElementById("links")
 .value
 .split("\n")
-.filter(x => x.trim() !== "")
-.slice(0,30);
-
-/* ===== თითო stream ===== */
+.filter(x=>x.trim()!=="")
+.slice(0,12); /* TikTok limit safe zone */
 
 links.forEach(link=>{
 
-let embed = link;
+let username = "";
 
-/* ===== Twitch fix ===== */
+if(link.includes("@")){
 
-if(link.includes("twitch.tv")){
-
-const name =
-link.split("/").pop();
-
-embed =
-`https://player.twitch.tv/?channel=${name}&parent=${location.hostname}`;
+username =
+link.split("@")[1].split("/")[0];
 
 }
 
-/* ===== YouTube ===== */
+if(!username) return;
 
-if(link.includes("youtube.com/watch")){
+/* ===== TikTok embed (unofficial) ===== */
 
-const id =
-link.split("v=")[1];
-
-embed =
-`https://www.youtube.com/embed/${id}`;
-
-}
-
-/* ===== CARD ===== */
+const embed =
+`https://www.tiktok.com/embed/v2/@${username}`;
 
 grid.innerHTML += `
 
@@ -142,7 +132,6 @@ grid.innerHTML += `
 
 <iframe
 src="${embed}"
-loading="lazy"
 allowfullscreen>
 </iframe>
 
