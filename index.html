@@ -23,16 +23,14 @@
       position: relative;
     }
 
-    /* ანიმირებული ფონის ხაზები + დამატებითი ბადე */
     .bg-lines {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: 
-        linear-gradient(transparent 95%, rgba(56, 189, 248, 0.08) 100%),
-        linear-gradient(90deg, transparent 95%, rgba(56, 189, 248, 0.05) 100%);
+      background: linear-gradient(transparent 95%, rgba(56, 189, 248, 0.08) 100%),
+                  linear-gradient(90deg, transparent 95%, rgba(56, 189, 248, 0.05) 100%);
       background-size: 60px 60px, 80px 80px;
       animation: moveLines 8s linear infinite;
       z-index: 0;
@@ -44,7 +42,6 @@
       100% { transform: translateY(60px) translateX(0); }
     }
 
-    /* canvas ნაწილაკებისთვის */
     #particleCanvas {
       position: fixed;
       top: 0;
@@ -55,7 +52,6 @@
       pointer-events: none;
     }
 
-    /* მთავარი კონტეინერი */
     .container {
       position: relative;
       z-index: 10;
@@ -70,7 +66,6 @@
       backdrop-filter: blur(2px);
     }
 
-    /* ანიმირებული ორნამენტული კონტური */
     .ornament-ring {
       position: absolute;
       top: 50%;
@@ -115,7 +110,6 @@
       100% { filter: drop-shadow(0 0 28px #7dd3fc); }
     }
 
-    /* ტექსტი საბეჭდი მანქანის ეფექტით */
     .typewriter-text {
       font-size: 1.3rem;
       opacity: 0.9;
@@ -144,7 +138,6 @@
       font-style: italic;
     }
 
-    /* ბეჯი */
     .badge {
       margin: 15px 0 25px;
       padding: 12px 28px;
@@ -168,7 +161,48 @@
       100% { transform: scale(1); box-shadow: 0 0 20px rgba(56,189,248,0.3); }
     }
 
-    /* loader + პროგრესის ზოლი */
+    .music-player {
+      margin: 20px 0 15px;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 25px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: #bae6fd;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.6);
+      animation: floatCard 4s infinite alternate;
+      max-width: 320px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .music-icon {
+      font-size: 1.8rem;
+      animation: musicPulse 1.3s infinite;
+    }
+
+    @keyframes musicPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); color: #f472b6; }
+      100% { transform: scale(1); }
+    }
+
+    .music-text {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .music-hidden {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 1px;
+      height: 1px;
+    }
+
     .loader-wrapper {
       margin: 25px 0 15px;
       display: flex;
@@ -217,7 +251,6 @@
       100% { width: 5%; }
     }
 
-    /* სოციალური / საკონტაქტო იმიტაცია */
     .floating-cards {
       display: flex;
       flex-wrap: wrap;
@@ -274,29 +307,29 @@
   </style>
 </head>
 <body>
-  <!-- ანიმირებული ფონური ხაზები -->
   <div class="bg-lines"></div>
-
-  <!-- ნაწილაკების Canvas -->
   <canvas id="particleCanvas"></canvas>
-
-  <!-- დეკორატიული რგოლები -->
   <div class="ornament-ring"></div>
   <div class="ornament-ring"></div>
 
   <div class="container">
     <h1>🚀 საიტი დამუშავებაშია</h1>
-
-    <!-- საბეჭდი მანქანის ეფექტი -->
     <div class="typewriter-text" id="typewriter"></div>
-
     <p class="sub-message" id="subMsg">სრული ვერსია მზადდება ⚡</p>
+
+    <!-- მუსიკის პლეერის ვიზუალი -->
+    <div class="music-player" id="musicPlayerDisplay">
+      <span class="music-icon">🎵</span>
+      <span class="music-text" id="currentSongText">HammAli & Navai - А если это любовь?</span>
+    </div>
+
+    <!-- YouTube iframe კონტეინერი (დამალული) -->
+    <div class="music-hidden" id="youtube-player-container"></div>
 
     <div class="badge">
       <span>🔧</span> მიმდინარეობს განვითარება <span>✨</span>
     </div>
 
-    <!-- loader + progress -->
     <div class="loader-wrapper">
       <div class="spinner"></div>
       <div class="progress-container">
@@ -304,7 +337,6 @@
       </div>
     </div>
 
-    <!-- ფლოუტინგ ქარდები -->
     <div class="floating-cards">
       <div class="card">📅 გაშვება: ივლისი 2026</div>
       <div class="card">👥 გუნდი: 12 დეველოპერი</div>
@@ -322,7 +354,7 @@
 
   <script>
     (function() {
-      // ---------- 1. ნაწილაკების Canvas ----------
+      // ---------- ნაწილაკების Canvas ----------
       const canvas = document.getElementById('particleCanvas');
       const ctx = canvas.getContext('2d');
       let particles = [];
@@ -364,7 +396,7 @@
           ctx.shadowColor = '#38bdf8';
           ctx.shadowBlur = 8;
           ctx.fill();
-          ctx.shadowBlur = 0; // reset for performance
+          ctx.shadowBlur = 0;
         }
       }
 
@@ -385,7 +417,7 @@
         animationId = requestAnimationFrame(animateParticles);
       }
 
-      // ---------- 2. საბეჭდი მანქანის ეფექტი ----------
+      // ---------- საბეჭდი მანქანის ეფექტი ----------
       const typewriterElement = document.getElementById('typewriter');
       const fullTexts = [
         "ყველაფერი მიმდინარეობს იდეალურად.",
@@ -396,7 +428,7 @@
       let charIndex = 0;
       let currentText = fullTexts[textIndex];
       let isDeleting = false;
-      let typeSpeed = 70;
+      const typeSpeed = 70;
 
       function typeLoop() {
         if (!isDeleting) {
@@ -405,7 +437,6 @@
             charIndex++;
             setTimeout(typeLoop, typeSpeed);
           } else {
-            // პაუზა ბოლოს
             isDeleting = true;
             setTimeout(typeLoop, 1800);
           }
@@ -423,7 +454,7 @@
         }
       }
 
-      // დინამიური ქვედა ტექსტის ცვლილება
+      // დინამიური ქვედა ტექსტი
       const subMsg = document.getElementById('subMsg');
       const subMessages = [
         "სრული ვერსია მზადდება ⚡",
@@ -437,15 +468,147 @@
         subMsg.textContent = subMessages[subIdx];
       }, 3500);
 
-      // ---------- გაშვება ----------
+      // ---------- YouTube ორი სიმღერა (რანდომულად) ----------
+      const song1 = {
+        id: 'BsBDB11nl1Y',
+        title: 'HammAli & Navai - А если это любовь?',
+        duration: 240 // 4 წუთი
+      };
+      const song2 = {
+        id: 'LQ_be1KSonc',
+        title: 'Miyagi & Andy Panda - Kosandra',
+        duration: 304 // 5 წუთი 4 წამი
+      };
+
+      const songs = [song1, song2];
+      const playerContainer = document.getElementById('youtube-player-container');
+      const currentSongText = document.getElementById('currentSongText');
+
+      let player;
+      let currentSong = null;
+      let loopTimer = null;
+      let playAttempted = false;
+
+      // YouTube API მზად არის
+      function onYouTubeIframeAPIReady() {
+        startRandomSong();
+      }
+
+      function createPlayer(videoId) {
+        if (player) {
+          player.destroy();
+          player = null;
+        }
+        playerContainer.innerHTML = '';
+
+        const div = document.createElement('div');
+        div.id = 'yt-player';
+        playerContainer.appendChild(div);
+
+        player = new YT.Player('yt-player', {
+          videoId: videoId,
+          width: 1,
+          height: 1,
+          playerVars: {
+            autoplay: 1,
+            controls: 0,
+            disablekb: 1,
+            fs: 0,
+            modestbranding: 1,
+            playsinline: 1,
+            rel: 0,
+            showinfo: 0,
+            mute: 0,
+            volume: 30
+          },
+          events: {
+            onReady: onPlayerReady,
+            onError: onPlayerError
+          }
+        });
+      }
+
+      function onPlayerReady(event) {
+        // ლუპისთვის: ველოდებით დასრულებას
+        if (currentSong) {
+          clearLoopTimer();
+          loopTimer = setInterval(() => {
+            if (player && player.getCurrentTime && currentSong) {
+              const currentTime = player.getCurrentTime();
+              if (currentTime >= currentSong.duration - 1) {
+                // გადავდივართ მომდევნო სიმღერაზე (რანდომულად)
+                switchToRandomSong();
+              }
+            }
+          }, 500);
+        }
+
+        if (!playAttempted) {
+          playAttempted = true;
+          event.target.playVideo();
+        }
+      }
+
+      function onPlayerError(event) {
+        console.warn('YouTube player error, switching song...');
+        clearLoopTimer();
+        switchToRandomSong();
+      }
+
+      function clearLoopTimer() {
+        if (loopTimer) {
+          clearInterval(loopTimer);
+          loopTimer = null;
+        }
+      }
+
+      function switchToRandomSong() {
+        clearLoopTimer();
+        // ვირჩევთ შემთხვევითს (შეიძლება იგივეც იყოს)
+        const randomIndex = Math.floor(Math.random() * songs.length);
+        currentSong = songs[randomIndex];
+        if (currentSongText) {
+          currentSongText.textContent = currentSong.title;
+        }
+        createPlayer(currentSong.id);
+      }
+
+      function startRandomSong() {
+        const randomIndex = Math.floor(Math.random() * songs.length);
+        currentSong = songs[randomIndex];
+        if (currentSongText) {
+          currentSongText.textContent = currentSong.title;
+        }
+        createPlayer(currentSong.id);
+      }
+
+      // ვტვირთავთ YouTube API-ს
+      function loadYouTubeAPI() {
+        if (window.YT && window.YT.Player) {
+          onYouTubeIframeAPIReady();
+          return;
+        }
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+      }
+
+      // ---------- სტარტი ----------
       resizeCanvas();
       initParticles();
       animateParticles();
       typeLoop();
+      loadYouTubeAPI();
 
-      // სისუფთავისთვის canvas cleanup (არასავალდებულო)
       window.addEventListener('beforeunload', () => {
         if (animationId) cancelAnimationFrame(animationId);
+        clearLoopTimer();
+        if (player && player.destroy) {
+          player.destroy();
+        }
       });
     })();
   </script>
