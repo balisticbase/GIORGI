@@ -1,109 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>AI Messenger</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI Chat</title>
 
 <style>
-    *{
-        margin:0;
-        padding:0;
-        box-sizing:border-box;
-        font-family:Arial,sans-serif;
-    }
+body{
+    margin:0;
+    background:#0f172a;
+    font-family:Arial;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
 
-    body{
-        background:#0f172a;
-        height:100vh;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-    }
+.chat{
+    width:400px;
+    height:700px;
+    background:#111827;
+    border-radius:20px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
 
-    .chat{
-        width:100%;
-        max-width:420px;
-        height:90vh;
-        background:#111827;
-        border-radius:20px;
-        overflow:hidden;
-        display:flex;
-        flex-direction:column;
-        border:1px solid #1f2937;
-    }
+.top{
+    background:#1e293b;
+    color:white;
+    padding:20px;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+}
 
-    .top{
-        padding:18px;
-        background:#1e293b;
-        color:white;
-        font-size:20px;
-        font-weight:bold;
-        text-align:center;
-    }
+.messages{
+    flex:1;
+    overflow:auto;
+    padding:15px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
 
-    .messages{
-        flex:1;
-        overflow-y:auto;
-        padding:15px;
-        display:flex;
-        flex-direction:column;
-        gap:12px;
-    }
+.msg{
+    max-width:80%;
+    padding:12px;
+    border-radius:14px;
+    color:white;
+    line-height:1.4;
+}
 
-    .msg{
-        padding:12px 14px;
-        border-radius:14px;
-        max-width:80%;
-        line-height:1.4;
-        word-wrap:break-word;
-    }
+.user{
+    background:#2563eb;
+    align-self:flex-end;
+}
 
-    .user{
-        background:#2563eb;
-        color:white;
-        align-self:flex-end;
-    }
+.ai{
+    background:#374151;
+    align-self:flex-start;
+}
 
-    .ai{
-        background:#374151;
-        color:white;
-        align-self:flex-start;
-    }
+.bottom{
+    display:flex;
+    gap:10px;
+    padding:12px;
+    background:#1e293b;
+}
 
-    .bottom{
-        display:flex;
-        padding:12px;
-        gap:10px;
-        background:#1e293b;
-    }
+input{
+    flex:1;
+    border:none;
+    outline:none;
+    border-radius:12px;
+    padding:14px;
+    background:#111827;
+    color:white;
+}
 
-    input{
-        flex:1;
-        padding:14px;
-        border:none;
-        border-radius:12px;
-        outline:none;
-        background:#111827;
-        color:white;
-        font-size:15px;
-    }
-
-    button{
-        border:none;
-        background:#2563eb;
-        color:white;
-        padding:0 18px;
-        border-radius:12px;
-        cursor:pointer;
-        font-size:15px;
-    }
-
-    button:hover{
-        background:#1d4ed8;
-    }
+button{
+    border:none;
+    background:#2563eb;
+    color:white;
+    border-radius:12px;
+    padding:0 20px;
+    cursor:pointer;
+}
 </style>
 </head>
+
 <body>
 
 <div class="chat">
@@ -115,23 +101,29 @@
     <div class="messages" id="messages"></div>
 
     <div class="bottom">
-        <input type="text" id="input" placeholder="Write message..." />
+        <input id="input" placeholder="Write message...">
         <button onclick="sendMessage()">Send</button>
     </div>
 
 </div>
 
 <script>
+
 const API_KEY = "sk-c0375bc5981e4fbfbdd9c4d288db6737";
 
 const messages = document.getElementById("messages");
 const input = document.getElementById("input");
 
-function addMessage(text, type){
+function addMessage(text,type){
+
     const div = document.createElement("div");
+
     div.className = "msg " + type;
+
     div.innerText = text;
+
     messages.appendChild(div);
+
     messages.scrollTop = messages.scrollHeight;
 }
 
@@ -141,55 +133,66 @@ async function sendMessage(){
 
     if(!text) return;
 
-    addMessage(text, "user");
-    input.value = "";
+    addMessage(text,"user");
 
-    addMessage("Typing...", "ai");
+    input.value = "";
 
     try{
 
-        const response = await fetch("https://api.openai.com/v1/chat/completions",{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":"Bearer " + API_KEY
-            },
-            body:JSON.stringify({
-                model:"gpt-4o-mini",
-                messages:[
-                    {
-                        role:"user",
-                        content:text
-                    }
-                ]
-            })
-        });
+        const response = await fetch(
+            "https://api.openai.com/v1/chat/completions",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json",
+                    "Authorization":"Bearer " + API_KEY
+                },
+                body:JSON.stringify({
+                    model:"gpt-4.1-mini",
+                    messages:[
+                        {
+                            role:"user",
+                            content:text
+                        }
+                    ]
+                })
+            }
+        );
 
         const data = await response.json();
 
-        document.querySelector(".ai:last-child").remove();
+        console.log(data);
 
-        const reply =
-            data.choices?.[0]?.message?.content ||
-            "Error";
+        if(data.error){
 
-        addMessage(reply, "ai");
+            addMessage(data.error.message,"ai");
+            return;
+        }
+
+        addMessage(
+            data.choices[0].message.content,
+            "ai"
+        );
 
     }catch(err){
 
-        document.querySelector(".ai:last-child").remove();
-
-        addMessage("Connection error", "ai");
+        addMessage(
+            "Connection error",
+            "ai"
+        );
 
         console.error(err);
     }
 }
 
-input.addEventListener("keypress",function(e){
-    if(e.key === "Enter"){
+input.addEventListener("keypress",e=>{
+
+    if(e.key==="Enter"){
         sendMessage();
     }
+
 });
+
 </script>
 
 </body>
