@@ -2,8 +2,8 @@
 <html lang="ka">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-  <title>🚀 საიტი დამუშავებაშია | Music Works Everywhere</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>🚀 საიტი დამუშავებაშია</title>
   <style>
     * {
       margin: 0;
@@ -13,7 +13,7 @@
 
     body {
       font-family: 'Segoe UI', 'Arial', sans-serif;
-      background: #020617;
+      background: radial-gradient(circle at top, #0f172a, #020617);
       color: white;
       overflow-x: hidden;
       min-height: 100vh;
@@ -23,8 +23,6 @@
       justify-content: center;
       position: relative;
       -webkit-tap-highlight-color: transparent;
-      user-select: none;
-      -webkit-user-select: none;
     }
 
     .bg-lines {
@@ -43,8 +41,8 @@
     }
 
     @keyframes moveLines {
-      0% { transform: translateY(0) translateX(0); }
-      100% { transform: translateY(60px) translateX(0); }
+      0% { transform: translateY(0); }
+      100% { transform: translateY(60px); }
     }
 
     #particleCanvas {
@@ -66,9 +64,8 @@
       align-items: center;
       text-align: center;
       padding: 20px;
-      max-width: 750px;
+      max-width: 700px;
       width: 100%;
-      backdrop-filter: blur(2px);
     }
 
     .ornament-ring {
@@ -98,7 +95,7 @@
     }
 
     h1 {
-      font-size: clamp(1.8rem, 6vw, 3.5rem);
+      font-size: clamp(1.8rem, 6vw, 3.2rem);
       font-weight: 700;
       margin-bottom: 12px;
       background: linear-gradient(to right, #bae6fd, #7dd3fc, #38bdf8);
@@ -107,7 +104,6 @@
       background-clip: text;
       filter: drop-shadow(0 0 15px #0284c7);
       animation: titleGlow 3s infinite alternate;
-      line-height: 1.3;
     }
 
     @keyframes titleGlow {
@@ -126,7 +122,6 @@
       border-right: 3px solid #38bdf8;
       display: inline-block;
       animation: blinkCursor 0.9s infinite;
-      padding: 0 10px;
     }
 
     @keyframes blinkCursor {
@@ -165,89 +160,31 @@
       100% { transform: scale(1); }
     }
 
-    /* Music player */
-    .music-player {
-      margin: 15px 0;
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      border-radius: 20px;
-      padding: 14px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      color: #bae6fd;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      max-width: 300px;
-      width: 100%;
-    }
-
-    .music-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-    }
-
-    .music-icon {
-      font-size: 1.8rem;
-      animation: musicPulse 1.3s infinite;
-    }
-
-    @keyframes musicPulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); color: #f472b6; }
-      100% { transform: scale(1); }
-    }
-
-    .music-text {
+    .music-indicator {
+      margin: 10px 0;
+      padding: 10px 20px;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(12px);
+      border-radius: 30px;
       font-size: 0.85rem;
-      font-weight: 500;
-      flex: 1;
-    }
-
-    .music-controls {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .music-btn {
-      background: rgba(56, 189, 248, 0.2);
-      border: 1px solid rgba(56, 189, 248, 0.5);
       color: #bae6fd;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      font-size: 1.1rem;
-      cursor: pointer;
       display: flex;
       align-items: center;
-      justify-content: center;
-      transition: all 0.3s;
-      backdrop-filter: blur(8px);
-      -webkit-tap-highlight-color: transparent;
+      gap: 8px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
     }
 
-    .music-btn:active {
-      background: rgba(56, 189, 248, 0.5);
-      transform: scale(0.9);
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 4px;
-      background: #1e293b;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .progress-fill-music {
-      height: 100%;
+    .music-dot {
+      width: 8px;
+      height: 8px;
       background: #38bdf8;
-      width: 0%;
-      transition: width 0.3s;
+      border-radius: 50%;
+      animation: dotPulse 1.5s infinite;
+    }
+
+    @keyframes dotPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
     }
 
     .loader-wrapper {
@@ -318,6 +255,9 @@
       animation: floatCard 4s infinite alternate;
     }
 
+    .card:nth-child(2) { animation-delay: 0.5s; }
+    .card:nth-child(3) { animation-delay: 1s; }
+
     @keyframes floatCard {
       0% { transform: translateY(0px); }
       100% { transform: translateY(-6px); }
@@ -339,9 +279,6 @@
         flex-direction: column;
         align-items: center;
       }
-      .music-player {
-        max-width: 260px;
-      }
     }
   </style>
 </head>
@@ -356,24 +293,11 @@
     <div class="typewriter-text" id="typewriter"></div>
     <p class="sub-message" id="subMsg">სრული ვერსია მზადდება ⚡</p>
 
-    <!-- Music player HTML5 audio -->
-    <div class="music-player">
-      <div class="music-info">
-        <span class="music-icon">🎵</span>
-        <span class="music-text" id="currentSongText">HammAli & Navai - А если это любовь?</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill-music" id="musicProgressFill"></div>
-      </div>
-      <div class="music-controls">
-        <button class="music-btn" id="prevBtn" title="Previous">⏮️</button>
-        <button class="music-btn" id="playBtn" title="Play/Pause">▶️</button>
-        <button class="music-btn" id="nextBtn" title="Next">⏭️</button>
-        <button class="music-btn" id="volumeBtn" title="Volume">🔊</button>
-      </div>
+    <!-- Просто индикатор что музыка играет -->
+    <div class="music-indicator">
+      <div class="music-dot"></div>
+      <span>🎵 ფონური მუსიკა</span>
     </div>
-
-    <audio id="audioPlayer" preload="auto"></audio>
 
     <div class="badge">
       <span>🔧</span> მიმდინარეობს განვითარება <span>✨</span>
@@ -401,9 +325,14 @@
     © 2026 | ყველა უფლება დაცულია | NextGen Dev
   </div>
 
+  <!-- Аудио плеер - скрытый, только фон -->
+  <audio id="bgMusic" loop preload="auto" volume="0.3">
+    <source src="https://cdn.pixabay.com/audio/2022/10/25/audio_946b4f0b52.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
     (function() {
-      // ---------- Canvas Particles ----------
+      // ========== Canvas Particles ==========
       const canvas = document.getElementById('particleCanvas');
       const ctx = canvas.getContext('2d');
       let particles = [];
@@ -454,30 +383,40 @@
         requestAnimationFrame(animateParticles);
       }
 
-      // ---------- Typewriter ----------
+      // ========== Typewriter ==========
       const tw = document.getElementById('typewriter');
       const texts = [
         "ყველაფერი მიმდინარეობს იდეალურად.",
         "ჩვენი გუნდი მუშაობს ახალ პროექტზე.",
-        "რომელიც მალე “დაარღვევს” ინტერნეტს."
+        "რომელიც მალე "დაარღვევს" ინტერნეტს."
       ];
       let txtIdx = 0, charIdx = 0, deleting = false;
+      
       function typeLoop() {
         const current = texts[txtIdx];
         if (!deleting) {
           tw.textContent = current.slice(0, charIdx + 1);
           charIdx++;
-          if (charIdx === current.length) { deleting = true; setTimeout(typeLoop, 1800); }
-          else setTimeout(typeLoop, 70);
+          if (charIdx === current.length) { 
+            deleting = true; 
+            setTimeout(typeLoop, 1800); 
+          } else {
+            setTimeout(typeLoop, 70);
+          }
         } else {
           tw.textContent = current.slice(0, charIdx - 1);
           charIdx--;
-          if (charIdx === 0) { deleting = false; txtIdx = (txtIdx + 1) % texts.length; setTimeout(typeLoop, 400); }
-          else setTimeout(typeLoop, 25);
+          if (charIdx === 0) { 
+            deleting = false; 
+            txtIdx = (txtIdx + 1) % texts.length; 
+            setTimeout(typeLoop, 400); 
+          } else {
+            setTimeout(typeLoop, 25);
+          }
         }
       }
 
-      // Sub message rotator
+      // Sub message
       const subMsg = document.getElementById('subMsg');
       const subMessages = ["სრული ვერსია მზადდება ⚡", "დიზაინი სრულდება 🎨", "სერვერები იტვირთება 🔥"];
       let subIdx = 0;
@@ -486,132 +425,49 @@
         subMsg.textContent = subMessages[subIdx];
       }, 3500);
 
-      // ---------- Audio Player (работает везде) ----------
-      const audio = document.getElementById('audioPlayer');
-      const playBtn = document.getElementById('playBtn');
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-      const volumeBtn = document.getElementById('volumeBtn');
-      const songText = document.getElementById('currentSongText');
-      const progressFill = document.getElementById('musicProgressFill');
-
-      // Прямые MP3 ссылки (замени на свои, если нужно)
-      const songs = [
-        {
-          title: 'HammAli & Navai - А если это любовь?',
-          url: 'https://cdn.pixabay.com/audio/2022/10/25/audio_946b4f0b52.mp3' // замени на реальный MP3
-        },
-        {
-          title: 'Miyagi & Andy Panda - Kosandra',
-          url: 'https://cdn.pixabay.com/audio/2022/11/22/audio_5e9e6ed9a2.mp3' // замени на реальный MP3
-        }
-      ];
-
-      let currentSongIndex = 0;
-      let isPlaying = false;
-      let volumeOn = true;
-
-      function loadSong(index) {
-        currentSongIndex = index;
-        const song = songs[index];
-        audio.src = song.url;
-        audio.load();
-        songText.textContent = song.title;
-        progressFill.style.width = '0%';
-      }
-
-      function togglePlay() {
-        if (isPlaying) {
-          audio.pause();
-          playBtn.textContent = '▶️';
-          isPlaying = false;
-        } else {
-          const playPromise = audio.play();
-          if (playPromise !== undefined) {
-            playPromise.then(() => {
-              playBtn.textContent = '⏸️';
-              isPlaying = true;
-            }).catch(err => {
-              console.log('Autoplay blocked, user interaction needed:', err);
-              // Показываем кнопку Play
-              playBtn.textContent = '▶️';
-              isPlaying = false;
-            });
-          }
-        }
-      }
-
-      function nextSong() {
-        currentSongIndex = (currentSongIndex + 1) % songs.length;
-        loadSong(currentSongIndex);
-        if (isPlaying) {
-          audio.play().then(() => {
-            playBtn.textContent = '⏸️';
+      // ========== Background Music - Автозапуск ==========
+      const bgMusic = document.getElementById('bgMusic');
+      bgMusic.volume = 0.3;
+      
+      function startMusic() {
+        const playPromise = bgMusic.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            console.log('✅ Музыка играет');
           }).catch(() => {
-            playBtn.textContent = '▶️';
-            isPlaying = false;
+            console.log('⏳ Ждём взаимодействия...');
+            // Ждём любого клика/тапа
+            document.addEventListener('click', startOnInteraction, { once: true });
+            document.addEventListener('touchstart', startOnInteraction, { once: true });
+            document.addEventListener('keydown', startOnInteraction, { once: true });
           });
         }
       }
 
-      function prevSong() {
-        currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-        loadSong(currentSongIndex);
-        if (isPlaying) {
-          audio.play().then(() => {
-            playBtn.textContent = '⏸️';
-          }).catch(() => {
-            playBtn.textContent = '▶️';
-            isPlaying = false;
-          });
-        }
+      function startOnInteraction() {
+        bgMusic.play().then(() => {
+          console.log('✅ Музыка запущена после клика');
+        }).catch(err => {
+          console.log('❌ Ошибка:', err);
+        });
       }
 
-      function toggleVolume() {
-        volumeOn = !volumeOn;
-        audio.muted = !volumeOn;
-        volumeBtn.textContent = volumeOn ? '🔊' : '🔇';
-      }
-
-      // Progress update
-      audio.addEventListener('timeupdate', () => {
-        if (audio.duration) {
-          const progress = (audio.currentTime / audio.duration) * 100;
-          progressFill.style.width = progress + '%';
-        }
-      });
-
-      // Auto next when song ends
-      audio.addEventListener('ended', () => {
-        nextSong();
-      });
-
-      // Handle errors - skip to next
-      audio.addEventListener('error', () => {
-        console.warn('Audio error, skipping to next song...');
-        nextSong();
-      });
-
-      // Button listeners
-      playBtn.addEventListener('click', togglePlay);
-      prevBtn.addEventListener('click', prevSong);
-      nextBtn.addEventListener('click', nextSong);
-      volumeBtn.addEventListener('click', toggleVolume);
-
-      // Initial load
-      loadSong(0);
-
-      // ---------- Start everything ----------
+      // ========== Init ==========
       resizeCanvas();
       initParticles();
       animateParticles();
       typeLoop();
+      startMusic();
 
-      // Cleanup
-      window.addEventListener('beforeunload', () => {
-        audio.pause();
-        audio.src = '';
+      // Обработка видимости страницы (пауза когда вкладка не активна)
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          bgMusic.pause();
+        } else {
+          bgMusic.play().catch(() => {});
+        }
       });
+
     })();
   </script>
 </body>
