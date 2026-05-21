@@ -2,8 +2,8 @@
 <html lang="ka">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>🚀 საიტი დამუშავებაშია | მაქსიმალური ვერსია</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <title>🚀 საიტი დამუშავებაშია | Music Works Everywhere</title>
   <style>
     * {
       margin: 0;
@@ -17,10 +17,14 @@
       color: white;
       overflow-x: hidden;
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .bg-lines {
@@ -29,8 +33,9 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(transparent 95%, rgba(56, 189, 248, 0.08) 100%),
-                  linear-gradient(90deg, transparent 95%, rgba(56, 189, 248, 0.05) 100%);
+      background: 
+        linear-gradient(transparent 95%, rgba(56, 189, 248, 0.08) 100%),
+        linear-gradient(90deg, transparent 95%, rgba(56, 189, 248, 0.05) 100%);
       background-size: 60px 60px, 80px 80px;
       animation: moveLines 8s linear infinite;
       z-index: 0;
@@ -71,18 +76,18 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 350px;
-      height: 350px;
-      border: 2px dashed rgba(56, 189, 248, 0.25);
+      width: 300px;
+      height: 300px;
+      border: 2px dashed rgba(56, 189, 248, 0.2);
       border-radius: 50%;
       animation: rotateRing 30s linear infinite;
       z-index: -1;
       pointer-events: none;
     }
     .ornament-ring:nth-child(2) {
-      width: 420px;
-      height: 420px;
-      border-color: rgba(168, 85, 247, 0.2);
+      width: 380px;
+      height: 380px;
+      border-color: rgba(168, 85, 247, 0.15);
       animation-direction: reverse;
       animation-duration: 45s;
     }
@@ -93,36 +98,35 @@
     }
 
     h1 {
-      font-size: clamp(2.2rem, 7vw, 3.8rem);
+      font-size: clamp(1.8rem, 6vw, 3.5rem);
       font-weight: 700;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
       background: linear-gradient(to right, #bae6fd, #7dd3fc, #38bdf8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       filter: drop-shadow(0 0 15px #0284c7);
       animation: titleGlow 3s infinite alternate;
-      letter-spacing: 1px;
+      line-height: 1.3;
     }
 
     @keyframes titleGlow {
-      0% { filter: drop-shadow(0 0 12px #0284c7); }
-      100% { filter: drop-shadow(0 0 28px #7dd3fc); }
+      0% { filter: drop-shadow(0 0 10px #0284c7); }
+      100% { filter: drop-shadow(0 0 25px #7dd3fc); }
     }
 
     .typewriter-text {
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       opacity: 0.9;
-      max-width: 600px;
-      margin: 0 auto 10px;
-      min-height: 3.5rem;
-      line-height: 1.6;
+      max-width: 550px;
+      margin: 0 auto 8px;
+      min-height: 3rem;
+      line-height: 1.5;
       color: #e2e8f0;
       border-right: 3px solid #38bdf8;
-      white-space: normal;
-      overflow: hidden;
       display: inline-block;
       animation: blinkCursor 0.9s infinite;
+      padding: 0 10px;
     }
 
     @keyframes blinkCursor {
@@ -131,52 +135,59 @@
     }
 
     .sub-message {
-      font-size: 1.1rem;
+      font-size: 1rem;
       opacity: 0.8;
       color: #cbd5e1;
-      margin: 10px 0 20px;
+      margin: 8px 0 15px;
       font-style: italic;
     }
 
     .badge {
-      margin: 15px 0 25px;
-      padding: 12px 28px;
+      margin: 10px 0 20px;
+      padding: 10px 24px;
       border: 1.5px solid #38bdf8;
       border-radius: 40px;
       color: #7dd3fc;
       background: rgba(15, 23, 42, 0.7);
       backdrop-filter: blur(12px);
       font-weight: 600;
-      letter-spacing: 0.5px;
+      font-size: 0.9rem;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       animation: pulseBadge 2s infinite;
       box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
     }
 
     @keyframes pulseBadge {
-      0% { transform: scale(1); box-shadow: 0 0 20px rgba(56,189,248,0.3); }
-      50% { transform: scale(1.05); box-shadow: 0 0 35px rgba(56,189,248,0.5); }
-      100% { transform: scale(1); box-shadow: 0 0 20px rgba(56,189,248,0.3); }
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
     }
 
+    /* Music player */
     .music-player {
-      margin: 20px 0 15px;
-      background: rgba(15, 23, 42, 0.8);
+      margin: 15px 0;
+      background: rgba(15, 23, 42, 0.85);
       backdrop-filter: blur(16px);
       border: 1px solid rgba(56, 189, 248, 0.4);
-      border-radius: 25px;
-      padding: 12px 20px;
+      border-radius: 20px;
+      padding: 14px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: #bae6fd;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      max-width: 300px;
+      width: 100%;
+    }
+
+    .music-info {
       display: flex;
       align-items: center;
-      gap: 15px;
-      color: #bae6fd;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.6);
-      animation: floatCard 4s infinite alternate;
-      max-width: 320px;
+      gap: 12px;
       width: 100%;
-      justify-content: center;
     }
 
     .music-icon {
@@ -191,35 +202,71 @@
     }
 
     .music-text {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 500;
+      flex: 1;
     }
 
-    .music-hidden {
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
-      width: 1px;
-      height: 1px;
+    .music-controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .music-btn {
+      background: rgba(56, 189, 248, 0.2);
+      border: 1px solid rgba(56, 189, 248, 0.5);
+      color: #bae6fd;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      backdrop-filter: blur(8px);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .music-btn:active {
+      background: rgba(56, 189, 248, 0.5);
+      transform: scale(0.9);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: #1e293b;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill-music {
+      height: 100%;
+      background: #38bdf8;
+      width: 0%;
+      transition: width 0.3s;
     }
 
     .loader-wrapper {
-      margin: 25px 0 15px;
+      margin: 15px 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 20px;
+      gap: 15px;
     }
 
     .spinner {
-      width: 65px;
-      height: 65px;
-      border: 6px solid #1e293b;
-      border-top: 6px solid #38bdf8;
-      border-right: 6px solid #a855f7;
+      width: 55px;
+      height: 55px;
+      border: 5px solid #1e293b;
+      border-top: 5px solid #38bdf8;
+      border-right: 5px solid #a855f7;
       border-radius: 50%;
-      animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-      box-shadow: 0 0 25px #38bdf8;
+      animation: spin 1.2s linear infinite;
+      box-shadow: 0 0 20px #38bdf8;
     }
 
     @keyframes spin {
@@ -228,26 +275,24 @@
     }
 
     .progress-container {
-      width: 220px;
-      height: 8px;
+      width: 200px;
+      height: 6px;
       background: #1e293b;
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
     }
 
     .progress-fill {
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, #38bdf8, #a855f7, #f472b6);
+      background: linear-gradient(90deg, #38bdf8, #a855f7);
       border-radius: 20px;
-      animation: fillProgress 3.5s infinite ease-in-out;
-      box-shadow: 0 0 15px #38bdf8;
+      animation: fillProgress 3s infinite ease-in-out;
     }
 
     @keyframes fillProgress {
       0% { width: 5%; }
-      50% { width: 75%; }
+      50% { width: 70%; }
       100% { width: 5%; }
     }
 
@@ -255,46 +300,37 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 20px;
-      margin: 25px 0 15px;
+      gap: 12px;
+      margin: 20px 0;
     }
 
     .card {
       background: rgba(15, 23, 42, 0.8);
       backdrop-filter: blur(16px);
       border: 1px solid rgba(56, 189, 248, 0.3);
-      border-radius: 20px;
-      padding: 12px 20px;
+      border-radius: 16px;
+      padding: 10px 16px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 0.95rem;
-      box-shadow: 0 15px 30px -10px rgba(0,0,0,0.7);
+      gap: 8px;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
       animation: floatCard 4s infinite alternate;
-      transition: transform 0.3s;
     }
-
-    .card:hover {
-      transform: translateY(-5px);
-    }
-
-    .card:nth-child(2) { animation-delay: 0.5s; }
-    .card:nth-child(3) { animation-delay: 1s; }
 
     @keyframes floatCard {
       0% { transform: translateY(0px); }
-      100% { transform: translateY(-8px); }
+      100% { transform: translateY(-6px); }
     }
 
     .footer {
       position: fixed;
-      bottom: 15px;
-      font-size: 0.8rem;
-      opacity: 0.6;
+      bottom: 12px;
+      font-size: 0.75rem;
+      opacity: 0.5;
       z-index: 10;
       text-align: center;
       width: 100%;
-      pointer-events: none;
       color: #94a3b8;
     }
 
@@ -302,6 +338,9 @@
       .floating-cards {
         flex-direction: column;
         align-items: center;
+      }
+      .music-player {
+        max-width: 260px;
       }
     }
   </style>
@@ -317,14 +356,24 @@
     <div class="typewriter-text" id="typewriter"></div>
     <p class="sub-message" id="subMsg">სრული ვერსია მზადდება ⚡</p>
 
-    <!-- მუსიკის პლეერის ვიზუალი -->
-    <div class="music-player" id="musicPlayerDisplay">
-      <span class="music-icon">🎵</span>
-      <span class="music-text" id="currentSongText">HammAli & Navai - А если это любовь?</span>
+    <!-- Music player HTML5 audio -->
+    <div class="music-player">
+      <div class="music-info">
+        <span class="music-icon">🎵</span>
+        <span class="music-text" id="currentSongText">HammAli & Navai - А если это любовь?</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill-music" id="musicProgressFill"></div>
+      </div>
+      <div class="music-controls">
+        <button class="music-btn" id="prevBtn" title="Previous">⏮️</button>
+        <button class="music-btn" id="playBtn" title="Play/Pause">▶️</button>
+        <button class="music-btn" id="nextBtn" title="Next">⏭️</button>
+        <button class="music-btn" id="volumeBtn" title="Volume">🔊</button>
+      </div>
     </div>
 
-    <!-- YouTube iframe კონტეინერი (დამალული) -->
-    <div class="music-hidden" id="youtube-player-container"></div>
+    <audio id="audioPlayer" preload="auto"></audio>
 
     <div class="badge">
       <span>🔧</span> მიმდინარეობს განვითარება <span>✨</span>
@@ -340,11 +389,11 @@
     <div class="floating-cards">
       <div class="card">📅 გაშვება: ივლისი 2026</div>
       <div class="card">👥 გუნდი: 12 დეველოპერი</div>
-      <div class="card">⚙️ სტატუსი: ბეტა ტესტირება</div>
+      <div class="card">⚙️ სტატუსი: ბეტა ტესტი</div>
     </div>
 
-    <p style="margin-top:20px; opacity:0.8; font-size:0.9rem; color:#b0c4de;">
-      მალე გაშვება — ყველაფერი იდეალურად მიმდინარეობს
+    <p style="margin-top:15px; opacity:0.7; font-size:0.85rem; color:#b0c4de;">
+      მალე გაშვება — იდეალური ხარისხი
     </p>
   </div>
 
@@ -354,11 +403,10 @@
 
   <script>
     (function() {
-      // ---------- ნაწილაკების Canvas ----------
+      // ---------- Canvas Particles ----------
       const canvas = document.getElementById('particleCanvas');
       const ctx = canvas.getContext('2d');
       let particles = [];
-      let animationId;
 
       function resizeCanvas() {
         canvas.width = window.innerWidth;
@@ -376,239 +424,193 @@
         reset() {
           this.x = Math.random() * canvas.width;
           this.y = Math.random() * canvas.height;
-          this.size = Math.random() * 3 + 1.2;
-          this.speedX = (Math.random() - 0.5) * 0.7;
-          this.speedY = (Math.random() - 0.5) * 0.7;
-          this.opacity = Math.random() * 0.5 + 0.2;
+          this.size = Math.random() * 3 + 1;
+          this.speedX = (Math.random() - 0.5) * 0.6;
+          this.speedY = (Math.random() - 0.5) * 0.6;
+          this.opacity = Math.random() * 0.4 + 0.15;
           this.color = `rgba(56, 189, 248, ${this.opacity})`;
         }
         update() {
           this.x += this.speedX;
           this.y += this.speedY;
-          if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
-            this.reset();
-          }
+          if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
         }
         draw() {
           ctx.beginPath();
           ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
           ctx.fillStyle = this.color;
-          ctx.shadowColor = '#38bdf8';
-          ctx.shadowBlur = 8;
           ctx.fill();
-          ctx.shadowBlur = 0;
         }
       }
 
       function initParticles() {
-        const particleCount = Math.min(120, Math.floor(window.innerWidth / 12));
-        particles = [];
-        for (let i = 0; i < particleCount; i++) {
-          particles.push(new Particle());
-        }
+        const count = Math.min(80, Math.floor(window.innerWidth / 15));
+        particles = Array.from({ length: count }, () => new Particle());
       }
 
       function animateParticles() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => {
-          p.update();
-          p.draw();
-        });
-        animationId = requestAnimationFrame(animateParticles);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animateParticles);
       }
 
-      // ---------- საბეჭდი მანქანის ეფექტი ----------
-      const typewriterElement = document.getElementById('typewriter');
-      const fullTexts = [
+      // ---------- Typewriter ----------
+      const tw = document.getElementById('typewriter');
+      const texts = [
         "ყველაფერი მიმდინარეობს იდეალურად.",
-        "ჩვენი გუნდი მუშაობს ახალ, ძლიერ პროექტზე.",
-        "რომელიც მალე “დაარღვევს” ინტერნეტ სივრცეს."
+        "ჩვენი გუნდი მუშაობს ახალ პროექტზე.",
+        "რომელიც მალე “დაარღვევს” ინტერნეტს."
       ];
-      let textIndex = 0;
-      let charIndex = 0;
-      let currentText = fullTexts[textIndex];
-      let isDeleting = false;
-      const typeSpeed = 70;
-
+      let txtIdx = 0, charIdx = 0, deleting = false;
       function typeLoop() {
-        if (!isDeleting) {
-          if (charIndex < currentText.length) {
-            typewriterElement.textContent = currentText.substring(0, charIndex + 1);
-            charIndex++;
-            setTimeout(typeLoop, typeSpeed);
-          } else {
-            isDeleting = true;
-            setTimeout(typeLoop, 1800);
-          }
+        const current = texts[txtIdx];
+        if (!deleting) {
+          tw.textContent = current.slice(0, charIdx + 1);
+          charIdx++;
+          if (charIdx === current.length) { deleting = true; setTimeout(typeLoop, 1800); }
+          else setTimeout(typeLoop, 70);
         } else {
-          if (charIndex > 0) {
-            typewriterElement.textContent = currentText.substring(0, charIndex - 1);
-            charIndex--;
-            setTimeout(typeLoop, 30);
-          } else {
-            isDeleting = false;
-            textIndex = (textIndex + 1) % fullTexts.length;
-            currentText = fullTexts[textIndex];
-            setTimeout(typeLoop, 400);
-          }
+          tw.textContent = current.slice(0, charIdx - 1);
+          charIdx--;
+          if (charIdx === 0) { deleting = false; txtIdx = (txtIdx + 1) % texts.length; setTimeout(typeLoop, 400); }
+          else setTimeout(typeLoop, 25);
         }
       }
 
-      // დინამიური ქვედა ტექსტი
+      // Sub message rotator
       const subMsg = document.getElementById('subMsg');
-      const subMessages = [
-        "სრული ვერსია მზადდება ⚡",
-        "UI/UX დიზაინი სრულდება 🎨",
-        "სერვერები იტვირთება 🔥",
-        "გთხოვთ მოითმინოთ ☕"
-      ];
+      const subMessages = ["სრული ვერსია მზადდება ⚡", "დიზაინი სრულდება 🎨", "სერვერები იტვირთება 🔥"];
       let subIdx = 0;
       setInterval(() => {
         subIdx = (subIdx + 1) % subMessages.length;
         subMsg.textContent = subMessages[subIdx];
       }, 3500);
 
-      // ---------- YouTube ორი სიმღერა (რანდომულად) ----------
-      const song1 = {
-        id: 'BsBDB11nl1Y',
-        title: 'HammAli & Navai - А если это любовь?',
-        duration: 240 // 4 წუთი
-      };
-      const song2 = {
-        id: 'LQ_be1KSonc',
-        title: 'Miyagi & Andy Panda - Kosandra',
-        duration: 304 // 5 წუთი 4 წამი
-      };
+      // ---------- Audio Player (работает везде) ----------
+      const audio = document.getElementById('audioPlayer');
+      const playBtn = document.getElementById('playBtn');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const volumeBtn = document.getElementById('volumeBtn');
+      const songText = document.getElementById('currentSongText');
+      const progressFill = document.getElementById('musicProgressFill');
 
-      const songs = [song1, song2];
-      const playerContainer = document.getElementById('youtube-player-container');
-      const currentSongText = document.getElementById('currentSongText');
+      // Прямые MP3 ссылки (замени на свои, если нужно)
+      const songs = [
+        {
+          title: 'HammAli & Navai - А если это любовь?',
+          url: 'https://cdn.pixabay.com/audio/2022/10/25/audio_946b4f0b52.mp3' // замени на реальный MP3
+        },
+        {
+          title: 'Miyagi & Andy Panda - Kosandra',
+          url: 'https://cdn.pixabay.com/audio/2022/11/22/audio_5e9e6ed9a2.mp3' // замени на реальный MP3
+        }
+      ];
 
-      let player;
-      let currentSong = null;
-      let loopTimer = null;
-      let playAttempted = false;
+      let currentSongIndex = 0;
+      let isPlaying = false;
+      let volumeOn = true;
 
-      // YouTube API მზად არის
-      function onYouTubeIframeAPIReady() {
-        startRandomSong();
+      function loadSong(index) {
+        currentSongIndex = index;
+        const song = songs[index];
+        audio.src = song.url;
+        audio.load();
+        songText.textContent = song.title;
+        progressFill.style.width = '0%';
       }
 
-      function createPlayer(videoId) {
-        if (player) {
-          player.destroy();
-          player = null;
-        }
-        playerContainer.innerHTML = '';
-
-        const div = document.createElement('div');
-        div.id = 'yt-player';
-        playerContainer.appendChild(div);
-
-        player = new YT.Player('yt-player', {
-          videoId: videoId,
-          width: 1,
-          height: 1,
-          playerVars: {
-            autoplay: 1,
-            controls: 0,
-            disablekb: 1,
-            fs: 0,
-            modestbranding: 1,
-            playsinline: 1,
-            rel: 0,
-            showinfo: 0,
-            mute: 0,
-            volume: 30
-          },
-          events: {
-            onReady: onPlayerReady,
-            onError: onPlayerError
+      function togglePlay() {
+        if (isPlaying) {
+          audio.pause();
+          playBtn.textContent = '▶️';
+          isPlaying = false;
+        } else {
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              playBtn.textContent = '⏸️';
+              isPlaying = true;
+            }).catch(err => {
+              console.log('Autoplay blocked, user interaction needed:', err);
+              // Показываем кнопку Play
+              playBtn.textContent = '▶️';
+              isPlaying = false;
+            });
           }
-        });
-      }
-
-      function onPlayerReady(event) {
-        // ლუპისთვის: ველოდებით დასრულებას
-        if (currentSong) {
-          clearLoopTimer();
-          loopTimer = setInterval(() => {
-            if (player && player.getCurrentTime && currentSong) {
-              const currentTime = player.getCurrentTime();
-              if (currentTime >= currentSong.duration - 1) {
-                // გადავდივართ მომდევნო სიმღერაზე (რანდომულად)
-                switchToRandomSong();
-              }
-            }
-          }, 500);
-        }
-
-        if (!playAttempted) {
-          playAttempted = true;
-          event.target.playVideo();
         }
       }
 
-      function onPlayerError(event) {
-        console.warn('YouTube player error, switching song...');
-        clearLoopTimer();
-        switchToRandomSong();
-      }
-
-      function clearLoopTimer() {
-        if (loopTimer) {
-          clearInterval(loopTimer);
-          loopTimer = null;
+      function nextSong() {
+        currentSongIndex = (currentSongIndex + 1) % songs.length;
+        loadSong(currentSongIndex);
+        if (isPlaying) {
+          audio.play().then(() => {
+            playBtn.textContent = '⏸️';
+          }).catch(() => {
+            playBtn.textContent = '▶️';
+            isPlaying = false;
+          });
         }
       }
 
-      function switchToRandomSong() {
-        clearLoopTimer();
-        // ვირჩევთ შემთხვევითს (შეიძლება იგივეც იყოს)
-        const randomIndex = Math.floor(Math.random() * songs.length);
-        currentSong = songs[randomIndex];
-        if (currentSongText) {
-          currentSongText.textContent = currentSong.title;
+      function prevSong() {
+        currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+        loadSong(currentSongIndex);
+        if (isPlaying) {
+          audio.play().then(() => {
+            playBtn.textContent = '⏸️';
+          }).catch(() => {
+            playBtn.textContent = '▶️';
+            isPlaying = false;
+          });
         }
-        createPlayer(currentSong.id);
       }
 
-      function startRandomSong() {
-        const randomIndex = Math.floor(Math.random() * songs.length);
-        currentSong = songs[randomIndex];
-        if (currentSongText) {
-          currentSongText.textContent = currentSong.title;
-        }
-        createPlayer(currentSong.id);
+      function toggleVolume() {
+        volumeOn = !volumeOn;
+        audio.muted = !volumeOn;
+        volumeBtn.textContent = volumeOn ? '🔊' : '🔇';
       }
 
-      // ვტვირთავთ YouTube API-ს
-      function loadYouTubeAPI() {
-        if (window.YT && window.YT.Player) {
-          onYouTubeIframeAPIReady();
-          return;
+      // Progress update
+      audio.addEventListener('timeupdate', () => {
+        if (audio.duration) {
+          const progress = (audio.currentTime / audio.duration) * 100;
+          progressFill.style.width = progress + '%';
         }
-        const tag = document.createElement('script');
-        tag.src = 'https://www.youtube.com/iframe_api';
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      });
 
-        window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
-      }
+      // Auto next when song ends
+      audio.addEventListener('ended', () => {
+        nextSong();
+      });
 
-      // ---------- სტარტი ----------
+      // Handle errors - skip to next
+      audio.addEventListener('error', () => {
+        console.warn('Audio error, skipping to next song...');
+        nextSong();
+      });
+
+      // Button listeners
+      playBtn.addEventListener('click', togglePlay);
+      prevBtn.addEventListener('click', prevSong);
+      nextBtn.addEventListener('click', nextSong);
+      volumeBtn.addEventListener('click', toggleVolume);
+
+      // Initial load
+      loadSong(0);
+
+      // ---------- Start everything ----------
       resizeCanvas();
       initParticles();
       animateParticles();
       typeLoop();
-      loadYouTubeAPI();
 
+      // Cleanup
       window.addEventListener('beforeunload', () => {
-        if (animationId) cancelAnimationFrame(animationId);
-        clearLoopTimer();
-        if (player && player.destroy) {
-          player.destroy();
-        }
+        audio.pause();
+        audio.src = '';
       });
     })();
   </script>
