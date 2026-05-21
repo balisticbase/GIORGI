@@ -106,7 +106,7 @@ document.getElementById("links")
 
 /* ===== თითო stream ===== */
 
-links.forEach(link=>{https://vm.tiktok.com/ZG9YPBE58SKp3-NxMqH/
+links.forEach(link=>{
 
 let embed = link;
 
@@ -118,19 +118,19 @@ const name =
 link.split("/").pop();
 
 embed =
-`https://vm.tiktok.com/ZG9YPBE58SKp3-NxMqH//?channel=${name}&parent=${location.hostname}`;
+`https://player.twitch.tv/?channel=${name}&parent=${location.hostname}`;
 
 }
 
 /* ===== YouTube ===== */
 
-if(link.includes("https://vm.tiktok.com/ZG9YPBE58SKp3-NxMqH/")){
+if(link.includes("youtube.com/watch")){
 
 const id =
 link.split("v=")[1];
 
 embed =
-`https://vm.tiktok.com/ZG9YPBE58SKp3-NxMqH/${id}`;
+`https://www.youtube.com/embed/${id}`;
 
 }
 
