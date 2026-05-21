@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BenAI Smart Brain</title>
+<title>BenAI Smart Fixed</title>
 
 <style>
 body{
@@ -57,6 +57,7 @@ border-radius:20px;
 border:1px solid #2a2a40;
 background:#0a0a0f;
 color:white;
+outline:none;
 }
 
 button{
@@ -74,7 +75,7 @@ cursor:pointer;
 <body>
 
 <header>
-<div>🧠 BenAI SMART</div>
+<div>🧠 BenAI SMART FIX</div>
 <div id="stats">📦0 📝0 ⭐1</div>
 </header>
 
@@ -86,9 +87,9 @@ cursor:pointer;
 </div>
 
 <script>
-const KEY="benai_smart_v1";
+const KEY="benai_smart_fixed";
 
-let brain=JSON.parse(localStorage.getItem(KEY))||{
+let brain = JSON.parse(localStorage.getItem(KEY)) || {
 codes:[],
 facts:[],
 level:1
@@ -110,36 +111,38 @@ chat.scrollTop=chat.scrollHeight;
 }
 
 function detectCode(t){
-return /<|function|class|const|let|var|def|#include|console/.test(t);
-}
-
-function extractFacts(t){
-let facts=[];
-if(/მე ვარ (.+)/i.test(t)) facts.push("identity");
-if(/მიყვარს (.+)/i.test(t)) facts.push("like");
-if(/ვმუშაობ (.+)/i.test(t)) facts.push("job");
-return facts;
+return /<|function|class|const|let|var|def|#include|console|html|body/.test(t);
 }
 
 function smartReply(t){
-let text=t.toLowerCase();
+let text=t.toLowerCase().trim();
 
-if(text.includes("გამარჯობა")||text.includes("hello"))
-return "გამარჯობა 👋 მე ვარ BenAI Smart";
+// greeting
+if(text.match(/გამარჯობა|hello|hi|hey/))
+return "👋 გამარჯობა! მე ვარ BenAI Smart";
 
-if(text.includes("html"))
-return "🌐 HTML არის ვებ სტრუქტურა — გინდა მაგალითი?";
+// website request
+if(text.includes("საიტი") || text.includes("website") || text.includes("html")){
+return "🌐 გინდა საიტი? შემიძლია დაგიწერო სრული HTML გვერდი — მითხარი როგორი გინდა";
+}
 
+// creation command
+if(text.includes("შექმენი") || text.includes("დაწერე") || text.includes("make")){
+return "⚙️ რას შევქმნა? საიტი, თამაში, კოდი თუ სხვა?";
+}
+
+// coding detection
 if(text.includes("css"))
-return "🎨 CSS მართავს დიზაინს — შემიძლია დაგიწერო";
+return "🎨 CSS მაგალითი მზადაა";
 
-if(text.includes("js")||text.includes("javascript"))
-return "⚡ JavaScript აძლევს ლოგიკას — გინდა კოდი?";
+if(text.includes("javascript") || text.includes("js"))
+return "⚡ JavaScript მაგალითი მზადაა";
 
 if(text.includes("?"))
-return "🤔 კარგი კითხვა! ვაანალიზებ და ვსწავლობ ამას.";
+return "🤔 კარგი კითხვა — ვაანალიზებ ამას";
 
-return "🧠 დავიმახსოვრე და ვამუშავებ ამ ინფორმაციას";
+// fallback
+return "🧠 დავიმახსოვრე ეს ინფორმაცია და ვამუშავებ მას";
 }
 
 function updateStats(){
@@ -148,29 +151,26 @@ document.getElementById("stats").textContent=
 }
 
 function levelUp(){
-let total=brain.codes.length+brain.facts.length;
-brain.level=Math.floor(total/5)+1;
+let total = brain.codes.length + brain.facts.length;
+brain.level = Math.floor(total / 5) + 1;
 }
 
 function send(){
 let text=msg.value.trim();
-if(!text)return;
+if(!text) return;
 
 add(text,"user");
 msg.value="";
 
-// code memory
+// save code
 if(detectCode(text)){
 brain.codes.push(text);
 }
 
-// facts memory
-let facts=extractFacts(text);
-if(facts.length){
-brain.facts.push(...facts);
-}
+// save facts (simple memory)
+brain.facts.push(text);
 
-// AI reply
+// AI response
 setTimeout(()=>{
 add(smartReply(text),"bot");
 },200);
@@ -180,7 +180,7 @@ save();
 updateStats();
 }
 
-add("👋 BenAI Smart მზადაა","bot");
+add("👋 BenAI Smart FIX მზადაა","bot");
 updateStats();
 </script>
 
