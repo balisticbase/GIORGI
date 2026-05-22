@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live სერვისი</title>
+    <title>სერვერის სტატუსი</title>
     <style>
         * {
             margin: 0;
@@ -18,11 +18,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
         /* Анимированный фон */
-        .background-animation {
+        .bg-animation {
             position: fixed;
             top: 0;
             left: 0;
@@ -31,60 +31,55 @@
             z-index: 0;
         }
 
-        .circle {
+        .bg-circle {
             position: absolute;
             border-radius: 50%;
-            background: rgba(233, 69, 96, 0.1);
-            animation: float 20s infinite;
+            background: rgba(233, 69, 96, 0.08);
+            animation: float 20s infinite ease-in-out;
         }
 
-        .circle:nth-child(1) {
-            width: 300px;
-            height: 300px;
-            top: -150px;
-            left: -150px;
+        .bg-circle:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            top: -200px;
+            left: -200px;
             animation-delay: 0s;
         }
 
-        .circle:nth-child(2) {
-            width: 200px;
-            height: 200px;
-            bottom: -100px;
-            right: -100px;
-            animation-delay: 5s;
+        .bg-circle:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            bottom: -150px;
+            right: -150px;
+            animation-delay: -7s;
         }
 
-        .circle:nth-child(3) {
-            width: 150px;
-            height: 150px;
+        .bg-circle:nth-child(3) {
+            width: 200px;
+            height: 200px;
             top: 50%;
-            left: 50%;
-            animation-delay: 10s;
+            left: 60%;
+            animation-delay: -14s;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-30px) scale(1.1); }
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-40px) rotate(10deg);
+            }
         }
 
-        /* Плавающие частицы */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
+        /* Частицы */
         .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(233, 69, 96, 0.6);
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: rgba(233, 69, 96, 0.5);
             border-radius: 50%;
-            animation: rise 15s infinite;
+            animation: rise linear infinite;
+            z-index: 0;
         }
 
         @keyframes rise {
@@ -92,8 +87,12 @@
                 transform: translateY(100vh) scale(0);
                 opacity: 0;
             }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
             100% {
                 transform: translateY(-100vh) scale(1);
                 opacity: 0;
@@ -101,145 +100,93 @@
         }
 
         /* Главный контейнер */
-        .container {
+        .main-container {
             position: relative;
             z-index: 1;
-            background: rgba(22, 33, 62, 0.8);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 50px rgba(233, 69, 96, 0.1);
-            padding: 3rem;
-            max-width: 650px;
+            background: rgba(22, 33, 62, 0.75);
+            backdrop-filter: blur(25px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.5),
+                0 0 80px rgba(233, 69, 96, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            padding: 3rem 2.5rem;
+            max-width: 600px;
             width: 90%;
             text-align: center;
-            animation: slideIn 0.8s ease-out;
+            animation: containerIn 1s ease-out;
         }
 
-        @keyframes slideIn {
+        @keyframes containerIn {
             from {
                 opacity: 0;
-                transform: translateY(50px);
+                transform: translateY(40px) scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
-        /* Иконка статуса */
-        .status-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 1.5rem;
+        /* Иконка */
+        .icon-wrapper {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 1.8rem;
             border-radius: 50%;
+            background: rgba(233, 69, 96, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2.5rem;
-            transition: all 0.5s ease;
+            animation: iconPulse 3s infinite ease-in-out;
+            box-shadow: 0 0 40px rgba(233, 69, 96, 0.15);
         }
 
-        .status-icon.online {
-            background: rgba(0, 255, 136, 0.15);
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
-            animation: pulse-green 2s infinite;
+        @keyframes iconPulse {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(233, 69, 96, 0.15);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(233, 69, 96, 0.3);
+                transform: scale(1.05);
+            }
         }
 
-        .status-icon.offline {
-            background: rgba(233, 69, 96, 0.15);
-            box-shadow: 0 0 30px rgba(233, 69, 96, 0.3);
-            animation: pulse-red 2s infinite;
-        }
-
-        @keyframes pulse-green {
-            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); }
-            50% { box-shadow: 0 0 40px rgba(0, 255, 136, 0.5); }
-        }
-
-        @keyframes pulse-red {
-            0%, 100% { box-shadow: 0 0 20px rgba(233, 69, 96, 0.2); }
-            50% { box-shadow: 0 0 40px rgba(233, 69, 96, 0.5); }
-        }
-
-        h1 {
+        /* Заголовок */
+        .title {
             color: #ffffff;
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.6rem;
             font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
         }
 
         .subtitle {
-            color: #a0a0b8;
-            font-size: 0.95rem;
+            color: #8888a0;
+            font-size: 0.85rem;
             margin-bottom: 2rem;
+            letter-spacing: 1px;
         }
 
-        /* Карточка данных */
-        .data-card {
-            background: rgba(15, 52, 96, 0.6);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .data-card:hover {
-            border-color: rgba(233, 69, 96, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .data-label {
-            color: #a0a0b8;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 0.5rem;
-        }
-
-        .data-value {
-            color: #ffffff;
-            font-size: 1.3rem;
-            font-weight: 500;
-        }
-
-        /* Скрытое сообщение */
-        .offline-message {
-            background: linear-gradient(135deg, rgba(233, 69, 96, 0.1), rgba(233, 69, 96, 0.05));
-            border: 1px solid rgba(233, 69, 96, 0.3);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            color: #f0a500;
-            font-size: 1rem;
-            line-height: 1.6;
-            display: none;
-            animation: fadeInUp 0.5s ease;
+        /* Карточка с сообщением */
+        .message-card {
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.08), rgba(233, 69, 96, 0.03));
+            border: 1px solid rgba(233, 69, 96, 0.2);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            color: #f0c060;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            font-weight: 400;
+            animation: messageIn 0.8s ease-out 0.3s both;
             position: relative;
             overflow: hidden;
         }
 
-        .offline-message::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(233, 69, 96, 0.1), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            100% { left: 100%; }
-        }
-
-        .offline-message.visible {
-            display: block;
-        }
-
-        @keyframes fadeInUp {
+        @keyframes messageIn {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -250,102 +197,76 @@
             }
         }
 
-        /* Кнопка */
-        .refresh-btn {
-            background: linear-gradient(135deg, #e94560, #c23152);
-            color: white;
-            border: none;
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            letter-spacing: 1px;
-            box-shadow: 0 10px 25px rgba(233, 69, 96, 0.3);
-            position: relative;
-            overflow: hidden;
+        /* Блики */
+        .message-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(
+                circle,
+                rgba(255, 255, 255, 0.03) 0%,
+                transparent 70%
+            );
+            animation: shimmer 3s infinite;
         }
 
-        .refresh-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(233, 69, 96, 0.4);
+        @keyframes shimmer {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(10px, 10px);
+            }
         }
 
-        .refresh-btn:active {
-            transform: translateY(0);
-        }
-
-        .refresh-btn.loading {
-            pointer-events: none;
-            opacity: 0.8;
-        }
-
-        .refresh-btn .spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid white;
-            border-top: 2px solid transparent;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-right: 10px;
-        }
-
-        .refresh-btn.loading .spinner {
-            display: inline-block;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Статус бар */
-        .status-bar {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        /* Индикатор */
+        .indicator {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 8px;
+            margin-top: 2rem;
+            animation: messageIn 0.8s ease-out 0.5s both;
         }
 
-        .status-dot {
+        .indicator-dot {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            transition: all 0.5s ease;
-        }
-
-        .status-dot.online-dot {
-            background: #00ff88;
-            box-shadow: 0 0 10px #00ff88;
-        }
-
-        .status-dot.offline-dot {
             background: #e94560;
-            box-shadow: 0 0 10px #e94560;
-            animation: blink 1s infinite;
+            box-shadow: 0 0 12px #e94560;
+            animation: dotBlink 1.5s infinite;
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+        @keyframes dotBlink {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.2;
+            }
         }
 
-        .status-text {
-            color: #a0a0b8;
-            font-size: 0.9rem;
+        .indicator-text {
+            color: #8888a0;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
         }
 
-        /* Адаптивность */
+        /* Адаптив */
         @media (max-width: 480px) {
-            .container {
+            .main-container {
                 padding: 2rem 1.5rem;
             }
-            h1 {
-                font-size: 1.4rem;
+            .message-card {
+                font-size: 1rem;
+                padding: 1.5rem 1rem;
+            }
+            .title {
+                font-size: 1.3rem;
             }
         }
     </style>
@@ -353,165 +274,59 @@
 <body>
 
     <!-- Анимированный фон -->
-    <div class="background-animation">
-        <div class="circle"></div>
-        <div class="circle"></div>
-        <div class="circle"></div>
+    <div class="bg-animation">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
     </div>
 
-    <!-- Партиклы -->
-    <div class="particles" id="particlesContainer"></div>
+    <!-- Частицы -->
+    <div id="particlesContainer"></div>
 
     <!-- Главный контейнер -->
-    <div class="container">
-        <!-- Иконка статуса -->
-        <div class="status-icon offline" id="statusIcon">📡</div>
+    <div class="main-container">
+        <!-- Иконка -->
+        <div class="icon-wrapper">📡</div>
 
         <!-- Заголовок -->
-        <h1>Live სერვისი</h1>
-        <p class="subtitle">სერვერის სტატუსის მონიტორინგი</p>
+        <h1 class="title">სერვერის სტატუსი</h1>
+        <p class="subtitle">● ● ●</p>
 
-        <!-- Карточка с данными -->
-        <div class="data-card">
-            <div class="data-label">📦 მონაცემები</div>
-            <div class="data-value" id="dataContent">⏳ იტვირთება...</div>
+        <!-- Сообщение на грузинском -->
+        <div class="message-card">
+            ⚡ სერვერი დროებით გამორთულია, სანამ ლაივი არ მიმდინარეობს. სერვისი დამოუკიდებლად იწერს მონაცემებს და შემდეგ საიტზე აქვეყნებს.
         </div>
 
-        <!-- Скрытое сообщение на грузинском -->
-        <div class="offline-message visible" id="offlineMessage">
-            ⚠️ სერვერი დროებით გამორთულია, სანამ ლაივი არ მიმდინარეობს. სერვისი დამოუკიდებლად იწერს მონაცემებს და შემდეგ საიტზე აქვეყნებს.
-        </div>
-
-        <!-- Кнопка обновления -->
-        <button class="refresh-btn" id="refreshBtn" onclick="checkServer()">
-            <span class="spinner"></span>
-            🔄 განახლება
-        </button>
-
-        <!-- Статус бар -->
-        <div class="status-bar">
-            <div class="status-dot offline-dot" id="statusDot"></div>
-            <span class="status-text" id="statusLabel">სერვერი გამორთულია</span>
+        <!-- Индикатор -->
+        <div class="indicator">
+            <div class="indicator-dot"></div>
+            <span class="indicator-text">მონაცემები ინახება ლოკალურად</span>
         </div>
     </div>
 
     <script>
-        const SERVER_URL = 'https://jsonplaceholder.typicode.com/posts/1'; // Замени на свой URL
-        const LOCAL_STORAGE_KEY = 'offline_data_queue';
-
-        // Создание партиклов
+        // Создание частиц
         function createParticles() {
             const container = document.getElementById('particlesContainer');
-            for (let i = 0; i < 30; i++) {
+            const count = 25;
+
+            for (let i = 0; i < count; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
+
+                const size = Math.random() * 4 + 1;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
                 particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 15 + 's';
-                particle.style.animationDuration = (10 + Math.random() * 20) + 's';
+                particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.opacity = Math.random() * 0.5 + 0.2;
+
                 container.appendChild(particle);
             }
         }
+
         createParticles();
-
-        // Сохранение данных локально
-        function saveDataLocally(data) {
-            let queue = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [];
-            queue.push({
-                data: data,
-                time: new Date().toLocaleString('ka-GE')
-            });
-            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(queue));
-        }
-
-        // Отправка накопленных данных на сервер
-        async function sendStoredDataToServer() {
-            let queue = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [];
-            if (queue.length === 0) return;
-
-            for (let item of queue) {
-                try {
-                    await fetch(SERVER_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(item.data)
-                    });
-                } catch (err) {
-                    return; // Если не получилось — остановиться, попробовать позже
-                }
-            }
-            localStorage.removeItem(LOCAL_STORAGE_KEY);
-        }
-
-        // Обновление UI
-        function updateUI(isOnline, data = null) {
-            const statusIcon = document.getElementById('statusIcon');
-            const statusDot = document.getElementById('statusDot');
-            const statusLabel = document.getElementById('statusLabel');
-            const offlineMessage = document.getElementById('offlineMessage');
-            const dataContent = document.getElementById('dataContent');
-
-            if (isOnline) {
-                statusIcon.className = 'status-icon online';
-                statusIcon.textContent = '✅';
-                statusDot.className = 'status-dot online-dot';
-                statusLabel.textContent = 'სერვერი მუშაობს';
-                offlineMessage.classList.remove('visible');
-                if (data) {
-                    dataContent.textContent = data;
-                }
-            } else {
-                statusIcon.className = 'status-icon offline';
-                statusIcon.textContent = '📡';
-                statusDot.className = 'status-dot offline-dot';
-                statusLabel.textContent = 'სერვერი გამორთულია';
-                offlineMessage.classList.add('visible');
-
-                // Показать кэшированные данные
-                const cached = localStorage.getItem(LOCAL_STORAGE_KEY);
-                if (cached) {
-                    const queue = JSON.parse(cached);
-                    const lastItem = queue[queue.length - 1];
-                    dataContent.textContent = `📝 ბოლო ჩანაწერი: ${lastItem.time}`;
-                } else {
-                    dataContent.textContent = '— არ არის მონაცემები —';
-                }
-            }
-        }
-
-        // Проверка сервера
-        async function checkServer() {
-            const btn = document.getElementById('refreshBtn');
-            btn.classList.add('loading');
-
-            try {
-                const controller = new AbortController();
-                setTimeout(() => controller.abort(), 3000);
-
-                const response = await fetch(SERVER_URL, { signal: controller.signal });
-
-                if (response.ok) {
-                    const json = await response.json();
-                    const data = json.title || 'მონაცემები მიღებულია';
-                    updateUI(true, data);
-                    saveDataLocally(data);
-                    await sendStoredDataToServer();
-                } else {
-                    throw new Error('სერვერის შეცდომა');
-                }
-            } catch (err) {
-                updateUI(false);
-            } finally {
-                btn.classList.remove('loading');
-            }
-        }
-
-        // Автопроверка каждые 30 секунд
-        setInterval(checkServer, 30000);
-
-        // Первая проверка при загрузке
-        window.addEventListener('load', () => {
-            checkServer();
-        });
     </script>
 
 </body>
