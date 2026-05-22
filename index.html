@@ -2,8 +2,8 @@
 <html lang="ka">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>🚀 საიტი დამუშავებაშია</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>✨ ახალი დიზაინი | მუსიკა</title>
   <style>
     * {
       margin: 0;
@@ -12,321 +12,336 @@
     }
 
     body {
-      font-family: 'Segoe UI', 'Arial', sans-serif;
-      background: radial-gradient(circle at top, #0f172a, #020617);
-      color: white;
-      overflow-x: hidden;
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(ellipse at 50% 0%, #0b1120 0%, #030712 70%);
       min-height: 100vh;
       min-height: 100dvh;
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow-x: hidden;
       position: relative;
       -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
     }
 
-    .bg-lines {
+    /* ანიმირებული ფონური ბადე */
+    .animated-grid {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        linear-gradient(transparent 95%, rgba(56, 189, 248, 0.08) 100%),
-        linear-gradient(90deg, transparent 95%, rgba(56, 189, 248, 0.05) 100%);
-      background-size: 60px 60px, 80px 80px;
-      animation: moveLines 8s linear infinite;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(59, 130, 246, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.04) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 15s linear infinite;
       z-index: 0;
       pointer-events: none;
     }
 
-    @keyframes moveLines {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(60px); }
+    @keyframes gridMove {
+      0% { background-position: 0 0, 0 0; }
+      100% { background-position: 50px 50px, -50px 50px; }
     }
 
+    /* ნაწილაკები Canvas */
     #particleCanvas {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       z-index: 1;
       pointer-events: none;
     }
 
+    /* ძირითადი კონტეინერი */
     .container {
       position: relative;
       z-index: 10;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-      max-width: 700px;
       width: 100%;
-    }
-
-    .ornament-ring {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 300px;
-      height: 300px;
-      border: 2px dashed rgba(56, 189, 248, 0.2);
-      border-radius: 50%;
-      animation: rotateRing 30s linear infinite;
-      z-index: -1;
-      pointer-events: none;
-    }
-    .ornament-ring:nth-child(2) {
-      width: 380px;
-      height: 380px;
-      border-color: rgba(168, 85, 247, 0.15);
-      animation-direction: reverse;
-      animation-duration: 45s;
-    }
-
-    @keyframes rotateRing {
-      0% { transform: translate(-50%, -50%) rotate(0deg); }
-      100% { transform: translate(-50%, -50%) rotate(360deg); }
-    }
-
-    h1 {
-      font-size: clamp(1.8rem, 6vw, 3.2rem);
-      font-weight: 700;
-      margin-bottom: 12px;
-      background: linear-gradient(to right, #bae6fd, #7dd3fc, #38bdf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 0 15px #0284c7);
-      animation: titleGlow 3s infinite alternate;
-    }
-
-    @keyframes titleGlow {
-      0% { filter: drop-shadow(0 0 10px #0284c7); }
-      100% { filter: drop-shadow(0 0 25px #7dd3fc); }
-    }
-
-    .typewriter-text {
-      font-size: 1.1rem;
-      opacity: 0.9;
-      max-width: 550px;
-      margin: 0 auto 8px;
-      min-height: 3rem;
-      line-height: 1.5;
-      color: #e2e8f0;
-      border-right: 3px solid #38bdf8;
-      display: inline-block;
-      animation: blinkCursor 0.9s infinite;
-    }
-
-    @keyframes blinkCursor {
-      0%, 100% { border-color: #38bdf8; }
-      50% { border-color: transparent; }
-    }
-
-    .sub-message {
-      font-size: 1rem;
-      opacity: 0.8;
-      color: #cbd5e1;
-      margin: 8px 0 15px;
-      font-style: italic;
-    }
-
-    .badge {
-      margin: 10px 0 20px;
-      padding: 10px 24px;
-      border: 1.5px solid #38bdf8;
-      border-radius: 40px;
-      color: #7dd3fc;
-      background: rgba(15, 23, 42, 0.7);
-      backdrop-filter: blur(12px);
-      font-weight: 600;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      animation: pulseBadge 2s infinite;
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
-    }
-
-    @keyframes pulseBadge {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-
-    .music-indicator {
-      margin: 10px 0;
-      padding: 10px 20px;
-      background: rgba(15, 23, 42, 0.7);
-      backdrop-filter: blur(12px);
-      border-radius: 30px;
-      font-size: 0.85rem;
-      color: #bae6fd;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-    }
-
-    .music-dot {
-      width: 8px;
-      height: 8px;
-      background: #38bdf8;
-      border-radius: 50%;
-      animation: dotPulse 1.5s infinite;
-    }
-
-    @keyframes dotPulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    .loader-wrapper {
-      margin: 15px 0;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 24px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 15px;
+      justify-content: center;
+      text-align: center;
     }
 
-    .spinner {
-      width: 55px;
-      height: 55px;
-      border: 5px solid #1e293b;
-      border-top: 5px solid #38bdf8;
-      border-right: 5px solid #a855f7;
+    /* ანიმირებული ბეჭდები */
+    .ring {
+      position: absolute;
       border-radius: 50%;
-      animation: spin 1.2s linear infinite;
-      box-shadow: 0 0 20px #38bdf8;
+      border: 2px dashed;
+      pointer-events: none;
+      z-index: -1;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .ring-1 {
+      width: 250px;
+      height: 250px;
+      border-color: rgba(59, 130, 246, 0.25);
+      animation: spin 20s linear infinite;
+    }
+    .ring-2 {
+      width: 330px;
+      height: 330px;
+      border-color: rgba(168, 85, 247, 0.2);
+      animation: spinReverse 25s linear infinite;
+    }
+    .ring-3 {
+      width: 400px;
+      height: 400px;
+      border-color: rgba(236, 72, 153, 0.15);
+      animation: spin 35s linear infinite;
     }
 
     @keyframes spin {
-      0% { transform: rotate(0deg); }
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    @keyframes spinReverse {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(-360deg); }
+    }
+
+    h1 {
+      font-size: clamp(2rem, 7vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.5));
+      animation: titleGlow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes titleGlow {
+      0% { filter: drop-shadow(0 0 15px rgba(96, 165, 250, 0.4)); }
+      100% { filter: drop-shadow(0 0 35px rgba(168, 85, 247, 0.7)); }
+    }
+
+    /* დინამიური ტექსტი */
+    .dynamic-text {
+      font-size: 1.2rem;
+      font-weight: 500;
+      min-height: 2.5rem;
+      line-height: 1.6;
+      margin: 10px 0 20px;
+      color: #e2e8f0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(16px);
+      padding: 10px 24px;
+      border-radius: 40px;
+      display: inline-block;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    #dynamicMessage {
+      background: linear-gradient(135deg, #93c5fd, #c4b5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 600;
+    }
+
+    /* მუსიკის ინდიკატორი */
+    .music-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(24px);
+      border: 1.5px solid rgba(59, 130, 246, 0.6);
+      border-radius: 60px;
+      padding: 12px 28px;
+      margin: 15px 0;
+      box-shadow: 0 8px 30px rgba(59, 130, 246, 0.25);
+      animation: floatBadge 3s ease-in-out infinite;
+    }
+
+    @keyframes floatBadge {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .visualizer {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 24px;
+    }
+    .bar {
+      width: 4px;
+      background: linear-gradient(to top, #3b82f6, #a78bfa);
+      border-radius: 2px;
+      animation: equalizer 1.4s ease-in-out infinite;
+    }
+    .bar:nth-child(1), .bar:nth-child(5) { height: 12px; animation-delay: 0s; }
+    .bar:nth-child(2), .bar:nth-child(4) { height: 22px; animation-delay: 0.3s; }
+    .bar:nth-child(3) { height: 16px; animation-delay: 0.6s; }
+
+    @keyframes equalizer {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(0.4); }
+    }
+
+    .music-text {
+      color: #bfdbfe;
+      font-weight: 500;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+    }
+
+    /* ლოუდერი */
+    .loader {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: conic-gradient(#3b82f6, #8b5cf6, #ec4899, #3b82f6);
+      animation: rotate 1.5s linear infinite;
+      box-shadow: 0 0 30px rgba(59,130,246,0.6);
+    }
+
+    @keyframes rotate {
       100% { transform: rotate(360deg); }
     }
 
-    .progress-container {
+    .progress-bar {
       width: 200px;
       height: 6px;
       background: #1e293b;
-      border-radius: 20px;
+      border-radius: 10px;
       overflow: hidden;
     }
 
     .progress-fill {
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, #38bdf8, #a855f7);
-      border-radius: 20px;
-      animation: fillProgress 3s infinite ease-in-out;
+      background: linear-gradient(90deg, #3b82f6, #a78bfa, #f472b6);
+      border-radius: 10px;
+      animation: progressPulse 2.5s infinite ease-in-out;
     }
 
-    @keyframes fillProgress {
+    @keyframes progressPulse {
       0% { width: 5%; }
-      50% { width: 70%; }
+      50% { width: 75%; }
       100% { width: 5%; }
     }
 
-    .floating-cards {
+    /* ბარათები */
+    .cards {
       display: flex;
       flex-wrap: wrap;
+      align-items: center;
       justify-content: center;
       gap: 12px;
-      margin: 20px 0;
+      margin: 20px 0 10px;
     }
 
     .card {
       background: rgba(15, 23, 42, 0.8);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      border-radius: 16px;
-      padding: 10px 16px;
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      color: #cbd5e1;
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.85rem;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      animation: floatCard 4s infinite alternate;
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.6);
+      transition: transform 0.3s;
     }
 
-    .card:nth-child(2) { animation-delay: 0.5s; }
-    .card:nth-child(3) { animation-delay: 1s; }
-
-    @keyframes floatCard {
-      0% { transform: translateY(0px); }
-      100% { transform: translateY(-6px); }
+    .card:hover {
+      transform: translateY(-4px);
     }
 
+    /* Footer */
     .footer {
       position: fixed;
-      bottom: 12px;
-      font-size: 0.75rem;
-      opacity: 0.5;
-      z-index: 10;
-      text-align: center;
+      bottom: 16px;
       width: 100%;
-      color: #94a3b8;
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(148, 163, 184, 0.6);
+      z-index: 10;
     }
 
     @media (max-width: 500px) {
-      .floating-cards {
+      .cards {
         flex-direction: column;
-        align-items: center;
+      }
+      .ring-1, .ring-2, .ring-3 {
+        display: none; /* hide rings on very small screens for performance */
       }
     }
   </style>
 </head>
 <body>
-  <div class="bg-lines"></div>
+  <div class="animated-grid"></div>
   <canvas id="particleCanvas"></canvas>
-  <div class="ornament-ring"></div>
-  <div class="ornament-ring"></div>
 
   <div class="container">
-    <h1>🚀 საიტი დამუშავებაშია</h1>
-    <div class="typewriter-text" id="typewriter"></div>
-    <p class="sub-message" id="subMsg">სრული ვერსია მზადდება ⚡</p>
+    <div class="ring ring-1"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-3"></div>
 
-    <!-- Просто индикатор что музыка играет -->
-    <div class="music-indicator">
-      <div class="music-dot"></div>
-      <span>🎵 ფონური მუსიკა</span>
+    <h1>ახალი გამოცდილება</h1>
+
+    <div class="dynamic-text">
+      <span id="dynamicMessage">ყველაფერი იდეალურადაა</span>
     </div>
 
-    <div class="badge">
-      <span>🔧</span> მიმდინარეობს განვითარება <span>✨</span>
+    <!-- მუსიკის ინდიკატორი ანიმაციით -->
+    <div class="music-badge">
+      <div class="visualizer">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+      <span class="music-text">🎵 ფონური მუსიკა ჩართულია</span>
     </div>
 
-    <div class="loader-wrapper">
+    <div class="loader">
       <div class="spinner"></div>
-      <div class="progress-container">
+      <div class="progress-bar">
         <div class="progress-fill"></div>
       </div>
     </div>
 
-    <div class="floating-cards">
+    <div class="cards">
       <div class="card">📅 გაშვება: ივლისი 2026</div>
       <div class="card">👥 გუნდი: 12 დეველოპერი</div>
       <div class="card">⚙️ სტატუსი: ბეტა ტესტი</div>
     </div>
 
-    <p style="margin-top:15px; opacity:0.7; font-size:0.85rem; color:#b0c4de;">
-      მალე გაშვება — იდეალური ხარისხი
+    <p style="color:#94a3b8; margin-top:15px; font-size:0.9rem;">
+      ✨ მალე — ახალი სტანდარტი
     </p>
   </div>
 
   <div class="footer">
-    © 2026 | ყველა უფლება დაცულია | NextGen Dev
+    © 2026 NextGen Dev · ყველა უფლება დაცულია
   </div>
 
-  <!-- Аудио плеер - скрытый, только фон -->
-  <audio id="bgMusic" loop preload="auto" volume="0.3">
+  <!-- აუდიო -->
+  <audio id="bgMusic" loop preload="auto" crossorigin="anonymous">
     <source src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/%D0%91%D0%B0%D1%81%D1%82%D0%B0%20feat%20HammAli%20&%20Navai%20%20%D0%93%D0%B4%D0%B5%20%D1%82%D1%8B%20%D1%82%D0%B5%D0%BF%D0%B5%D1%80%D1%8C%20%D0%B8%20%D1%81%20%D0%BA%D0%B5%D0%BC(%D0%A1%D0%9B%D0%98%D0%92%202023).mp3" type="audio/mpeg">
   </audio>
 
@@ -336,15 +351,12 @@
       const canvas = document.getElementById('particleCanvas');
       const ctx = canvas.getContext('2d');
       let particles = [];
+      let animationId;
 
       function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
       }
-      window.addEventListener('resize', () => {
-        resizeCanvas();
-        initParticles();
-      });
 
       class Particle {
         constructor() {
@@ -353,119 +365,110 @@
         reset() {
           this.x = Math.random() * canvas.width;
           this.y = Math.random() * canvas.height;
-          this.size = Math.random() * 3 + 1;
-          this.speedX = (Math.random() - 0.5) * 0.6;
-          this.speedY = (Math.random() - 0.5) * 0.6;
-          this.opacity = Math.random() * 0.4 + 0.15;
-          this.color = `rgba(56, 189, 248, ${this.opacity})`;
+          this.size = Math.random() * 2.5 + 1;
+          this.speedX = (Math.random() - 0.5) * 0.5;
+          this.speedY = (Math.random() - 0.5) * 0.5;
+          this.alpha = Math.random() * 0.5 + 0.2;
         }
         update() {
           this.x += this.speedX;
           this.y += this.speedY;
-          if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+          if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+            this.reset();
+          }
         }
         draw() {
           ctx.beginPath();
           ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fillStyle = this.color;
+          ctx.fillStyle = `rgba(147, 197, 253, ${this.alpha})`;
           ctx.fill();
         }
       }
 
       function initParticles() {
-        const count = Math.min(80, Math.floor(window.innerWidth / 15));
+        const count = Math.min(70, Math.floor(window.innerWidth / 12));
         particles = Array.from({ length: count }, () => new Particle());
       }
 
-      function animateParticles() {
+      function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => { p.update(); p.draw(); });
-        requestAnimationFrame(animateParticles);
+        particles.forEach(p => {
+          p.update();
+          p.draw();
+        });
+        animationId = requestAnimationFrame(animate);
       }
 
-      // ========== Typewriter ==========
-      const tw = document.getElementById('typewriter');
-      const texts = [
-        "ყველაფერი მიმდინარეობს იდეალურად.",
-        "ჩვენი გუნდი მუშაობს ახალ პროექტზე.",
-        "რომელიც მალე "დაარღვევს" ინტერნეტს."
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        initParticles();
+      });
+
+      // ========== Dynamic Message Rotator ==========
+      const messages = [
+        "ახალი დიზაინი მზად არის ✨",
+        "ოპტიმიზირებულია ყველგან 📱",
+        "მუსიკა უკვე ჩართულია 🎧",
+        "ანიმაციები მუშაობს 🎬",
+        "ლოგიკა სრულიად განახლებულია ⚡"
       ];
-      let txtIdx = 0, charIdx = 0, deleting = false;
-      
-      function typeLoop() {
-        const current = texts[txtIdx];
-        if (!deleting) {
-          tw.textContent = current.slice(0, charIdx + 1);
-          charIdx++;
-          if (charIdx === current.length) { 
-            deleting = true; 
-            setTimeout(typeLoop, 1800); 
-          } else {
-            setTimeout(typeLoop, 70);
-          }
-        } else {
-          tw.textContent = current.slice(0, charIdx - 1);
-          charIdx--;
-          if (charIdx === 0) { 
-            deleting = false; 
-            txtIdx = (txtIdx + 1) % texts.length; 
-            setTimeout(typeLoop, 400); 
-          } else {
-            setTimeout(typeLoop, 25);
-          }
-        }
+      let msgIndex = 0;
+      const msgElement = document.getElementById('dynamicMessage');
+
+      function rotateMessage() {
+        msgElement.style.opacity = '0';
+        setTimeout(() => {
+          msgIndex = (msgIndex + 1) % messages.length;
+          msgElement.textContent = messages[msgIndex];
+          msgElement.style.opacity = '1';
+        }, 300);
       }
 
-      // Sub message
-      const subMsg = document.getElementById('subMsg');
-      const subMessages = ["სრული ვერსია მზადდება ⚡", "დიზაინი სრულდება 🎨", "სერვერები იტვირთება 🔥"];
-      let subIdx = 0;
-      setInterval(() => {
-        subIdx = (subIdx + 1) % subMessages.length;
-        subMsg.textContent = subMessages[subIdx];
-      }, 3500);
+      msgElement.style.transition = 'opacity 0.3s ease';
+      setInterval(rotateMessage, 2800);
 
-      // ========== Background Music - Автозапуск ==========
+      // ========== Audio with robust autoplay ==========
       const bgMusic = document.getElementById('bgMusic');
-      bgMusic.volume = 0.3;
-      
-      function startMusic() {
-        const playPromise = bgMusic.play();
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-            console.log('✅ Музыка играет');
+      bgMusic.volume = 0.35;
+
+      function attemptPlay() {
+        const promise = bgMusic.play();
+        if (promise !== undefined) {
+          promise.then(() => {
+            console.log('🎵 მუსიკა ჩართულია');
           }).catch(() => {
-            console.log('⏳ Ждём взаимодействия...');
-            // Ждём любого клика/тапа
-            document.addEventListener('click', startOnInteraction, { once: true });
-            document.addEventListener('touchstart', startOnInteraction, { once: true });
-            document.addEventListener('keydown', startOnInteraction, { once: true });
+            console.log('⏳ აუცილებელია ინტერაქცია');
+            document.addEventListener('click', playAfterInteraction, { once: true });
+            document.addEventListener('touchstart', playAfterInteraction, { once: true });
+            document.addEventListener('keydown', playAfterInteraction, { once: true });
           });
         }
       }
 
-      function startOnInteraction() {
+      function playAfterInteraction() {
         bgMusic.play().then(() => {
-          console.log('✅ Музыка запущена после клика');
-        }).catch(err => {
-          console.log('❌ Ошибка:', err);
-        });
+          console.log('✅ მუსიკა ამოქმედდა');
+        }).catch(e => console.log('შეცდომა:', e));
       }
 
-      // ========== Init ==========
-      resizeCanvas();
-      initParticles();
-      animateParticles();
-      typeLoop();
-      startMusic();
-
-      // Обработка видимости страницы (пауза когда вкладка не активна)
+      // Pause when tab is hidden, resume when visible
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
           bgMusic.pause();
         } else {
           bgMusic.play().catch(() => {});
         }
+      });
+
+      // ========== Start Everything ==========
+      resizeCanvas();
+      initParticles();
+      animate();
+      attemptPlay();
+
+      // Cleanup animation on page unload (optional but clean)
+      window.addEventListener('beforeunload', () => {
+        if (animationId) cancelAnimationFrame(animationId);
       });
 
     })();
