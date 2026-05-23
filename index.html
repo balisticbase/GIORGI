@@ -137,6 +137,11 @@
             box-shadow: 0 0 15px rgba(0, 242, 234, 0.5);
         }
 
+        .timeline-dot.warning {
+            border-color: #ffcc00;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+        }
+
         .timeline-time {
             font-size: 12px;
             color: #888;
@@ -161,12 +166,43 @@
         }
 
         .report-list li {
-            padding: 8px 12px;
-            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            margin: 8px 0;
             background: rgba(255, 0, 80, 0.1);
             border-left: 3px solid #ff0050;
-            border-radius: 0 8px 8px 0;
+            border-radius: 0 12px 12px 0;
             font-size: 14px;
+        }
+
+        .reporter-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #333;
+            border: 2px solid #ff0050;
+        }
+
+        .reporter-info {
+            flex: 1;
+        }
+
+        .reporter-name {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .reporter-handle {
+            font-size: 11px;
+            color: #aaa;
+        }
+
+        .report-reason {
+            font-size: 13px;
+            color: #ffaa00;
         }
 
         .resolution-card {
@@ -266,6 +302,10 @@
             .tiktok-logo {
                 font-size: 36px;
             }
+
+            .report-list li {
+                flex-wrap: wrap;
+            }
         }
     </style>
 </head>
@@ -297,15 +337,43 @@
                 <div class="timeline-time">23 მაისი, 2026 | 14:30</div>
                 <div class="timeline-title">⚠️ TikTok-ის ოფიციალურმა გვერდმა მიიღო 4 რეპორტი</div>
                 <div class="timeline-text">
-                    მომხმარებელ @teaboutique1-ზე TikTok-ის ოფიციალურ გვერდზე შემოვიდა 4 საჩივარი:
+                    მომხმარებელ @teaboutique1-ზე TikTok-ის ოფიციალურ გვერდზე შემოვიდა 4 საჩივარი შემდეგი მომხმარებლებისგან:
                 </div>
                 <ul class="report-list">
-                    <li>🔞 <strong>სექსუალური კონტენტი</strong></li>
-                    <li>⚠️ <strong>არავერიფიცირებული პროდუქტი</strong></li>
-                    <li>📋 <strong>გაყიდვის ლიცენზიის არქონა</strong></li>
-                    <li>🔞 <strong>სექსუალური კონტენტი</strong> (დამატებითი)</li>
+                    <li>
+                        <img class="reporter-avatar" src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0491.jpeg" alt="reporter 1" onerror="this.src='https://via.placeholder.com/40?text=?'">
+                        <div class="reporter-info">
+                            <div class="reporter-name">@user_hater1</div>
+                            <div class="reporter-handle">ID: 48291</div>
+                        </div>
+                        <div class="report-reason">🔞 სექსუალური კონტენტი</div>
+                    </li>
+                    <li>
+                        <img class="reporter-avatar" src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0493.jpeg" alt="reporter 2" onerror="this.src='https://via.placeholder.com/40?text=?'">
+                        <div class="reporter-info">
+                            <div class="reporter-name">@fake_report99</div>
+                            <div class="reporter-handle">ID: 67342</div>
+                        </div>
+                        <div class="report-reason">⚠️ არავერიფიცირებული პროდუქტი</div>
+                    </li>
+                    <li>
+                        <img class="reporter-avatar" src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0494.jpeg" alt="reporter 3" onerror="this.src='https://via.placeholder.com/40?text=?'">
+                        <div class="reporter-info">
+                            <div class="reporter-name">@scammer_alert</div>
+                            <div class="reporter-handle">ID: 89123</div>
+                        </div>
+                        <div class="report-reason">📋 გაყიდვის ლიცენზიის არქონა</div>
+                    </li>
+                    <li>
+                        <img class="reporter-avatar" src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0491.jpeg" alt="reporter 4" onerror="this.src='https://via.placeholder.com/40?text=?'">
+                        <div class="reporter-info">
+                            <div class="reporter-name">@troll_account</div>
+                            <div class="reporter-handle">ID: 12456</div>
+                        </div>
+                        <div class="report-reason">🔞 სექსუალური კონტენტი (დამატებითი)</div>
+                    </li>
                 </ul>
-                <span class="status-badge badge-danger">4 რეპორტი</span>
+                <span class="status-badge badge-danger">4 რეპორტი | 3 მომხმარებელი</span>
             </div>
 
             <!-- 2. ავტომატური გასაჩივრება -->
@@ -360,11 +428,9 @@
     </div>
 
     <script>
-        // მცირე ინტერაქტივობა - ვადებზე ანიმაცია
         document.addEventListener('DOMContentLoaded', function() {
             const items = document.querySelectorAll('.timeline-item');
             
-            // ანიმაცია ვადებისთვის
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -380,15 +446,11 @@
                 item.style.transition = 'all 0.6s ease';
                 observer.observe(item);
                 
-                // მცირე დაყოვნება
                 setTimeout(() => {
                     item.style.opacity = '1';
                     item.style.transform = 'translateX(0)';
                 }, 100);
             });
-
-            console.log('TikTok - @teaboutique1 რეპორტების ისტორია');
-            console.log('4 რეპორტი → ავტომატური გასაჩივრება → რეპორტები წაშლილია');
         });
     </script>
 </body>
