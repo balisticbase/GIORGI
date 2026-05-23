@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>სერვერის სტატუსი</title>
+    <title>TikTok - @teaboutique1 რეპორტების ისტორია</title>
     <style>
         * {
             margin: 0;
@@ -13,321 +13,383 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            overflow: hidden;
+            padding: 20px;
+            color: #fff;
         }
 
-        /* Анимированный фон */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .container {
+            max-width: 800px;
             width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
-
-        .bg-circle {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(233, 69, 96, 0.08);
-            animation: float 20s infinite ease-in-out;
-        }
-
-        .bg-circle:nth-child(1) {
-            width: 400px;
-            height: 400px;
-            top: -200px;
-            left: -200px;
-            animation-delay: 0s;
-        }
-
-        .bg-circle:nth-child(2) {
-            width: 300px;
-            height: 300px;
-            bottom: -150px;
-            right: -150px;
-            animation-delay: -7s;
-        }
-
-        .bg-circle:nth-child(3) {
-            width: 200px;
-            height: 200px;
-            top: 50%;
-            left: 60%;
-            animation-delay: -14s;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) rotate(0deg);
-            }
-            50% {
-                transform: translateY(-40px) rotate(10deg);
-            }
-        }
-
-        /* Частицы */
-        .particle {
-            position: fixed;
-            width: 3px;
-            height: 3px;
-            background: rgba(233, 69, 96, 0.5);
-            border-radius: 50%;
-            animation: rise linear infinite;
-            z-index: 0;
-        }
-
-        @keyframes rise {
-            0% {
-                transform: translateY(100vh) scale(0);
-                opacity: 0;
-            }
-            20% {
-                opacity: 1;
-            }
-            80% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) scale(1);
-                opacity: 0;
-            }
-        }
-
-        /* Главный контейнер */
-        .main-container {
-            position: relative;
-            z-index: 1;
-            background: rgba(22, 33, 62, 0.75);
-            backdrop-filter: blur(25px);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 
-                0 30px 60px rgba(0, 0, 0, 0.5),
-                0 0 80px rgba(233, 69, 96, 0.08),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
-            padding: 3rem 2.5rem;
-            max-width: 600px;
-            width: 90%;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 20px 0;
+        }
+
+        .header {
             text-align: center;
-            animation: containerIn 1s ease-out;
+            margin-bottom: 30px;
         }
 
-        @keyframes containerIn {
-            from {
-                opacity: 0;
-                transform: translateY(40px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        /* Иконка */
-        .icon-wrapper {
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 1.8rem;
-            border-radius: 50%;
-            background: rgba(233, 69, 96, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            animation: iconPulse 3s infinite ease-in-out;
-            box-shadow: 0 0 40px rgba(233, 69, 96, 0.15);
-        }
-
-        @keyframes iconPulse {
-            0%, 100% {
-                box-shadow: 0 0 20px rgba(233, 69, 96, 0.15);
-                transform: scale(1);
-            }
-            50% {
-                box-shadow: 0 0 50px rgba(233, 69, 96, 0.3);
-                transform: scale(1.05);
-            }
-        }
-
-        /* Заголовок */
-        .title {
-            color: #ffffff;
-            font-size: 1.6rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            letter-spacing: 0.5px;
+        .tiktok-logo {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff0050, #00f2ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+            text-shadow: 0 0 30px rgba(255, 0, 80, 0.3);
+            margin-bottom: 10px;
         }
 
         .subtitle {
-            color: #8888a0;
-            font-size: 0.85rem;
-            margin-bottom: 2rem;
-            letter-spacing: 1px;
+            color: #a0a0b0;
+            font-size: 16px;
         }
 
-        /* Карточка с сообщением */
-        .message-card {
-            background: linear-gradient(135deg, rgba(233, 69, 96, 0.08), rgba(233, 69, 96, 0.03));
-            border: 1px solid rgba(233, 69, 96, 0.2);
-            border-radius: 16px;
-            padding: 2rem 1.5rem;
-            color: #f0c060;
-            font-size: 1.1rem;
-            line-height: 1.8;
-            font-weight: 400;
-            animation: messageIn 0.8s ease-out 0.3s both;
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            margin: 5px;
+        }
+
+        .badge-danger {
+            background: rgba(255, 0, 80, 0.2);
+            color: #ff0050;
+            border: 1px solid rgba(255, 0, 80, 0.3);
+        }
+
+        .badge-success {
+            background: rgba(0, 242, 234, 0.2);
+            color: #00f2ea;
+            border: 1px solid rgba(0, 242, 234, 0.3);
+        }
+
+        .badge-warning {
+            background: rgba(255, 204, 0, 0.2);
+            color: #ffcc00;
+            border: 1px solid rgba(255, 204, 0, 0.3);
+        }
+
+        .timeline {
             position: relative;
-            overflow: hidden;
+            margin: 30px 0;
+            padding-left: 30px;
         }
 
-        @keyframes messageIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Блики */
-        .message-card::after {
+        .timeline::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(
-                circle,
-                rgba(255, 255, 255, 0.03) 0%,
-                transparent 70%
-            );
-            animation: shimmer 3s infinite;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #ff0050, #00f2ea);
+            border-radius: 2px;
         }
 
-        @keyframes shimmer {
-            0%, 100% {
-                transform: translate(0, 0);
-            }
-            50% {
-                transform: translate(10px, 10px);
-            }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* Индикатор */
-        .indicator {
+        .timeline-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -23px;
+            top: 25px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid #00f2ea;
+            box-shadow: 0 0 15px rgba(0, 242, 234, 0.5);
+        }
+
+        .timeline-dot.danger {
+            border-color: #ff0050;
+            box-shadow: 0 0 15px rgba(255, 0, 80, 0.5);
+        }
+
+        .timeline-dot.success {
+            border-color: #00f2ea;
+            box-shadow: 0 0 15px rgba(0, 242, 234, 0.5);
+        }
+
+        .timeline-time {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .timeline-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .timeline-text {
+            color: #ccc;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .report-list {
+            list-style: none;
+            margin: 10px 0;
+        }
+
+        .report-list li {
+            padding: 8px 12px;
+            margin: 5px 0;
+            background: rgba(255, 0, 80, 0.1);
+            border-left: 3px solid #ff0050;
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+        }
+
+        .resolution-card {
+            background: linear-gradient(135deg, rgba(0, 242, 234, 0.1), rgba(0, 242, 234, 0.05));
+            border: 1px solid rgba(0, 242, 234, 0.3);
+            border-radius: 16px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .resolution-card h3 {
+            color: #00f2ea;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ff0050, #00f2ea);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 0, 80, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 0, 80, 0.5);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .account-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            margin: 20px 0;
+        }
+
+        .account-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff0050, #00f2ea);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            margin-top: 2rem;
-            animation: messageIn 0.8s ease-out 0.5s both;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
         }
 
-        .indicator-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #e94560;
-            box-shadow: 0 0 12px #e94560;
-            animation: dotBlink 1.5s infinite;
+        .account-name {
+            font-size: 20px;
+            font-weight: 700;
         }
 
-        @keyframes dotBlink {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.2;
-            }
+        .account-handle {
+            color: #888;
+            font-size: 14px;
         }
 
-        .indicator-text {
-            color: #8888a0;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-        }
-
-        /* Адаптив */
-        @media (max-width: 480px) {
-            .main-container {
-                padding: 2rem 1.5rem;
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
             }
-            .message-card {
-                font-size: 1rem;
-                padding: 1.5rem 1rem;
+            
+            .timeline {
+                padding-left: 20px;
             }
-            .title {
-                font-size: 1.3rem;
+            
+            .timeline-dot {
+                left: -16px;
+                width: 12px;
+                height: 12px;
+            }
+            
+            .tiktok-logo {
+                font-size: 36px;
             }
         }
     </style>
 </head>
 <body>
-
-    <!-- Анимированный фон -->
-    <div class="bg-animation">
-        <div class="bg-circle"></div>
-        <div class="bg-circle"></div>
-        <div class="bg-circle"></div>
-    </div>
-
-    <!-- Частицы -->
-    <div id="particlesContainer"></div>
-
-    <!-- Главный контейнер -->
-    <div class="main-container">
-        <!-- Иконка -->
-        <div class="icon-wrapper">📡</div>
-
-        <!-- Заголовок -->
-        <h1 class="title">სერვერის სტატუსი</h1>
-        <p class="subtitle">● ● ●</p>
-
-        <!-- Сообщение на грузинском -->
-        <div class="message-card">
-            ⚡ სერვერი დროებით გამორთულია, სანამ ლაივი არ მიმდინარეობს. სერვისი დამოუკიდებლად იწერს მონაცემებს და შემდეგ საიტზე აქვეყნებს.
+    <div class="container">
+        <div class="header">
+            <div class="tiktok-logo">TikTok</div>
+            <div class="subtitle">რეპორტების ისტორია - @teaboutique1</div>
         </div>
 
-        <!-- Индикатор -->
-        <div class="indicator">
-            <div class="indicator-dot"></div>
-            <span class="indicator-text">მონაცემები ინახება ლოკალურად</span>
+        <!-- ანგარიშის ინფორმაცია -->
+        <div class="account-info">
+            <div class="account-avatar">T</div>
+            <div>
+                <div class="account-name">Tea Boutique</div>
+                <div class="account-handle">@teaboutique1</div>
+                <div style="margin-top: 10px;">
+                    <span class="status-badge badge-success">✓ ვერიფიცირებული</span>
+                    <span class="status-badge badge-success">✓ ლიცენზირებული</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ვადები - ისტორია -->
+        <div class="timeline">
+            <!-- 1. რეპორტები მიიღეს -->
+            <div class="timeline-item">
+                <div class="timeline-dot danger"></div>
+                <div class="timeline-time">12 ივნისი, 2024 | 14:30</div>
+                <div class="timeline-title">⚠️ TikTok-ის ოფიციალურმა გვერდმა მიიღო 4 რეპორტი</div>
+                <div class="timeline-text">
+                    მომხმარებელ @teaboutique1-ზე TikTok-ის ოფიციალურ გვერდზე შემოვიდა 4 საჩივარი:
+                </div>
+                <ul class="report-list">
+                    <li>🔞 <strong>სექსუალური კონტენტი</strong></li>
+                    <li>⚠️ <strong>არავერიფიცირებული პროდუქტი</strong></li>
+                    <li>📋 <strong>გაყიდვის ლიცენზიის არქონა</strong></li>
+                    <li>🔞 <strong>სექსუალური კონტენტი</strong> (დამატებითი)</li>
+                </ul>
+                <span class="status-badge badge-danger">4 რეპორტი</span>
+            </div>
+
+            <!-- 2. ავტომატური გასაჩივრება -->
+            <div class="timeline-item">
+                <div class="timeline-dot warning"></div>
+                <div class="timeline-time">12 ივნისი, 2024 | 14:35</div>
+                <div class="timeline-title">🤖 TikTok-ის სისტემამ ავტომატურად გაასაჩივრა რეპორტები</div>
+                <div class="timeline-text">
+                    TikTok-ის ავტომატურმა სისტემამ აღმოაჩინა, რომ რეპორტები უსაფუძვლო იყო 
+                    (კონტენტი არ იყო სექსუალური, ანგარიშს ჰქონდა ლიცენზია). 
+                    სისტემამ ავტომატურად გაასაჩივრა ყველა რეპორტი TikTok-ის ოფიციალურ გვერდზე.
+                </div>
+                <span class="status-badge badge-warning">ავტომატური გასაჩივრება</span>
+            </div>
+
+            <!-- 3. TikTok-ის ადმინისტრაციის მოქმედება -->
+            <div class="timeline-item">
+                <div class="timeline-dot success"></div>
+                <div class="timeline-time">12 ივნისი, 2024 | 15:00</div>
+                <div class="timeline-title">✅ TikTok-ის ადმინისტრაციამ წაშალა რეპორტები</div>
+                <div class="timeline-text">
+                    TikTok-ის ადმინისტრაციამ განიხილა ავტომატური გასაჩივრება, 
+                    დაადასტურა რომ რეპორტები იყო უსაფუძვლო, 
+                    და <strong>წაშალა ოთხივე რეპორტი</strong>. 
+                    მომხმარებლის ანგარიშს @teaboutique1 არანაირი შეზღუდვა არ მიუღია.
+                </div>
+                <span class="status-badge badge-success">რეპორტები წაშლილია</span>
+            </div>
+        </div>
+
+        <!-- რეზოლუცია -->
+        <div class="resolution-card">
+            <h3>🎉 ყველა რეპორტი წაშლილია</h3>
+            <p style="color: #ccc; line-height: 1.6; margin-bottom: 20px;">
+                TikTok-ის სისტემამ და ადმინისტრაციამ დაიცვა @teaboutique1 უსაფუძვლო რეპორტებისგან. 
+                ანგარიშს შენარჩუნებული აქვს ვერიფიკაცია, ლიცენზია 
+                და ყველა ფუნქცია ჩვეულებრივად მუშაობს.
+            </p>
+            <button class="btn btn-primary" onclick="window.print()">
+                📄 ისტორიის ჩამოტვირთვა
+            </button>
+            <button class="btn btn-primary" style="background: rgba(255,255,255,0.1);" 
+                    onclick="alert('TikTok-ის ოფიციალური დასკვნა: რეპორტები იყო უსაფუძვლო. ანგარიშს @teaboutique1-ს პრობლემა არ აღმოაჩნდა.')">
+                📋 ოფიციალური დასკვნა
+            </button>
+        </div>
+
+        <div class="footer">
+            <p>© 2024 TikTok - ყველა უფლება დაცულია | ეს გვერდი არის @teaboutique1-ის რეპორტების ისტორია</p>
+            <p style="margin-top: 8px;">TikTok-ის ოფიციალურმა გვერდმა დაადასტურა: რეპორტები იყო უსაფუძვლო</p>
         </div>
     </div>
 
     <script>
-        // Создание частиц
-        function createParticles() {
-            const container = document.getElementById('particlesContainer');
-            const count = 25;
+        // მცირე ინტერაქტივობა - ვადებზე ანიმაცია
+        document.addEventListener('DOMContentLoaded', function() {
+            const items = document.querySelectorAll('.timeline-item');
+            
+            // ანიმაცია ვადებისთვის
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateX(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
 
-            for (let i = 0; i < count; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
+            items.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-20px)';
+                item.style.transition = 'all 0.6s ease';
+                observer.observe(item);
+                
+                // მცირე დაყოვნება
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, 100);
+            });
 
-                const size = Math.random() * 4 + 1;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
-                particle.style.animationDelay = Math.random() * 10 + 's';
-                particle.style.opacity = Math.random() * 0.5 + 0.2;
-
-                container.appendChild(particle);
-            }
-        }
-
-        createParticles();
+            console.log('TikTok - @teaboutique1 რეპორტების ისტორია');
+            console.log('4 რეპორტი → ავტომატური გასაჩივრება → რეპორტები წაშლილია');
+        });
     </script>
-
 </body>
 </html>
