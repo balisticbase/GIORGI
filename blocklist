@@ -119,31 +119,6 @@
 ! all-website-SCRIPT-ads
 
 
-
-||*advertisement.js*$all
-||*/analytics.js
-||*/script[src*="analytics"]$script
-||*/script[src*="advertisement"]$script
-||*/script[src*="raygun"]$script
-||*/script[src*="vk-ads"]$script
-||*/script[src*="adobe"]$script
-||*/script[src*="naver"]$script
-||*/script[src*="aliyun"]$script
-||*.ads
-||*.advertisement
-||*.ad-banner
-||*.sponsored
-||*.tracking
-||*.analytics
-||*.adbox
-||*.banner_ads
-||*.adsbox
-||*.textads
-||*/ads.js$script
-||*/pagead.js$script
-||*/ads.*.js$script
-||*/widget/ads*$script
-||*/ads/*$script
 ||*/asvla2*$all
 ||*/asvla*$all
 ||*/banner*$all
