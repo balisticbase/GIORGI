@@ -67,7 +67,8 @@
 ! mykadri.tv
 
 ||hdd.mykadri.com*mp4*
-
+||*statline.cc*$all
+||videos-cloudfront.jwpsrv.com
 
 
 ! myvideo.ge
@@ -275,6 +276,7 @@ croconet.cam##main:nth-child(5) > div.my_container:nth-child(10)
 
 
 ||*img.mykadri.click*asvla2*
+||*mykadri.tv/templates/mykadri_V2/dleimages*png*
 mykadri.tv##main:nth-child(2) > section.section.section--dle-content.my-4:last-child > div.container > div.avc-asvla:first-child > center > a > img
 mykadri.tv##main:nth-child(2) > section.section.section--dle-content.my-4:last-child > div.container > div.avc-asvla:first-child > center > a
 mykadri.tv##main:nth-child(2) > section.section.section--dle-content.my-4:last-child > div.container > div.avc-asvla:first-child > center
