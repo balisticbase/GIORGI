@@ -83,11 +83,11 @@
 
 ! mykadri.tv
 
-||hdd.mykadri.com*mp4*
+||hdd.mykadri.com*$all
 ||statline.cc*$all
-||videos-cloudfront.jwpsrv.com^
-||vidium.nshamanauri.ge^
-||content.jwplatform.com/videos/nPripu9l*mp4*
+||videos-cloudfront.jwpsrv.com*$all
+||vidium.nshamanauri.ge*$all
+||content.jwplatform.com/videos/nPripu9l*$all
 ||statline.cc*$all
 
 ! myvideo.ge
