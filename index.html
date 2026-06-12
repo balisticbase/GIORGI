@@ -1,11 +1,638 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Redirect</title>
-    <meta http-equiv="refresh" content="0; url=https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Перенос данных</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --green: #60e090;
+    --blue: #4d8eff;
+    --yellow: #ffd060;
+    --purple: #a064ff;
+    --bg: #080c14;
+    --card: rgba(15,25,50,0.9);
+    --border-green: rgba(80,180,120,0.4);
+    --border-blue: rgba(60,120,255,0.4);
+    --text-dim: #5a7098;
+    --text-dimmer: #3a5070;
+  }
+
+  html, body {
+    width: 100%; min-height: 100vh;
+    background: var(--bg);
+    color: #e0eaff;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    min-height: 100svh;
+  }
+
+  /* BG GRID */
+  .bg-grid {
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(30,80,200,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30,80,200,0.07) 1px, transparent 1px);
+    background-size: clamp(24px, 4vw, 40px) clamp(24px, 4vw, 40px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* WRAPPER */
+  .wrapper {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: clamp(24px, 4vw, 48px);
+    width: 100%;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,200,50,0.1);
+    border: 1px solid rgba(255,200,50,0.3);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: clamp(10px, 2.5vw, 12px);
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--yellow);
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+  }
+
+  .pulse-dot {
+    width: 8px; height: 8px;
+    background: var(--yellow);
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.65); }
+  }
+
+  h1 {
+    font-size: clamp(18px, 5vw, 28px);
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  h1 span { color: var(--blue); }
+
+  .subtitle {
+    font-size: clamp(10px, 2.8vw, 13px);
+    color: var(--text-dim);
+    margin-top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 0 8px;
+    line-height: 1.5;
+  }
+
+  /* ===== SCENE ===== */
+  .scene {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: clamp(24px, 4vw, 40px);
+    gap: 0;
+  }
+
+  .server-card {
+    width: clamp(100px, 25vw, 160px);
+    background: var(--card);
+    border: 1px solid rgba(60,100,220,0.25);
+    border-radius: clamp(10px, 2vw, 16px);
+    padding: clamp(14px, 3vw, 24px) clamp(10px, 2vw, 16px);
+    text-align: center;
+    flex-shrink: 0;
+    box-shadow: 0 0 30px rgba(30,70,200,0.12), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  .server-card.source      { border-color: var(--border-green); box-shadow: 0 0 24px rgba(80,180,80,0.1); }
+  .server-card.destination { border-color: var(--border-blue);  box-shadow: 0 0 24px rgba(60,120,255,0.12); }
+
+  .server-icon {
+    font-size: clamp(24px, 6vw, 36px);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .server-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(10px, 2.5vw, 13px);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 3px;
+    word-break: break-all;
+  }
+
+  .server-ip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(8px, 2vw, 10px);
+    color: var(--text-dimmer);
+  }
+
+  .server-tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: clamp(8px, 2vw, 10px);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  .server-card.source      .server-tag { background: rgba(80,200,120,0.15); color: var(--green);  border: 1px solid rgba(80,200,120,0.3); }
+  .server-card.destination .server-tag { background: rgba(60,120,255,0.15); color: var(--blue);   border: 1px solid rgba(60,120,255,0.3); }
+
+  /* TUNNEL */
+  .tunnel-wrap {
+    flex: 1;
+    min-width: 60px;
+    max-width: 280px;
+    position: relative;
+    height: 60px;
+    display: flex;
+    align-items: center;
+  }
+
+  .tunnel-track {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(80,200,120,0.35), rgba(60,120,255,0.35));
+    position: relative;
+    border-radius: 2px;
+  }
+
+  .tunnel-glow {
+    position: absolute;
+    top: 50%; left: 0;
+    width: 100%; height: 18px;
+    transform: translateY(-50%);
+    background: linear-gradient(90deg, rgba(80,200,120,0.04), rgba(60,120,255,0.04));
+    border-radius: 9px;
+  }
+
+  .tunnel-label {
+    position: absolute;
+    top: -18px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(7px, 1.8vw, 9px);
+    color: var(--text-dimmer);
+    white-space: nowrap;
+    letter-spacing: 0.08em;
+  }
+
+  /* PACKETS */
+  .packet {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: clamp(20px, 5vw, 28px);
+    height: clamp(10px, 2.5vw, 14px);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(6px, 1.5vw, 8px);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    opacity: 0;
+    animation: fly linear infinite;
+  }
+
+  .packet.p1 { background: rgba(80,200,120,0.9); color: #000; animation-duration: 2.2s; animation-delay: 0s; }
+  .packet.p2 { background: rgba(60,140,255,0.9); color: #fff; animation-duration: 2.2s; animation-delay: 0.73s; }
+  .packet.p3 { background: rgba(160,100,255,0.9); color: #fff; animation-duration: 2.2s; animation-delay: 1.45s; }
+
+  @keyframes fly {
+    0%   { left: 0;    opacity: 0; transform: translateY(-50%) scale(0.6); }
+    8%   { opacity: 1; transform: translateY(-50%) scale(1); }
+    88%  { opacity: 1; transform: translateY(-50%) scale(1); }
+    100% { left: calc(100% - clamp(20px,5vw,28px)); opacity: 0; transform: translateY(-50%) scale(0.6); }
+  }
+
+  /* PROGRESS */
+  .progress-section {
+    width: 100%;
+    margin-bottom: clamp(16px, 3vw, 28px);
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .progress-title {
+    font-size: clamp(10px, 2.5vw, 12px);
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.06em;
+  }
+
+  .progress-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(12px, 3vw, 14px);
+    font-weight: 700;
+    color: var(--blue);
+  }
+
+  .progress-bar-bg {
+    height: clamp(5px, 1.2vw, 7px);
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--blue));
+    border-radius: 4px;
+    width: 0%;
+    transition: width 0.5s ease;
+    box-shadow: 0 0 10px rgba(77,142,255,0.5);
+    position: relative;
+  }
+
+  .progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0;
+    width: 20px; height: 100%;
+    background: rgba(255,255,255,0.4);
+    animation: shimmer 1.5s ease-in-out infinite;
+    border-radius: 4px;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { opacity: 0.3; }
+    50%       { opacity: 1; }
+  }
+
+  /* STATS */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(8px, 2vw, 20px);
+    width: 100%;
+    margin-bottom: clamp(16px, 3vw, 28px);
+  }
+
+  .stat-box {
+    background: var(--card);
+    border: 1px solid rgba(60,100,220,0.15);
+    border-radius: clamp(8px, 1.5vw, 10px);
+    padding: clamp(8px, 2vw, 12px) clamp(8px, 1.5vw, 16px);
+    min-width: 0;
+  }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(7px, 1.8vw, 9px);
+    color: var(--text-dimmer);
+    letter-spacing: 0.08em;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(12px, 3.5vw, 16px);
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .stat-value .unit {
+    font-size: clamp(8px, 2vw, 10px);
+    color: var(--text-dim);
+    margin-left: 2px;
+  }
+
+  /* LOG */
+  .log-box {
+    width: 100%;
+    background: rgba(8,12,20,0.95);
+    border: 1px solid rgba(60,100,220,0.15);
+    border-radius: clamp(8px, 1.5vw, 12px);
+    padding: clamp(10px, 2vw, 16px);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(9px, 2.2vw, 11px);
+    height: clamp(100px, 20vw, 130px);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .log-entry {
+    display: flex;
+    gap: clamp(6px, 1.5vw, 12px);
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.02);
+    animation: logIn 0.3s ease;
+    min-width: 0;
+  }
+
+  @keyframes logIn {
+    from { opacity: 0; transform: translateX(-6px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .log-time { color: var(--text-dimmer); flex-shrink: 0; }
+  .log-level-ok   { color: var(--green);  flex-shrink: 0; }
+  .log-level-info { color: var(--blue);   flex-shrink: 0; }
+  .log-level-warn { color: var(--yellow); flex-shrink: 0; }
+  .log-msg {
+    color: #8ab0d0;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .log-fade {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 36px;
+    background: linear-gradient(transparent, rgba(8,12,20,0.98));
+    pointer-events: none;
+    border-radius: 0 0 12px 12px;
+    z-index: 2;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .packet, .progress-bar-fill::after, .pulse-dot { animation: none !important; }
+    .progress-bar-fill { transition: none; }
+  }
+
+  /* === MOBILE portrait ≤ 480px: stack servers vertically === */
+  @media (max-width: 480px) {
+    body { padding: 20px 12px; justify-content: flex-start; padding-top: 32px; }
+
+    .scene {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .tunnel-wrap {
+      width: 2px;
+      height: 60px;
+      min-width: unset;
+      max-width: unset;
+      flex: unset;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .tunnel-track {
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(80,200,120,0.35), rgba(60,120,255,0.35));
+    }
+
+    .tunnel-label {
+      position: absolute;
+      top: 50%;
+      left: 14px;
+      transform: translateY(-50%);
+      writing-mode: horizontal-tb;
+      font-size: 7px;
+      white-space: nowrap;
+    }
+
+    .tunnel-glow {
+      top: 0; left: 50%;
+      width: 18px; height: 100%;
+      transform: translateX(-50%);
+    }
+
+    .packet {
+      top: auto;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: flyDown linear infinite;
+    }
+
+    @keyframes flyDown {
+      0%   { top: 0;    opacity: 0; transform: translateX(-50%) scale(0.6); }
+      8%   { opacity: 1; transform: translateX(-50%) scale(1); }
+      88%  { opacity: 1; transform: translateX(-50%) scale(1); }
+      100% { top: calc(100% - 14px); opacity: 0; transform: translateX(-50%) scale(0.6); }
+    }
+
+    .stats-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Landscape phone */
+  @media (max-height: 500px) and (orientation: landscape) {
+    body { padding: 12px 16px; }
+    .header { margin-bottom: 12px; }
+    .scene  { margin-bottom: 12px; }
+    .log-box { height: 80px; }
+  }
+
+  /* Large screens */
+  @media (min-width: 1400px) {
+    .wrapper { max-width: 720px; }
+  }
+</style>
 </head>
 <body>
-    Redirecting...
+
+<div class="bg-grid"></div>
+
+<div class="wrapper">
+
+  <div class="header">
+    <div class="status-badge">
+      <div class="pulse-dot"></div>
+      МИГРАЦИЯ АКТИВНА
+    </div>
+    <h1>Перенос данных <span>в процессе</span></h1>
+    <div class="subtitle">Не отключайте сервер — операция выполняется автоматически</div>
+  </div>
+
+  <!-- SCENE -->
+  <div class="scene">
+    <div class="server-card source">
+      <span class="server-icon">🖥</span>
+      <div class="server-name">SERVER-01</div>
+      <div class="server-ip">192.168.1.10</div>
+      <div class="server-tag">ИСТОЧНИК</div>
+    </div>
+
+    <div class="tunnel-wrap">
+      <div class="tunnel-label">ENCRYPTED · TLS 1.3</div>
+      <div class="tunnel-track">
+        <div class="tunnel-glow"></div>
+        <div class="packet p1">PKT</div>
+        <div class="packet p2">DAT</div>
+        <div class="packet p3">BIN</div>
+      </div>
+    </div>
+
+    <div class="server-card destination">
+      <span class="server-icon">🖥</span>
+      <div class="server-name">SERVER-02</div>
+      <div class="server-ip">192.168.2.20</div>
+      <div class="server-tag">НАЗНАЧЕНИЕ</div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-section">
+    <div class="progress-header">
+      <div class="progress-title">ПЕРЕНОС ФАЙЛОВ</div>
+      <div class="progress-pct" id="pct">0%</div>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="bar"></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-label">Скорость</div>
+      <div class="stat-value" id="speed">0<span class="unit">MB/s</span></div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Перенесено</div>
+      <div class="stat-value" id="transferred">0<span class="unit">GB</span></div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Файлов</div>
+      <div class="stat-value" id="files">0<span class="unit">шт</span></div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Осталось</div>
+      <div class="stat-value" id="eta">--<span class="unit">мин</span></div>
+    </div>
+  </div>
+
+  <!-- LOG -->
+  <div class="log-box" id="logBox">
+    <div class="log-fade"></div>
+  </div>
+
+</div><!-- /wrapper -->
+
+<script>
+  const logMessages = [
+    { l:'ok',   m:'Соединение с SERVER-01 установлено' },
+    { l:'info', m:'Инициализация защищённого канала TLS 1.3' },
+    { l:'ok',   m:'Аутентификация пройдена успешно' },
+    { l:'info', m:'Начало сканирования файловой системы...' },
+    { l:'ok',   m:'Найдено 12,847 файлов (148.3 GB)' },
+    { l:'info', m:'Перенос /var/lib/database/prod.db' },
+    { l:'ok',   m:'Чексумма пакета #001 верифицирована' },
+    { l:'info', m:'Перенос /etc/nginx/nginx.conf' },
+    { l:'ok',   m:'Файл /home/app/config.json скопирован' },
+    { l:'info', m:'Перенос директории /var/www/html...' },
+    { l:'ok',   m:'Пакет #128 получен — без ошибок' },
+    { l:'info', m:'Синхронизация таблиц БД...' },
+    { l:'ok',   m:'Индексы воссозданы на SERVER-02' },
+    { l:'warn', m:'Медленный узел — переключение на резерв' },
+    { l:'ok',   m:'Резервный канал активирован' },
+    { l:'info', m:'Продолжение переноса с отметки 43%' },
+    { l:'ok',   m:'SSL-сертификаты перенесены' },
+    { l:'info', m:'Перенос /var/log/app.log (2.1 GB)' },
+    { l:'ok',   m:'Целостность данных подтверждена' },
+    { l:'info', m:'Финальная синхронизация разделов...' },
+  ];
+
+  let progress = 0, logIdx = 0;
+  const logBox = document.getElementById('logBox');
+  const fade   = logBox.querySelector('.log-fade');
+
+  function getTime() {
+    const d = new Date();
+    return [d.getHours(), d.getMinutes(), d.getSeconds()]
+      .map(n => String(n).padStart(2,'0')).join(':');
+  }
+
+  function addLog() {
+    if (logIdx >= logMessages.length) logIdx = 0;
+    const { l, m } = logMessages[logIdx++];
+    const entry = document.createElement('div');
+    entry.className = 'log-entry';
+    const map = { ok:['✓','log-level-ok'], info:['i','log-level-info'], warn:['!','log-level-warn'] };
+    const [icon, cls] = map[l];
+    entry.innerHTML =
+      `<span class="log-time">${getTime()}</span>` +
+      `<span class="${cls}">[${icon}]</span>` +
+      `<span class="log-msg">${m}</span>`;
+    logBox.insertBefore(entry, fade);
+    const entries = logBox.querySelectorAll('.log-entry');
+    if (entries.length > 7) entries[0].remove();
+  }
+
+  function updateStats() {
+    const speed = (15 + Math.random() * 20).toFixed(1);
+    const transferred = (progress / 100 * 148.3).toFixed(1);
+    const files = Math.floor(progress / 100 * 12847);
+    const eta = progress >= 100 ? 0
+      : Math.max(1, Math.ceil((100 - progress) / 100 * 148.3 / parseFloat(speed) / 60 * 1000));
+    document.getElementById('speed').innerHTML       = `${speed}<span class="unit">MB/s</span>`;
+    document.getElementById('transferred').innerHTML = `${transferred}<span class="unit">GB</span>`;
+    document.getElementById('files').innerHTML       = `${files.toLocaleString()}<span class="unit">шт</span>`;
+    document.getElementById('eta').innerHTML         = progress >= 100
+      ? `0<span class="unit">мин</span>`
+      : `${eta}<span class="unit">мин</span>`;
+  }
+
+  function tick() {
+    if (progress < 100) {
+      progress = Math.min(100, progress + 0.3 + Math.random() * 0.4);
+    }
+    document.getElementById('bar').style.width  = progress + '%';
+    document.getElementById('pct').textContent  = Math.floor(progress) + '%';
+    updateStats();
+  }
+
+  setInterval(tick,   300);
+  setInterval(addLog, 1800);
+  addLog();
+</script>
 </body>
 </html>
