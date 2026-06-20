@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#667eea">
     <meta name="description" content="SafeSearch - დაცული ძიება ბლოკ-ლისტით">
-    <meta name="keywords" content="search, safe, filter, blocklist, privacy">
     <title>🔒 SafeSearch - დაცული ძიება</title>
     
     <style>
@@ -36,10 +35,6 @@
                 --text-light: #a0a0a0;
                 --border: #333333;
             }
-        }
-
-        html {
-            scroll-behavior: smooth;
         }
 
         body {
@@ -117,7 +112,7 @@
             font-weight: 500;
         }
 
-        /* Search Section */
+        /* Search Section (Used for Search and Loader) */
         .search-section {
             background: var(--bg-light);
             border-radius: 20px;
@@ -210,6 +205,49 @@
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
+        }
+
+        /* Loader Specific Styles */
+        .loader-preview {
+            background: var(--bg-dark);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loader-url {
+            font-family: monospace;
+            background: var(--bg-light);
+            padding: 10px;
+            border-radius: 8px;
+            word-break: break-all;
+            margin: 15px 0;
+            color: var(--primary);
+        }
+
+        .iframe-container {
+            display: none; /* Iframe უმეტეს შემთხვევაში იბლოკება, ამიტომ მხოლოდ ვიზუალური ლოუდერია */
+            width: 100%;
+            height: 500px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-top: 20px;
+            background: white;
         }
 
         /* Settings Panel */
@@ -442,10 +480,6 @@
             animation: spin 0.8s linear infinite;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
         .status-text {
             flex: 1;
             font-size: 14px;
@@ -592,6 +626,17 @@
             font-weight: 600;
         }
 
+        .blocked-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
         .no-results {
             text-align: center;
             padding: 60px 20px;
@@ -678,6 +723,7 @@
             <div></div>
             <div class="nav-buttons">
                 <button class="nav-btn active" data-tab="search">🔍 ძიება</button>
+                <button class="nav-btn" data-tab="loader">🌐 ჩატვირთვა</button>
                 <button class="nav-btn" data-tab="history">📋 ისტორია</button>
                 <button class="nav-btn" data-tab="settings">⚙️ პარამეტრები</button>
             </div>
@@ -686,72 +732,69 @@
         <!-- Header -->
         <div class="header">
             <div class="logo">🔒 SafeSearch</div>
-            <div class="tagline">დაცული ძიება ბლოკ-ლისტით</div>
+            <div class="tagline">დაცული ძიება და ვებ-გვერდების ჩატვირთვა</div>
         </div>
 
         <!-- Tabs Container -->
+        <!-- 1. Search Tab -->
         <div class="tabs show" id="searchTab">
-            <!-- Search Section -->
             <div class="search-section">
                 <div class="search-box">
-                    <input 
-                        type="text" 
-                        class="search-input" 
-                        id="searchInput" 
-                        placeholder="რა ეძებ?" 
-                        autocomplete="off"
-                        spellcheck="false"
-                    >
+                    <input type="text" class="search-input" id="searchInput" placeholder="რა ეძებ?" autocomplete="off" spellcheck="false">
                     <button class="search-btn" id="searchBtn">🔍 ძიება</button>
                 </div>
                 <div class="search-info">
-                    <div class="info-item">
-                        📊 <span id="blocklistSize">იტვირთება...</span> დომენი
-                    </div>
-                    <div class="info-item">
-                        🕐 <span id="lastUpdate">---</span>
-                    </div>
+                    <div class="info-item">📊 <span id="blocklistSize">იტვირთება...</span> დომენი</div>
+                    <div class="info-item">🕐 <span id="lastUpdate">---</span></div>
                 </div>
             </div>
-
-            <!-- Status Bar -->
             <div class="status-bar" id="statusBar">
                 <div class="spinner"></div>
                 <div class="status-text" id="statusText"></div>
             </div>
-
-            <!-- Results Section -->
             <div class="results-section" id="resultsSection">
                 <div class="results-header">
                     <div class="results-title">🔍 ძიების შედეგები</div>
                     <div class="stats-inline">
-                        <div class="stat">
-                            <span>✅</span>
-                            <span class="stat-number" id="allowedCountStat">0</span>
-                        </div>
-                        <div class="stat">
-                            <span>🚫</span>
-                            <span class="stat-number" id="blockedCountStat">0</span>
-                        </div>
+                        <div class="stat"><span>✅</span><span class="stat-number" id="allowedCountStat">0</span></div>
+                        <div class="stat"><span>🚫</span><span class="stat-number" id="blockedCountStat">0</span></div>
                     </div>
                 </div>
                 <div id="resultsList"></div>
             </div>
         </div>
 
-        <!-- History Tab -->
-        <div class="tabs" id="historyTab">
+        <!-- 2. Loader Tab -->
+        <div class="tabs" id="loaderTab">
             <div class="search-section">
-                <h2 style="margin-bottom: 20px; color: var(--text-dark);">📋 ძიების ისტორია</h2>
-                <div class="history-list" id="historyList">
-                    <div style="text-align: center; color: var(--text-light); padding: 40px 20px;">
-                        ისტორია ცარიელია
+                <h2 style="margin-bottom: 15px; color: var(--text-dark);">🌐 ვებ-გვერდის ჩატვირთვა</h2>
+                <p style="margin-bottom: 20px; color: var(--text-light); font-size: 14px;">შეიყვანეთ სრული მისამართი (მაგ: https://example.com). საიტი გაიხსნება ახალ ტაბში.</p>
+                <div class="search-box">
+                    <input type="text" class="search-input" id="urlInput" placeholder="https://example.com" autocomplete="off" spellcheck="false">
+                    <button class="search-btn" id="loadUrlBtn">🌐 ჩატვირთვა</button>
+                </div>
+                <div id="loaderPreview" style="display: none;">
+                    <div class="loader-preview">
+                        <div class="loader-spinner"></div>
+                        <div style="color: var(--text-dark); font-weight: 600;">მიმდინარეობს შემოწმება...</div>
+                        <div class="loader-url" id="currentLoadingUrl"></div>
+                        <div id="loaderStatus" style="font-size: 13px; color: var(--text-light);"></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Settings Tab -->
+        <!-- 3. History Tab -->
+        <div class="tabs" id="historyTab">
+            <div class="search-section">
+                <h2 style="margin-bottom: 20px; color: var(--text-dark);">📋 ძიების ისტორია</h2>
+                <div class="history-list" id="historyList">
+                    <div style="text-align: center; color: var(--text-light); padding: 40px 20px;">ისტორია ცარიელია</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Settings Tab -->
         <div class="tabs" id="settingsTab">
             <div class="settings-panel">
                 <div class="settings-group">
@@ -761,9 +804,7 @@
                             <div class="setting-label-text">ახალ ტაბში ხსნა</div>
                             <div class="setting-label-desc">ლინკები რაც ხელი ნახელმისაწვდომი</div>
                         </div>
-                        <div class="toggle" id="openInNewTab">
-                            <div class="toggle-dot"></div>
-                        </div>
+                        <div class="toggle" id="openInNewTab"><div class="toggle-dot"></div></div>
                     </div>
                 </div>
 
@@ -774,9 +815,7 @@
                             <div class="setting-label-text">ისტორის შენახვა</div>
                             <div class="setting-label-desc">თქვენი ძიებების ისტორია</div>
                         </div>
-                        <div class="toggle active" id="saveHistory">
-                            <div class="toggle-dot"></div>
-                        </div>
+                        <div class="toggle active" id="saveHistory"><div class="toggle-dot"></div></div>
                     </div>
                     <div class="btn-group">
                         <button class="btn btn-danger" id="clearHistoryBtn">🗑️ ისტორის წაშლა</button>
@@ -835,6 +874,13 @@
         const resetCustomBtn = document.getElementById('resetCustomBtn');
         const openInNewTabToggle = document.getElementById('openInNewTab');
         const saveHistoryToggle = document.getElementById('saveHistory');
+        
+        // Loader Elements
+        const urlInput = document.getElementById('urlInput');
+        const loadUrlBtn = document.getElementById('loadUrlBtn');
+        const loaderPreview = document.getElementById('loaderPreview');
+        const currentLoadingUrl = document.getElementById('currentLoadingUrl');
+        const loaderStatus = document.getElementById('loaderStatus');
 
         // State
         let blockedDomains = new Set();
@@ -888,13 +934,18 @@
                     search();
                 }
             });
+
+            // URL Loader
+            loadUrlBtn.addEventListener('click', loadUrl);
+            urlInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') loadUrl();
+            });
         }
 
         // Tab Switching
         function switchTab(tabName) {
             document.querySelectorAll('.tabs').forEach(t => t.classList.remove('show'));
             document.getElementById(tabName + 'Tab').classList.add('show');
-            
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
         }
@@ -905,7 +956,6 @@
             statusText.textContent = message;
         }
 
-        // Hide Status
         function hideStatus() {
             statusBar.classList.remove('show');
         }
@@ -913,17 +963,13 @@
         // Load Blocklist
         async function loadBlocklist() {
             showStatus('⏳ ბლოკ-ლისტის ჩამოტვირთვა...');
-            
             try {
                 const response = await fetch(BLOCKLIST_URL);
                 if (!response.ok) throw new Error('Network response was not ok');
-                
                 const text = await response.text();
                 parseBlocklist(text);
-                
                 blocklistSizeEl.textContent = (blockedDomains.size + customDomains.size).toLocaleString('ka-GE');
                 lastUpdateEl.textContent = new Date().toLocaleTimeString('ka-GE');
-                
                 showStatus(`✅ ბლოკ-ლისტი ჩამოტვირთული (${blockedDomains.size} დომენი)`, 'success');
                 setTimeout(hideStatus, 2500);
             } catch (error) {
@@ -936,18 +982,12 @@
         function parseBlocklist(text) {
             blockedDomains.clear();
             const lines = text.split('\n');
-            
             for (let line of lines) {
                 line = line.trim();
                 if (line.startsWith('!') || line.startsWith('#') || !line) continue;
-                
                 const match = line.match(/^\|\|(.+?)\^/);
                 if (match) {
-                    let domain = match[1]
-                        .replace(/^\*\./, '')
-                        .replace(/\*/g, '')
-                        .toLowerCase();
-                    
+                    let domain = match[1].replace(/^\*\./, '').replace(/\*/g, '').toLowerCase();
                     if (/^[a-zA-Z0-9.-]+$/.test(domain)) {
                         blockedDomains.add(domain);
                     }
@@ -959,18 +999,57 @@
         function isDomainBlocked(url) {
             try {
                 const domain = new URL(url).hostname.toLowerCase();
-                
                 if (blockedDomains.has(domain) || customDomains.has(domain)) return true;
-                
                 const parts = domain.split('.');
                 for (let i = 1; i < parts.length; i++) {
                     const parentDomain = parts.slice(i).join('.');
                     if (blockedDomains.has(parentDomain) || customDomains.has(parentDomain)) return true;
                 }
-                
                 return false;
             } catch {
                 return false;
+            }
+        }
+
+        // URL Loader Logic
+        function loadUrl() {
+            let rawUrl = urlInput.value.trim();
+            if (!rawUrl) return;
+
+            // ავტომატურად დაემატოს https:// თუ არ აქვს
+            if (!/^https?:\/\//i.test(rawUrl)) {
+                rawUrl = 'https://' + rawUrl;
+            }
+
+            try {
+                const url = new URL(rawUrl);
+                const domain = url.hostname;
+                
+                // ვამოწმებთ ბლოკ-ლისტში
+                if (isDomainBlocked(url.href)) {
+                    loaderPreview.style.display = 'block';
+                    currentLoadingUrl.textContent = url.href;
+                    loaderStatus.innerHTML = '<span style="color: var(--danger);">🚫 ეს დომენი დაბლოკილია!</span>';
+                    return;
+                }
+
+                // ვაჩვენებთ ლოუდერს 1 წამით, შემდეგ ვხსნით ახალ ტაბში
+                loaderPreview.style.display = 'block';
+                currentLoadingUrl.textContent = url.href;
+                loaderStatus.innerHTML = '<span style="color: var(--success);">✅ შემოწმება გავლილია. იხსნება...</span>';
+
+                setTimeout(() => {
+                    window.open(url.href, '_blank', 'noopener,noreferrer');
+                    loaderPreview.style.display = 'none';
+                    if (settings.saveHistory) {
+                        addToHistory(url.href);
+                    }
+                }, 1000);
+
+            } catch (e) {
+                loaderPreview.style.display = 'block';
+                currentLoadingUrl.textContent = rawUrl;
+                loaderStatus.innerHTML = '<span style="color: var(--danger);">❌ არასწორი ფორმატი! გამოიყენეთ example.com ან https://...</span>';
             }
         }
 
@@ -1028,17 +1107,10 @@
                         html += `
                             <div class="result-item">
                                 <div class="result-url">${domain}</div>
-                                <a class="result-title" href="${href}">
-                                    ${result.title || 'Link'}
-                                </a>
-                                <div class="result-description">
-                                    ${result.description || result.snippet || 'აღწერა არ არის ხელმისაწვდომი'}
-                                </div>
-                                <div class="result-meta">
-                                    <span class="safe-label">✅ დაშვებული</span>
-                                </div>
-                            </div>
-                        `;
+                                <a class="result-title" href="${href}">${result.title || 'Link'}</a>
+                                <div class="result-description">${result.description || result.snippet || 'აღწერა არ არის ხელმისაწვდომი'}</div>
+                                <div class="result-meta"><span class="safe-label">✅ დაშვებული</span></div>
+                            </div>`;
                     }
                 } catch (e) {
                     console.error('Error processing result:', e);
@@ -1049,21 +1121,10 @@
                 resultsList.innerHTML = html;
                 hideStatus();
             } else if (blockedCount > 0) {
-                resultsList.innerHTML = `
-                    <div class="no-results">
-                        <div class="no-results-icon">🛡️</div>
-                        <div class="no-results-text">ყველა შედეგი დაბლოკირებულია</div>
-                        <div>${blockedCount} დაზიანებელი საიტი გამოიცა</div>
-                    </div>
-                `;
+                resultsList.innerHTML = `<div class="no-results"><div class="no-results-icon">🛡️</div><div class="no-results-text">ყველა შედეგი დაბლოკირებულია</div><div>${blockedCount} დაზიანებელი საიტი გამოიცა</div></div>`;
                 hideStatus();
             } else {
-                resultsList.innerHTML = `
-                    <div class="no-results">
-                        <div class="no-results-icon">🔍</div>
-                        <div class="no-results-text">შედეგი არ მოიძებნა</div>
-                    </div>
-                `;
+                resultsList.innerHTML = `<div class="no-results"><div class="no-results-icon">🔍</div><div class="no-results-text">შედეგი არ მოიძებნა</div></div>`;
                 hideStatus();
             }
 
@@ -1077,17 +1138,10 @@
             const href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
             resultsList.innerHTML = `
                 <div style="text-align: center; padding: 40px 20px;">
-                    <p style="margin-bottom: 20px; color: var(--text-light); font-size: 15px;">
-                        🔗 Google Search-ე
-                    </p>
-                    <a href="${href}" ${settings.openInNewTab ? 'target="_blank" rel="noopener noreferrer"' : ''} class="btn btn-primary" style="display: inline-block;">
-                        🔍 Google-ზე ძიება
-                    </a>
-                    <p style="margin-top: 20px; color: var(--text-light); font-size: 13px;">
-                        ⚠️ დაბლოკირებული დომენები არ გამოჩნდება
-                    </p>
-                </div>
-            `;
+                    <p style="margin-bottom: 20px; color: var(--text-light); font-size: 15px;">🔗 Google Search-ე</p>
+                    <a href="${href}" ${settings.openInNewTab ? 'target="_blank" rel="noopener noreferrer"' : ''} class="btn btn-primary" style="display: inline-block;">🔍 Google-ზე ძიება</a>
+                    <p style="margin-top: 20px; color: var(--text-light); font-size: 13px;">⚠️ დაბლოკირებული დომენები არ გამოჩნდება</p>
+                </div>`;
             hideStatus();
             resultsSection.classList.add('show');
         }
@@ -1096,28 +1150,22 @@
         function addToHistory(query) {
             const history = JSON.parse(localStorage.getItem(STORAGE_KEY + 'history') || '[]');
             history.unshift({ query, time: new Date().toLocaleTimeString('ka-GE') });
-            history.splice(50); // Keep last 50
+            history.splice(50);
             localStorage.setItem(STORAGE_KEY + 'history', JSON.stringify(history));
             displayHistory();
         }
 
         function displayHistory() {
             const history = JSON.parse(localStorage.getItem(STORAGE_KEY + 'history') || '[]');
-            
             if (history.length === 0) {
                 historyList.innerHTML = '<div style="text-align: center; color: var(--text-light); padding: 40px 20px;">📭 ისტორია ცარიელია</div>';
                 return;
             }
-
             historyList.innerHTML = history.map((item, index) => `
                 <div class="history-item">
-                    <div class="history-text">
-                        <div class="history-query">${escapeHtml(item.query)}</div>
-                        <div class="history-time">🕐 ${item.time}</div>
-                    </div>
+                    <div class="history-text"><div class="history-query">${escapeHtml(item.query)}</div><div class="history-time">🕐 ${item.time}</div></div>
                     <button class="history-delete" data-index="${index}">🗑️ წაშლა</button>
-                </div>
-            `).join('');
+                </div>`).join('');
         }
 
         function clearHistory() {
@@ -1138,7 +1186,6 @@
         function loadSettings() {
             const saved = JSON.parse(localStorage.getItem(STORAGE_KEY + 'settings') || '{}');
             settings = { ...settings, ...saved };
-            
             openInNewTabToggle.classList.toggle('active', settings.openInNewTab);
             saveHistoryToggle.classList.toggle('active', settings.saveHistory);
         }
@@ -1181,14 +1228,12 @@
             }
         }
 
-        // Utility
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
 
-        // Initialize on Load
         window.addEventListener('load', init);
     </script>
 </body>
