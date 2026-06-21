@@ -20,7 +20,8 @@
 
 ! virus-domin-ad-direct-virus
 
-
+||a.nel.cloudflare.com*$all
+||static.cloudflareinsights.com*$all
 ||yandex.ru*ads*adfox*$all
 ||*vnmfvnkd.win*$all
 ||*s.opoxv.com*$all
