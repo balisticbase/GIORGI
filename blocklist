@@ -19,6 +19,7 @@
 
 ! virus-domin-ad-direct-virus
 
+||ad.twinrdengine.com*$all
 ||tbcpayj-ge*cfd*ge*$all
 ||a.nel.cloudflare.com*$all
 ||static.cloudflareinsights.com*$all
@@ -370,6 +371,12 @@ geosaitebi.tv##div.wrapper:nth-child(15) > div.fulshi-1:nth-child(2) > div.bb-si
 geosaitebi.tv##div.wrapper:nth-child(7) > div.center-1.no-home.apirebsyureba-1:first-child > div.no-home-2 > div.no-home-3 > div.b-size-120.zoma-2:nth-child(2)
 geosaitebi.tv##div.wrapper:nth-child(7) > div.ad-catfish.ad-catfish__desktop:nth-child(15)
 
+
+
+! tnaflix.com
+
+
+||tnaflix.com##div#bannerBlock_head
 
 
 
