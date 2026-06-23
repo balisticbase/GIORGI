@@ -95,7 +95,7 @@
 
 ! ge.movie
 
-||port80ge.adocean.pl*mp4*
+||port80ge.adocean.pl*$all
 ||ge.movie*mp4*$all
 
 
