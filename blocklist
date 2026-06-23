@@ -171,6 +171,12 @@ srulad.com##[data-ad-slot]
 
 
 
+! ge.movie
+
+ge.movie##[id^="popup"]
+
+
+
 ! uyure.net
 
 
