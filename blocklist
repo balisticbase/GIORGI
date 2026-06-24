@@ -17,6 +17,7 @@
 ||*zeloru.com*$all
 ||*my.toruftuiov.com*$all
 ||*nwien.com*$all
+||*port80ge.adocean.pl*$all
 
 
 ! ads-adsplay-video
@@ -64,6 +65,9 @@
 
 
 ! ge.movie
+
+
+||ge.movie*mp4*$all
 
 
 
