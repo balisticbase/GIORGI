@@ -197,6 +197,7 @@ ufasofilmebi.ge###donatePopup
 
 
 geofilms.net##div[id^="bannerPlace"]
+geofilms.net##div[class*="jw"][class*="overlay"]
 
 
 ! liveball.sx
