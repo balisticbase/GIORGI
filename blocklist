@@ -254,3 +254,5 @@ geosaitebi.tv##div.avc-asv
 
 mykadri.tv##div#catfish
 mykadri.tv##.avc-asvla
+mykadri.tv##[class*="jw-vast"]
+mykadri.tv##[id*="vast"]
