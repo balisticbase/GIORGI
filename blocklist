@@ -90,13 +90,6 @@
 
 
 
-! geosaitebi.tv
-
-
-geosaitebi.tv##div.jw-overlays.jw-reset
-
-
-
 ! adjaranet.in
 
 
@@ -113,6 +106,7 @@ geosaitebi.tv##div.jw-overlays.jw-reset
 qartulad.in##div.avc-cro
 qartulad.in##.jw-banner
 qartulad.in##.ad-catfish
+
 
 
 ! kinolab.cc
@@ -231,7 +225,7 @@ ufasofilmebi.ge###donatePopup
 
 geosaitebi.tv##.ad-catfish__desktop
 geosaitebi.tv##div.avc-asv
-
+geosaitebi.tv##div.jw-overlays.jw-reset
 
 
 
