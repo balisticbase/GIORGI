@@ -202,6 +202,7 @@ gemovie.tv###sn-overlay-1
 
 ! myvideo.ge
 
+myvideo.ge##.video-player-cont > div[style*="display: block"]
 
 
 ! ufasofilmebi.ge
