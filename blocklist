@@ -234,6 +234,8 @@ geofilms.net##div[class*="jw"][class*="overlay"]
 ! televiziebi.tv
 
 
+televiziebi.tv##div[class*="home"] a[href*="welcome"]
+televiziebi.tv##img[src*="asvla"]
 
 
 
