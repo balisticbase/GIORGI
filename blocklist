@@ -196,16 +196,10 @@ gemovie.tv###sn-overlay-1
 
 
 
-! ufasofilmebi.net
-
-
-||ufasofilmebi.net##img
-
-
-
 ! myvideo.ge
 
 myvideo.ge##.video-player-cont > div[style*="display: block"]
+
 
 
 ! ufasofilmebi.ge
@@ -213,6 +207,7 @@ myvideo.ge##.video-player-cont > div[style*="display: block"]
 
 ufasofilmebi.ge###banner-container
 ufasofilmebi.ge###donatePopup
+||ufasofilmebi.net##img
 
 
 ! geofilms.net
@@ -220,6 +215,7 @@ ufasofilmebi.ge###donatePopup
 
 geofilms.net##div[id^="bannerPlace"]
 geofilms.net##div[class*="jw"][class*="overlay"]
+
 
 
 ! liveball.sx
