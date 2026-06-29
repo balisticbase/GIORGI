@@ -184,6 +184,16 @@ ge.movie##[id^="popup"]
 
 
 
+! adjaranet.bet
+
+
+adjaranet.bet##.fixed.inset-0
+adjaranet.bet##[class*="overlay"]
+adjaranet.bet##[id*="overlay"]
+
+
+
+
 ! uyure.net
 
 
