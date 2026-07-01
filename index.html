@@ -1,317 +1,375 @@
 <!DOCTYPE html>
 <html lang="ka">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ჩვენი ისტორია</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>ჩვენი ალბომი • გიორგი & ანა</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@300;400;500;600;700&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  :root{
-    --wine: #6b2737;
-    --wine-deep: #4a1a26;
-    --blush: #f3d7d0;
-    --paper: #fbf3ea;
-    --gold: #b8875a;
-    --ink: #3a2620;
-  }
+        body {
+            background: #1a0e16;
+            background-image: 
+                radial-gradient(ellipse at 20% 30%, #3d1e33 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 70%, #2e1428 0%, transparent 55%),
+                linear-gradient(180deg, #26101f 0%, #140a12 100%);
+            font-family: 'Noto Sans Georgian', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-  *{ box-sizing: border-box; }
-  html{ scroll-behavior: smooth; }
+        /* ანიმირებული გულები ფონზე */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
 
-  body{
-    margin:0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'Cormorant Garamond', serif;
-    overflow-x:hidden;
-  }
+        .heart-float {
+            position: absolute;
+            font-size: 1.8rem;
+            animation: floatHeart 14s infinite ease-in-out;
+            user-select: none;
+            opacity: 0;
+            filter: drop-shadow(0 0 10px #ff3366);
+        }
 
-  body::before{
-    content:"";
-    position: fixed;
-    inset:0;
-    background-image:
-      radial-gradient(circle at 20% 30%, rgba(107,39,55,0.05), transparent 40%),
-      radial-gradient(circle at 80% 70%, rgba(184,135,90,0.07), transparent 45%);
-    pointer-events:none;
-    z-index:0;
-  }
+        @keyframes floatHeart {
+            0% { transform: translateY(105vh) rotate(0deg) scale(0.5); opacity: 0; }
+            8% { opacity: 0.55; }
+            45% { transform: translateY(35vh) rotate(20deg) scale(1.2); opacity: 0.7; }
+            85% { opacity: 0.3; }
+            100% { transform: translateY(-20vh) rotate(-15deg) scale(0.4); opacity: 0; }
+        }
 
-  h1,h2{
-    font-family:'Playfair Display', serif;
-    font-weight:600;
-    margin:0;
-  }
+        /* მთავარი ალბომი */
+        .album-container {
+            position: relative;
+            z-index: 10;
+            max-width: 750px;
+            width: 100%;
+            background: rgba(40, 18, 30, 0.7);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border-radius: 3.5rem;
+            padding: 2rem 1.6rem 2.5rem;
+            box-shadow: 
+                0 40px 80px rgba(0,0,0,0.7),
+                0 0 0 2px rgba(255, 140, 170, 0.4),
+                inset 0 0 60px rgba(255, 70, 110, 0.15);
+            border: 1px solid rgba(255, 180, 200, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-  .hero{
-    min-height:64svh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding: 8vh 6vw 4vh;
-    position:relative;
-  }
+        /* სათაური */
+        .album-title-section {
+            text-align: center;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
 
-  .eyebrow{
-    letter-spacing:.35em;
-    text-transform:uppercase;
-    font-size:.75rem;
-    color: var(--gold);
-    margin-bottom: 1.4rem;
-  }
+        .album-title {
+            font-family: 'Dancing Script', 'Noto Sans Georgian', cursive;
+            font-weight: 700;
+            font-size: clamp(2.8rem, 10vw, 4rem);
+            color: #ffeef5;
+            text-shadow: 0 0 25px #ff4770, 0 4px 8px rgba(0,0,0,0.6);
+            letter-spacing: 2px;
+            line-height: 1.2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
 
-  .hero h1{
-    font-size: clamp(2.2rem, 6.5vw, 4.4rem);
-    font-style: italic;
-    color: var(--wine-deep);
-    line-height:1.15;
-  }
+        .pulse-heart {
+            font-size: 2.5rem;
+            animation: heartBeat 1.6s infinite;
+            display: inline-block;
+            filter: drop-shadow(0 0 18px #ff0044);
+        }
 
-  .hero .amp{
-    display:block;
-    font-size: 0.5em;
-    color: var(--gold);
-    margin: .3em 0;
-    font-style: normal;
-  }
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.25); }
+            45% { transform: scale(0.9); }
+            65% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
 
-  .hero p.sub{
-    margin-top:1.4rem;
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    color:#7a5a4d;
-    max-width: 34ch;
-  }
+        .album-subtitle {
+            display: inline-block;
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #ffd0de;
+            background: rgba(200, 50, 80, 0.25);
+            padding: 0.5rem 2rem;
+            border-radius: 30px;
+            margin-top: 0.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid #ff8da8;
+            letter-spacing: 1px;
+        }
 
-  .heart-line{
-    margin-top: 2rem;
-    font-size: 1.2rem;
-    color: var(--wine);
-    letter-spacing: .5em;
-    opacity:.65;
-  }
+        /* პოლაროიდის ფოტოების გრიდი */
+        .polaroid-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.8rem 1.4rem;
+            width: 100%;
+            margin: 1rem 0 1.8rem;
+        }
 
-  section.gallery{
-    position:relative;
-    z-index:1;
-    padding: 2vh 5vw 10vh;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+        .polaroid {
+            background: #fdf2f7;
+            background: linear-gradient(145deg, #fffafc 0%, #f8e5ed 100%);
+            border-radius: 1.2rem 1.2rem 2.5rem 2.5rem;
+            padding: 0.7rem 0.7rem 1.5rem;
+            box-shadow: 
+                0 18px 30px rgba(0,0,0,0.6),
+                0 4px 8px rgba(0,0,0,0.3),
+                inset 0 1px 4px rgba(255,255,255,0.8);
+            transform: rotate(-1.5deg);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-  .divider{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap: 1rem;
-    margin: 0 0 5vh;
-    color: var(--gold);
-  }
-  .divider::before, .divider::after{
-    content:"";
-    height:1px;
-    width: 60px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  }
+        .polaroid:nth-child(even) {
+            transform: rotate(2deg);
+        }
+        .polaroid:nth-child(3n) {
+            transform: rotate(-1deg);
+        }
+        .polaroid:nth-child(5) {
+            transform: rotate(1.8deg);
+        }
 
-  /* compact mosaic grid — all photos together */
-  .grid{
-    display:grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-auto-rows: 14vw;
-    gap: 14px;
-  }
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.04) translateY(-6px);
+            box-shadow: 0 28px 45px rgba(255, 50, 100, 0.5), 0 0 0 3px #ffb3c9;
+            z-index: 5;
+        }
 
-  .frame{
-    background:#fff;
-    padding: 10px;
-    box-shadow: 0 14px 30px -10px rgba(74,26,38,0.28), 0 2px 6px rgba(0,0,0,0.06);
-    border-radius: 2px;
-    position: relative;
-    overflow:hidden;
-    transition: transform .4s ease, box-shadow .4s ease;
-  }
-  .frame:hover{
-    transform: translateY(-6px);
-    box-shadow: 0 22px 42px -12px rgba(74,26,38,0.35), 0 4px 10px rgba(0,0,0,0.08);
-    z-index: 2;
-  }
-  .frame .inner{
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    position:relative;
-  }
-  .frame img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-    filter: saturate(1.03) contrast(1.02);
-  }
-  .frame .cap{
-    position:absolute;
-    bottom: 0; left:0; right:0;
-    padding: .5rem .6rem .4rem;
-    text-align:center;
-    font-family:'Playfair Display', serif;
-    font-style: italic;
-    color: #fff;
-    font-size: clamp(.85rem, 1.4vw, 1.05rem);
-    background: linear-gradient(0deg, rgba(74,26,38,0.72), transparent);
-  }
+        .polaroid-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 0.8rem;
+            display: block;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.2), 0 6px 12px rgba(0,0,0,0.35);
+            background: #d9b3c2;
+            transition: filter 0.3s;
+        }
 
-  /* mosaic sizing: item spans vary for a woven, compact look */
-  .f1{ grid-column: 1 / span 3; grid-row: 1 / span 2; }
-  .f2{ grid-column: 4 / span 3; grid-row: 1 / span 2; }
-  .f3{ grid-column: 1 / span 2; grid-row: 3 / span 2; }
-  .f4{ grid-column: 3 / span 2; grid-row: 3 / span 2; }
-  .f5{ grid-column: 5 / span 2; grid-row: 3 / span 2; }
-  .f6{ grid-column: 1 / span 6; grid-row: 5 / span 2; }
+        .polaroid:hover .polaroid-img {
+            filter: brightness(1.08) contrast(1.05);
+        }
 
-  .note{
-    font-family:'Playfair Display', serif;
-    font-style: italic;
-    color: var(--wine-deep);
-    font-size: clamp(1.15rem, 2.2vw, 1.5rem);
-    line-height:1.6;
-    text-align:center;
-    padding: 0 1rem;
-    margin: 5vh 0;
-  }
+        .polaroid-caption {
+            margin-top: 0.6rem;
+            font-family: 'Dancing Script', 'Noto Sans Georgian', cursive;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #5c1e3a;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: rgba(255, 220, 230, 0.5);
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
 
-  .reveal{
-    opacity:0;
-    transform: translateY(30px);
-    transition: opacity .8s ease, transform .8s ease;
-  }
-  .reveal.show{
-    opacity:1;
-    transform: translateY(0);
-  }
+        .small-heart-icon {
+            font-size: 1rem;
+            color: #e62e5c;
+        }
 
-  footer{
-    text-align:center;
-    padding: 6vh 6vw 8vh;
-    position:relative;
-    z-index:1;
-  }
-  footer .final-heart{
-    font-size: 2.2rem;
-    color: var(--wine);
-    margin-bottom: 1rem;
-  }
-  footer p{
-    font-family:'Playfair Display', serif;
-    font-style: italic;
-    font-size: clamp(1.3rem, 3vw, 2rem);
-    color: var(--wine-deep);
-    max-width: 30ch;
-    margin: 0 auto;
-  }
-  footer .small{
-    margin-top:1.2rem;
-    font-size: .85rem;
-    letter-spacing:.2em;
-    text-transform:uppercase;
-    color:#a08573;
-  }
+        /* ქვედა მესიჯი */
+        .love-footer {
+            background: rgba(50, 15, 30, 0.5);
+            backdrop-filter: blur(14px);
+            border-radius: 3rem;
+            padding: 1.2rem 2rem;
+            margin-top: 0.8rem;
+            width: 100%;
+            text-align: center;
+            border: 1px solid #ff7b9c;
+            box-shadow: inset 0 0 25px rgba(255, 70, 110, 0.4);
+            color: #fff0f5;
+        }
 
-  @media (max-width: 720px){
-    .grid{
-      grid-template-columns: repeat(2, 1fr);
-      grid-auto-rows: 42vw;
-    }
-    .f1{ grid-column: 1 / span 2; grid-row: 1 / span 1; }
-    .f2{ grid-column: 1 / span 1; grid-row: 2 / span 1; }
-    .f3{ grid-column: 2 / span 1; grid-row: 2 / span 1; }
-    .f4{ grid-column: 1 / span 1; grid-row: 3 / span 1; }
-    .f5{ grid-column: 2 / span 1; grid-row: 3 / span 1; }
-    .f6{ grid-column: 1 / span 2; grid-row: 4 / span 1; }
-  }
+        .footer-text {
+            font-size: 1.25rem;
+            font-weight: 500;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            line-height: 1.7;
+        }
 
-  @media (prefers-reduced-motion: reduce){
-    html{ scroll-behavior:auto; }
-    .reveal{ transition:none; opacity:1; transform:none; }
-  }
-</style>
+        .floating-heart {
+            font-size: 1.6rem;
+            color: #ff3b6f;
+            animation: heartBeat 2s infinite;
+            filter: drop-shadow(0 0 10px #ff1a4f);
+        }
+
+        @media (max-width: 480px) {
+            .album-container {
+                padding: 1.5rem 0.9rem;
+                border-radius: 2.8rem;
+            }
+            .polaroid-grid {
+                gap: 1.5rem 1rem;
+            }
+            .polaroid {
+                padding: 0.5rem 0.5rem 1.1rem;
+                border-radius: 0.8rem 0.8rem 1.8rem 1.8rem;
+            }
+            .polaroid-caption {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="hearts-bg" id="heartsContainer"></div>
 
-<section class="hero">
-  <div class="eyebrow">ორი გული, ერთი ისტორია</div>
-  <h1>შენ და მე<span class="amp">&amp;</span>ჩვენი დრო</h1>
-  <p class="sub">ყოველი კადრი — ერთი წუთი, რომელიც კვლავ გვინდა გავიხსენოთ.</p>
-  <div class="heart-line">♡ ♥ ♡</div>
-</section>
+    <main class="album-container">
+        <div class="album-title-section">
+            <h1 class="album-title">
+                <span>ჩვენი</span>
+                <span class="pulse-heart">❤️</span>
+                <span>ალბომი</span>
+            </h1>
+            <div class="album-subtitle">
+                👩‍❤️‍👨 გიორგი & ანა
+            </div>
+        </div>
 
-<section class="gallery">
+        <!-- პოლაროიდის სტილის ფოტოები -->
+        <div class="polaroid-grid">
+            <!-- ფოტო 1 -->
+            <div class="polaroid">
+                <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0082.jpeg" alt="მოგონება 1" class="polaroid-img" loading="lazy">
+                <div class="polaroid-caption">
+                    <span class="small-heart-icon">💕</span> ჩემი სამყარო
+                </div>
+            </div>
+            <!-- ფოტო 2 -->
+            <div class="polaroid">
+                <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0552.jpeg" alt="მოგონება 2" class="polaroid-img" loading="lazy">
+                <div class="polaroid-caption">
+                    <span class="small-heart-icon">✨</span> სიყვარულით
+                </div>
+            </div>
+            <!-- ფოტო 3 -->
+            <div class="polaroid">
+                <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0905.jpeg" alt="მოგონება 3" class="polaroid-img" loading="lazy">
+                <div class="polaroid-caption">
+                    <span class="small-heart-icon">🌸</span> საყვარელი მომენტი
+                </div>
+            </div>
+            <!-- ფოტო 4 -->
+            <div class="polaroid">
+                <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0906.jpeg" alt="მოგონება 4" class="polaroid-img" loading="lazy">
+                <div class="polaroid-caption">
+                    <span class="small-heart-icon">💖</span> მხოლოდ შენ
+                </div>
+            </div>
+            <!-- ფოტო 5 -->
+            <div class="polaroid">
+                <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0907.jpeg" alt="მოგონება 5" class="polaroid-img" loading="lazy">
+                <div class="polaroid-caption">
+                    <span class="small-heart-icon">🕊️</span> ბედნიერება
+                </div>
+            </div>
+            <!-- ფოტო 6 -->
+            <div class="polaroid">
+                <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0908.jpeg" alt="მოგონება 6" class="polaroid-img" loading="lazy">
+                <div class="polaroid-caption">
+                    <span class="small-heart-icon">🌹</span> სამუდამოდ
+                </div>
+            </div>
+        </div>
 
-  <div class="divider">♥</div>
+        <!-- რომანტიკული მესიჯი -->
+        <div class="love-footer">
+            <div class="footer-text">
+                <span>ყოველი დღე</span>
+                <span class="floating-heart">❤️</span>
+                <span>შენთან ერთად</span>
+                <span class="floating-heart">💫</span>
+                <span>საოცრებაა</span>
+            </div>
+        </div>
+    </main>
 
-  <div class="grid reveal">
-    <div class="frame f1">
-      <div class="inner">
-        <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0552.jpeg" alt="ჩვენი მოგონება">
-        <div class="cap">დასაწყისი</div>
-      </div>
-    </div>
-    <div class="frame f2">
-      <div class="inner">
-        <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0082.jpeg" alt="ჩვენი მოგონება">
-        <div class="cap">ერთად</div>
-      </div>
-    </div>
-    <div class="frame f3">
-      <div class="inner">
-        <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0905.jpeg" alt="ჩვენი მოგონება">
-        <div class="cap">სიახლოვე</div>
-      </div>
-    </div>
-    <div class="frame f4">
-      <div class="inner">
-        <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0906.jpeg" alt="ჩვენი მოგონება">
-        <div class="cap">სითბო</div>
-      </div>
-    </div>
-    <div class="frame f5">
-      <div class="inner">
-        <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0907.jpeg" alt="ჩვენი მოგონება">
-        <div class="cap">სიცილი</div>
-      </div>
-    </div>
-    <div class="frame f6">
-      <div class="inner">
-        <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0908.jpeg" alt="ჩვენი მოგონება">
-        <div class="cap">ჩვენ, ყოველთვის</div>
-      </div>
-    </div>
-  </div>
+    <script>
+        (function() {
+            // ფონის ანიმირებული გულების გენერაცია
+            const heartsContainer = document.getElementById('heartsContainer');
+            const heartEmojis = ['❤️', '🩷', '💗', '💖', '💘', '💝', '💕', '🫶', '✨'];
 
-  <p class="note reveal">"შენთან ერთად ყველაზე ჩვეულებრივი დღეც კი<br>ზღაპრად იქცევა."</p>
+            function createFloatingHeart() {
+                const heart = document.createElement('span');
+                heart.className = 'heart-float';
+                const randomEmoji = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.textContent = randomEmoji;
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 10 + 12) + 's';
+                heart.style.fontSize = (Math.random() * 2.2 + 1.4) + 'rem';
+                heart.style.animationDelay = Math.random() * 8 + 's';
+                heartsContainer.appendChild(heart);
 
-</section>
+                // წაშლა ანიმაციის შემდეგ
+                setTimeout(() => {
+                    if (heart && heart.parentNode) {
+                        heart.remove();
+                    }
+                }, 20000);
+            }
 
-<footer>
-  <div class="final-heart">♥</div>
-  <p>ყოველი მომენტი შენთან — საჩუქარია.</p>
-  <div class="small">გამოყენებულია სიყვარულით</div>
-</footer>
+            // საწყისი გულები
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => createFloatingHeart(), i * 400);
+            }
 
-<script>
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        e.target.classList.add('show');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-</script>
-
+            // ახალი გულები პერიოდულად
+            setInterval(() => {
+                if (heartsContainer.children.length < 20) {
+                    createFloatingHeart();
+                }
+            }, 2500);
+        })();
+    </script>
 </body>
 </html>
