@@ -1,9 +1,334 @@
 <!DOCTYPE html>
-<html>
+<html lang="ka">
 <head>
-<script>
-location.replace("https://github.com/balisticbase/GIORGI/raw/refs/heads/main/blocklist");
-</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ჩვენი ისტორია</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root{
+    --wine: #6b2737;
+    --wine-deep: #4a1a26;
+    --blush: #f3d7d0;
+    --paper: #fbf3ea;
+    --gold: #b8875a;
+    --ink: #3a2620;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x:hidden;
+  }
+
+  /* subtle paper texture via layered gradients */
+  body::before{
+    content:"";
+    position: fixed;
+    inset:0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(107,39,55,0.04), transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(184,135,90,0.06), transparent 45%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  h1,h2{
+    font-family:'Playfair Display', serif;
+    font-weight:600;
+    margin:0;
+  }
+
+  .hero{
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding: 6vh 6vw;
+    position:relative;
+  }
+
+  .eyebrow{
+    letter-spacing:.35em;
+    text-transform:uppercase;
+    font-size:.75rem;
+    color: var(--gold);
+    margin-bottom: 1.4rem;
+    font-family:'Cormorant Garamond',serif;
+  }
+
+  .hero h1{
+    font-size: clamp(2.4rem, 7vw, 5rem);
+    font-style: italic;
+    color: var(--wine-deep);
+    line-height:1.15;
+  }
+
+  .hero .amp{
+    display:block;
+    font-size: 0.5em;
+    color: var(--gold);
+    margin: .3em 0;
+    font-style: normal;
+  }
+
+  .hero p.sub{
+    margin-top:1.6rem;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color:#7a5a4d;
+    max-width: 32ch;
+  }
+
+  .heart-line{
+    margin-top: 2.6rem;
+    font-size: 1.3rem;
+    color: var(--wine);
+    letter-spacing: .5em;
+    opacity:.6;
+  }
+
+  .scroll-cue{
+    position:absolute;
+    bottom: 3.5vh;
+    font-size:.75rem;
+    letter-spacing:.3em;
+    text-transform:uppercase;
+    color:#a08573;
+    animation: bob 2.4s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{ transform:translateY(0); opacity:.5;}
+    50%{ transform:translateY(8px); opacity:1;}
+  }
+
+  section.gallery{
+    position:relative;
+    z-index:1;
+    padding: 4vh 6vw 14vh;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .divider{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap: 1rem;
+    margin: 0 0 6vh;
+    color: var(--gold);
+  }
+  .divider::before, .divider::after{
+    content:"";
+    height:1px;
+    width: 60px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .frame{
+    --rot: 0deg;
+    background: #fff;
+    padding: 18px 18px 60px;
+    box-shadow: 0 18px 40px -12px rgba(74,26,38,0.28), 0 2px 6px rgba(0,0,0,0.06);
+    border-radius: 2px;
+    transform: rotate(var(--rot));
+    transition: transform .5s ease, box-shadow .5s ease;
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .frame:hover{
+    transform: rotate(0deg) scale(1.02);
+    box-shadow: 0 26px 55px -14px rgba(74,26,38,0.35), 0 4px 10px rgba(0,0,0,0.08);
+  }
+  .frame img{
+    display:block;
+    width:100%;
+    height:auto;
+    filter: saturate(1.02) contrast(1.02);
+  }
+  .frame .cap{
+    position:absolute;
+    bottom: 16px;
+    left:0; right:0;
+    text-align:center;
+    font-family:'Playfair Display', serif;
+    font-style: italic;
+    color: var(--wine);
+    font-size: 1.05rem;
+    letter-spacing: .02em;
+  }
+  .frame .pin{
+    position:absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #e6b7a8, var(--wine) 70%);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+  }
+
+  .row{
+    display:grid;
+    gap: 4rem 3rem;
+    margin-bottom: 4rem;
+  }
+  .row.two{ grid-template-columns: repeat(2, 1fr); align-items: center; }
+  .row.one{ grid-template-columns: 1fr; justify-items:center; }
+
+  .note{
+    font-family:'Playfair Display', serif;
+    font-style: italic;
+    color: var(--wine-deep);
+    font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+    line-height:1.6;
+    text-align:center;
+    padding: 0 1rem;
+  }
+
+  .reveal{
+    opacity:0;
+    transform: translateY(40px);
+    transition: opacity .9s ease, transform .9s ease;
+  }
+  .reveal.show{
+    opacity:1;
+    transform: translateY(0);
+  }
+
+  footer{
+    text-align:center;
+    padding: 6vh 6vw 8vh;
+    position:relative;
+    z-index:1;
+  }
+  footer .final-heart{
+    font-size: 2.2rem;
+    color: var(--wine);
+    margin-bottom: 1rem;
+  }
+  footer p{
+    font-family:'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    color: var(--wine-deep);
+    max-width: 30ch;
+    margin: 0 auto;
+  }
+  footer .small{
+    margin-top:1.2rem;
+    font-size: .85rem;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:#a08573;
+    font-family:'Cormorant Garamond',serif;
+  }
+
+  @media (max-width: 720px){
+    .row.two{ grid-template-columns: 1fr; }
+    .frame{ transform: rotate(0deg) !important; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .reveal{ transition:none; opacity:1; transform:none; }
+    .scroll-cue{ animation:none; }
+  }
+</style>
 </head>
-<body></body>
+<body>
+
+<section class="hero">
+  <div class="eyebrow">ორი გული, ერთი ისტორია</div>
+  <h1>შენ და მე<span class="amp">&amp;</span>ჩვენი დრო</h1>
+  <p class="sub">ყოველი კადრი — ერთი წუთი, რომელიც კვლავ გვინდა გავიხსენოთ.</p>
+  <div class="heart-line">♡ ♥ ♡</div>
+  <div class="scroll-cue">დაიწყე გადახვევა ↓</div>
+</section>
+
+<section class="gallery">
+
+  <div class="row one">
+    <div class="frame reveal" style="--rot:-2deg;">
+      <div class="pin"></div>
+      <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0082.jpeg" alt="ჩვენი მოგონება">
+      <div class="cap">დასაწყისი</div>
+    </div>
+  </div>
+
+  <div class="divider">♥</div>
+
+  <div class="row two">
+    <div class="frame reveal" style="--rot:3deg;">
+      <div class="pin"></div>
+      <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0552.jpeg" alt="ჩვენი მოგონება">
+      <div class="cap">ერთად</div>
+    </div>
+    <p class="note reveal">"შენთან ერთად ყველაზე ჩვეულებრივი დღეც კი<br>ზღაპრად იქცევა."</p>
+  </div>
+
+  <div class="row two">
+    <p class="note reveal">"შენი ღიმილი ჩემი საყვარელი ადგილია<br>მთელს ქვეყანაზე."</p>
+    <div class="frame reveal" style="--rot:-3deg;">
+      <div class="pin"></div>
+      <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0905.jpeg" alt="ჩვენი მოგონება">
+      <div class="cap">სიახლოვე</div>
+    </div>
+  </div>
+
+  <div class="divider">♥</div>
+
+  <div class="row two">
+    <div class="frame reveal" style="--rot:2deg;">
+      <div class="pin"></div>
+      <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0906.jpeg" alt="ჩვენი მოგონება">
+      <div class="cap">სითბო</div>
+    </div>
+    <div class="frame reveal" style="--rot:-2deg;">
+      <div class="pin"></div>
+      <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0907.jpeg" alt="ჩვენი მოგონება">
+      <div class="cap">სიცილი</div>
+    </div>
+  </div>
+
+  <div class="row one">
+    <div class="frame reveal" style="--rot:1deg;">
+      <div class="pin"></div>
+      <img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0908.jpeg" alt="ჩვენი მოგონება">
+      <div class="cap">ჩვენ, ყოველთვის</div>
+    </div>
+  </div>
+
+</section>
+
+<footer>
+  <div class="final-heart">♥</div>
+  <p>ყოველი მომენტი შენთან — საჩუქარია.</p>
+  <div class="small">გამოყენებულია სიყვარულით</div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('show');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
 </html>
