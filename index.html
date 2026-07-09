@@ -3,507 +3,299 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ჩანაწერი № — უცნობი ვიდეო</title>
+<title>რამდენიმე შეკითხვა შენთვის</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Georgian:wght@400;600;700&family=Noto+Sans+Georgian:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
   :root{
-    --bg:#0a0a0b;
-    --panel:#131315;
-    --panel-edge:#1f1f22;
-    --bone:#e6e2d6;
-    --bone-dim:#9c988c;
-    --blood:#8a1f1f;
-    --blood-bright:#c73a3a;
-    --static-green: #2c3a34;
+    --wine: #3a1420;
+    --wine-deep: #260c15;
+    --rose: #c98a97;
+    --rose-soft: #e9c9ce;
+    --gold: #c9a24b;
+    --cream: #f6ede4;
+    --ink: #2a1015;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
-    background:var(--bg);
-    color:var(--bone);
-    font-family:'Noto Sans Georgian', sans-serif;
+    background: radial-gradient(ellipse at top, var(--wine) 0%, var(--wine-deep) 70%);
     min-height:100vh;
+    font-family:'Jost', sans-serif;
+    color: var(--cream);
     display:flex;
-    flex-direction:column;
     align-items:center;
+    justify-content:center;
+    padding: 40px 16px;
     position:relative;
     overflow-x:hidden;
   }
-
-  /* film grain / static overlay */
   body::before{
     content:"";
     position:fixed; inset:0;
-    pointer-events:none;
-    z-index:50;
-    opacity:0.05;
     background-image:
-      repeating-linear-gradient(0deg, rgba(255,255,255,0.4) 0px, transparent 1px, transparent 2px);
-    animation:grain 0.2s steps(2) infinite;
-    mix-blend-mode:overlay;
-  }
-  @keyframes grain{
-    0%{transform:translateY(0);}
-    100%{transform:translateY(2px);}
-  }
-
-  /* vignette */
-  body::after{
-    content:"";
-    position:fixed; inset:0;
+      radial-gradient(circle at 15% 20%, rgba(201,138,151,0.10) 0, transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(201,162,75,0.08) 0, transparent 45%);
     pointer-events:none;
-    z-index:49;
-    background:radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.75) 100%);
   }
-
-  header{
+  .card{
+    position:relative;
+    max-width:620px;
     width:100%;
-    max-width:760px;
-    padding:28px 20px 8px;
-    text-align:center;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid rgba(201,162,75,0.25);
+    border-radius: 4px;
+    padding: 56px 44px 44px;
+    backdrop-filter: blur(6px);
   }
+  .card::before, .card::after{
+    content:"";
+    position:absolute;
+    width:22px; height:22px;
+    border: 1px solid var(--gold);
+  }
+  .card::before{ top:14px; left:14px; border-right:none; border-bottom:none; }
+  .card::after{ bottom:14px; right:14px; border-left:none; border-top:none; }
+
   .eyebrow{
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
-    letter-spacing:3px;
-    color:var(--blood-bright);
     text-transform:uppercase;
+    letter-spacing:0.35em;
+    font-size:11px;
+    color: var(--rose-soft);
+    text-align:center;
+    margin-bottom:14px;
+    opacity:0.85;
   }
   h1{
-    font-family:'Noto Serif Georgian', serif;
-    font-weight:700;
-    font-size:clamp(28px, 5vw, 42px);
-    margin:6px 0 0;
-    letter-spacing:0.5px;
-    text-shadow:0 0 18px rgba(138,31,31,0.35);
+    font-family:'Cormorant Garamond', serif;
+    font-weight:500;
+    font-style:italic;
+    font-size: 40px;
+    text-align:center;
+    margin: 0 0 8px;
+    color: var(--cream);
+    line-height:1.2;
+  }
+  .sub{
+    text-align:center;
+    font-size:14.5px;
+    color: var(--rose-soft);
+    margin-bottom:40px;
+    line-height:1.6;
+    font-weight:300;
   }
 
-  main{
-    width:100%;
-    max-width:760px;
-    padding:16px 20px 60px;
-    position:relative;
-    z-index:1;
+  .question{ margin-bottom: 30px; }
+  .question label{
+    display:block;
+    font-family:'Cormorant Garamond', serif;
+    font-size:20px;
+    font-style:italic;
+    color: var(--rose-soft);
+    margin-bottom:10px;
   }
-
-  .case-meta{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    font-family:'JetBrains Mono', monospace;
-    font-size:12px;
-    color:var(--bone-dim);
-    border-bottom:1px solid var(--panel-edge);
-    padding-bottom:10px;
-    margin-bottom:18px;
-  }
-  .rec-dot{
-    display:inline-block;
-    width:8px;height:8px;border-radius:50%;
-    background:var(--blood-bright);
-    margin-right:6px;
-    animation:pulse 1.1s infinite;
-    vertical-align:middle;
-  }
-  @keyframes pulse{
-    0%,100%{opacity:1;}
-    50%{opacity:0.25;}
-  }
-
-  .video-frame{
-    position:relative;
-    width:100%;
-    aspect-ratio:16/9;
-    background:#000;
-    border:1px solid var(--panel-edge);
-    box-shadow:0 0 0 4px #000, 0 20px 50px -20px rgba(0,0,0,0.9);
-    overflow:hidden;
-  }
-  .video-frame iframe{
-    width:100%; height:100%; border:0; display:block;
-    filter:saturate(0.85) contrast(1.05);
-  }
-  .video-frame .no-video{
-    width:100%;height:100%;
-    display:flex; align-items:center; justify-content:center;
-    color:var(--bone-dim);
-    font-family:'JetBrains Mono', monospace;
+  .question .num{
+    color: var(--gold);
+    font-style:normal;
+    margin-right:8px;
+    font-family:'Jost',sans-serif;
     font-size:13px;
-    text-align:center;
-    padding:20px;
+    letter-spacing:0.1em;
   }
-  .timestamp{
-    position:absolute;
-    bottom:8px; left:10px;
-    font-family:'JetBrains Mono', monospace;
-    font-size:12px;
-    color:#d8d4c8;
-    background:rgba(0,0,0,0.4);
-    padding:2px 6px;
-    letter-spacing:1px;
-    z-index:2;
-    pointer-events:none;
-  }
-
-  .story-card{
-    background:var(--panel);
-    border:1px solid var(--panel-edge);
-    border-top:none;
-    padding:22px 22px 8px;
-  }
-  .story-text{
-    font-family:'Noto Serif Georgian', serif;
-    font-size:17px;
-    line-height:1.75;
-    color:var(--bone);
-    white-space:pre-line;
-  }
-
-  .choices{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    margin:22px 0 22px;
-  }
-  .choice-btn{
-    text-align:left;
-    background:#0f0f11;
-    border:1px solid var(--panel-edge);
-    color:var(--bone);
-    font-family:'Noto Sans Georgian', sans-serif;
-    font-size:15px;
-    padding:14px 16px;
-    cursor:pointer;
-    position:relative;
-    transition:border-color 0.15s ease, background 0.15s ease, padding-left 0.15s ease;
-  }
-  .choice-btn::before{
-    content:"▸";
-    color:var(--blood-bright);
-    margin-right:10px;
-    opacity:0.7;
-  }
-  .choice-btn:hover, .choice-btn:focus-visible{
-    border-color:var(--blood);
-    background:#160f10;
-    padding-left:20px;
+  input[type=text], textarea{
+    width:100%;
+    background: rgba(0,0,0,0.18);
+    border:none;
+    border-bottom: 1px solid rgba(201,162,75,0.4);
+    color: var(--cream);
+    font-family:'Jost',sans-serif;
+    font-size:15.5px;
+    padding: 10px 4px;
     outline:none;
+    transition: border-color .25s ease, background .25s ease;
+    resize: vertical;
   }
-  .choice-btn:focus-visible{
-    box-shadow:0 0 0 2px var(--blood-bright);
+  textarea{ min-height:70px; }
+  input[type=text]:focus, textarea:focus{
+    border-bottom-color: var(--gold);
+    background: rgba(0,0,0,0.28);
   }
+  input::placeholder, textarea::placeholder{ color: rgba(233,201,206,0.35); }
 
-  .ending-tag{
-    display:inline-block;
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
-    letter-spacing:2px;
+  button{
+    width:100%;
+    margin-top:20px;
+    padding:16px;
+    background: linear-gradient(135deg, var(--gold), #a67f37);
+    color: var(--wine-deep);
+    border:none;
+    border-radius:2px;
+    font-family:'Jost',sans-serif;
+    font-weight:600;
+    letter-spacing:0.08em;
     text-transform:uppercase;
-    color:var(--static-green);
-    border:1px solid var(--static-green);
-    padding:4px 10px;
-    margin-bottom:14px;
-  }
-  .ending-tag.bad{ color:var(--blood-bright); border-color:var(--blood); }
-
-  .restart-btn{
-    display:inline-block;
-    margin:8px 0 24px;
-    background:transparent;
-    border:1px solid var(--panel-edge);
-    color:var(--bone-dim);
-    font-family:'JetBrains Mono', monospace;
-    font-size:12px;
-    letter-spacing:1px;
-    padding:10px 18px;
+    font-size:13px;
     cursor:pointer;
+    transition: transform .2s ease, box-shadow .2s ease;
   }
-  .restart-btn:hover{ color:var(--bone); border-color:var(--bone-dim); }
+  button:hover{ transform: translateY(-1px); box-shadow: 0 8px 24px rgba(201,162,75,0.25); }
+  button:disabled{ opacity:0.6; cursor:not-allowed; transform:none; }
 
-  .flicker{
-    animation:flicker 0.35s ease;
-  }
-  @keyframes flicker{
-    0%{opacity:0.2; filter:brightness(2) contrast(1.4);}
-    40%{opacity:1; filter:brightness(1);}
-    60%{opacity:0.6;}
-    100%{opacity:1;}
-  }
-
-  footer{
-    color:var(--bone-dim);
-    font-family:'JetBrains Mono', monospace;
-    font-size:11px;
+  .status{
     text-align:center;
-    padding:10px 20px 30px;
-    max-width:760px;
+    margin-top:18px;
+    font-size:13.5px;
+    min-height:18px;
+    color: var(--rose-soft);
+  }
+  .status.ok{ color:#bfe3c2; }
+  .status.err{ color:#e3b0b0; }
+
+  .seal{
+    display:none;
+    text-align:center;
+    padding: 30px 0 4px;
+  }
+  .seal.show{ display:block; animation: fadeIn .6s ease; }
+  .seal .mark{
+    width:54px;height:54px;border-radius:50%;
+    border: 1px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    margin: 0 auto 14px;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    color: var(--gold);
+    font-size:22px;
+  }
+  .seal p{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:19px;
+    color: var(--rose-soft);
+    margin:0;
+  }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+
+  form.hidden{ display:none; }
+
+  .config-note{
+    font-size:11.5px;
+    color: rgba(233,201,206,0.45);
+    text-align:center;
+    margin-top:26px;
+    line-height:1.6;
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="eyebrow">CASE FILE // UNAUTHORIZED VIEWING</div>
-  <h1>ჩანაწერი</h1>
-</header>
+<div class="card">
+  <div class="eyebrow">რამდენიმე გულწრფელი შეკითხვა</div>
+  <h1>უპასუხე გულით</h1>
+  <div class="sub">არავინ გადაამოწმებს — უბრალოდ დაწერე ის, რაც ნამდვილად ფიქრობ.</div>
 
-<main>
-  <div class="case-meta">
-    <span><span class="rec-dot"></span>REC</span>
-    <span id="depthLabel">სიღრმე: 00</span>
+  <form id="loveForm">
+    <div class="question">
+      <label><span class="num">01</span>რამდენი შეყვარებული გყავდა შენამდე?</label>
+      <input type="text" name="q1" placeholder="შენი პასუხი..." required>
+    </div>
+    <div class="question">
+      <label><span class="num">02</span>რატომ მიყვარვარ — შენი აზრით?</label>
+      <textarea name="q2" placeholder="შენი პასუხი..." required></textarea>
+    </div>
+    <div class="question">
+      <label><span class="num">03</span>რაზე ოცნებობ ყველაზე მეტად ამ ეტაპზე?</label>
+      <textarea name="q3" placeholder="შენი პასუხი..." required></textarea>
+    </div>
+    <div class="question">
+      <label><span class="num">04</span>რა მიზნები გაქვს უახლოეს წლებში?</label>
+      <textarea name="q4" placeholder="შენი პასუხი..." required></textarea>
+    </div>
+    <div class="question">
+      <label><span class="num">05</span>რა გახდის შენ ყველაზე ბედნიერს ჩვენს ურთიერთობაში?</label>
+      <textarea name="q5" placeholder="შენი პასუხი..." required></textarea>
+    </div>
+
+    <button type="submit" id="sendBtn">გაგზავნა</button>
+    <div class="status" id="status"></div>
+  </form>
+
+  <div class="seal" id="seal">
+    <div class="mark">♥</div>
+    <p>გაიგზავნა სითბოთი.</p>
   </div>
 
-  <div class="video-frame" id="videoFrame">
-    <!-- video/iframe injected here by JS -->
-    <span class="timestamp" id="timestamp">03:14:07</span>
+  <div class="config-note">
+    გამართვა საჭირო · იხილე ინსტრუქცია index.html ფაილის თავში
   </div>
-
-  <div class="story-card">
-    <div id="endingTagWrap"></div>
-    <p class="story-text" id="storyText"></p>
-    <div class="choices" id="choices"></div>
-  </div>
-</main>
-
-<footer>
-  ყოველი გადაწყვეტილება საბოლოოა. ეკრანი არ ივიწყებს.
-</footer>
+</div>
 
 <script>
-/* =========================================================================
-   STORY CONFIG
-   -------------------------------------------------------------------------
-   თითოეულ node-ს აქვს video: ველი — ჩასვი შენი YouTube/სხვა embed ლინკი.
-   YouTube-სთვის საჭიროა EMBED ფორმატი, მაგალითად:
-     https://www.youtube.com/embed/VIDEO_ID
-   (ჩვეულებრივი youtube.com/watch?v=... ლინკიდან VIDEO_ID ამოიღე და ჩასვი ზემოთ ფორმატში)
-   თუ video: null დატოვებ, ეკრანზე გამოჩნდება "ჩანაწერი დაზიანებულია" placeholder.
-   ========================================================================= */
+/* ============================================================
+   საჭირო გამართვა (ერთხელ, 5 წუთში):
 
-const STORY = {
-  start: {
-    depth:0,
-    video: null, // <-- ჩასვი პირველი ვიდეოს embed ლინკი აქ
-    timestamp:"03:14:07",
-    text:"03:14 საათზე შენს ტელეფონზე შემოდის შეტყობინება უცნობი ნომრიდან. არც ტექსტი, არც სახელი — მხოლოდ ერთი ლინკი და ერთი წინადადება:\n\n„ეს შენთვისაა. ნუ გაუზიარებ არავის.“",
-    choices:[
-      {label:"გავხსნა ლინკი და ვუყურო", next:"reply"},
-      {label:"დავბლოკო ნომერი", next:"end_block"}
-    ]
-  },
+   1) გადადი emailjs.com-ზე და შექმენი უფასო ანგარიში
+   2) დაამატე "Email Service" → აირჩიე Gmail, დააკავშირე warninggiorgi@gmail.com
+   3) შექმენი "Email Template" — ტექსტში გამოიყენე ცვლადები:
+      {{q1}} {{q2}} {{q3}} {{q4}} {{q5}}
+   4) დააკოპირე შენი PUBLIC KEY, SERVICE ID, TEMPLATE ID
+      და ჩასვი ქვემოთ სამივე მნიშვნელობა
+   ============================================================ */
 
-  reply:{
-    depth:1,
-    video:null,
-    timestamp:"03:14:52",
-    text:"ვიდეო იხსნება. კადრი ცარიელი ოთახია — ხის იატაკი, ერთი ფანჯარა, ხმა კამერის კანკალისა. არავინ ჩანს, მაგრამ გესმის სუნთქვა.",
-    choices:[
-      {label:"ხმა გავზარდო", next:"volume"},
-      {label:"ვიდეო შევაჩერო", next:"pause"}
-    ]
-  },
+  const EMAILJS_PUBLIC_KEY  = "YOUR_PUBLIC_KEY";
+  const EMAILJS_SERVICE_ID  = "YOUR_SERVICE_ID";
+  const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+  const TARGET_EMAIL = "warninggiorgi@gmail.com";
 
-  volume:{
-    depth:2,
-    video:null,
-    timestamp:"03:15:10",
-    text:"ხმის აწევისას ცხადად ესმის ჩურჩული — ქართულად: „ნუ დახურავ კარს“. იმავე წამს, ეკრანზე ტექსტი გამოდის, თითქოს ვინმემ ახლახან აკრიფა:\n\n„ის უკვე შენს ოთახშია.“",
-    choices:[
-      {label:"წავამოწმო ჩემი ოთახის კარი", next:"door"},
-      {label:"თვალი არ მოვაშორო ეკრანს", next:"stare"}
-    ]
-  },
+  const configured = ![EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID]
+    .some(v => v.startsWith("YOUR_"));
 
-  pause:{
-    depth:2,
-    video:null,
-    timestamp:"03:15:03",
-    text:"აჩერებ ვიდეოს. გაჩერებულ კადრზე კუთხეში ჩნდება ვინმეს ან რაღაცის კონტური — ისეთი, რაც მოძრავ ვიდეოში საერთოდ არ იყო შესამჩნევი.",
-    choices:[
-      {label:"დავაზუმო კადრი", next:"zoom"},
-      {label:"დავხურო ლეპტოპი", next:"end_close_laptop"}
-    ]
-  },
-
-  door:{
-    depth:3,
-    video:null,
-    timestamp:"03:16:40",
-    text:"კარი საკეტზეა, შიგნიდან. მაგრამ ხის ზედაპირზე, დაბლა, ახალი ნაკაწრებია — თითქოს ვიღაცამ შიგნიდან სცადა გამოსვლა.",
-    choices:[
-      {label:"გავალ დერეფანში შესამოწმებლად", next:"outside"},
-      {label:"დავრჩები ოთახში და დავიცავ კარი", next:"stay"}
-    ]
-  },
-
-  stare:{
-    depth:3,
-    video:null,
-    timestamp:"03:16:58",
-    text:"ეკრანი ციმციმებს, სურათი ტყდება სტატიკად ორ წამში — და ისევ ბრუნდება, ახლა უკვე ახალი კადრით: ქუჩის სახელი და ნომერი, თითქოს GPS მონაცემია ჩაშენებული ვიდეოში.",
-    choices:[
-      {label:"წავალ ამ მისამართზე", next:"address"},
-      {label:"დავურეკავ პოლიციას", next:"police"}
-    ]
-  },
-
-  zoom:{
-    depth:3,
-    video:null,
-    timestamp:"03:17:22",
-    text:"ახლოს გაზუმილი კონტური ნაცნობია — სახე გგონია გაცნობ, ვიღაცისა ვინც შენს ცხოვრებაში დიდი ხნის წინ იყო და შემდეგ უკვალოდ გაქრა.",
-    choices:[
-      {label:"დავურეკავ იმ ადამიანს პირდაპირ", next:"call_person"},
-      {label:"დავხურავ ყველაფერს და ვეცდები დაძინებას", next:"end_shutdown"}
-    ]
-  },
-
-  outside:{
-    depth:4,
-    video:null,
-    timestamp:"03:19:11",
-    text:"დერეფანი ცარიელია. იატაკზე პატარა ხმის ჩამწერი დევს — შენი არასდროს ნანახი. თუ ჩართავ, ცხადად შენივე ხმა ჟღერს, სიტყვასიტყვით იმას იმეორებს, რასაც ახლახან ფიქრობდი.",
-    choices:[
-      {label:"ჩავრთავ ჩანაწერს ბოლომდე", next:"end_twist"},
-      {label:"გავიქცევი შენობიდან", next:"end_escape"}
-    ]
-  },
-
-  stay:{
-    depth:4,
-    video:null,
-    timestamp:"03:20:00",
-    text:"შუქი ციმციმებს ორჯერ და ქრება. ტელეფონი რეკავს — იგივე უცნობი ნომერი, საწყისი შეტყობინებიდან.",
-    choices:[
-      {label:"ვუპასუხებ ზარს", next:"end_loop"},
-      {label:"არ ვუპასუხებ და დილამდე ჩუმად ვიჯდები", next:"end_survive_uneasy"}
-    ]
-  },
-
-  address:{
-    depth:4,
-    video:null,
-    timestamp:"03:41:05",
-    text:"მისამართზე მიდიხარ. სახლი მიტოვებულია, მაგრამ ფანჯარა და ჭიშკარი ზუსტად ისეთია, როგორც ვიდეოში — თითქმის ფრჩხილამდე ემთხვევა კადრს.",
-    choices:[
-      {label:"ბოლო: სახლი", next:"end_found"}
-    ]
-  },
-
-  police:{
-    depth:4,
-    video:null,
-    timestamp:"03:41:05",
-    text:"პოლიცია ამოწმებს მისამართს — სახლი ცარიელია, მაგრამ სისტემაში უკვე მონიშნულია, როგორც „აქტიური საქმე“ — თარიღით, რომელიც ჯერ არ დამდგარა.",
-    choices:[
-      {label:"ბოლო: მოხსენება", next:"end_reported"}
-    ]
-  },
-
-  call_person:{
-    depth:4,
-    video:null,
-    timestamp:"03:22:30",
-    text:"ის პასუხობს. ამბობს, არასდროს გამოგიგზავნია რაიმე. ხმაში მშვიდობიანობაა — სანამ ფონზე არ გესმის ზუსტად იგივე ჩურჩული, რაც ვიდეოში იყო.",
-    choices:[
-      {label:"ბოლო: ჩურჩული", next:"end_dread"}
-    ]
-  },
-
-  /* ---------------------- ENDINGS ---------------------- */
-  end_block:{ ending:"neutral", depth:1, video:null, timestamp:"—",
-    text:"ბლოკავ ნომერს. შეტყობინება ქრება. მაგრამ მომდევნო დღეებში იგივე ლინკს იღებენ ორი შენი მეგობარი — სხვადასხვა ნომრებიდან." },
-  end_close_laptop:{ ending:"neutral", depth:3, video:null, timestamp:"—",
-    text:"ხურავ ლეპტოპს. ოთახი ჩუმდება. დილით ეკრანზე აღარაფერია — თითქოს ეს ღამე არასდროს ყოფილა." },
-  end_shutdown:{ ending:"neutral", depth:4, video:null, timestamp:"—",
-    text:"ხურავ ყველაფერს. ძილში კი ისევ იმ სახეს ხედავ — ახლა უფრო ახლოს, ვიდრე ეკრანზე იყო." },
-  end_twist:{ ending:"bad", depth:5, video:null, timestamp:"03:19:47",
-    text:"ჩანაწერი აგრძელებს შენს სიტყვებს — მომავალშიც. ხვდები, რომ ეს ხმა ჩაწერილია ჯერ არშემდგარი წუთისთვის. ვიღაცამ უკვე იცის, რას იტყვი ხვალ." },
-  end_escape:{ ending:"neutral", depth:5, video:null, timestamp:"—",
-    text:"გარბიხარ ქუჩაში, სუნთქვაშეკრული. სახლს აღარასდროს დაუბრუნდები. მაგრამ თითოეულ ღამეს, 03:14-ზე, ტელეფონი მაინც ციმციმებს — ერთხელ." },
-  end_loop:{ ending:"bad", depth:5, video:null, timestamp:"03:14:07",
-    text:"პასუხობ ზარს. ხაზზე სიჩუმეა, შემდეგ — შენივე ხმა, რომელიც ამბობს: „03:14 საათზეა. არც ტექსტი, არც სახელი...“ საწყისი შეტყობინება თავიდან იწყება." },
-  end_survive_uneasy:{ ending:"neutral", depth:5, video:null, timestamp:"—",
-    text:"დილამდე ჩუმად ისხედი. მზე ამოდის, ტელეფონი ჩუმდება საბოლოოდ. მაგრამ ხის იატაკზე ის ნაკაწრები კარებთან კვლავ იქ არის — შენ არასდროს გაგისინჯავს." },
-  end_found:{ ending:"neutral", depth:5, video:null, timestamp:"—",
-    text:"სახლში ვერაფერს პოულობ — ვერც კამერას, ვერც კვალს ვინმესი. მხოლოდ იატაკზე, მტვერში, ერთი ახალი სიტყვაა დაწერილი: შენი სახელი." },
-  end_reported:{ ending:"bad", depth:5, video:null, timestamp:"—",
-    text:"საქმეს კვლავ ხურავენ, „მტკიცებულების უქონლობის გამო“. მაგრამ თარიღის ველში, სისტემურ ჩანაწერში, წერია დღე, რომელიც ჯერ არ დამდგარა." },
-  end_dread:{ ending:"bad", depth:5, video:null, timestamp:"—",
-    text:"ხმას აწყვეტ ზარს, მაგრამ ჩურჩული აღარ ჩერდება — ის ახლა შენს ოთახშიც ისმის, ტელეფონის გარეშეც." }
-};
-
-/* ========================================================================= */
-
-let history = [];
-
-function renderNode(key){
-  const node = STORY[key];
-  if(!node) return;
-
-  history.push(key);
-
-  document.getElementById('depthLabel').textContent =
-    "სიღრმე: " + String(node.depth).padStart(2,'0');
-  document.getElementById('timestamp').textContent = node.timestamp;
-
-  // video frame
-  const frame = document.getElementById('videoFrame');
-  const ts = document.getElementById('timestamp');
-  frame.innerHTML = '';
-  if(node.video){
-    const iframe = document.createElement('iframe');
-    iframe.src = node.video;
-    iframe.allow = "autoplay; encrypted-media; picture-in-picture";
-    iframe.allowFullscreen = true;
-    frame.appendChild(iframe);
-  } else {
-    const div = document.createElement('div');
-    div.className = 'no-video';
-    div.textContent = '// ჩანაწერი დაზიანებულია — ვიდეო არ არის მიბმული ამ node-ზე //\n(video ველში ჩასვი embed ლინკი)';
-    frame.appendChild(div);
-  }
-  frame.appendChild(ts);
-  frame.classList.remove('flicker'); void frame.offsetWidth; frame.classList.add('flicker');
-
-  // ending tag
-  const tagWrap = document.getElementById('endingTagWrap');
-  tagWrap.innerHTML = '';
-  if(node.ending){
-    const tag = document.createElement('span');
-    tag.className = 'ending-tag' + (node.ending === 'bad' ? ' bad' : '');
-    tag.textContent = node.ending === 'bad' ? 'დასასრული — შენიშვნა' : 'დასასრული';
-    tagWrap.appendChild(tag);
+  if (configured && window.emailjs) {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
   }
 
-  // text
-  document.getElementById('storyText').textContent = node.text;
+  const form = document.getElementById('loveForm');
+  const status = document.getElementById('status');
+  const seal = document.getElementById('seal');
+  const btn = document.getElementById('sendBtn');
 
-  // choices
-  const choicesWrap = document.getElementById('choices');
-  choicesWrap.innerHTML = '';
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    data.to_email = TARGET_EMAIL;
 
-  if(node.choices && node.choices.length){
-    node.choices.forEach(choice=>{
-      const btn = document.createElement('button');
-      btn.className = 'choice-btn';
-      btn.textContent = choice.label;
-      btn.onclick = ()=> renderNode(choice.next);
-      choicesWrap.appendChild(btn);
-    });
-  } else {
-    const restart = document.createElement('button');
-    restart.className = 'restart-btn';
-    restart.textContent = '↺ თავიდან დაწყება';
-    restart.onclick = ()=>{ history=[]; renderNode('start'); };
-    choicesWrap.appendChild(restart);
-  }
+    if (!configured) {
+      // EmailJS არაა გამართული — fallback: gmail compose ღიაბერდება
+      const body = encodeURIComponent(
+        `1) რამდენი შეყვარებული გყავდა: ${data.q1}\n\n` +
+        `2) რატომ მიყვარვარ: ${data.q2}\n\n` +
+        `3) რაზე ოცნებობ: ${data.q3}\n\n` +
+        `4) მიზნები: ${data.q4}\n\n` +
+        `5) რა გახდის ბედნიერს: ${data.q5}`
+      );
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(TARGET_EMAIL)}&su=${encodeURIComponent('პასუხები შენთვის')}&body=${body}`;
+      status.textContent = "EmailJS არაა გამართული — გიხსნი Gmail-ს პასუხებით, დააჭირე „გაგზავნა“ იქ.";
+      status.className = "status";
+      window.open(gmailUrl, "_blank");
+      return;
+    }
 
-  window.scrollTo({top:0, behavior:'smooth'});
-}
+    btn.disabled = true;
+    status.textContent = "იგზავნება...";
+    status.className = "status";
 
-renderNode('start');
+    try {
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, data);
+      form.classList.add('hidden');
+      seal.classList.add('show');
+    } catch (err) {
+      status.textContent = "ვერ გაიგზავნა — სცადე თავიდან.";
+      status.className = "status err";
+      btn.disabled = false;
+      console.error(err);
+    }
+  });
 </script>
 
 </body>
