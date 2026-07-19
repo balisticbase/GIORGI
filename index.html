@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>შენთვის...</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Noto Sans Georgian',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f172a,#111827,#1e293b);
+color:white;
+overflow-x:hidden;
+}
+
+.hero{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:40px;
+}
+
+.card{
+max-width:1000px;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(18px);
+border:1px solid rgba(255,255,255,.15);
+border-radius:30px;
+padding:60px;
+box-shadow:0 0 60px rgba(0,0,0,.5);
+animation:fade 1.5s ease;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(40px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+h1{
+font-size:48px;
+margin-bottom:20px;
+text-align:center;
+background:linear-gradient(90deg,#ff6ec7,#ffd166,#7dd3fc);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.subtitle{
+text-align:center;
+font-size:22px;
+opacity:.9;
+margin-bottom:40px;
+}
+
+.text{
+font-size:21px;
+line-height:2;
+}
+
+.highlight{
+color:#ffd166;
+font-weight:bold;
+}
+
+.quote{
+margin-top:45px;
+padding:30px;
+border-left:5px solid #ff6ec7;
+background:rgba(255,255,255,.05);
+font-style:italic;
+font-size:22px;
+border-radius:15px;
+}
+
+.footer{
+margin-top:50px;
+text-align:center;
+font-size:20px;
+opacity:.85;
+}
+
+.hearts{
+position:fixed;
+inset:0;
+pointer-events:none;
+overflow:hidden;
+}
+
+.heart{
+position:absolute;
+font-size:26px;
+animation:float 8s linear infinite;
+opacity:.6;
+}
+
+@keyframes float{
+0%{
+transform:translateY(110vh) rotate(0deg);
+opacity:0;
+}
+20%{
+opacity:.8;
+}
+100%{
+transform:translateY(-20vh) rotate(360deg);
+opacity:0;
+}
+}
+
+button{
+margin-top:45px;
+display:block;
+margin-left:auto;
+margin-right:auto;
+padding:18px 50px;
+border:none;
+border-radius:50px;
+background:linear-gradient(90deg,#ff6ec7,#ff4d6d);
+color:white;
+font-size:20px;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+box-shadow:0 0 30px #ff6ec7;
+}
+</style>
+
+</head>
+<body>
+
+<div class="hearts"></div>
+
+<section class="hero">
+
+<div class="card">
+
+<h1>შენ განსაკუთრებული ხარ ❤️</h1>
+
+<p class="subtitle">
+ეს არის წერილი გულიდან.
+</p>
+
+<div class="text">
+
+<p>
+ბევრს შეიძლება გაუკვირდეს, რომ
+<span class="highlight">შენ 37 წლის ხარ, მე კი 21-ის.</span>
+მაგრამ ჩემთვის ასაკი არ არის ის, რაც ადამიანს განსაზღვრავს.
+</p>
+
+<br>
+
+<p>
+რაც უფრო მეტად გიცნობ,
+მით უფრო ვრწმუნდები, რომ ყველაზე მეტად
+შენი <span class="highlight">ხასიათი</span>,
+შენი <span class="highlight">იუმორის გრძნობა</span>,
+შენი ცხოვრებისეული გამოცდილება
+და ის სიმშვიდე მომწონს, რომელსაც შენგან ვგრძნობ.
+</p>
+
+<br>
+
+<p>
+დღეს, როდესაც მომიყევი შენს შესახებ,
+შენს დებზე,
+შენს ცხოვრებაზე,
+ამან ჩემზე ძალიან კარგი შთაბეჭდილება მოახდინა.
+ვიგრძენი, რომ შენ გულწრფელი,
+თბილი და კეთილი ადამიანი ხარ.
+</p>
+
+<br>
+
+<p>
+ვიცი, რომ ზოგჯერ გირეკავ და პასუხს ვერ ვიღებ.
+ზოგჯერ მგონია, თითქოს მაიგნორებ კიდეც.
+მაგრამ მიუხედავად ამისა,
+მე მაინც მინდა მშვიდად და პატივისცემით გაგიცნო უკეთ.
+არ მინდა არაფრის დაჩქარება.
+</p>
+
+<div class="quote">
+"ზოგჯერ ყველაზე მნიშვნელოვანი არ არის ასაკი.
+მნიშვნელოვანია ის,
+თუ რას გრძნობ კონკრეტული ადამიანის გვერდით."
+</div>
+
+<p style="margin-top:35px;">
+არ ვიცი რას მოგვიტანს მომავალი,
+მაგრამ ერთი რამ ნამდვილად ვიცი —
+შენ ჩემთვის განსაკუთრებული ადამიანი ხარ.
+იმედი მაქვს, რომ ერთ დღეს ერთმანეთი კიდევ უფრო კარგად გავიცნობთ და ცხოვრება თავად გვაჩვენებს, სად მიგვიყვანს ეს გზა.
+</p>
+
+</div>
+
+<button onclick="showMessage()">❤️</button>
+
+<div class="footer">
+დაწერილია გულით.
+</div>
+
+</div>
+
+</section>
+
+<script>
+
+function showMessage(){
+alert("შენ ჩემთვის განსაკუთრებული ადამიანი ხარ. ❤️");
+}
+
+const hearts=document.querySelector(".hearts");
+
+for(let i=0;i<35;i++){
+
+const h=document.createElement("div");
+
+h.className="heart";
+
+h.innerHTML="❤️";
+
+h.style.left=Math.random()*100+"vw";
+
+h.style.animationDuration=(6+Math.random()*6)+"s";
+
+h.style.fontSize=(18+Math.random()*20)+"px";
+
+h.style.animationDelay=Math.random()*6+"s";
+
+hearts.appendChild(h);
+
+}
+
+</script>
+
+</body>
+</html>
