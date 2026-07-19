@@ -1,252 +1,303 @@
 <!DOCTYPE html>
-<html lang="ka">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Возраст — это всего лишь цифра</title>
 
-<title>ყველაზე მთავარი ასაკი კი არა, ადამიანი არის</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&family=Noto+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:"Noto Sans Georgian",sans-serif;
-}
-
-body{
-
-background:linear-gradient(135deg,#0f172a,#1e293b,#111827);
-
-color:white;
-
-overflow-x:hidden;
-
-}
-
-header{
-
-padding:70px 20px;
-
-text-align:center;
-
-}
-
-header h1{
-
-font-size:50px;
-
-margin-bottom:20px;
-
-}
-
-header p{
-
-font-size:22px;
-
-max-width:900px;
-
-margin:auto;
-
-line-height:1.8;
-
-color:#d6d6d6;
-
-}
-
-.gallery{
-
-width:90%;
-
-margin:auto;
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
-
-gap:25px;
-
-padding-bottom:70px;
-
-}
-
-.gallery img{
-
-width:100%;
-
-height:450px;
-
-object-fit:cover;
-
-border-radius:20px;
-
-transition:.4s;
-
-box-shadow:0 15px 35px rgba(0,0,0,.4);
-
-}
-
-.gallery img:hover{
-
-transform:scale(1.04);
-
-}
-
-.card{
-
-width:90%;
-
-max-width:1100px;
-
-margin:auto;
-
-background:rgba(255,255,255,.08);
-
-backdrop-filter:blur(20px);
-
-border-radius:25px;
-
-padding:45px;
-
-line-height:2;
-
-font-size:20px;
-
-box-shadow:0 20px 50px rgba(0,0,0,.35);
-
-margin-bottom:70px;
-
-}
-
-.card h2{
-
-text-align:center;
-
-margin-bottom:25px;
-
-font-size:38px;
-
-}
-
-.quote{
-
-text-align:center;
-
-font-size:30px;
-
-font-weight:bold;
-
-padding:60px 20px;
-
-}
-
-footer{
-
-padding:40px;
-
-text-align:center;
-
-color:#bbbbbb;
-
-}
-
+  :root{
+    --paper:#efe8dd;
+    --ink:#2b2620;
+    --rust:#a4552f;
+    --moss:#5c6b4f;
+    --line:#c9bda9;
+    --card:#f7f2e9;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html,body{height:100%;}
+
+  body{
+    font-family:"Noto Sans",sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(164,85,47,.06), transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(92,107,79,.08), transparent 45%);
+  }
+
+  /* ---- gate / loading / error screen ---- */
+  #gate{
+    position:fixed;
+    inset:0;
+    background:#1a1712;
+    color:#e8e0d2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    z-index:999;
+    padding:30px;
+  }
+  #gate .box{max-width:420px;}
+  #gate h1{
+    font-family:"Noto Serif",serif;
+    font-size:26px;
+    margin-bottom:14px;
+    letter-spacing:.02em;
+  }
+  #gate p{
+    font-size:15px;
+    line-height:1.7;
+    color:#b7ac97;
+  }
+  #gate .code{
+    display:inline-block;
+    margin-top:22px;
+    font-size:12px;
+    letter-spacing:.25em;
+    text-transform:uppercase;
+    color:#8a5c3f;
+    border:1px solid #4a4235;
+    padding:8px 16px;
+    border-radius:4px;
+  }
+  #gate.hidden{display:none;}
+
+  #content{display:none;}
+  #content.visible{display:block;}
+
+  .eyebrow{
+    letter-spacing:.35em;
+    font-size:12px;
+    text-transform:uppercase;
+    color:var(--rust);
+    font-weight:500;
+  }
+
+  header{
+    max-width:760px;
+    margin:0 auto;
+    padding:110px 28px 70px;
+    text-align:center;
+  }
+
+  header h1{
+    font-family:"Noto Serif",serif;
+    font-weight:700;
+    font-size:clamp(34px,6vw,58px);
+    line-height:1.15;
+    margin:22px 0 26px;
+    color:var(--ink);
+  }
+
+  header .divider{
+    width:64px;
+    height:2px;
+    background:var(--rust);
+    margin:0 auto 26px;
+  }
+
+  header p{
+    font-size:18px;
+    line-height:1.85;
+    color:#4c463d;
+    max-width:560px;
+    margin:0 auto;
+  }
+
+  .gallery{
+    max-width:1080px;
+    margin:0 auto;
+    padding:10px 28px 90px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+  }
+
+  .gallery figure{
+    position:relative;
+    border-radius:4px;
+    overflow:hidden;
+    box-shadow:0 18px 34px rgba(43,38,32,.25);
+    border:1px solid var(--line);
+  }
+
+  .gallery img{
+    width:100%;
+    height:420px;
+    object-fit:cover;
+    display:block;
+    filter:sepia(.08) saturate(1.02);
+    transition:transform .6s ease, filter .6s ease;
+  }
+
+  .gallery figure:hover img{
+    transform:scale(1.045);
+    filter:sepia(0) saturate(1.05);
+  }
+
+  @media (max-width:900px){
+    .gallery{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:520px){
+    .gallery{grid-template-columns:1fr;}
+    .gallery img{height:320px;}
+  }
+
+  .letter{
+    max-width:680px;
+    margin:0 auto 100px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:56px 52px;
+    box-shadow:0 25px 50px rgba(43,38,32,.15);
+    position:relative;
+  }
+
+  .letter::before{
+    content:"";
+    position:absolute;
+    top:0; left:40px;
+    width:2px;
+    height:100%;
+    background:linear-gradient(var(--line),transparent);
+    opacity:.5;
+  }
+
+  .letter h2{
+    font-family:"Noto Serif",serif;
+    font-size:26px;
+    margin-bottom:30px;
+    color:var(--rust);
+  }
+
+  .letter p{
+    font-size:18px;
+    line-height:2;
+    color:#3a352d;
+    margin-bottom:24px;
+  }
+
+  .letter p:last-child{margin-bottom:0;}
+
+  .quote-block{
+    max-width:760px;
+    margin:0 auto 100px;
+    padding:0 28px;
+    text-align:center;
+  }
+
+  .quote-block blockquote{
+    font-family:"Noto Serif",serif;
+    font-size:clamp(24px,3.4vw,34px);
+    line-height:1.5;
+    color:var(--moss);
+    font-weight:600;
+    position:relative;
+    padding:0 20px;
+  }
+
+  .quote-block blockquote::before,
+  .quote-block blockquote::after{
+    content:"";
+    display:block;
+    width:36px;
+    height:2px;
+    background:var(--moss);
+    opacity:.4;
+    margin:22px auto 0;
+  }
+
+  footer{
+    text-align:center;
+    padding:40px 20px 60px;
+    font-size:13px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:#8a8172;
+  }
 </style>
-
 </head>
 
 <body>
 
+<div id="gate">
+  <div class="box">
+    <h1 id="gate-title">Проверка доступа…</h1>
+    <p id="gate-text">Пожалуйста, подождите.</p>
+  </div>
+</div>
+
+<div id="content">
+
 <header>
-
-<h1>ასაკი მხოლოდ რიცხვია ❤️</h1>
-
-<p>
-
-როდესაც ადამიანი მოგწონს, ყველაზე მნიშვნელოვანი მისი ხასიათი, ადამიანობა და შინაგანი სამყაროა.
-
-</p>
-
+  <div class="eyebrow">Одна история</div>
+  <h1>Возраст — это всего лишь цифра</h1>
+  <div class="divider"></div>
+  <p>Когда тебе нравится человек, главное — это его характер, человечность и внутренний мир.</p>
 </header>
 
 <section class="gallery">
-
-<img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0552.jpeg">
-
-<img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_1226.jpeg">
-
-<img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_1228.jpeg">
-
-<img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_1229.jpeg">
-
+  <figure><img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_0552.jpeg" alt=""></figure>
+  <figure><img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_1226.jpeg" alt=""></figure>
+  <figure><img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_1228.jpeg" alt=""></figure>
+  <figure><img src="https://github.com/balisticbase/GIORGI/raw/refs/heads/main/IMG_1229.jpeg" alt=""></figure>
 </section>
 
-<div class="card">
+<div class="letter">
+  <h2>Почему он мне нравится</h2>
+  <p>Да, ему 37 лет, а мне 21. Для многих это может показаться странным, но для меня возраст никогда не был главным.</p>
+  <p>Мне нравится его характер. Мне нравится его чувство юмора. Мне нравится то, как он говорит и как смотрит на жизнь.</p>
+  <p>Сегодня он рассказал мне о своей жизни и о своих сёстрах. После этих историй у меня осталось о нём ещё более тёплое впечатление. Я почувствовала, что он добрый, сильный и интересный человек.</p>
+  <p>Иногда, когда я звоню, он не отвечает. Иногда мне кажется, что он меня даже игнорирует. Но несмотря на это, я хочу с уважением и искренне продолжать попытки построить с ним отношения. Надеюсь, что в будущем наши отношения станут ближе и крепче.</p>
+</div>
 
-<h2>რატომ მომწონს ის</h2>
+<div class="quote-block">
+  <blockquote>Человека украшает не возраст — его украшает характер, доброта и сердце.</blockquote>
+</div>
 
-<p>
-
-დიახ, ის 37 წლისაა, მე კი 21 წლის.
-
-ბევრისთვის ეს შეიძლება უცნაური იყოს, მაგრამ ჩემთვის მთავარი არასოდეს ყოფილა ასაკი.
-
-</p>
-
-<br>
-
-<p>
-
-მე მომწონს მისი ხასიათი.
-
-მომწონს მისი იუმორის გრძნობა.
-
-მომწონს ის, როგორ საუბრობს და როგორ უყურებს ცხოვრებას.
-
-</p>
-
-<br>
-
-<p>
-
-დღეს მან თავისი ცხოვრებისა და დების შესახებ მომიყვა.
-
-ამ ისტორიების მოსმენის შემდეგ მასზე კიდევ უფრო კარგი შთაბეჭდილება დამრჩა.
-
-ვიგრძენი, რომ ის კეთილი, ძლიერი და საინტერესო ადამიანია.
-
-</p>
-
-<br>
-
-<p>
-
-ხანდახან როცა ვურეკავ, პასუხს ვერ ვიღებ.
-
-ზოგჯერ მგონია, რომ მაიგნორებს კიდეც.
-
-მაგრამ მიუხედავად ამისა, მინდა პატივისცემით და გულწრფელად გავაგრძელო მასთან ურთიერთობის აშენების მცდელობა.
-
-ვიმედოვნებ, რომ მომავალში ჩვენი ურთიერთობა უფრო ახლო და ძლიერი გახდება.
-
-</p>
+<footer>Написано искренне</footer>
 
 </div>
 
-<div class="quote">
+<script>
+(async function(){
+  const gate = document.getElementById('gate');
+  const gateTitle = document.getElementById('gate-title');
+  const gateText = document.getElementById('gate-text');
+  const content = document.getElementById('content');
 
-"ადამიანს ასაკი არ ალამაზებს...  
-მისი ხასიათი, სიკეთე და გული ალამაზებს."
+  function showError(){
+    gateTitle.textContent = 'ERROR';
+    gateText.innerHTML = 'Доступ к этому сайту с территории Грузии ограничен.<br><span class="code">403 · ACCESS DENIED</span>';
+  }
 
-</div>
+  function showContent(){
+    gate.classList.add('hidden');
+    content.classList.add('visible');
+  }
 
-<footer>
-
-Made with ❤️
-
-</footer>
+  try{
+    const res = await fetch('https://ipapi.co/json/');
+    if(!res.ok) throw new Error('lookup failed');
+    const data = await res.json();
+    if(data && data.country_code === 'GE'){
+      showError();
+    } else {
+      showContent();
+    }
+  } catch(e){
+    // If the lookup fails for any reason, default to showing the page
+    showContent();
+  }
+})();
+</script>
 
 </body>
 </html>
