@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>საიტი დროებით მიუწვდომელია</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family:
+                "Noto Sans Georgian",
+                "Sylfaen",
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(65, 105, 225, 0.20),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 80% 80%,
+                    rgba(0, 200, 255, 0.15),
+                    transparent 35%
+                ),
+                #070b14;
+
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .card {
+            background: rgba(15, 21, 35, 0.90);
+
+            border: 1px solid rgba(255, 255, 255, 0.08);
+
+            border-radius: 28px;
+
+            padding: 55px 35px;
+
+            text-align: center;
+
+            box-shadow:
+                0 30px 100px rgba(0, 0, 0, 0.45);
+
+            backdrop-filter: blur(20px);
+        }
+
+        .status {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 10px 18px;
+
+            border-radius: 50px;
+
+            background: rgba(255, 170, 0, 0.10);
+
+            border: 1px solid rgba(255, 170, 0, 0.25);
+
+            color: #ffc34d;
+
+            font-size: 14px;
+
+            margin-bottom: 28px;
+        }
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+
+            border-radius: 50%;
+
+            background: #ffb000;
+
+            box-shadow:
+                0 0 15px #ffb000;
+        }
+
+        h1 {
+            font-size: clamp(36px, 7vw, 68px);
+
+            line-height: 1.15;
+
+            margin-bottom: 25px;
+
+            letter-spacing: -1px;
+        }
+
+        .description {
+            max-width: 680px;
+
+            margin: auto;
+
+            color: #9da7ba;
+
+            font-size: 18px;
+
+            line-height: 1.8;
+        }
+
+        .server-box {
+            margin: 35px auto;
+
+            max-width: 600px;
+
+            padding: 20px;
+
+            border-radius: 18px;
+
+            background: rgba(255, 255, 255, 0.035);
+
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .server-line {
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 9px 0;
+
+            color: #8994a8;
+
+            font-size: 15px;
+        }
+
+        .server-line span:last-child {
+            color: #ffb347;
+        }
+
+        .countdown-title {
+            color: #8994a8;
+
+            margin-bottom: 15px;
+
+            font-size: 16px;
+        }
+
+        .countdown {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 12px;
+
+            max-width: 650px;
+
+            margin: 0 auto 35px;
+        }
+
+        .time-box {
+            background:
+                rgba(255, 255, 255, 0.045);
+
+            border:
+                1px solid rgba(255, 255, 255, 0.07);
+
+            border-radius: 18px;
+
+            padding: 20px 10px;
+        }
+
+        .time-number {
+            display: block;
+
+            font-size: 38px;
+
+            font-weight: 700;
+        }
+
+        .time-label {
+            display: block;
+
+            margin-top: 7px;
+
+            color: #7f899d;
+
+            font-size: 13px;
+        }
+
+        .progress {
+            height: 7px;
+
+            width: 100%;
+
+            max-width: 650px;
+
+            margin: 0 auto 25px;
+
+            background:
+                rgba(255, 255, 255, 0.07);
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+
+            width: 0%;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #4169e1,
+                    #00c8ff
+                );
+
+            transition:
+                width 1s linear;
+        }
+
+        .date {
+            color: #6f7a8e;
+
+            font-size: 14px;
+        }
+
+        .footer {
+            margin-top: 40px;
+
+            padding-top: 25px;
+
+            border-top:
+                1px solid rgba(255, 255, 255, 0.06);
+
+            color: #596476;
+
+            font-size: 13px;
+        }
+
+        /*
+        ჩართული საიტის მდგომარეობა
+        */
+
+        .online {
+            display: none;
+        }
+
+        .online h1 {
+            color: #65ff9b;
+        }
+
+        .online .status {
+            color: #65ff9b;
+
+            background:
+                rgba(50, 255, 130, 0.08);
+
+            border-color:
+                rgba(50, 255, 130, 0.20);
+        }
+
+        .online .status-dot {
+            background: #4dff8b;
+
+            box-shadow:
+                0 0 15px #4dff8b;
+        }
+
+        .online .server-line span:last-child {
+            color: #65ff9b;
+        }
+
+        @media (max-width: 600px) {
+
+            .card {
+                padding: 45px 20px;
+
+                border-radius: 22px;
+            }
+
+            .description {
+                font-size: 16px;
+            }
+
+            .countdown {
+                gap: 7px;
+            }
+
+            .time-box {
+                padding: 15px 5px;
+            }
+
+            .time-number {
+                font-size: 26px;
+            }
+
+            .time-label {
+                font-size: 11px;
+            }
+
+            .server-line {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!--
+        ========================================
+        საიტის გათიშული მდგომარეობა
+        ========================================
+    -->
+
+    <div class="card" id="offlinePage">
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            სერვერი გათიშულია
+
+        </div>
+
+
+        <h1>
+            საიტი დროებით მიუწვდომელია
+        </h1>
+
+
+        <p class="description">
+
+            ამჟამად საიტის სერვერი გათიშულია.
+
+            მიმდინარეობს სისტემის მომზადება.
+
+            საიტი ავტომატურად ამოქმედდება
+            მითითებული პერიოდის დასრულების შემდეგ.
+
+        </p>
+
+
+        <div class="server-box">
+
+            <div class="server-line">
+
+                <span>
+                    სერვერის მდგომარეობა
+                </span>
+
+                <span>
+                    გათიშული
+                </span>
+
+            </div>
+
+
+            <div class="server-line">
+
+                <span>
+                    სერვერის მდებარეობა
+                </span>
+
+                <span>
+                    ამერიკის შეერთებული შტატები
+                </span>
+
+            </div>
+
+
+            <div class="server-line">
+
+                <span>
+                    საიტის მდგომარეობა
+                </span>
+
+                <span>
+                    გაშვების მოლოდინი
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="countdown-title">
+
+            საიტის ამოქმედებამდე დარჩა
+
+        </div>
+
+
+        <div class="countdown">
+
+            <div class="time-box">
+
+                <span
+                    class="time-number"
+                    id="days">
+                    0
+                </span>
+
+                <span class="time-label">
+                    დღე
+                </span>
+
+            </div>
+
+
+            <div class="time-box">
+
+                <span
+                    class="time-number"
+                    id="hours">
+                    0
+                </span>
+
+                <span class="time-label">
+                    საათი
+                </span>
+
+            </div>
+
+
+            <div class="time-box">
+
+                <span
+                    class="time-number"
+                    id="minutes">
+                    0
+                </span>
+
+                <span class="time-label">
+                    წუთი
+                </span>
+
+            </div>
+
+
+            <div class="time-box">
+
+                <span
+                    class="time-number"
+                    id="seconds">
+                    0
+                </span>
+
+                <span class="time-label">
+                    წამი
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="progress">
+
+            <div
+                class="progress-bar"
+                id="progressBar">
+            </div>
+
+        </div>
+
+
+        <div class="date">
+
+            საიტის ამოქმედების თარიღი
+
+            <span id="launchDateText"></span>
+
+        </div>
+
+
+        <div class="footer">
+
+            დრო ავტომატურად მოწმდება
+
+        </div>
+
+    </div>
+
+
+    <!--
+        ========================================
+        საიტის ჩართული მდგომარეობა
+        ========================================
+    -->
+
+    <div class="card online" id="onlinePage">
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            სერვერი მუშაობს
+
+        </div>
+
+
+        <h1>
+
+            საიტი ამოქმედდა
+
+        </h1>
+
+
+        <p class="description">
+
+            სერვერი წარმატებით ჩაირთო.
+
+            საიტი ახლა ხელმისაწვდომია
+            მომხმარებლებისთვის.
+
+        </p>
+
+
+        <div class="server-box">
+
+            <div class="server-line">
+
+                <span>
+                    სერვერის მდგომარეობა
+                </span>
+
+                <span>
+                    ჩართული
+                </span>
+
+            </div>
+
+
+            <div class="server-line">
+
+                <span>
+                    სერვერის მდებარეობა
+                </span>
+
+                <span>
+                    ამერიკის შეერთებული შტატები
+                </span>
+
+            </div>
+
+
+            <div class="server-line">
+
+                <span>
+                    საიტის მდგომარეობა
+                </span>
+
+                <span>
+                    მუშაობს
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer">
+
+            სერვერი წარმატებით ამოქმედდა
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/*
+==================================================
+საიტის ამოქმედების თარიღი
+==================================================
+
+აქ შეგიძლია შეცვალო თარიღი.
+
+მაგალითად
+
+2026 წლის 11 ნოემბერი
+20 საათი
+
+*/
+
+const launchDate =
+    new Date("2026-11-11T20:00:00");
+
+
+/*
+==================================================
+ათვლის საწყისი თარიღი
+==================================================
+*/
+
+const startDate =
+    new Date("2026-08-11T20:00:00");
+
+
+/*
+==================================================
+HTML ელემენტები
+==================================================
+*/
+
+const offlinePage =
+    document.getElementById("offlinePage");
+
+const onlinePage =
+    document.getElementById("onlinePage");
+
+const daysElement =
+    document.getElementById("days");
+
+const hoursElement =
+    document.getElementById("hours");
+
+const minutesElement =
+    document.getElementById("minutes");
+
+const secondsElement =
+    document.getElementById("seconds");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const launchDateText =
+    document.getElementById("launchDateText");
+
+
+/*
+==================================================
+თარიღის ჩვენება ქართულად
+==================================================
+*/
+
+launchDateText.textContent =
+    launchDate.toLocaleString(
+        "ka-GE",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+
+
+/*
+==================================================
+მთავარი ფუნქცია
+==================================================
+*/
+
+function updateSite() {
+
+    const now = new Date();
+
+
+    const difference =
+        launchDate.getTime()
+        -
+        now.getTime();
+
+
+    /*
+    თუ ამოქმედების თარიღი უკვე დადგა
+    */
+
+    if (difference <= 0) {
+
+        offlinePage.style.display =
+            "none";
+
+        onlinePage.style.display =
+            "block";
+
+        document.title =
+            "საიტი მუშაობს";
+
+        return;
+    }
+
+
+    /*
+    დღეები
+    */
+
+    const days =
+        Math.floor(
+            difference
+            /
+            (1000 * 60 * 60 * 24)
+        );
+
+
+    /*
+    საათები
+    */
+
+    const hours =
+        Math.floor(
+            (difference /
+            (1000 * 60 * 60))
+            % 24
+        );
+
+
+    /*
+    წუთები
+    */
+
+    const minutes =
+        Math.floor(
+            (difference /
+            (1000 * 60))
+            % 60
+        );
+
+
+    /*
+    წამები
+    */
+
+    const seconds =
+        Math.floor(
+            (difference / 1000)
+            % 60
+        );
+
+
+    /*
+    ეკრანზე ჩვენება
+    */
+
+    daysElement.textContent =
+        days;
+
+    hoursElement.textContent =
+        String(hours).padStart(2, "0");
+
+    minutesElement.textContent =
+        String(minutes).padStart(2, "0");
+
+    secondsElement.textContent =
+        String(seconds).padStart(2, "0");
+
+
+    /*
+    პროგრესის ზოლი
+    */
+
+    const totalTime =
+        launchDate.getTime()
+        -
+        startDate.getTime();
+
+
+    const elapsedTime =
+        now.getTime()
+        -
+        startDate.getTime();
+
+
+    let progress =
+        (elapsedTime / totalTime)
+        * 100;
+
+
+    progress =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                progress
+            )
+        );
+
+
+    progressBar.style.width =
+        progress + "%";
+}
+
+
+/*
+==================================================
+პირველი შემოწმება
+==================================================
+*/
+
+updateSite();
+
+
+/*
+==================================================
+ყოველ წამში განახლება
+==================================================
+*/
+
+setInterval(
+    updateSite,
+    1000
+);
+
+</script>
+
+</body>
+</html>
