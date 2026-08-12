@@ -24,7 +24,7 @@
 ||*zeloru.com*$all
 ||*my.toruftuiov.com*$all
 ||*nwien.com*$all
-||*port80ge.adocean.pl*mp4*
+||*port80ge.adocean.pl*mp4*$all
 
 
 ! ads-adsplay-video
@@ -32,40 +32,40 @@
 
 ! ikinogo.com
 
-||nwien.com*mp4*
-||mtvwyrmb.com*mp4*
+||nwien.com*mp4*$all
+||mtvwyrmb.com*mp4*$all
 
 
 
 
 ! kinogo.org
 
-||vvru.spdmpgcdn.com*mp4*
+||vvru.spdmpgcdn.com*mp4*$all
 
 
 
 ! adjaranett.com
 
-||adjaranett.com/*mp4*
+||adjaranett.com/*mp4*$all
 
 
 
 ! kinoworld.net
 
-||strm.yandex.ru*mp4*
+||strm.yandex.ru*mp4*$all
 
 
 ! uyure.net
 
 
-||videos.uyure.net*mp4*
+||videos.uyure.net*mp4*$all
 
 
 
 ! kinolab.cc
 
 
-||ftp.kinolab.cc/ads/*
+||ftp.kinolab.cc/*ads/*$all
 
 
 
@@ -79,81 +79,77 @@
 ! srulad.com
 
 
-||app.adroll.live*mp4*
-||static-cdn.xyz*mp4*
+||app.adroll.live*mp4*$all
+||static-cdn.xyz*mp4*$all
 
 
 ! geosaitebi.online
 
 
-||geosaitebi.online/upload/preroll*
+||geosaitebi.online/upload*/preroll*$all
 
 
 
 ! asia.com.ge
 
-||asia.com.ge*mp4*
+||asia.com.ge*mp4*$all
 
 
 
 ! ge.movie
 
 
-||ge.movie*mp4*
+||ge.movie*mp4*$all
 
 
 
 ! mykadri.tv
 
-||hdd.mykadri.com*mp4*
-||statline.cc*mp4*
-||vidium.nshamanauri.ge*mp4*
-
-
-
-
+||hdd.mykadri.com*mp4*$all
+||statline.cc*mp4*$all
+||vidium.nshamanauri.ge*mp4*$all
 
 
 
 ! myvideo.ge
 
 
-||va.myvideo.ge*mp4*
+||va.myvideo.ge*mp4*$all
 
 
 
 ! televiziebi.tv
 
 
-||televiziebi.tv/asvla*
+||televiziebi.tv/*asvla*$all
 
 
 
 ! adjaranet.ai
 
-||adjaranet.ai*mp4*
+||adjaranet.ai*mp4*$all
 
 
 
 
 ! croconet.cam
 
-||storage.croco.cam*mp4*
-||*storage5.croco.cam*mp4*
+||storage.croco.cam*mp4*$all
+||*storage5.croco.cam*mp4*$all
 
 
 
 ! qartulad.in
 
 
-||qartulad.in/upload/preroll*
+||qartulad.in/upload*preroll*$all
 
 
 
 ! adjaranet.in
 
 
-||adjaranet.in*mp4*
+||adjaranet.in*mp4*$all
 
 
 
