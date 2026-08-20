@@ -2,33 +2,44 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>GIORGI Combined Blocklist</title>
 
 <style>
-body {
-    margin: 0;
-    background: #080b10;
-    color: #d8dee9;
-    font-family: monospace;
+html,body{
+    margin:0;
+    padding:0;
+    background:#080b10;
+    color:#d8dee9;
+    font-family:monospace;
 }
 
-pre {
-    margin: 0;
-    padding: 20px;
-    white-space: pre-wrap;
-    word-break: break-word;
+body{
+    padding:20px;
+}
+
+#status{
+    margin-bottom:15px;
+    color:#8f9aaa;
+}
+
+pre{
+    margin:0;
+    white-space:pre-wrap;
+    word-break:break-word;
 }
 </style>
 </head>
 
 <body>
 
-<pre id="blocklist">Loading...</pre>
+<div id="status">Loading blocklists...</div>
+
+<pre id="blocklist"></pre>
 
 <script>
 
-const sources = [
+const SOURCES = [
 
     "https://filters.adtidy.org/dns/filter_1_ios.txt",
 
@@ -42,17 +53,30 @@ const sources = [
 
 ];
 
+const status =
+    document.getElementById("status");
 
-async function getList(url) {
+const output =
+    document.getElementById("blocklist");
 
-    const response = await fetch(url, {
-        cache: "no-store"
-    });
 
-    if (!response.ok) {
-        throw new Error(
-            "HTTP " + response.status
+async function download(url){
+
+    const response =
+        await fetch(
+            url,
+            {
+                cache:"no-store"
+            }
         );
+
+    if(!response.ok){
+
+        throw new Error(
+            "HTTP " +
+            response.status
+        );
+
     }
 
     return await response.text();
@@ -60,43 +84,65 @@ async function getList(url) {
 }
 
 
-async function combineLists() {
+async function load(){
 
-    const allRules = [];
+    const combined = [];
 
-    for (const url of sources) {
+    let success = 0;
 
-        try {
+    for(
+        let i = 0;
+        i < SOURCES.length;
+        i++
+    ){
+
+        const url = SOURCES[i];
+
+        status.textContent =
+            "Loading " +
+            (i + 1) +
+            " / " +
+            SOURCES.length +
+            "...";
+
+        try{
 
             const text =
-                await getList(url);
+                await download(url);
 
             const lines =
                 text.split(/\r?\n/);
 
-            for (const line of lines) {
+            for(
+                const line of lines
+            ){
 
-                const rule =
+                const value =
                     line.trim();
 
-                if (
-                    rule &&
-                    !rule.startsWith("!") &&
-                    !rule.startsWith("#")
-                ) {
-
-                    allRules.push(rule);
-
+                if(!value){
+                    continue;
                 }
+
+                if(
+                    value.startsWith("!") ||
+                    value.startsWith("#")
+                ){
+                    continue;
+                }
+
+                combined.push(value);
 
             }
 
+            success++;
+
         }
 
-        catch (error) {
+        catch(error){
 
             console.error(
-                "Failed:",
+                "Could not load:",
                 url,
                 error
             );
@@ -106,19 +152,27 @@ async function combineLists() {
     }
 
 
-    const uniqueRules =
-        [...new Set(allRules)];
+    const unique =
+        [...new Set(combined)];
 
 
-    document.getElementById(
-        "blocklist"
-    ).textContent =
-        uniqueRules.join("\n");
+    output.textContent =
+        unique.join("\n");
+
+
+    status.textContent =
+        "Combined " +
+        success +
+        " / " +
+        SOURCES.length +
+        " sources • " +
+        unique.length.toLocaleString() +
+        " unique rules";
 
 }
 
 
-combineLists();
+load();
 
 </script>
 
