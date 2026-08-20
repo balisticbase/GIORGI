@@ -1,175 +1,322 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ka">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> Ultimate Filters</title>
+<title>GIORGI Ultimate AdGuard Filter</title>
+
 <style>
 * {
     box-sizing: border-box;
 }
+
 body {
     margin: 0;
+    background: #080b10;
+    color: white;
     font-family: Arial, sans-serif;
-    background: #080b12;
-    color: #ffffff;
 }
+
 .container {
-    max-width: 1100px;
+    max-width: 1000px;
     margin: auto;
     padding: 30px 18px;
 }
-.header {
+
+h1 {
     text-align: center;
-    padding: 35px 20px;
+    margin-bottom: 10px;
 }
-.header h1 {
-    margin: 0;
-    font-size: 38px;
-}
-.header p {
+
+.subtitle {
+    text-align: center;
     color: #9ca3af;
-    margin-top: 12px;
+    margin-bottom: 30px;
 }
+
 .card {
-    background: #111722;
-    border: 1px solid #202938;
-    border-radius: 16px;
-    padding: 22px;
-    margin-bottom: 16px;
-}
-.card h2 {
-    margin-top: 0;
-    font-size: 21px;
-}
-.url {
-    background: #080b12;
+    background: #111720;
     border: 1px solid #273142;
-    border-radius: 10px;
-    padding: 13px;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.url {
+    background: #080b10;
+    border: 1px solid #273142;
+    padding: 12px;
+    border-radius: 9px;
     word-break: break-all;
-    color: #a7f3d0;
+    color: #9ae6b4;
     font-size: 14px;
 }
+
 button {
-    margin-top: 14px;
-    padding: 11px 17px;
-    border: 0;
-    border-radius: 9px;
     background: #2563eb;
     color: white;
+    border: 0;
+    padding: 12px 18px;
+    border-radius: 9px;
+    margin-top: 15px;
     cursor: pointer;
     font-weight: bold;
 }
+
 button:hover {
-    opacity: 0.85;
+    opacity: .85;
 }
-.status {
-    margin-top: 12px;
+
+#generate {
+    background: #16a34a;
+    width: 100%;
+    font-size: 16px;
+}
+
+#download {
+    width: 100%;
+    display: none;
+}
+
+#status {
+    margin-top: 15px;
     color: #9ca3af;
 }
-.footer {
-    text-align: center;
-    padding: 30px;
-    color: #6b7280;
-    font-size: 13px;
-}
-.badge {
-    display: inline-block;
-    padding: 5px 9px;
-    border-radius: 20px;
-    background: #172033;
-    color: #93c5fd;
-    font-size: 12px;
-    margin-bottom: 10px;
+
+textarea {
+    width: 100%;
+    height: 350px;
+    background: #080b10;
+    color: #d1d5db;
+    border: 1px solid #273142;
+    border-radius: 10px;
+    padding: 15px;
+    resize: vertical;
 }
 </style>
 </head>
+
 <body>
+
 <div class="container">
-<div class="header">
-    <div class="badge">ADGUARD DNS</div>
-    <h1>GIORGI Ultimate Filters</h1>
-    <p>Five powerful DNS blocklists in one place</p>
+
+<h1>GIORGI Ultimate AdGuard Filter</h1>
+
+<div class="subtitle">
+5 Blocklists → 1 Combined Filter
 </div>
+
 <div class="card">
-    <h2>1. AdGuard DNS iOS</h2>
-    <div class="url" id="url1">
-        https://filters.adtidy.org/dns/filter_1_ios.txt
-    </div>
-    <button onclick="copyURL('url1')">Copy URL</button>
-    <div class="status" id="status1"></div>
+
+<h2>Filter Sources</h2>
+
+<p>AdGuard iOS</p>
+<div class="url">
+https://filters.adtidy.org/dns/filter_1_ios.txt
 </div>
+
+<p>HaGeZi Ultimate</p>
+<div class="url">
+https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/ultimate.txt
+</div>
+
+<p>OISD Big</p>
+<div class="url">
+https://big.oisd.nl
+</div>
+
+<p>GIORGI Blocklist</p>
+<div class="url">
+https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist
+</div>
+
+<p>HaGeZi TIF</p>
+<div class="url">
+https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.txt
+</div>
+
+</div>
+
 <div class="card">
-    <h2>2. HaGeZi Ultimate</h2>
-    <div class="url" id="url2">
-        https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/ultimate.txt
-    </div>
-    <button onclick="copyURL('url2')">Copy URL</button>
-    <div class="status" id="status2"></div>
+
+<button id="generate">
+GENERATE COMBINED FILTER
+</button>
+
+<div id="status">
+Ready
 </div>
+
+<button id="download">
+DOWNLOAD MERGED.TXT
+</button>
+
+</div>
+
 <div class="card">
-    <h2>3. OISD Big</h2>
-    <div class="url" id="url3">
-        https://big.oisd.nl
-    </div>
-    <button onclick="copyURL('url3')">Copy URL</button>
-    <div class="status" id="status3"></div>
+
+<h2>Combined Filter</h2>
+
+<textarea id="result" readonly>
+აქ გამოჩნდება გაერთიანებული ფილტრი
+</textarea>
+
 </div>
-<div class="card">
-    <h2>4. GIORGI Blocklist</h2>
-    <div class="url" id="url4">
-        https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist
-    </div>
-    <button onclick="copyURL('url4')">Copy URL</button>
-    <div class="status" id="status4"></div>
+
 </div>
-<div class="card">
-    <h2>5. HaGeZi TIF</h2>
-    <div class="url" id="url5">
-        https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.txt
-    </div>
-    <button onclick="copyURL('url5')">Copy URL</button>
-    <div class="status" id="status5"></div>
-</div>
-<div class="card">
-    <h2>All filters</h2>
-    <p>
-        This page contains the five configured AdGuard DNS filter sources.
-    </p>
-    <button onclick="copyAll()">Copy all URLs</button>
-    <div class="status" id="allStatus"></div>
-</div>
-<div class="footer">
-    GIORGI Ultimate AdGuard Filter Hub
-</div>
-</div>
+
 <script>
-function copyURL(id) {
-    const text = document.getElementById(id).innerText.trim();
-    navigator.clipboard.writeText(text).then(() => {
-        const status =
-            document.getElementById(
-                id.replace("url", "status")
+
+const sources = [
+
+"https://filters.adtidy.org/dns/filter_1_ios.txt",
+
+"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/ultimate.txt",
+
+"https://big.oisd.nl",
+
+"https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist",
+
+"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.txt"
+
+];
+
+let finalFilter = "";
+
+const generate = document.getElementById("generate");
+const download = document.getElementById("download");
+const result = document.getElementById("result");
+const status = document.getElementById("status");
+
+generate.onclick = async function() {
+
+    generate.disabled = true;
+
+    status.innerText = "Downloading filters...";
+
+    let allLines = [];
+    let failed = [];
+
+    for (let i = 0; i < sources.length; i++) {
+
+        status.innerText =
+            "Downloading filter " + (i + 1) + " / " + sources.length;
+
+        try {
+
+            const response = await fetch(
+                sources[i],
+                {
+                    cache: "no-store"
+                }
             );
-        if (status) {
-            status.innerText = "URL copied";
+
+            if (!response.ok) {
+                throw new Error(
+                    "HTTP " + response.status
+                );
+            }
+
+            const text = await response.text();
+
+            const lines = text
+                .replace(/\r/g, "")
+                .split("\n")
+                .map(line => line.trim())
+                .filter(line => line.length > 0);
+
+            allLines.push(...lines);
+
+        } catch (error) {
+
+            failed.push(
+                sources[i] + " → " + error.message
+            );
+
         }
-    });
-}
-function copyAll() {
-    const urls = [
-        "https://filters.adtidy.org/dns/filter_1_ios.txt",
-        "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/ultimate.txt",
-        "https://big.oisd.nl",
-        "https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist",
-        "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.txt"
+
+    }
+
+    const uniqueLines = [
+        ...new Set(allLines)
     ];
-    navigator.clipboard.writeText(urls.join("\n")).then(() => {
-        document.getElementById("allStatus").innerText =
-            "All URLs copied";
-    });
-}
+
+    finalFilter =
+        "! GIORGI Combined AdGuard Filter\n" +
+        "! Combined sources: 5\n" +
+        "! Unique lines: " +
+        uniqueLines.length +
+        "\n\n" +
+        uniqueLines.join("\n");
+
+    result.value = finalFilter;
+
+    if (failed.length > 0) {
+
+        status.innerText =
+            "დასრულდა შეცდომებით: " +
+            failed.length +
+            " ფილტრი ვერ ჩამოიტვირთა";
+
+        result.value =
+            "! WARNING\n" +
+            failed
+                .map(x => "! " + x)
+                .join("\n") +
+            "\n\n" +
+            finalFilter;
+
+    } else {
+
+        status.innerText =
+            "დასრულებულია: " +
+            uniqueLines.length.toLocaleString() +
+            " უნიკალური წესი";
+
+    }
+
+    download.style.display = "block";
+
+    generate.disabled = false;
+
+};
+
+
+download.onclick = function() {
+
+    if (!finalFilter) {
+        return;
+    }
+
+    const blob = new Blob(
+        [finalFilter],
+        {
+            type: "text/plain;charset=utf-8"
+        }
+    );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+        "GIORGI-Combined-AdGuard-Filter.txt";
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+};
+
 </script>
+
 </body>
 </html>
