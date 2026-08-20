@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GIORGI Ultimate AdGuard Filters</title>
+<style>
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #080b12;
+    color: #ffffff;
+}
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 30px 18px;
+}
+.header {
+    text-align: center;
+    padding: 35px 20px;
+}
+.header h1 {
+    margin: 0;
+    font-size: 38px;
+}
+.header p {
+    color: #9ca3af;
+    margin-top: 12px;
+}
+.card {
+    background: #111722;
+    border: 1px solid #202938;
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 16px;
+}
+.card h2 {
+    margin-top: 0;
+    font-size: 21px;
+}
+.url {
+    background: #080b12;
+    border: 1px solid #273142;
+    border-radius: 10px;
+    padding: 13px;
+    word-break: break-all;
+    color: #a7f3d0;
+    font-size: 14px;
+}
+button {
+    margin-top: 14px;
+    padding: 11px 17px;
+    border: 0;
+    border-radius: 9px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+button:hover {
+    opacity: 0.85;
+}
+.status {
+    margin-top: 12px;
+    color: #9ca3af;
+}
+.footer {
+    text-align: center;
+    padding: 30px;
+    color: #6b7280;
+    font-size: 13px;
+}
+.badge {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 20px;
+    background: #172033;
+    color: #93c5fd;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+    <div class="badge">ADGUARD DNS</div>
+    <h1>GIORGI Ultimate Filters</h1>
+    <p>Five powerful DNS blocklists in one place</p>
+</div>
+<div class="card">
+    <h2>1. AdGuard DNS iOS</h2>
+    <div class="url" id="url1">
+        https://filters.adtidy.org/dns/filter_1_ios.txt
+    </div>
+    <button onclick="copyURL('url1')">Copy URL</button>
+    <div class="status" id="status1"></div>
+</div>
+<div class="card">
+    <h2>2. HaGeZi Ultimate</h2>
+    <div class="url" id="url2">
+        https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/ultimate.txt
+    </div>
+    <button onclick="copyURL('url2')">Copy URL</button>
+    <div class="status" id="status2"></div>
+</div>
+<div class="card">
+    <h2>3. OISD Big</h2>
+    <div class="url" id="url3">
+        https://big.oisd.nl
+    </div>
+    <button onclick="copyURL('url3')">Copy URL</button>
+    <div class="status" id="status3"></div>
+</div>
+<div class="card">
+    <h2>4. GIORGI Blocklist</h2>
+    <div class="url" id="url4">
+        https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist
+    </div>
+    <button onclick="copyURL('url4')">Copy URL</button>
+    <div class="status" id="status4"></div>
+</div>
+<div class="card">
+    <h2>5. HaGeZi TIF</h2>
+    <div class="url" id="url5">
+        https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.txt
+    </div>
+    <button onclick="copyURL('url5')">Copy URL</button>
+    <div class="status" id="status5"></div>
+</div>
+<div class="card">
+    <h2>All filters</h2>
+    <p>
+        This page contains the five configured AdGuard DNS filter sources.
+    </p>
+    <button onclick="copyAll()">Copy all URLs</button>
+    <div class="status" id="allStatus"></div>
+</div>
+<div class="footer">
+    GIORGI Ultimate AdGuard Filter Hub
+</div>
+</div>
+<script>
+function copyURL(id) {
+    const text = document.getElementById(id).innerText.trim();
+    navigator.clipboard.writeText(text).then(() => {
+        const status =
+            document.getElementById(
+                id.replace("url", "status")
+            );
+        if (status) {
+            status.innerText = "URL copied";
+        }
+    });
+}
+function copyAll() {
+    const urls = [
+        "https://filters.adtidy.org/dns/filter_1_ios.txt",
+        "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/ultimate.txt",
+        "https://big.oisd.nl",
+        "https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist",
+        "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.txt"
+    ];
+    navigator.clipboard.writeText(urls.join("\n")).then(() => {
+        document.getElementById("allStatus").innerText =
+            "All URLs copied";
+    });
+}
+</script>
+</body>
+</html>
