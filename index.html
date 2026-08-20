@@ -1,320 +1,124 @@
 <!DOCTYPE html>
-<html lang="ka">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GIORGI Ultimate AdGuard Filter</title>
+<title>GIORGI Combined Blocklist</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
-
 body {
     margin: 0;
     background: #080b10;
-    color: white;
-    font-family: Arial, sans-serif;
+    color: #d8dee9;
+    font-family: monospace;
 }
 
-.container {
-    max-width: 1000px;
-    margin: auto;
-    padding: 30px 18px;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.subtitle {
-    text-align: center;
-    color: #9ca3af;
-    margin-bottom: 30px;
-}
-
-.card {
-    background: #111720;
-    border: 1px solid #273142;
-    border-radius: 15px;
+pre {
+    margin: 0;
     padding: 20px;
-    margin-bottom: 15px;
-}
-
-.url {
-    background: #080b10;
-    border: 1px solid #273142;
-    padding: 12px;
-    border-radius: 9px;
-    word-break: break-all;
-    color: #9ae6b4;
-    font-size: 14px;
-}
-
-button {
-    background: #2563eb;
-    color: white;
-    border: 0;
-    padding: 12px 18px;
-    border-radius: 9px;
-    margin-top: 15px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-button:hover {
-    opacity: .85;
-}
-
-#generate {
-    background: #16a34a;
-    width: 100%;
-    font-size: 16px;
-}
-
-#download {
-    width: 100%;
-    display: none;
-}
-
-#status {
-    margin-top: 15px;
-    color: #9ca3af;
-}
-
-textarea {
-    width: 100%;
-    height: 350px;
-    background: #080b10;
-    color: #d1d5db;
-    border: 1px solid #273142;
-    border-radius: 10px;
-    padding: 15px;
-    resize: vertical;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
-<h1>GIORGI Ultimate AdGuard Filter</h1>
-
-<div class="subtitle">
-5 Blocklists → 1 Combined Filter
-</div>
-
-<div class="card">
-
-<h2>Filter Sources</h2>
-
-<p>AdGuard iOS</p>
-<div class="url">
-https://filters.adtidy.org/dns/filter_1_ios.txt
-</div>
-
-<p>HaGeZi Ultimate</p>
-<div class="url">
-https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/ultimate.txt
-</div>
-
-<p>OISD Big</p>
-<div class="url">
-https://big.oisd.nl
-</div>
-
-<p>GIORGI Blocklist</p>
-<div class="url">
-https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist
-</div>
-
-<p>HaGeZi TIF</p>
-<div class="url">
-https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.txt
-</div>
-
-</div>
-
-<div class="card">
-
-<button id="generate">
-GENERATE COMBINED FILTER
-</button>
-
-<div id="status">
-Ready
-</div>
-
-<button id="download">
-DOWNLOAD MERGED.TXT
-</button>
-
-</div>
-
-<div class="card">
-
-<h2>Combined Filter</h2>
-
-<textarea id="result" readonly>
-აქ გამოჩნდება გაერთიანებული ფილტრი
-</textarea>
-
-</div>
-
-</div>
+<pre id="blocklist">Loading...</pre>
 
 <script>
 
 const sources = [
 
-"https://filters.adtidy.org/dns/filter_1_ios.txt",
+    "https://filters.adtidy.org/dns/filter_1_ios.txt",
 
-"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/ultimate.txt",
+    "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/ultimate.txt",
 
-"https://big.oisd.nl",
+    "https://big.oisd.nl",
 
-"https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist",
+    "https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist",
 
-"https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.txt"
+    "https://cdn.jsdelivr.net/gh/hagezi/dns-blocklists@latest/adblock/tif.txt"
 
 ];
 
-let finalFilter = "";
 
-const generate = document.getElementById("generate");
-const download = document.getElementById("download");
-const result = document.getElementById("result");
-const status = document.getElementById("status");
+async function getList(url) {
 
-generate.onclick = async function() {
+    const response = await fetch(url, {
+        cache: "no-store"
+    });
 
-    generate.disabled = true;
+    if (!response.ok) {
+        throw new Error(
+            "HTTP " + response.status
+        );
+    }
 
-    status.innerText = "Downloading filters...";
+    return await response.text();
 
-    let allLines = [];
-    let failed = [];
+}
 
-    for (let i = 0; i < sources.length; i++) {
 
-        status.innerText =
-            "Downloading filter " + (i + 1) + " / " + sources.length;
+async function combineLists() {
+
+    const allRules = [];
+
+    for (const url of sources) {
 
         try {
 
-            const response = await fetch(
-                sources[i],
-                {
-                    cache: "no-store"
-                }
-            );
+            const text =
+                await getList(url);
 
-            if (!response.ok) {
-                throw new Error(
-                    "HTTP " + response.status
-                );
+            const lines =
+                text.split(/\r?\n/);
+
+            for (const line of lines) {
+
+                const rule =
+                    line.trim();
+
+                if (
+                    rule &&
+                    !rule.startsWith("!") &&
+                    !rule.startsWith("#")
+                ) {
+
+                    allRules.push(rule);
+
+                }
+
             }
 
-            const text = await response.text();
+        }
 
-            const lines = text
-                .replace(/\r/g, "")
-                .split("\n")
-                .map(line => line.trim())
-                .filter(line => line.length > 0);
+        catch (error) {
 
-            allLines.push(...lines);
-
-        } catch (error) {
-
-            failed.push(
-                sources[i] + " → " + error.message
+            console.error(
+                "Failed:",
+                url,
+                error
             );
 
         }
 
     }
 
-    const uniqueLines = [
-        ...new Set(allLines)
-    ];
 
-    finalFilter =
-        "! GIORGI Combined AdGuard Filter\n" +
-        "! Combined sources: 5\n" +
-        "! Unique lines: " +
-        uniqueLines.length +
-        "\n\n" +
-        uniqueLines.join("\n");
-
-    result.value = finalFilter;
-
-    if (failed.length > 0) {
-
-        status.innerText =
-            "დასრულდა შეცდომებით: " +
-            failed.length +
-            " ფილტრი ვერ ჩამოიტვირთა";
-
-        result.value =
-            "! WARNING\n" +
-            failed
-                .map(x => "! " + x)
-                .join("\n") +
-            "\n\n" +
-            finalFilter;
-
-    } else {
-
-        status.innerText =
-            "დასრულებულია: " +
-            uniqueLines.length.toLocaleString() +
-            " უნიკალური წესი";
-
-    }
-
-    download.style.display = "block";
-
-    generate.disabled = false;
-
-};
+    const uniqueRules =
+        [...new Set(allRules)];
 
 
-download.onclick = function() {
+    document.getElementById(
+        "blocklist"
+    ).textContent =
+        uniqueRules.join("\n");
 
-    if (!finalFilter) {
-        return;
-    }
+}
 
-    const blob = new Blob(
-        [finalFilter],
-        {
-            type: "text/plain;charset=utf-8"
-        }
-    );
 
-    const url =
-        URL.createObjectURL(blob);
-
-    const a =
-        document.createElement("a");
-
-    a.href = url;
-
-    a.download =
-        "GIORGI-Combined-AdGuard-Filter.txt";
-
-    document.body.appendChild(a);
-
-    a.click();
-
-    a.remove();
-
-    URL.revokeObjectURL(url);
-
-};
+combineLists();
 
 </script>
 
