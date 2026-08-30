@@ -347,7 +347,8 @@ geosaitebi.tv##div.jw-overlays.jw-reset
 croconet.cam##a[href*="croco"]
 croconet.cam##a[href*="watch"]
 croconet.cam##a[class*="bg-linear"]
-
+croconet.cam##div iframe
+||cdn.croconet.cam^$frame
 
 
 
