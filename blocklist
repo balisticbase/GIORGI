@@ -297,6 +297,8 @@ liveball.sx##div[class*="banner_player"]
 liveball.sx##.odds_m_block *
 liveball.sx##.custom_brand_mobile
 liveball.sx##.catfish_sec
+liveball.sx##div[data-noclick="1"]
+liveball.sx###notice
 
 
 
