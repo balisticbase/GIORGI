@@ -49,31 +49,55 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            position: relative;
         }
 
-        /* ენის გადამრთველი ღილაკები */
+        /* ჰედერის სტრუქტურა Flexbox-ით, რომ არაფერი გადაიფაროს */
+        .header {
+            background: linear-gradient(135deg, #e60012 0%, #cc0010 100%);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .header-text {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* ენის გადამრთველი - უსაფრთხოდ განთავსებული ჰედერის შიგნით */
         .lang-switcher {
-            position: absolute;
-            top: 15px;
-            right: 15px;
             display: flex;
             gap: 4px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.15);
             padding: 4px;
             border-radius: 20px;
-            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .lang-btn {
             background: transparent;
             color: white;
             border: none;
-            padding: 5px 12px;
+            padding: 6px 14px;
             border-radius: 14px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             transition: all 0.3s ease;
         }
@@ -86,25 +110,6 @@
             background: white;
             color: var(--primary-color);
             box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        }
-
-        .header {
-            background: linear-gradient(135deg, #e60012 0%, #cc0010 100%);
-            color: white;
-            padding: 35px 25px 25px 25px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 26px;
-            font-weight: 700;
-            margin-bottom: 6px;
-            letter-spacing: -0.5px;
-        }
-
-        .header p {
-            font-size: 14px;
-            opacity: 0.9;
         }
 
         .content {
@@ -211,21 +216,34 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        /* მობილურისთვის */
+        @media (max-width: 500px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .header-text {
+                margin-bottom: 10px;
+            }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- ენების გადამრთველი -->
-    <div class="lang-switcher">
-        <button class="lang-btn active" id="btn-ka" onclick="changeLanguage('ka')">KA</button>
-        <button class="lang-btn" id="btn-en" onclick="changeLanguage('en')">EN</button>
-        <button class="lang-btn" id="btn-ru" onclick="changeLanguage('ru')">RU</button>
-    </div>
-
     <div class="header">
-        <h1 id="txt-title">ელიტ ელექტრონიქსი</h1>
-        <p id="txt-subtitle">ავტომატური მიწოდების კალკულატორი</p>
+        <div class="header-text">
+            <h1 id="txt-title">ელიტ ელექტრონიქსი</h1>
+            <p id="txt-subtitle">ავტომატური მიწოდების კალკულატორი</p>
+        </div>
+
+        <!-- ენების გადამრთველი სუფთად განთავსებული ჰედერის მარჯვენა მხარეს -->
+        <div class="lang-switcher">
+            <button class="lang-btn active" id="btn-ka" onclick="changeLanguage('ka')">KA</button>
+            <button class="lang-btn" id="btn-en" onclick="changeLanguage('en')">EN</button>
+            <button class="lang-btn" id="btn-ru" onclick="changeLanguage('ru')">RU</button>
+        </div>
     </div>
 
     <div class="content">
