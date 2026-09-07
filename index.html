@@ -351,6 +351,10 @@
                             <option value="transfer" id="opt-transfer">გადარიცხვა</option>
                         </select>
 
+                        <button id="btn-close-free" onclick="renderSuccessScreen()" style="display: none; margin-top: 6px; width: 100%; padding: 7px; background: #10b981; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;">
+                            ჩახურვა
+                        </button>
+
                         <div id="transferInfo" class="transfer-info-box">
                             <div id="txt-id-label">პირადი ნომერი გადარიცხვისთვის:</div>
                             <div style="font-size: 15px; font-weight: 800; color: #1e3a8a; margin-top: 4px;">61204074595</div>
@@ -391,6 +395,7 @@ const translations = {
         optMethodSelect: "აირჩიეთ მეთოდი",
         optCash: "ქეში",
         optTransfer: "გადარიცხვა",
+        btnCloseFree: "ჩახურვა",
         idLabel: "პირადი ნომერი გადარიცხვისთვის:",
         btnTransferDone: "გადარიცხვა დასრულდა",
         screenPaid: "გადახდილია",
@@ -418,6 +423,7 @@ const translations = {
         optMethodSelect: "Select Method",
         optCash: "Cash",
         optTransfer: "Transfer",
+        btnCloseFree: "Close",
         idLabel: "Personal ID for transfer:",
         btnTransferDone: "Transfer Completed",
         screenPaid: "Paid",
@@ -445,6 +451,7 @@ const translations = {
         optMethodSelect: "Выберите метод",
         optCash: "Наличные",
         optTransfer: "Перевод",
+        btnCloseFree: "Закрыть",
         idLabel: "Личный номер для перевода:",
         btnTransferDone: "Перевод завершен",
         screenPaid: "Оплачено",
@@ -532,6 +539,7 @@ function changeLanguage(lang) {
         document.getElementById('opt-method-select').innerText = t.optMethodSelect;
         document.getElementById('opt-cash').innerText = t.optCash;
         document.getElementById('opt-transfer').innerText = t.optTransfer;
+        document.getElementById('btn-close-free').innerText = t.btnCloseFree;
         document.getElementById('txt-id-label').innerText = t.idLabel;
         document.getElementById('btn-transfer-done').innerText = t.btnTransferDone;
     }
@@ -544,13 +552,26 @@ function changeLanguage(lang) {
 function handlePaymentAction(val) {
     const methodSelect = document.getElementById('paymentMethodSelect');
     const transferInfo = document.getElementById('transferInfo');
+    const closeFreeBtn = document.getElementById('btn-close-free');
     
     if (val === 'refused') {
         methodSelect.style.display = 'none';
         transferInfo.style.display = 'none';
+        closeFreeBtn.style.display = 'none';
         renderRefusedScreen();
     } else if (val === 'paid') {
-        methodSelect.style.display = 'block';
+        const demontazhVal = document.getElementById('demontazhSelect').value;
+        let addOnCost = demontazhVal === 'demontazh_montazh' ? 30 : 0;
+        let totalCost = baseDeliveryCost + addOnCost;
+
+        if (totalCost === 0) {
+            methodSelect.style.display = 'none';
+            transferInfo.style.display = 'none';
+            closeFreeBtn.style.display = 'block';
+        } else {
+            methodSelect.style.display = 'block';
+            closeFreeBtn.style.display = 'none';
+        }
     }
 }
 
@@ -561,6 +582,7 @@ function handleDemontazhAction(val) {
 function updateTotalPriceDisplay() {
     const t = translations[currentLang];
     const demontazhVal = document.getElementById('demontazhSelect').value;
+    const paymentActionVal = document.getElementById('paymentActionSelect').value;
     
     let addOnCost = 0;
     if (demontazhVal === 'demontazh_montazh') {
@@ -568,11 +590,26 @@ function updateTotalPriceDisplay() {
     }
     
     let totalCost = baseDeliveryCost + addOnCost;
+    const paymentMethodSelect = document.getElementById('paymentMethodSelect');
+    const closeFreeBtn = document.getElementById('btn-close-free');
+    const transferInfo = document.getElementById('transferInfo');
     
     if (totalCost === 0) {
         document.getElementById('priceVal').innerText = `${t.free} (0 ${t.gel})`;
+        paymentMethodSelect.style.display = 'none';
+        transferInfo.style.display = 'none';
+        if (paymentActionVal === 'paid') {
+            closeFreeBtn.style.display = 'block';
+            closeFreeBtn.innerText = t.btnCloseFree;
+        } else {
+            closeFreeBtn.style.display = 'none';
+        }
     } else {
         document.getElementById('priceVal').innerText = `${totalCost} ${t.gel}${baseDeliveryText ? ' ' + baseDeliveryText : ''}`;
+        closeFreeBtn.style.display = 'none';
+        if (paymentActionVal === 'paid') {
+            paymentMethodSelect.style.display = 'block';
+        }
     }
 }
 
