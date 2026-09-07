@@ -28,7 +28,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            user-select: none; /* ხელს უშლის ტექსტის შემთხვევით მონიშვნას დიდხანს დაჭერისას */
+            user-select: none;
         }
 
         body {
@@ -259,24 +259,6 @@
             animation: spin 0.8s linear infinite;
         }
 
-        /* ხანგრძლივი დაჭერის ინდიკატორი */
-        #resetOverlay {
-            display: none;
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(15, 23, 42, 0.9);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 600;
-            z-index: 9999;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            pointer-events: none;
-        }
-
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
@@ -293,8 +275,6 @@
     </style>
 </head>
 <body>
-
-<div id="resetOverlay">გეჭიროთ თითი... <span id="resetCountdown">10</span> წმ</div>
 
 <div class="container" id="mainContainer">
     <div class="header">
@@ -352,14 +332,12 @@
                             <option value="refused" id="opt-refused">უარს ამბობს გადახდაზე</option>
                         </select>
 
-                        <!-- ქეში / გადარიცხვა -->
                         <select id="paymentMethodSelect" class="payment-method-select" onchange="handleMethodAction(this.value)">
                             <option value="" disabled selected id="opt-method-select">აირჩიეთ მეთოდი</option>
                             <option value="cash" id="opt-cash">ქეში</option>
                             <option value="transfer" id="opt-transfer">გადარიცხვა</option>
                         </select>
 
-                        <!-- გადარიცხვის ინფორმაცია -->
                         <div id="transferInfo" class="transfer-info-box">
                             <div>პირადი ნომერი გადარიცხვისთვის:</div>
                             <div style="font-size: 15px; font-weight: 800; color: #1e3a8a; margin-top: 4px;">61204074595</div>
@@ -468,13 +446,11 @@ let currentFormattedAddress = "";
 let map = null;
 let chosenKobuletiPrice = null;
 
-// Cookie-ს შენახვა 3 საათით
 function setCookie(name, value, hours) {
     let maxAge = hours * 3600;
     document.cookie = `${name}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/`;
 }
 
-// Cookie-ს წაკითხვა
 function getCookie(name) {
     let matches = document.cookie.match(new RegExp(
         "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -482,7 +458,6 @@ function getCookie(name) {
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-// Cookie-ს წაშლის ფუნქცია
 function eraseCookie(name) {
     document.cookie = name + '=; Max-Age=-99999999; path=/';
 }
@@ -526,7 +501,6 @@ function handlePaymentAction(val) {
     }
 }
 
-// წარმატებული გადახდის ეკრანი
 function renderSuccessScreen() {
     setCookie('deliveryStatus', 'paid', 3);
     setCookie('deliveryAddress', currentFormattedAddress, 3);
@@ -583,7 +557,6 @@ function renderSuccessScreen() {
     `;
 }
 
-// უარის ეკრანი
 function renderRefusedScreen() {
     setCookie('deliveryStatus', 'refused', 3);
 
@@ -754,60 +727,38 @@ function detectByIP() {
         });
 }
 
-// ---------------- 10 წამიანი დაჭერის ლოგიკა ქუქის წასაშლელად ----------------
-let holdTimer = null;
-let holdInterval = null;
-let timeLeft = 10;
+// ---------------- ფარული 10-წამიანი დაჭერა (ორი თითით) ----------------
+let secretHoldTimer = null;
 
-function startHoldTimer() {
-    timeLeft = 10;
-    const overlay = document.getElementById('resetOverlay');
-    const countdownSpan = document.getElementById('resetCountdown');
-    
-    if (overlay && countdownSpan) {
-        countdownSpan.innerText = timeLeft;
-        overlay.style.display = 'block';
-    }
-
-    holdInterval = setInterval(() => {
-        timeLeft--;
-        if (countdownSpan) countdownSpan.innerText = timeLeft;
-    }, 1000);
-
-    holdTimer = setTimeout(() => {
-        // 10 წამის შემდეგ იშლება ქუქიები და გვერდი გადაიტვირთება
-        eraseCookie('deliveryStatus');
-        eraseCookie('deliveryAddress');
-        window.location.reload();
-    }, 10000);
-}
-
-function cancelHoldTimer() {
-    clearTimeout(holdTimer);
-    clearInterval(holdInterval);
-    const overlay = document.getElementById('resetOverlay');
-    if (overlay) {
-        overlay.style.display = 'none';
+function handleTouchStart(e) {
+    // ვამოწმებთ, რომ ზუსტად 2 თითია დაჭერილი
+    if (e.touches.length === 2) {
+        clearTimeout(secretHoldTimer);
+        
+        secretHoldTimer = setTimeout(() => {
+            eraseCookie('deliveryStatus');
+            eraseCookie('deliveryAddress');
+            window.location.reload();
+        }, 10000); // 10000 მლწ = 10 წამი
+    } else {
+        clearTimeout(secretHoldTimer);
     }
 }
 
-// მოვლენების მიბმა ეკრანზე თითის/მაუსის დაჭერაზე
-window.addEventListener('touchstart', (e) => {
-    // მრავალი თითის დაჭერის თავიდან ასაცილებლად
-    if (e.touches.length === 1) {
-        startHoldTimer();
+function handleTouchEnd(e) {
+    // თუ თითებიდან ერთ-ერთი მაინც აუშვა, ტაიმერი უქმდება
+    if (e.touches.length < 2) {
+        clearTimeout(secretHoldTimer);
     }
-});
-window.addEventListener('touchend', cancelHoldTimer);
-window.addEventListener('touchcancel', cancelHoldTimer);
+}
 
-window.addEventListener('mousedown', startHoldTimer);
-window.addEventListener('mouseup', cancelHoldTimer);
+window.addEventListener('touchstart', handleTouchStart);
+window.addEventListener('touchend', handleTouchEnd);
+window.addEventListener('touchcancel', handleTouchEnd);
 
 // --------------------------------------------------------------------------
 
 window.onload = function() {
-    // ვამოწმებთ Cookie-ს
     let savedStatus = getCookie('deliveryStatus');
     let savedAddr = getCookie('deliveryAddress');
 
@@ -821,7 +772,6 @@ window.onload = function() {
         return;
     }
 
-    // თუ ქუქი არ არის შენახული, ჩვეულებრივად განსაზღვრავს მდებარეობას
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             position => {
