@@ -8,7 +8,7 @@
     <!-- Leaflet CSS რუკისთვის -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <!-- Google Font & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -240,6 +240,18 @@
             border: 1px solid #fecaca;
         }
 
+        .transfer-info-box {
+            display: none;
+            margin-top: 8px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
         #map {
             height: 350px;
             width: 100%;
@@ -331,12 +343,21 @@
                             <option value="refused" id="opt-refused">უარს ამბობს გადახდაზე</option>
                         </select>
 
-                        <!-- ქეში / გადარიცხვა არჩევანი -->
+                        <!-- ქეში / გადარიცხვა -->
                         <select id="paymentMethodSelect" class="payment-method-select" onchange="handleMethodAction(this.value)">
                             <option value="" disabled selected id="opt-method-select">აირჩიეთ მეთოდი</option>
                             <option value="cash" id="opt-cash">ქეში</option>
                             <option value="transfer" id="opt-transfer">გადარიცხვა</option>
                         </select>
+
+                        <!-- გადარიცხვის ინფორმაცია -->
+                        <div id="transferInfo" class="transfer-info-box">
+                            <div>პირადი ნომერი გადარიცხვისთვის:</div>
+                            <div style="font-size: 15px; font-weight: 800; color: #1e3a8a; margin-top: 4px;">61204074595</div>
+                            <button onclick="renderSuccessScreen()" style="margin-top:8px; width:100%; padding:6px; background:#10b981; color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">
+                                გადარიცხვა დასრულდა
+                            </button>
+                        </div>
 
                         <div id="paymentMsg" class="payment-message-inline">
                             დაბრუნება ნივთის საწყობში
@@ -441,6 +462,7 @@ let currentLang = 'ka';
 let globalUserLat = null;
 let globalUserLon = null;
 let globalRawAddressData = null;
+let currentFormattedAddress = "";
 let map = null;
 let chosenKobuletiPrice = null;
 
@@ -474,34 +496,80 @@ function changeLanguage(lang) {
 function handlePaymentAction(val) {
     const msgDiv = document.getElementById('paymentMsg');
     const methodSelect = document.getElementById('paymentMethodSelect');
+    const transferInfo = document.getElementById('transferInfo');
     
     if (val === 'refused') {
         methodSelect.style.display = 'none';
+        transferInfo.style.display = 'none';
         msgDiv.innerText = translations[currentLang].returnMsg;
         msgDiv.style.display = 'block';
     } else if (val === 'paid') {
         msgDiv.style.display = 'none';
-        methodSelect.style.display = 'block'; // აჩვენებს ქეში / გადარიცხვის არჩევანს
+        methodSelect.style.display = 'block';
     }
 }
 
-function handleMethodAction(val) {
-    if (val === 'cash' || val === 'transfer') {
-        // არჩევის შემდეგ გვერდი თეთრდება და წერს შეტყობინებას
-        document.body.style.backgroundColor = '#ffffff';
-        document.body.innerHTML = `
+function renderSuccessScreen() {
+    document.body.style.backgroundColor = '#ffffff';
+    document.body.innerHTML = `
+        <div style="
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            text-align: center;
+            padding: 20px;
+            font-family: 'Outfit', sans-serif;">
+            
             <div style="
+                width: 110px; 
+                height: 110px; 
+                background-color: #10b981; 
+                border-radius: 50%; 
                 display: flex; 
-                justify-content: center; 
                 align-items: center; 
-                height: 100vh; 
-                font-family: 'Outfit', sans-serif; 
-                font-size: 24px; 
-                font-weight: 700; 
-                color: #e60012;">
-                დაბრუნდეს ნივთი საწყობში
+                justify-content: center; 
+                box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+                margin-bottom: 25px;">
+                <i class="fa-solid fa-check" style="font-size: 55px; color: white;"></i>
             </div>
-        `;
+
+            <div style="font-size: 40px; font-weight: 800; color: #10b981; margin-bottom: 10px;">
+                გადახდილია
+            </div>
+
+            <div style="font-size: 24px; font-weight: 700; color: #0f172a; margin-bottom: 20px;">
+                ნივთი ჩაბარებულია
+            </div>
+
+            <div style="
+                background: #f8fafc;
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+                padding: 15px 20px;
+                max-width: 450px;
+                width: 100%;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+                <div style="font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 5px;">
+                    მიწოდების მისამართი
+                </div>
+                <div style="font-size: 18px; font-weight: 600; color: #0f172a;">
+                    ${currentFormattedAddress}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function handleMethodAction(val) {
+    const transferInfo = document.getElementById('transferInfo');
+
+    if (val === 'cash') {
+        transferInfo.style.display = 'none';
+        renderSuccessScreen();
+    } else if (val === 'transfer') {
+        transferInfo.style.display = 'block';
     }
 }
 
@@ -543,6 +611,7 @@ function processResults() {
         formattedAddr = globalRawAddressData;
     }
 
+    currentFormattedAddress = formattedAddr;
     document.getElementById('userAddressVal').innerText = formattedAddr;
     document.getElementById('storeName').innerText = nearestStore.names[currentLang] || nearestStore.names['ka'];
     document.getElementById('distanceVal').innerText = `${minDistance.toFixed(2)} ${t.km}`;
