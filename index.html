@@ -341,6 +341,7 @@
 
                         <select id="demontazhSelect" class="demontazh-select-inline" onchange="handleDemontazhAction(this.value)">
                             <option value="" disabled selected id="opt-demontazh-select">დემონტაჟი / მონტაჟი</option>
+                            <option value="none" id="opt-demontazh-none">არცერთი</option>
                             <option value="montazh_free" id="opt-montazh-free">მონტაჟი უფასო</option>
                             <option value="demontazh_montazh" id="opt-demontazh-montazh">დემონტაჟი მონტაჟი 30 ₾</option>
                         </select>
@@ -390,6 +391,7 @@ const translations = {
         optPaid: "გადაიხადა",
         optRefused: "უარს ამბობს გადახდაზე",
         optDemontazhSelect: "დემონტაჟი / მონტაჟი",
+        optDemontazhNone: "არცერთი",
         optMontazhFree: "მონტაჟი უფასო",
         optDemontazhMontazh: "დემონტაჟი მონტაჟი 30 ₾",
         optMethodSelect: "აირჩიეთ მეთოდი",
@@ -418,6 +420,7 @@ const translations = {
         optPaid: "Paid",
         optRefused: "Refused to pay",
         optDemontazhSelect: "Installation/Dismantling",
+        optDemontazhNone: "None",
         optMontazhFree: "Free Installation",
         optDemontazhMontazh: "Dismantling & Installation 30 GEL",
         optMethodSelect: "Select Method",
@@ -446,6 +449,7 @@ const translations = {
         optPaid: "Оплачено",
         optRefused: "Отказ от оплаты",
         optDemontazhSelect: "Монтаж / Демонтаж",
+        optDemontazhNone: "Ничего",
         optMontazhFree: "Монтаж бесплатный",
         optDemontazhMontazh: "Демонтаж Монтаж 30 ₾",
         optMethodSelect: "Выберите метод",
@@ -534,6 +538,7 @@ function changeLanguage(lang) {
         document.getElementById('opt-paid').innerText = t.optPaid;
         document.getElementById('opt-refused').innerText = t.optRefused;
         document.getElementById('opt-demontazh-select').innerText = t.optDemontazhSelect;
+        document.getElementById('opt-demontazh-none').innerText = t.optDemontazhNone;
         document.getElementById('opt-montazh-free').innerText = t.optMontazhFree;
         document.getElementById('opt-demontazh-montazh').innerText = t.optDemontazhMontazh;
         document.getElementById('opt-method-select').innerText = t.optMethodSelect;
