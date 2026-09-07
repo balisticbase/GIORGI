@@ -43,12 +43,40 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            position: relative;
+        }
+
+        /* ენის გადამრთველი ზედა ნაწილში */
+        .lang-switcher {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 5px;
+            z-index: 10;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .lang-btn:hover, .lang-btn.active {
+            background: white;
+            color: var(--primary-color);
         }
 
         .header {
             background-color: var(--primary-color);
             color: white;
-            padding: 25px;
+            padding: 30px 25px 25px 25px;
             text-align: center;
         }
 
@@ -144,32 +172,39 @@
 <body>
 
 <div class="container">
+    <!-- ენის გადამრთველი ღილაკები -->
+    <div class="lang-switcher">
+        <button class="lang-btn active" id="btn-ka" onclick="changeLanguage('ka')">KA</button>
+        <button class="lang-btn" id="btn-en" onclick="changeLanguage('en')">EN</button>
+        <button class="lang-btn" id="btn-ru" onclick="changeLanguage('ru')">RU</button>
+    </div>
+
     <div class="header">
-        <h1>ელიტ ელექტრონიქსი</h1>
-        <p>ავტომატური მიწოდების კალკულატორი</p>
+        <h1 id="txt-title">ელიტ ელექტრონიქსი</h1>
+        <p id="txt-subtitle">ავტომატური მიწოდების კალკულატორი</p>
     </div>
 
     <div class="content">
         <div id="status" class="status-box">
-            <span class="spinner"></span> თქვენი მდებარეობა განისაზღვრება...
+            <span class="spinner"></span> <span id="txt-status">თქვენი მდებარეობა განისაზღვრება...</span>
         </div>
 
         <div id="results" class="results-container">
             <div class="result-grid">
                 <div class="result-item">
-                    <label>თქვენი მისამართი</label>
-                    <span id="userAddressVal">იტვირთება...</span>
+                    <label id="lbl-address">თქვენი მისამართი</label>
+                    <span id="userAddressVal">...</span>
                 </div>
                 <div class="result-item">
-                    <label>უახლოესი ფილიალი</label>
+                    <label id="lbl-store">უახლოესი ფილიალი</label>
                     <span id="storeName">-</span>
                 </div>
                 <div class="result-item">
-                    <label>მანძილი</label>
+                    <label id="lbl-distance">მანძილი</label>
                     <span id="distanceVal">-</span>
                 </div>
                 <div class="result-item">
-                    <label>მიწოდების საფასური</label>
+                    <label id="lbl-price">მიწოდების საფასური</label>
                     <span id="priceVal" class="price">-</span>
                 </div>
             </div>
@@ -182,35 +217,110 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-// ელიტ ელექტრონიქსის ფილიალები
+// თარგმანების ბიბლიოთეკა
+const translations = {
+    ka: {
+        title: "ელიტ ელექტრონიქსი",
+        subtitle: "ავტომატური მიწოდების კალკულატორი",
+        status: "თქვენი მდებარეობა განისაზღვრება...",
+        lblAddress: "თქვენი მისამართი",
+        lblStore: "უახლოესი ფილიალი",
+        lblDistance: "მანძილი",
+        lblPrice: "მიწოდების საფასური",
+        free: "უფასო (0 ₾)",
+        km: "კმ",
+        gel: "₾",
+        unknownAddr: "მისამართი ვერ დაზუსტდა",
+        userLoc: "თქვენი მდებარეობა"
+    },
+    en: {
+        title: "Elit Electronics",
+        subtitle: "Automatic Delivery Calculator",
+        status: "Determining your location...",
+        lblAddress: "Your Address",
+        lblStore: "Nearest Branch",
+        lblDistance: "Distance",
+        lblPrice: "Delivery Fee",
+        free: "Free (0 GEL)",
+        km: "km",
+        gel: "GEL",
+        unknownAddr: "Address could not be determined",
+        userLoc: "Your Location"
+    },
+    ru: {
+        title: "Элит Электроникс",
+        subtitle: "Автоматический калькулятор доставки",
+        status: "Определение вашего местоположения...",
+        lblAddress: "Ваш адрес",
+        lblStore: "Ближайший филиал",
+        lblDistance: "Расстояние",
+        lblPrice: "Стоимость доставки",
+        free: "Бесплатно (0 GEL)",
+        km: "км",
+        gel: "GEL",
+        unknownAddr: "Адрес не определен",
+        userLoc: "Ваше местоположение"
+    }
+};
+
+// ელიტ ელექტრონიქსის ფილიალები (სამენოვანი დასახელებებით)
 const eliteStores = [
     // თბილისი
-    { name: "თბილისი - ქავთარაძის #1", lat: 41.7238, lon: 44.7472 },
-    { name: "თბილისი - აღმაშენებლის ხეივანი 16-ე კმ", lat: 41.7850, lon: 44.7681 },
-    { name: "თბილისი - East Point", lat: 41.6811, lon: 44.8912 },
-    { name: "თბილისი - City Mall გლდანი", lat: 41.7915, lon: 44.8153 },
-    { name: "თბილისი - ცინცაძის #12", lat: 41.7201, lon: 44.7735 },
+    { names: { ka: "თბილისი - ქავთარაძის #1", en: "Tbilisi - Kavtaradze #1", ru: "Тбилиси - Кавтарадзе #1" }, lat: 41.7238, lon: 44.7472 },
+    { names: { ka: "თბილისი - აღმაშენებლის ხეივანი 16-ე კმ", en: "Tbilisi - Agmashenebeli Alley 16th km", ru: "Тбилиси - Аллея Агмашенебели 16-й км" }, lat: 41.7850, lon: 44.7681 },
+    { names: { ka: "თბილისი - East Point", en: "Tbilisi - East Point", ru: "Тбилиси - East Point" }, lat: 41.6811, lon: 44.8912 },
+    { names: { ka: "თბილისი - City Mall გლდანი", en: "Tbilisi - City Mall Gldani", ru: "Тбилиси - City Mall Глдани" }, lat: 41.7915, lon: 44.8153 },
+    { names: { ka: "თბილისი - ცინცაძის #12", en: "Tbilisi - Tsintsadze #12", ru: "Тбилиси - Цинцадзе #12" }, lat: 41.7201, lon: 44.7735 },
     
     // ბათუმი
-    { name: "ბათუმი - პეტრე ბაგრატიონის 133", lat: 41.6367, lon: 41.6214 },
-    { name: "ბათუმი - ჭავჭავაძის #31", lat: 41.6441, lon: 41.6358 },
-    { name: "ბათუმი - Batumi Mall (ტბელ აბუსერიძის #22)", lat: 41.6385, lon: 41.6189 },
+    { names: { ka: "ბათუმი - პეტრე ბაგრატიონის 133", en: "Batumi - Petre Bagrationi 133", ru: "Батуми - Петре Багратиони 133" }, lat: 41.6367, lon: 41.6214 },
+    { names: { ka: "ბათუმი - ჭავჭავაძის #31", en: "Batumi - Chavchavadze #31", ru: "Батуми - Чавчавадзе #31" }, lat: 41.6441, lon: 41.6358 },
+    { names: { ka: "ბათუმი - Batumi Mall (აბუსერიძის #22)", en: "Batumi - Batumi Mall (Abuseridze #22)", ru: "Батуми - Batumi Mall (Абусеридзе #22)" }, lat: 41.6385, lon: 41.6189 },
 
     // ქუთაისი
-    { name: "ქუთაისი - ირაკლი აბაშიძის #21", lat: 42.2683, lon: 42.6711 },
-    { name: "ქუთაისი - წერეთლის #4", lat: 42.2691, lon: 42.7032 },
+    { names: { ka: "ქუთაისი - ირაკლი აბაშიძის #21", en: "Kutaisi - Irakli Abashidze #21", ru: "Кутаиси - Иракли Абашидзе #21" }, lat: 42.2683, lon: 42.6711 },
+    { names: { ka: "ქუთაისი - წერეთლის #4", lat: 42.2691, lon: 42.7032, en: "Kutaisi - Tsereteli #4", ru: "Кутаиси - Церетели #4" },
 
     // სხვა ქალაქები
-    { name: "რუსთავი - შარტავას #4", lat: 41.5412, lon: 45.0034 },
-    { name: "ზუგდიდი - გამსახურდიას გამზ. #28", lat: 42.5088, lon: 41.8675 },
-    { name: "გორი - სტალინის გამზირი #23", lat: 41.9854, lon: 44.1102 },
-    { name: "თელავი - ერეკლე II-ის გამზირი #3", lat: 41.9189, lon: 45.4761 },
-    { name: "ფოთი - ჭანტურიას #1", lat: 42.1481, lon: 41.6718 }
+    { names: { ka: "რუსთავი - შარტავას #4", en: "Rustavi - Shartava #4", ru: "Рустави - Шартава #4" }, lat: 41.5412, lon: 45.0034 },
+    { names: { ka: "ზუგდიდი - გამსახურდიას გამზ. #28", en: "Zugdidi - Gamsakhurdia Ave #28", ru: "Зугдиди - пр. Гамсахурдия #28" }, lat: 42.5088, lon: 41.8675 },
+    { names: { ka: "გორი - სტალინის გამზირი #23", en: "Gori - Stalin Ave #23", ru: "Гори - проспект Сталина #23" }, lat: 41.9854, lon: 44.1102 },
+    { names: { ka: "თელავი - ერეკლე II-ის გამზირი #3", en: "Telavi - Erekle II Ave #3", ru: "Телави - проспект Ерекле II #3" }, lat: 41.9189, lon: 45.4761 },
+    { names: { ka: "ფოთი - ჭანტურიას #1", en: "Poti - Chanturia #1", ru: "Поти - Чантурия #1" }, lat: 42.1481, lon: 41.6718 }
 ];
 
+let currentLang = 'ka';
+let globalUserLat = null;
+let globalUserLon = null;
+let globalRawAddressData = null;
 let map = null;
+let chosenKobuletiPrice = null; // ქობულეთისთვის ფიქსირებული რანდომ ფასი
 
-// მანძილის გამოთვლა (Haversine Formula)
+// ენის შეცვლის ფუნქცია
+function changeLanguage(lang) {
+    currentLang = lang;
+
+    // ღილაკების აქტიურობის შეცვლა
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`btn-${lang}`).classList.add('active');
+
+    // ტექსტების განახლება
+    const t = translations[lang];
+    document.getElementById('txt-title').innerText = t.title;
+    document.getElementById('txt-subtitle').innerText = t.subtitle;
+    document.getElementById('txt-status').innerText = t.status;
+    document.getElementById('lbl-address').innerText = t.lblAddress;
+    document.getElementById('lbl-store').innerText = t.lblStore;
+    document.getElementById('lbl-distance').innerText = t.lblDistance;
+    document.getElementById('lbl-price').innerText = t.lblPrice;
+
+    // თუ მონაცემები უკვე ჩატვირთულია, შედეგები ხელახლა დაიხატოს ახალ ენაზე
+    if (globalUserLat !== null && globalUserLon !== null) {
+        processResults();
+    }
+}
+
+// მანძილის გამოთვლა (Haversine)
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -223,78 +333,90 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     return R * c;
 }
 
-// სტანდარტული მიწოდების ფასის გამოთვლა
-function calculateStandardPrice(dist) {
-    if (dist <= 20) {
-        return "უფასო (0 ₾)";
-    } else {
-        const extraKm = Math.ceil(dist - 20);
-        return `${extraKm * 3} ₾ (+${extraKm} კმ)`;
-    }
-}
-
-// შედეგების დახატვა
-function processResults(userLat, userLon, fullAddress) {
+// შედეგების დამუშავება და ასახვა
+function processResults() {
+    const t = translations[currentLang];
+    
+    // უახლოესი ფილიალი
     let nearestStore = null;
     let minDistance = Infinity;
 
-    // უახლოესი ფილიალის მოძებნა
     eliteStores.forEach(store => {
-        const dist = calculateDistance(userLat, userLon, store.lat, store.lon);
+        const dist = calculateDistance(globalUserLat, globalUserLon, store.lat, store.lon);
         if (dist < minDistance) {
             minDistance = dist;
             nearestStore = store;
         }
     });
 
-    document.getElementById('userAddressVal').innerText = fullAddress;
-    document.getElementById('storeName').innerText = nearestStore.name;
-    document.getElementById('distanceVal').innerText = minDistance.toFixed(2) + " კმ";
+    // მისამართის ტექსტი
+    let formattedAddr = t.unknownAddr;
+    if (globalRawAddressData && globalRawAddressData.address) {
+        const addr = globalRawAddressData.address;
+        const road = addr.road || addr.street || addr.pedestrian || "";
+        const houseNumber = addr.house_number ? " #" + addr.house_number : "";
+        const city = addr.city || addr.town || addr.village || addr.county || "";
+        formattedAddr = [city, road + houseNumber].filter(Boolean).join(", ");
+        if (!formattedAddr) formattedAddr = globalRawAddressData.display_name.split(',').slice(0, 3).join(',');
+    } else if (typeof globalRawAddressData === 'string') {
+        formattedAddr = globalRawAddressData;
+    }
 
-    // --- ქობულეთის სპეციალური ლოგიკა ---
-    const lowerAddress = fullAddress.toLowerCase();
-    if (lowerAddress.includes("ქობულეთი") || lowerAddress.includes("kobuleti")) {
-        // რანდომულად 30 ₾ ან 35 ₾ ქობულეთისთვის
-        const kobuletiPrices = [30, 35];
-        const randomPrice = kobuletiPrices[Math.floor(Math.random() * kobuletiPrices.length)];
-        document.getElementById('priceVal').innerText = `${randomPrice} ₾`;
+    document.getElementById('userAddressVal').innerText = formattedAddr;
+    document.getElementById('storeName').innerText = nearestStore.names[currentLang] || nearestStore.names['ka'];
+    document.getElementById('distanceVal').innerText = `${minDistance.toFixed(2)} ${t.km}`;
+
+    // ქობულეთის შემოწმება
+    const addrLower = formattedAddr.toLowerCase();
+    const isKobuleti = addrLower.includes("ქობულეთი") || addrLower.includes("kobuleti") || addrLower.includes("кобулети");
+
+    if (isKobuleti) {
+        if (!chosenKobuletiPrice) {
+            chosenKobuletiPrice = Math.random() < 0.5 ? 30 : 35;
+        }
+        document.getElementById('priceVal').innerText = `${chosenKobuletiPrice} ${t.gel}`;
     } else {
-        // სტანდარტული გამოთვლა სხვა ქალაქებისთვის
-        document.getElementById('priceVal').innerText = calculateStandardPrice(minDistance);
+        // სტანდარტული ფასი
+        if (minDistance <= 20) {
+            document.getElementById('priceVal').innerText = t.free;
+        } else {
+            const extraKm = Math.ceil(minDistance - 20);
+            document.getElementById('priceVal').innerText = `${extraKm * 3} ${t.gel} (+${extraKm} ${t.km})`;
+        }
     }
 
     document.getElementById('status').style.display = 'none';
     document.getElementById('results').style.display = 'block';
 
-    renderMap(userLat, userLon, nearestStore);
+    renderMap(globalUserLat, globalUserLon, nearestStore);
 }
 
 // კოორდინატების მისამართად ქცევა
 function fetchAddressFromCoords(lat, lon) {
-    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=ka`;
+    globalUserLat = lat;
+    globalUserLon = lon;
+    
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
     
     fetch(url)
         .then(res => res.json())
         .then(data => {
-            let fullAddress = "უცნობი მისამართი";
-            if (data && data.address) {
-                const addr = data.address;
-                const road = addr.road || addr.street || addr.pedestrian || "";
-                const houseNumber = addr.house_number ? " #" + addr.house_number : "";
-                const city = addr.city || addr.town || addr.village || addr.county || "";
-                
-                fullAddress = [city, road + houseNumber].filter(Boolean).join(", ");
-                if (!fullAddress) fullAddress = data.display_name.split(',').slice(0, 3).join(',');
-            }
-            processResults(lat, lon, fullAddress);
+            globalRawAddressData = data;
+            processResults();
         })
         .catch(() => {
-            processResults(lat, lon, "მისამართი ვერ დაზუსტდა");
+            globalRawAddressData = null;
+            processResults();
         });
 }
 
 // რუკის გამოჩენა
 function renderMap(userLat, userLon, store) {
+    const t = translations[currentLang];
+    if (map) {
+        map.remove();
+    }
+    
     map = L.map('map');
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap'
@@ -303,8 +425,8 @@ function renderMap(userLat, userLon, store) {
     const userLatLng = [userLat, userLon];
     const storeLatLng = [store.lat, store.lon];
 
-    L.marker(userLatLng).addTo(map).bindPopup("<b>თქვენი მდებარეობა</b>").openPopup();
-    L.marker(storeLatLng).addTo(map).bindPopup(`<b>${store.name}</b>`);
+    L.marker(userLatLng).addTo(map).bindPopup(`<b>${t.userLoc}</b>`).openPopup();
+    L.marker(storeLatLng).addTo(map).bindPopup(`<b>${store.names[currentLang]}</b>`);
 
     L.polyline([userLatLng, storeLatLng], { color: '#e60012', weight: 4 }).addTo(map);
 
@@ -318,18 +440,20 @@ function detectByIP() {
         .then(res => res.json())
         .then(data => {
             if(data.latitude && data.longitude) {
-                const ipCity = data.city ? `${data.city} (IP)` : "IP ლოკაცია";
-                processResults(data.latitude, data.longitude, ipCity);
+                globalUserLat = data.latitude;
+                globalUserLon = data.longitude;
+                globalRawAddressData = data.city ? `${data.city} (IP)` : "IP Location";
+                processResults();
             } else {
-                document.getElementById('status').innerText = "მდებარეობის ავტომატურად დადგენა ვერ მოხერხდა.";
+                document.getElementById('status').innerText = translations[currentLang].unknownAddr;
             }
         })
         .catch(() => {
-            document.getElementById('status').innerText = "მდებარეობის ავტომატურად დადგენა ვერ მოხერხდა.";
+            document.getElementById('status').innerText = translations[currentLang].unknownAddr;
         });
 }
 
-// გვერდის ჩატვირთვისთანავე ავტომატურად გაშვება
+// გვერდის ჩატვირთვისას ავტომატური გაშვება
 window.onload = function() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
