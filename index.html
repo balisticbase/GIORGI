@@ -193,6 +193,57 @@
             font-weight: 700;
         }
 
+        /* გადახდის სტატუსის სტილები */
+        .payment-status-box {
+            margin-top: 20px;
+            padding: 16px;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .payment-status-box label {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .payment-select {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-color);
+            background: #f8fafc;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .payment-select:focus {
+            border-color: var(--primary-color);
+        }
+
+        .payment-message {
+            display: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .payment-message.error {
+            background-color: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
         #map {
             height: 350px;
             width: 100%;
@@ -228,7 +279,7 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="mainContainer">
     <div class="header">
         <div class="header-text">
             <h1 id="txt-title">ელიტ ელექტრონიქსი</h1>
@@ -278,6 +329,20 @@
                     <span id="priceVal" class="price">-</span>
                 </div>
             </div>
+
+            <!-- გადახდის სტატუსის არჩევის ბლოკი -->
+            <div class="payment-status-box">
+                <label id="lbl-payment-status">გადახდის სტატუსი</label>
+                <select id="paymentActionSelect" class="payment-select" onchange="handlePaymentAction(this.value)">
+                    <option value="" disabled selected id="opt-select">აირჩიეთ სტატუსი</option>
+                    <option value="paid" id="opt-paid">გადაიხადა</option>
+                    <option value="refused" id="opt-refused">უარს ამბობს გადახდაზე</option>
+                </select>
+                <div id="paymentMsg" class="payment-message error">
+                    დაბრუნება ნივთის საწყობში
+                </div>
+            </div>
+
             <div id="map"></div>
         </div>
     </div>
@@ -299,7 +364,12 @@ const translations = {
         km: "კმ",
         gel: "₾",
         unknownAddr: "მისამართი ვერ დაზუსტდა",
-        userLoc: "თქვენი მდებარეობა"
+        userLoc: "თქვენი მდებარეობა",
+        lblPaymentStatus: "გადახდის სტატუსი",
+        optSelect: "აირჩიეთ სტატუსი",
+        optPaid: "გადაიხადა",
+        optRefused: "უარს ამბობს გადახდაზე",
+        returnMsg: "დაბრუნება ნივთის საწყობში"
     },
     en: {
         title: "Elit Electronics",
@@ -313,7 +383,12 @@ const translations = {
         km: "km",
         gel: "GEL",
         unknownAddr: "Address could not be determined",
-        userLoc: "Your Location"
+        userLoc: "Your Location",
+        lblPaymentStatus: "Payment Status",
+        optSelect: "Select Status",
+        optPaid: "Paid",
+        optRefused: "Refused to pay",
+        returnMsg: "Return item to warehouse"
     },
     ru: {
         title: "Элит Электроникс",
@@ -327,7 +402,12 @@ const translations = {
         km: "км",
         gel: "GEL",
         unknownAddr: "Адрес не определен",
-        userLoc: "Ваше местоположение"
+        userLoc: "Ваше местоположение",
+        lblPaymentStatus: "Статус оплаты",
+        optSelect: "Выберите статус",
+        optPaid: "Оплачено",
+        optRefused: "Отказ от оплаты",
+        returnMsg: "Возврат товара на склад"
     }
 };
 
@@ -370,9 +450,28 @@ function changeLanguage(lang) {
     document.getElementById('lbl-store').innerText = t.lblStore;
     document.getElementById('lbl-distance').innerText = t.lblDistance;
     document.getElementById('lbl-price').innerText = t.lblPrice;
+    document.getElementById('lbl-payment-status').innerText = t.lblPaymentStatus;
+    document.getElementById('opt-select').innerText = t.optSelect;
+    document.getElementById('opt-paid').innerText = t.optPaid;
+    document.getElementById('opt-refused').innerText = t.optRefused;
+    document.getElementById('paymentMsg').innerText = t.returnMsg;
 
     if (globalUserLat !== null && globalUserLon !== null) {
         fetchAddressFromCoords(globalUserLat, globalUserLon);
+    }
+}
+
+function handlePaymentAction(val) {
+    const msgDiv = document.getElementById('paymentMsg');
+    
+    if (val === 'refused') {
+        // თუ უარს ამბობს გადახდაზე -> აჩვენებს წითელ შეტყობინებას
+        msgDiv.innerText = translations[currentLang].returnMsg;
+        msgDiv.style.display = 'block';
+    } else if (val === 'paid') {
+        // თუ გადაიხადა -> საიტი იხურება, გათეთრდება მთლიანად
+        document.body.innerHTML = '';
+        document.body.style.backgroundColor = '#ffffff';
     }
 }
 
@@ -427,7 +526,6 @@ function processResults() {
         }
         document.getElementById('priceVal').innerText = `${chosenKobuletiPrice} ${t.gel}`;
     } else {
-        // ტარიფი: 20 კმ-მდე უფასო, 20 კმ-ის ზემოთ +4 ₾ ყოველ 1 კმ-ზე
         if (minDistance <= 20) {
             document.getElementById('priceVal').innerText = t.free;
         } else {
