@@ -193,52 +193,48 @@
             font-weight: 700;
         }
 
-        /* გადახდის სტატუსის სტილები */
-        .payment-status-box {
-            margin-top: 20px;
-            padding: 16px;
-            background: #ffffff;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
+        .price-inline-container {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
 
-        .payment-status-box label {
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: var(--text-muted);
-        }
-
-        .payment-select {
+        .payment-select-inline {
+            margin-top: 4px;
             width: 100%;
-            padding: 10px 14px;
-            border-radius: 8px;
+            padding: 6px 10px;
+            border-radius: 6px;
             border: 1px solid #cbd5e1;
-            font-size: 15px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--text-color);
-            background: #f8fafc;
+            background: #ffffff;
             cursor: pointer;
             outline: none;
         }
 
-        .payment-select:focus {
-            border-color: var(--primary-color);
-        }
-
-        .payment-message {
+        .payment-method-select {
             display: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 700;
-            text-align: center;
-            font-size: 16px;
+            margin-top: 4px;
+            width: 100%;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #10b981;
+            font-size: 12px;
+            font-weight: 600;
+            color: #065f46;
+            background: #ecfdf5;
+            cursor: pointer;
+            outline: none;
         }
 
-        .payment-message.error {
+        .payment-message-inline {
+            display: none;
+            margin-top: 6px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
             background-color: #fef2f2;
             color: #dc2626;
             border: 1px solid #fecaca;
@@ -279,7 +275,7 @@
 </head>
 <body>
 
-<div class="container" id="mainContainer">
+<div class="container">
     <div class="header">
         <div class="header-text">
             <h1 id="txt-title">ელიტ ელექტრონიქსი</h1>
@@ -321,25 +317,31 @@
                     </div>
                     <span id="distanceVal">-</span>
                 </div>
+                
                 <div class="result-item">
                     <div class="result-item-header">
                         <i class="fa-solid fa-tag"></i>
                         <label id="lbl-price">მიწოდების საფასური</label>
                     </div>
-                    <span id="priceVal" class="price">-</span>
-                </div>
-            </div>
+                    <div class="price-inline-container">
+                        <span id="priceVal" class="price">-</span>
+                        <select id="paymentActionSelect" class="payment-select-inline" onchange="handlePaymentAction(this.value)">
+                            <option value="" disabled selected id="opt-select">სტატუსის არჩევა</option>
+                            <option value="paid" id="opt-paid">გადაიხადა</option>
+                            <option value="refused" id="opt-refused">უარს ამბობს გადახდაზე</option>
+                        </select>
 
-            <!-- გადახდის სტატუსის არჩევის ბლოკი -->
-            <div class="payment-status-box">
-                <label id="lbl-payment-status">გადახდის სტატუსი</label>
-                <select id="paymentActionSelect" class="payment-select" onchange="handlePaymentAction(this.value)">
-                    <option value="" disabled selected id="opt-select">აირჩიეთ სტატუსი</option>
-                    <option value="paid" id="opt-paid">გადაიხადა</option>
-                    <option value="refused" id="opt-refused">უარს ამბობს გადახდაზე</option>
-                </select>
-                <div id="paymentMsg" class="payment-message error">
-                    დაბრუნება ნივთის საწყობში
+                        <!-- ქეში / გადარიცხვა არჩევანი -->
+                        <select id="paymentMethodSelect" class="payment-method-select" onchange="handleMethodAction(this.value)">
+                            <option value="" disabled selected id="opt-method-select">აირჩიეთ მეთოდი</option>
+                            <option value="cash" id="opt-cash">ქეში</option>
+                            <option value="transfer" id="opt-transfer">გადარიცხვა</option>
+                        </select>
+
+                        <div id="paymentMsg" class="payment-message-inline">
+                            დაბრუნება ნივთის საწყობში
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -365,10 +367,12 @@ const translations = {
         gel: "₾",
         unknownAddr: "მისამართი ვერ დაზუსტდა",
         userLoc: "თქვენი მდებარეობა",
-        lblPaymentStatus: "გადახდის სტატუსი",
-        optSelect: "აირჩიეთ სტატუსი",
+        optSelect: "სტატუსის არჩევა",
         optPaid: "გადაიხადა",
         optRefused: "უარს ამბობს გადახდაზე",
+        optMethodSelect: "აირჩიეთ მეთოდი",
+        optCash: "ქეში",
+        optTransfer: "გადარიცხვა",
         returnMsg: "დაბრუნება ნივთის საწყობში"
     },
     en: {
@@ -384,10 +388,12 @@ const translations = {
         gel: "GEL",
         unknownAddr: "Address could not be determined",
         userLoc: "Your Location",
-        lblPaymentStatus: "Payment Status",
         optSelect: "Select Status",
         optPaid: "Paid",
         optRefused: "Refused to pay",
+        optMethodSelect: "Select Method",
+        optCash: "Cash",
+        optTransfer: "Transfer",
         returnMsg: "Return item to warehouse"
     },
     ru: {
@@ -403,10 +409,12 @@ const translations = {
         gel: "GEL",
         unknownAddr: "Адрес не определен",
         userLoc: "Ваше местоположение",
-        lblPaymentStatus: "Статус оплаты",
         optSelect: "Выберите статус",
         optPaid: "Оплачено",
         optRefused: "Отказ от оплаты",
+        optMethodSelect: "Выберите метод",
+        optCash: "Наличные",
+        optTransfer: "Перевод",
         returnMsg: "Возврат товара на склад"
     }
 };
@@ -450,10 +458,12 @@ function changeLanguage(lang) {
     document.getElementById('lbl-store').innerText = t.lblStore;
     document.getElementById('lbl-distance').innerText = t.lblDistance;
     document.getElementById('lbl-price').innerText = t.lblPrice;
-    document.getElementById('lbl-payment-status').innerText = t.lblPaymentStatus;
     document.getElementById('opt-select').innerText = t.optSelect;
     document.getElementById('opt-paid').innerText = t.optPaid;
     document.getElementById('opt-refused').innerText = t.optRefused;
+    document.getElementById('opt-method-select').innerText = t.optMethodSelect;
+    document.getElementById('opt-cash').innerText = t.optCash;
+    document.getElementById('opt-transfer').innerText = t.optTransfer;
     document.getElementById('paymentMsg').innerText = t.returnMsg;
 
     if (globalUserLat !== null && globalUserLon !== null) {
@@ -463,15 +473,35 @@ function changeLanguage(lang) {
 
 function handlePaymentAction(val) {
     const msgDiv = document.getElementById('paymentMsg');
+    const methodSelect = document.getElementById('paymentMethodSelect');
     
     if (val === 'refused') {
-        // თუ უარს ამბობს გადახდაზე -> აჩვენებს წითელ შეტყობინებას
+        methodSelect.style.display = 'none';
         msgDiv.innerText = translations[currentLang].returnMsg;
         msgDiv.style.display = 'block';
     } else if (val === 'paid') {
-        // თუ გადაიხადა -> საიტი იხურება, გათეთრდება მთლიანად
-        document.body.innerHTML = '';
+        msgDiv.style.display = 'none';
+        methodSelect.style.display = 'block'; // აჩვენებს ქეში / გადარიცხვის არჩევანს
+    }
+}
+
+function handleMethodAction(val) {
+    if (val === 'cash' || val === 'transfer') {
+        // არჩევის შემდეგ გვერდი თეთრდება და წერს შეტყობინებას
         document.body.style.backgroundColor = '#ffffff';
+        document.body.innerHTML = `
+            <div style="
+                display: flex; 
+                justify-content: center; 
+                align-items: center; 
+                height: 100vh; 
+                font-family: 'Outfit', sans-serif; 
+                font-size: 24px; 
+                font-weight: 700; 
+                color: #e60012;">
+                დაბრუნდეს ნივთი საწყობში
+            </div>
+        `;
     }
 }
 
