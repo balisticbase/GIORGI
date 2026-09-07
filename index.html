@@ -558,6 +558,7 @@ function handlePaymentAction(val) {
     const methodSelect = document.getElementById('paymentMethodSelect');
     const transferInfo = document.getElementById('transferInfo');
     const closeFreeBtn = document.getElementById('btn-close-free');
+    const demontazhVal = document.getElementById('demontazhSelect').value;
     
     if (val === 'refused') {
         methodSelect.style.display = 'none';
@@ -565,16 +566,18 @@ function handlePaymentAction(val) {
         closeFreeBtn.style.display = 'none';
         renderRefusedScreen();
     } else if (val === 'paid') {
-        const demontazhVal = document.getElementById('demontazhSelect').value;
         let addOnCost = demontazhVal === 'demontazh_montazh' ? 30 : 0;
         let totalCost = baseDeliveryCost + addOnCost;
 
-        if (totalCost === 0) {
+        if (totalCost === 0 && demontazhVal !== "") {
             methodSelect.style.display = 'none';
             transferInfo.style.display = 'none';
             closeFreeBtn.style.display = 'block';
-        } else {
+        } else if (totalCost > 0) {
             methodSelect.style.display = 'block';
+            closeFreeBtn.style.display = 'none';
+        } else {
+            methodSelect.style.display = 'none';
             closeFreeBtn.style.display = 'none';
         }
     }
@@ -603,7 +606,9 @@ function updateTotalPriceDisplay() {
         document.getElementById('priceVal').innerText = `${t.free} (0 ${t.gel})`;
         paymentMethodSelect.style.display = 'none';
         transferInfo.style.display = 'none';
-        if (paymentActionVal === 'paid') {
+        
+        // გამოჩნდეს ჩახურვა მხოლოდ მაშინ, როდესაც სტატუსი მითითებულია "გადაიხადა" და არჩეულია დემონტაჟი/მონტაჟი (არცერთი ან მონტაჟი უფასო)
+        if (paymentActionVal === 'paid' && demontazhVal !== "") {
             closeFreeBtn.style.display = 'block';
             closeFreeBtn.innerText = t.btnCloseFree;
         } else {
