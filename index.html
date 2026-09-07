@@ -311,13 +311,6 @@
                     </div>
                     <span id="storeName">-</span>
                 </div>
-                <div class="result-item">
-                    <div class="result-item-header">
-                        <i class="fa-solid fa-route"></i>
-                        <label id="lbl-distance">მანძილი</label>
-                    </div>
-                    <span id="distanceVal">-</span>
-                </div>
                 
                 <div class="result-item">
                     <div class="result-item-header">
@@ -364,10 +357,8 @@ const translations = {
         status: "თქვენი მდებარეობა განისაზღვრება...",
         lblAddress: "თქვენი მისამართი",
         lblStore: "უახლოესი ფილიალი",
-        lblDistance: "მანძილი",
         lblPrice: "მიწოდების საფასური",
         free: "უფასო (0 ₾)",
-        km: "კმ",
         gel: "₾",
         unknownAddr: "მისამართი ვერ დაზუსტდა",
         userLoc: "თქვენი მდებარეობა",
@@ -390,10 +381,8 @@ const translations = {
         status: "Determining your location...",
         lblAddress: "Your Address",
         lblStore: "Nearest Branch",
-        lblDistance: "Distance",
         lblPrice: "Delivery Fee",
         free: "Free (0 GEL)",
-        km: "km",
         gel: "GEL",
         unknownAddr: "Address could not be determined",
         userLoc: "Your Location",
@@ -416,10 +405,8 @@ const translations = {
         status: "Определение вашего местоположения...",
         lblAddress: "Ваш адрес",
         lblStore: "Ближайший филиал",
-        lblDistance: "Расстояние",
         lblPrice: "Стоимость доставки",
         free: "Бесплатно (0 GEL)",
-        km: "км",
         gel: "GEL",
         unknownAddr: "Адрес не определен",
         userLoc: "Ваше местоположение",
@@ -504,7 +491,6 @@ function changeLanguage(lang) {
         document.getElementById('txt-status').innerText = t.status;
         document.getElementById('lbl-address').innerText = t.lblAddress;
         document.getElementById('lbl-store').innerText = t.lblStore;
-        document.getElementById('lbl-distance').innerText = t.lblDistance;
         document.getElementById('lbl-price').innerText = t.lblPrice;
         document.getElementById('opt-select').innerText = t.optSelect;
         document.getElementById('opt-paid').innerText = t.optPaid;
@@ -679,7 +665,6 @@ function processResults() {
     currentFormattedAddress = formattedAddr;
     document.getElementById('userAddressVal').innerText = formattedAddr;
     document.getElementById('storeName').innerText = nearestStore.names[currentLang] || nearestStore.names['ka'];
-    document.getElementById('distanceVal').innerText = `${minDistance.toFixed(2)} ${t.km}`;
 
     const addrLower = formattedAddr.toLowerCase();
     const isKobuleti = addrLower.includes("ქობულეთი") || addrLower.includes("kobuleti") || addrLower.includes("кобулети");
@@ -694,7 +679,7 @@ function processResults() {
             document.getElementById('priceVal').innerText = t.free;
         } else {
             const extraKm = Math.ceil(minDistance - 20);
-            document.getElementById('priceVal').innerText = `${extraKm * 4} ${t.gel} (+${extraKm} ${t.km})`;
+            document.getElementById('priceVal').innerText = `${extraKm * 4} ${t.gel} (+${extraKm} კმ)`;
         }
     }
 
