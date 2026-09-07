@@ -214,6 +214,20 @@
             outline: none;
         }
 
+        .demontazh-select-inline {
+            margin-top: 2px;
+            width: 100%;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-color);
+            background: #ffffff;
+            cursor: pointer;
+            outline: none;
+        }
+
         .payment-method-select {
             display: none;
             margin-top: 4px;
@@ -325,6 +339,12 @@
                             <option value="refused" id="opt-refused">უარს ამბობს გადახდაზე</option>
                         </select>
 
+                        <select id="demontazhSelect" class="demontazh-select-inline" onchange="handleDemontazhAction(this.value)">
+                            <option value="" disabled selected id="opt-demontazh-select">დემონტაჟი / მონტაჟი</option>
+                            <option value="montazh_free" id="opt-montazh-free">მონტაჟი უფასო</option>
+                            <option value="demontazh_montazh" id="opt-demontazh-montazh">დემონტაჟი მონტაჟი 30 ₾</option>
+                        </select>
+
                         <select id="paymentMethodSelect" class="payment-method-select" onchange="handleMethodAction(this.value)">
                             <option value="" disabled selected id="opt-method-select">აირჩიეთ მეთოდი</option>
                             <option value="cash" id="opt-cash">ქეში</option>
@@ -358,13 +378,16 @@ const translations = {
         lblAddress: "თქვენი მისამართი",
         lblStore: "უახლოესი ფილიალი",
         lblPrice: "მიწოდების საფასური",
-        free: "უფასო (0 ₾)",
+        free: "უფასო",
         gel: "₾",
         unknownAddr: "მისამართი ვერ დაზუსტდა",
         userLoc: "თქვენი მდებარეობა",
         optSelect: "სტატუსის არჩევა",
         optPaid: "გადაიხადა",
         optRefused: "უარს ამბობს გადახდაზე",
+        optDemontazhSelect: "დემონტაჟი / მონტაჟი",
+        optMontazhFree: "მონტაჟი უფასო",
+        optDemontazhMontazh: "დემონტაჟი მონტაჟი 30 ₾",
         optMethodSelect: "აირჩიეთ მეთოდი",
         optCash: "ქეში",
         optTransfer: "გადარიცხვა",
@@ -382,13 +405,16 @@ const translations = {
         lblAddress: "Your Address",
         lblStore: "Nearest Branch",
         lblPrice: "Delivery Fee",
-        free: "Free (0 GEL)",
+        free: "Free",
         gel: "GEL",
         unknownAddr: "Address could not be determined",
         userLoc: "Your Location",
         optSelect: "Select Status",
         optPaid: "Paid",
         optRefused: "Refused to pay",
+        optDemontazhSelect: "Installation/Dismantling",
+        optMontazhFree: "Free Installation",
+        optDemontazhMontazh: "Dismantling & Installation 30 GEL",
         optMethodSelect: "Select Method",
         optCash: "Cash",
         optTransfer: "Transfer",
@@ -406,13 +432,16 @@ const translations = {
         lblAddress: "Ваш адрес",
         lblStore: "Ближайший филиал",
         lblPrice: "Стоимость доставки",
-        free: "Бесплатно (0 GEL)",
+        free: "Бесплатно",
         gel: "GEL",
         unknownAddr: "Адрес не определен",
         userLoc: "Ваше местоположение",
         optSelect: "Выберите статус",
         optPaid: "Оплачено",
         optRefused: "Отказ от оплаты",
+        optDemontazhSelect: "Монтаж / Демонтаж",
+        optMontazhFree: "Монтаж бесплатный",
+        optDemontazhMontazh: "Демонтаж Монтаж 30 ₾",
         optMethodSelect: "Выберите метод",
         optCash: "Наличные",
         optTransfer: "Перевод",
@@ -450,6 +479,8 @@ let globalRawAddressData = null;
 let currentFormattedAddress = "";
 let map = null;
 let chosenKobuletiPrice = null;
+let baseDeliveryCost = 0;
+let baseDeliveryText = "";
 
 function setCookie(name, value, hours) {
     let maxAge = hours * 3600;
@@ -495,6 +526,9 @@ function changeLanguage(lang) {
         document.getElementById('opt-select').innerText = t.optSelect;
         document.getElementById('opt-paid').innerText = t.optPaid;
         document.getElementById('opt-refused').innerText = t.optRefused;
+        document.getElementById('opt-demontazh-select').innerText = t.optDemontazhSelect;
+        document.getElementById('opt-montazh-free').innerText = t.optMontazhFree;
+        document.getElementById('opt-demontazh-montazh').innerText = t.optDemontazhMontazh;
         document.getElementById('opt-method-select').innerText = t.optMethodSelect;
         document.getElementById('opt-cash').innerText = t.optCash;
         document.getElementById('opt-transfer').innerText = t.optTransfer;
@@ -517,6 +551,28 @@ function handlePaymentAction(val) {
         renderRefusedScreen();
     } else if (val === 'paid') {
         methodSelect.style.display = 'block';
+    }
+}
+
+function handleDemontazhAction(val) {
+    updateTotalPriceDisplay();
+}
+
+function updateTotalPriceDisplay() {
+    const t = translations[currentLang];
+    const demontazhVal = document.getElementById('demontazhSelect').value;
+    
+    let addOnCost = 0;
+    if (demontazhVal === 'demontazh_montazh') {
+        addOnCost = 30;
+    }
+    
+    let totalCost = baseDeliveryCost + addOnCost;
+    
+    if (totalCost === 0) {
+        document.getElementById('priceVal').innerText = `${t.free} (0 ${t.gel})`;
+    } else {
+        document.getElementById('priceVal').innerText = `${totalCost} ${t.gel}${baseDeliveryText ? ' ' + baseDeliveryText : ''}`;
     }
 }
 
@@ -673,15 +729,20 @@ function processResults() {
         if (!chosenKobuletiPrice) {
             chosenKobuletiPrice = Math.random() < 0.5 ? 30 : 35;
         }
-        document.getElementById('priceVal').innerText = `${chosenKobuletiPrice} ${t.gel}`;
+        baseDeliveryCost = chosenKobuletiPrice;
+        baseDeliveryText = "";
     } else {
         if (minDistance <= 20) {
-            document.getElementById('priceVal').innerText = t.free;
+            baseDeliveryCost = 0;
+            baseDeliveryText = "";
         } else {
             const extraKm = Math.ceil(minDistance - 20);
-            document.getElementById('priceVal').innerText = `${extraKm * 4} ${t.gel} (+${extraKm} კმ)`;
+            baseDeliveryCost = extraKm * 4;
+            baseDeliveryText = `(+${extraKm} კმ)`;
         }
     }
+
+    updateTotalPriceDisplay();
 
     document.getElementById('status').style.display = 'none';
     document.getElementById('results').style.display = 'block';
