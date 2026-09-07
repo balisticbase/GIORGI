@@ -51,7 +51,6 @@
             flex-direction: column;
         }
 
-        /* ჰედერის სტრუქტურა Flexbox-ით, რომ არაფერი გადაიფაროს */
         .header {
             background: linear-gradient(135deg, #e60012 0%, #cc0010 100%);
             color: white;
@@ -80,7 +79,6 @@
             opacity: 0.9;
         }
 
-        /* ენის გადამრთველი - უსაფრთხოდ განთავსებული ჰედერის შიგნით */
         .lang-switcher {
             display: flex;
             gap: 4px;
@@ -217,7 +215,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* მობილურისთვის */
         @media (max-width: 500px) {
             .header {
                 flex-direction: column;
@@ -238,7 +235,6 @@
             <p id="txt-subtitle">ავტომატური მიწოდების კალკულატორი</p>
         </div>
 
-        <!-- ენების გადამრთველი სუფთად განთავსებული ჰედერის მარჯვენა მხარეს -->
         <div class="lang-switcher">
             <button class="lang-btn active" id="btn-ka" onclick="changeLanguage('ka')">KA</button>
             <button class="lang-btn" id="btn-en" onclick="changeLanguage('en')">EN</button>
@@ -287,11 +283,9 @@
     </div>
 </div>
 
-<!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-// ენების თარგმანები
 const translations = {
     ka: {
         title: "ელიტ ელექტრონიქსი",
@@ -337,7 +331,6 @@ const translations = {
     }
 };
 
-// ელიტ ელექტრონიქსის ფილიალები
 const eliteStores = [
     { names: { ka: "თბილისი - ქავთარაძის #1", en: "Tbilisi - Kavtaradze #1", ru: "Тбилиси - Кавтарадзе #1" }, lat: 41.7238, lon: 44.7472 },
     { names: { ka: "თბილისი - აღმაშენებლის ხეივანი 16-ე კმ", en: "Tbilisi - Agmashenebeli Alley 16th km", ru: "Тбилиси - Аллея Агмашенебели 16-й км" }, lat: 41.7850, lon: 44.7681 },
@@ -363,7 +356,7 @@ let globalRawAddressData = null;
 let map = null;
 let chosenKobuletiPrice = null;
 
-// ენის შეცვლა
+// ენის შეცვლა - ახლა თავიდან ითხოვს მისამართს არჩეულ ენაზე
 function changeLanguage(lang) {
     currentLang = lang;
 
@@ -379,12 +372,12 @@ function changeLanguage(lang) {
     document.getElementById('lbl-distance').innerText = t.lblDistance;
     document.getElementById('lbl-price').innerText = t.lblPrice;
 
+    // თუ კოორდინატები გვაქვს, თავიდან გამოვითხოვოთ მისამართი ახალ ენაზე
     if (globalUserLat !== null && globalUserLon !== null) {
-        processResults();
+        fetchAddressFromCoords(globalUserLat, globalUserLon);
     }
 }
 
-// მანძილის გამოთვლა (Haversine Formula)
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -397,14 +390,12 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     return R * c;
 }
 
-// შედეგების დამუშავება
 function processResults() {
     const t = translations[currentLang];
     
     let nearestStore = null;
     let minDistance = Infinity;
 
-    // უახლოესი ფილიალის მოძებნა
     eliteStores.forEach(store => {
         const dist = calculateDistance(globalUserLat, globalUserLon, store.lat, store.lon);
         if (dist < minDistance) {
@@ -413,13 +404,12 @@ function processResults() {
         }
     });
 
-    // მისამართის ფორმატირება
     let formattedAddr = t.unknownAddr;
     if (globalRawAddressData && globalRawAddressData.address) {
         const addr = globalRawAddressData.address;
         const road = addr.road || addr.street || addr.pedestrian || "";
         const houseNumber = addr.house_number ? " #" + addr.house_number : "";
-        const city = addr.city || addr.town || addr.village || addr.county || "";
+        const city = addr.city || addr.town || addr.village || addr.county || addr.state || "";
         formattedAddr = [city, road + houseNumber].filter(Boolean).join(", ");
         if (!formattedAddr) formattedAddr = globalRawAddressData.display_name.split(',').slice(0, 3).join(',');
     } else if (typeof globalRawAddressData === 'string') {
@@ -430,7 +420,6 @@ function processResults() {
     document.getElementById('storeName').innerText = nearestStore.names[currentLang] || nearestStore.names['ka'];
     document.getElementById('distanceVal').innerText = `${minDistance.toFixed(2)} ${t.km}`;
 
-    // --- ქობულეთის სპეციალური ლოგიკა ---
     const addrLower = formattedAddr.toLowerCase();
     const isKobuleti = addrLower.includes("ქობულეთი") || addrLower.includes("kobuleti") || addrLower.includes("кобулети");
 
@@ -440,7 +429,6 @@ function processResults() {
         }
         document.getElementById('priceVal').innerText = `${chosenKobuletiPrice} ${t.gel}`;
     } else {
-        // სტანდარტული გამოთვლა (20 კმ-მდე უფასო, შემდეგ +3 ₾/კმ)
         if (minDistance <= 20) {
             document.getElementById('priceVal').innerText = t.free;
         } else {
@@ -455,12 +443,13 @@ function processResults() {
     renderMap(globalUserLat, globalUserLon, nearestStore);
 }
 
-// კოორდინატების მისამართად ქცევა
+// კოორდინატების მიხედვით მისამართის წამოღება არჩეულ ენაზე (accept-language-ის დამატებით)
 function fetchAddressFromCoords(lat, lon) {
     globalUserLat = lat;
     globalUserLon = lon;
     
-    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+    // დავამატეთ &accept-language=
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=${currentLang}`;
     
     fetch(url)
         .then(res => res.json())
@@ -474,7 +463,6 @@ function fetchAddressFromCoords(lat, lon) {
         });
 }
 
-// რუკის გამოჩენა
 function renderMap(userLat, userLon, store) {
     const t = translations[currentLang];
     if (map) {
@@ -498,7 +486,6 @@ function renderMap(userLat, userLon, store) {
     map.fitBounds(bounds, { padding: [50, 50] });
 }
 
-// IP-ით ლოკაციის დადგენა (Fallback)
 function detectByIP() {
     fetch('https://ipapi.co/json/')
         .then(res => res.json())
@@ -506,8 +493,7 @@ function detectByIP() {
             if(data.latitude && data.longitude) {
                 globalUserLat = data.latitude;
                 globalUserLon = data.longitude;
-                globalRawAddressData = data.city ? `${data.city} (IP)` : "IP Location";
-                processResults();
+                fetchAddressFromCoords(globalUserLat, globalUserLon);
             } else {
                 document.getElementById('status').innerText = translations[currentLang].unknownAddr;
             }
@@ -517,7 +503,6 @@ function detectByIP() {
         });
 }
 
-// ავტომატური გაშვება ჩატვირთვისას
 window.onload = function() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
