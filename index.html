@@ -223,8 +223,8 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     return R * c;
 }
 
-// მიწოდების ფასის გამოთვლა
-function calculatePrice(dist) {
+// სტანდარტული მიწოდების ფასის გამოთვლა
+function calculateStandardPrice(dist) {
     if (dist <= 20) {
         return "უფასო (0 ₾)";
     } else {
@@ -233,37 +233,12 @@ function calculatePrice(dist) {
     }
 }
 
-// კოორდინატების რეალურ მისამართად გარდაქმნა (Reverse Geocoding)
-function fetchAddressFromCoords(lat, lon) {
-    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=ka`;
-    
-    fetch(url)
-        .then(res => res.json())
-        .then(data => {
-            if (data && data.address) {
-                const addr = data.address;
-                const road = addr.road || addr.street || addr.pedestrian || "";
-                const houseNumber = addr.house_number ? " #" + addr.house_number : "";
-                const city = addr.city || addr.town || addr.village || addr.county || "";
-                
-                let fullAddress = [city, road + houseNumber].filter(Boolean).join(", ");
-                if (!fullAddress) fullAddress = data.display_name.split(',').slice(0, 3).join(',');
-                
-                document.getElementById('userAddressVal').innerText = fullAddress;
-            } else {
-                document.getElementById('userAddressVal').innerText = "მისამართი ვერ დაზუსტდა";
-            }
-        })
-        .catch(() => {
-            document.getElementById('userAddressVal').innerText = "მისამართი ვერ დაზუსტდა";
-        });
-}
-
 // შედეგების დახატვა
-function showResults(userLat, userLon, fallbackAddressText = null) {
+function processResults(userLat, userLon, fullAddress) {
     let nearestStore = null;
     let minDistance = Infinity;
 
+    // უახლოესი ფილიალის მოძებნა
     eliteStores.forEach(store => {
         const dist = calculateDistance(userLat, userLon, store.lat, store.lon);
         if (dist < minDistance) {
@@ -272,21 +247,50 @@ function showResults(userLat, userLon, fallbackAddressText = null) {
         }
     });
 
-    if (fallbackAddressText) {
-        document.getElementById('userAddressVal').innerText = fallbackAddressText;
-    } else {
-        // კოორდინატებიდან მისამართის მოძიება
-        fetchAddressFromCoords(userLat, userLon);
-    }
-
+    document.getElementById('userAddressVal').innerText = fullAddress;
     document.getElementById('storeName').innerText = nearestStore.name;
     document.getElementById('distanceVal').innerText = minDistance.toFixed(2) + " კმ";
-    document.getElementById('priceVal').innerText = calculatePrice(minDistance);
+
+    // --- ქობულეთის სპეციალური ლოგიკა ---
+    const lowerAddress = fullAddress.toLowerCase();
+    if (lowerAddress.includes("ქობულეთი") || lowerAddress.includes("kobuleti")) {
+        // რანდომულად 30 ₾ ან 35 ₾ ქობულეთისთვის
+        const kobuletiPrices = [30, 35];
+        const randomPrice = kobuletiPrices[Math.floor(Math.random() * kobuletiPrices.length)];
+        document.getElementById('priceVal').innerText = `${randomPrice} ₾`;
+    } else {
+        // სტანდარტული გამოთვლა სხვა ქალაქებისთვის
+        document.getElementById('priceVal').innerText = calculateStandardPrice(minDistance);
+    }
 
     document.getElementById('status').style.display = 'none';
     document.getElementById('results').style.display = 'block';
 
     renderMap(userLat, userLon, nearestStore);
+}
+
+// კოორდინატების მისამართად ქცევა
+function fetchAddressFromCoords(lat, lon) {
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=ka`;
+    
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            let fullAddress = "უცნობი მისამართი";
+            if (data && data.address) {
+                const addr = data.address;
+                const road = addr.road || addr.street || addr.pedestrian || "";
+                const houseNumber = addr.house_number ? " #" + addr.house_number : "";
+                const city = addr.city || addr.town || addr.village || addr.county || "";
+                
+                fullAddress = [city, road + houseNumber].filter(Boolean).join(", ");
+                if (!fullAddress) fullAddress = data.display_name.split(',').slice(0, 3).join(',');
+            }
+            processResults(lat, lon, fullAddress);
+        })
+        .catch(() => {
+            processResults(lat, lon, "მისამართი ვერ დაზუსტდა");
+        });
 }
 
 // რუკის გამოჩენა
@@ -314,8 +318,8 @@ function detectByIP() {
         .then(res => res.json())
         .then(data => {
             if(data.latitude && data.longitude) {
-                const ipCity = data.city ? `${data.city} (IP ლოკაცია)` : "IP ლოკაცია";
-                showResults(data.latitude, data.longitude, ipCity);
+                const ipCity = data.city ? `${data.city} (IP)` : "IP ლოკაცია";
+                processResults(data.latitude, data.longitude, ipCity);
             } else {
                 document.getElementById('status').innerText = "მდებარეობის ავტომატურად დადგენა ვერ მოხერხდა.";
             }
@@ -330,11 +334,9 @@ window.onload = function() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             position => {
-                // ზუსტი GPS კოორდინატები
-                showResults(position.coords.latitude, position.coords.longitude);
+                fetchAddressFromCoords(position.coords.latitude, position.coords.longitude);
             },
             error => {
-                // თუ მომხმარებელმა GPS დაბლოკა ან ვერ იპოვა
                 detectByIP();
             },
             { timeout: 5000 }
