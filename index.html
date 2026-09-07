@@ -7,26 +7,32 @@
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --primary-color: #e60012;
-            --primary-hover: #cc0010;
-            --bg-color: #f4f6f8;
+            --primary: #e60012;
+            --primary-dark: #b8000e;
+            --bg-gradient: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             --card-bg: #ffffff;
-            --text-color: #333333;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --accent-green: #10b981;
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background: var(--bg-gradient);
+            color: var(--text-dark);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -36,161 +42,219 @@
 
         .container {
             background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
             width: 100%;
-            max-width: 800px;
+            max-width: 850px;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
             position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.8);
         }
 
         /* ენის გადამრთველი */
         .lang-switcher {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             display: flex;
-            gap: 5px;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            padding: 4px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             z-index: 10;
         }
 
         .lang-btn {
-            background: rgba(255, 255, 255, 0.2);
+            background: transparent;
             color: white;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 5px 10px;
-            border-radius: 6px;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
             cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
-            transition: 0.3s;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
-        .lang-btn:hover, .lang-btn.active {
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .lang-btn.active {
             background: white;
-            color: var(--primary-color);
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
 
+        /* ჰედერი */
         .header {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, #e60012 0%, #b8000e 100%);
             color: white;
-            padding: 30px 25px 25px 25px;
+            padding: 40px 30px 30px 30px;
             text-align: center;
         }
 
         .header h1 {
-            font-size: 24px;
-            margin-bottom: 8px;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
         }
 
         .header p {
-            font-size: 14px;
+            font-size: 15px;
             opacity: 0.9;
+            font-weight: 400;
         }
 
         .content {
-            padding: 25px;
+            padding: 30px;
         }
 
-        /* პირობების განმარტებითი ბლოკი */
+        /* წესების ბანერი */
         .info-card {
-            background: #fff8f8;
-            border-left: 4px solid var(--primary-color);
-            padding: 12px 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 13px;
-            line-height: 1.5;
-            color: #555;
+            background: #fef2f2;
+            border: 1px solid #fee2e2;
+            border-left: 4px solid var(--primary);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #7f1d1d;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
         }
 
+        .info-card i {
+            font-size: 18px;
+            color: var(--primary);
+            margin-top: 2px;
+        }
+
+        /* სტატუსის ბოქსი */
         .status-box {
             text-align: center;
-            padding: 15px;
-            background: #eef2f7;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-weight: bold;
-            color: #2c3e50;
+            padding: 20px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            font-weight: 500;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
+        /* შედეგების გრიდი */
         .results-container {
             display: none;
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 12px;
-            padding: 20px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .result-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
         .result-item {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .result-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+        }
+
+        .result-item .item-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .result-item i {
+            color: var(--primary);
+            font-size: 16px;
         }
 
         .result-item label {
-            display: block;
             font-size: 12px;
-            color: #6c757d;
-            margin-bottom: 5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
         }
 
         .result-item span {
+            display: block;
             font-size: 15px;
-            font-weight: bold;
-            color: var(--text-color);
+            font-weight: 600;
+            color: var(--text-dark);
+            line-height: 1.4;
             word-break: break-word;
         }
 
         .result-item span.price {
-            color: #27ae60;
-            font-size: 18px;
+            color: var(--accent-green);
+            font-size: 20px;
+            font-weight: 700;
         }
 
         #map {
-            height: 350px;
+            height: 380px;
             width: 100%;
-            border-radius: 12px;
-            margin-top: 15px;
+            border-radius: 16px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
         }
 
+        /* სპინერი */
         .spinner {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 3px solid rgba(230,0,18,0.3);
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(230, 0, 18, 0.2);
             border-radius: 50%;
-            border-top-color: var(--primary-color);
-            animation: spin 1s ease-in-out infinite;
-            vertical-align: middle;
-            margin-right: 8px;
+            border-top-color: var(--primary);
+            animation: spin 0.8s linear infinite;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 600px) {
+            .header { padding: 30px 20px 20px 20px; }
+            .content { padding: 20px; }
+            .result-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- ენების გადამრთველი -->
+    <!-- ენის გადამრთველი -->
     <div class="lang-switcher">
         <button class="lang-btn active" id="btn-ka" onclick="changeLanguage('ka')">KA</button>
         <button class="lang-btn" id="btn-en" onclick="changeLanguage('en')">EN</button>
         <button class="lang-btn" id="btn-ru" onclick="changeLanguage('ru')">RU</button>
     </div>
 
+    <!-- საიტის ჰედერი -->
     <div class="header">
         <h1 id="txt-title">ელიტ ელექტრონიქსი</h1>
         <p id="txt-subtitle">ავტომატური მიწოდების კალკულატორი</p>
@@ -198,30 +262,48 @@
 
     <div class="content">
         <!-- პირობების ტექსტი -->
-        <div class="info-card" id="txt-rules">
-            📌 <strong>მიწოდების პირობები:</strong> უახლოესი ფილიალიდან 20 კმ-მდე მანძილი უფასოა, ხოლო 20 კმ-ის ზემოთ ყოველ 1 კმ-ზე ემატება 3 ₾. (ქობულეთის მიმართულებით მიწოდება შეადგენს 30-35 ₾-ს).
+        <div class="info-card">
+            <i class="fa-solid fa-circle-info"></i>
+            <div id="txt-rules">
+                <strong>მიწოდების პირობები:</strong> უახლოესი ფილიალიდან 20 კმ-მდე მანძილი უფასოა, ხოლო 20 კმ-ის ზემოთ ყოველ 1 კმ-ზე ემატება 3 ₾. (ქობულეთში მიწოდება შეადგენს 30-35 ₾-ს).
+            </div>
         </div>
 
+        <!-- სტატუსის ბლოკი -->
         <div id="status" class="status-box">
-            <span class="spinner"></span> <span id="txt-status">თქვენი მდებარეობა განისაზღვრება...</span>
+            <div class="spinner"></div>
+            <span id="txt-status">თქვენი მდებარეობა განისაზღვრება...</span>
         </div>
 
+        <!-- შედეგები -->
         <div id="results" class="results-container">
             <div class="result-grid">
                 <div class="result-item">
-                    <label id="lbl-address">თქვენი მისამართი</label>
+                    <div class="item-header">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <label id="lbl-address">თქვენი მისამართი</label>
+                    </div>
                     <span id="userAddressVal">...</span>
                 </div>
                 <div class="result-item">
-                    <label id="lbl-store">უახლოესი ფილიალი</label>
+                    <div class="item-header">
+                        <i class="fa-solid fa-store"></i>
+                        <label id="lbl-store">უახლოესი ფილიალი</label>
+                    </div>
                     <span id="storeName">-</span>
                 </div>
                 <div class="result-item">
-                    <label id="lbl-distance">მანძილი</label>
+                    <div class="item-header">
+                        <i class="fa-solid fa-route"></i>
+                        <label id="lbl-distance">მანძილი</label>
+                    </div>
                     <span id="distanceVal">-</span>
                 </div>
                 <div class="result-item">
-                    <label id="lbl-price">მიწოდების საფასური</label>
+                    <div class="item-header">
+                        <i class="fa-solid fa-truck-fast"></i>
+                        <label id="lbl-price">მიწოდების საფასური</label>
+                    </div>
                     <span id="priceVal" class="price">-</span>
                 </div>
             </div>
@@ -234,12 +316,12 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-// ენობრივი პაკეტი
+// ენების თარგმანები
 const translations = {
     ka: {
         title: "ელიტ ელექტრონიქსი",
         subtitle: "ავტომატური მიწოდების კალკულატორი",
-        rules: "📌 <strong>მიწოდების პირობები:</strong> უახლოესი ფილიალიდან 20 კმ-მდე მანძილი უფასოა, ხოლო 20 კმ-ის ზემოთ ყოველ 1 კმ-ზე ემატება 3 ₾. (ქობულეთში მიწოდება შეადგენს 30-35 ₾-ს).",
+        rules: "<strong>მიწოდების პირობები:</strong> უახლოესი ფილიალიდან 20 კმ-მდე მანძილი უფასოა, ხოლო 20 კმ-ის ზემოთ ყოველ 1 კმ-ზე ემატება 3 ₾. (ქობულეთში მიწოდება შეადგენს 30-35 ₾-ს).",
         status: "თქვენი მდებარეობა განისაზღვრება...",
         lblAddress: "თქვენი მისამართი",
         lblStore: "უახლოესი ფილიალი",
@@ -254,7 +336,7 @@ const translations = {
     en: {
         title: "Elit Electronics",
         subtitle: "Automatic Delivery Calculator",
-        rules: "📌 <strong>Delivery Terms:</strong> Free delivery up to 20 km from the nearest branch. Beyond 20 km, +3 GEL per additional 1 km. (Delivery to Kobuleti is 30-35 GEL).",
+        rules: "<strong>Delivery Terms:</strong> Free delivery up to 20 km from the nearest branch. Beyond 20 km, +3 GEL per additional 1 km. (Delivery to Kobuleti is 30-35 GEL).",
         status: "Determining your location...",
         lblAddress: "Your Address",
         lblStore: "Nearest Branch",
@@ -269,7 +351,7 @@ const translations = {
     ru: {
         title: "Элит Электроникс",
         subtitle: "Автоматический калькулятор доставки",
-        rules: "📌 <strong>Условия доставки:</strong> Бесплатно до 20 км от ближайшего филиала. Свыше 20 км — +3 GEL за каждый 1 км. (Доставка в Кобулети — 30-35 GEL).",
+        rules: "<strong>Условия доставки:</strong> Бесплатно до 20 км от ближайшего филиала. Свыше 20 км — +3 GEL за каждый 1 км. (Доставка в Кобулети — 30-35 GEL).",
         status: "Определение вашего местоположения...",
         lblAddress: "Ваш адрес",
         lblStore: "Ближайший филиал",
@@ -309,7 +391,7 @@ let globalRawAddressData = null;
 let map = null;
 let chosenKobuletiPrice = null;
 
-// ენის შეცვლის ფუნქცია
+// ენის შეცვლა
 function changeLanguage(lang) {
     currentLang = lang;
 
@@ -375,7 +457,7 @@ function processResults() {
     document.getElementById('storeName').innerText = nearestStore.names[currentLang] || nearestStore.names['ka'];
     document.getElementById('distanceVal').innerText = `${minDistance.toFixed(2)} ${t.km}`;
 
-    // ქობულეთის შემოწმება
+    // ქობულეთის ლოგიკა
     const addrLower = formattedAddr.toLowerCase();
     const isKobuleti = addrLower.includes("ქობულეთი") || addrLower.includes("kobuleti") || addrLower.includes("кобулети");
 
