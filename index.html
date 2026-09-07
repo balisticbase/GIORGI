@@ -3,36 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ელიტ ელექტრონიქსი - მიწოდების კალკულატორი</title>
+    <title>ელიტ ელექტრონიქსი - ავტომატური ლოკატორი</title>
     
-    <!-- Leaflet CSS -->
+    <!-- Leaflet CSS რუკისთვის -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- Google Fonts & Icons -->
+    <!-- Google Font & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --primary: #e60012;
-            --primary-dark: #b8000e;
-            --bg-gradient: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            --primary-color: #e60012;
+            --primary-hover: #cc0010;
+            --bg-color: #f1f5f9;
             --card-bg: #ffffff;
-            --text-dark: #1e293b;
+            --text-color: #0f172a;
             --text-muted: #64748b;
-            --accent-green: #10b981;
-            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            --success-color: #10b981;
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: var(--bg-gradient);
-            color: var(--text-dark);
+            background-color: var(--bg-color);
+            color: var(--text-color);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -42,27 +42,27 @@
 
         .container {
             background: var(--card-bg);
-            border-radius: 24px;
+            border-radius: 20px;
             box-shadow: var(--shadow);
             width: 100%;
-            max-width: 850px;
+            max-width: 800px;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
             position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.8);
         }
 
-        /* ენის გადამრთველი */
+        /* ენის გადამრთველი ღილაკები */
         .lang-switcher {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 15px;
             display: flex;
-            gap: 6px;
+            gap: 4px;
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(8px);
             padding: 4px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
             z-index: 10;
         }
 
@@ -70,10 +70,10 @@
             background: transparent;
             color: white;
             border: none;
-            padding: 6px 14px;
-            border-radius: 20px;
+            padding: 5px 12px;
+            border-radius: 14px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             transition: all 0.3s ease;
         }
@@ -84,224 +84,207 @@
 
         .lang-btn.active {
             background: white;
-            color: var(--primary);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            color: var(--primary-color);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
 
-        /* ჰედერი */
         .header {
-            background: linear-gradient(135deg, #e60012 0%, #b8000e 100%);
+            background: linear-gradient(135deg, #e60012 0%, #cc0010 100%);
             color: white;
-            padding: 40px 30px 30px 30px;
+            padding: 35px 25px 25px 25px;
             text-align: center;
         }
 
         .header h1 {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 700;
-            letter-spacing: -0.5px;
             margin-bottom: 6px;
+            letter-spacing: -0.5px;
         }
 
         .header p {
-            font-size: 15px;
+            font-size: 14px;
             opacity: 0.9;
-            font-weight: 400;
         }
 
         .content {
-            padding: 30px;
+            padding: 25px;
         }
 
-        /* წესების ბანერი */
+        /* მიწოდების პირობების განმარტებითი ბლოკი */
         .info-card {
-            background: #fef2f2;
-            border: 1px solid #fee2e2;
-            border-left: 4px solid var(--primary);
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 24px;
-            font-size: 14px;
-            line-height: 1.6;
-            color: #7f1d1d;
+            background: #fff5f5;
+            border-left: 4px solid var(--primary-color);
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #4a5568;
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: 12px;
         }
 
         .info-card i {
             font-size: 18px;
-            color: var(--primary);
-            margin-top: 2px;
+            color: var(--primary-color);
         }
 
-        /* სტატუსის ბოქსი */
         .status-box {
             text-align: center;
-            padding: 20px;
-            background: #f1f5f9;
+            padding: 16px;
+            background: #f8fafc;
             border-radius: 12px;
-            font-weight: 500;
-            color: var(--text-dark);
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #334155;
+            border: 1px dashed #cbd5e1;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
         }
 
-        /* შედეგების გრიდი */
         .results-container {
             display: none;
-            animation: fadeIn 0.4s ease;
+            animation: fadeIn 0.4s ease-in-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .result-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 15px;
         }
 
         .result-item {
             background: #f8fafc;
-            padding: 18px;
-            border-radius: 14px;
+            padding: 16px;
+            border-radius: 12px;
             border: 1px solid #e2e8f0;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.2s ease;
         }
 
         .result-item:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
 
-        .result-item .item-header {
+        .result-item-header {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
+            gap: 6px;
+            margin-bottom: 6px;
         }
 
-        .result-item i {
-            color: var(--primary);
-            font-size: 16px;
+        .result-item-header i {
+            font-size: 14px;
+            color: var(--primary-color);
         }
 
         .result-item label {
-            font-size: 12px;
-            font-weight: 600;
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
             color: var(--text-muted);
+            letter-spacing: 0.5px;
         }
 
         .result-item span {
-            display: block;
             font-size: 15px;
             font-weight: 600;
-            color: var(--text-dark);
-            line-height: 1.4;
+            color: var(--text-color);
             word-break: break-word;
         }
 
         .result-item span.price {
-            color: var(--accent-green);
-            font-size: 20px;
+            color: var(--success-color);
+            font-size: 19px;
             font-weight: 700;
         }
 
         #map {
-            height: 380px;
+            height: 350px;
             width: 100%;
-            border-radius: 16px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            margin-top: 15px;
             border: 1px solid #e2e8f0;
         }
 
-        /* სპინერი */
         .spinner {
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(230, 0, 18, 0.2);
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(230,0,18,0.2);
             border-radius: 50%;
-            border-top-color: var(--primary);
+            border-top-color: var(--primary-color);
             animation: spin 0.8s linear infinite;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-
-        @media (max-width: 600px) {
-            .header { padding: 30px 20px 20px 20px; }
-            .content { padding: 20px; }
-            .result-grid { grid-template-columns: 1fr; }
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- ენის გადამრთველი -->
+    <!-- ენების გადამრთველი -->
     <div class="lang-switcher">
         <button class="lang-btn active" id="btn-ka" onclick="changeLanguage('ka')">KA</button>
         <button class="lang-btn" id="btn-en" onclick="changeLanguage('en')">EN</button>
         <button class="lang-btn" id="btn-ru" onclick="changeLanguage('ru')">RU</button>
     </div>
 
-    <!-- საიტის ჰედერი -->
     <div class="header">
         <h1 id="txt-title">ელიტ ელექტრონიქსი</h1>
         <p id="txt-subtitle">ავტომატური მიწოდების კალკულატორი</p>
     </div>
 
     <div class="content">
-        <!-- პირობების ტექსტი -->
+        <!-- პირობების განმარტებითი ბარათი -->
         <div class="info-card">
-            <i class="fa-solid fa-circle-info"></i>
-            <div id="txt-rules">
-                <strong>მიწოდების პირობები:</strong> უახლოესი ფილიალიდან 20 კმ-მდე მანძილი უფასოა, ხოლო 20 კმ-ის ზემოთ ყოველ 1 კმ-ზე ემატება 3 ₾. (ქობულეთში მიწოდება შეადგენს 30-35 ₾-ს).
-            </div>
+            <i class="fa-solid fa-truck-ramp-box"></i>
+            <span id="txt-rules"><strong>მიწოდების პირობები:</strong> 20 კმ-მდე მიწოდება უფასოა, 20 კმ-ის ზემოთ ყოველ 1 კმ-ზე ემატება 3 ₾. (ქობულეთში მიწოდება შეადგენს 30-35 ₾-ს).</span>
         </div>
 
-        <!-- სტატუსის ბლოკი -->
         <div id="status" class="status-box">
-            <div class="spinner"></div>
-            <span id="txt-status">თქვენი მდებარეობა განისაზღვრება...</span>
+            <span class="spinner"></span> <span id="txt-status">თქვენი მდებარეობა განისაზღვრება...</span>
         </div>
 
-        <!-- შედეგები -->
         <div id="results" class="results-container">
             <div class="result-grid">
                 <div class="result-item">
-                    <div class="item-header">
+                    <div class="result-item-header">
                         <i class="fa-solid fa-location-dot"></i>
                         <label id="lbl-address">თქვენი მისამართი</label>
                     </div>
-                    <span id="userAddressVal">...</span>
+                    <span id="userAddressVal">იტვირთება...</span>
                 </div>
                 <div class="result-item">
-                    <div class="item-header">
+                    <div class="result-item-header">
                         <i class="fa-solid fa-store"></i>
                         <label id="lbl-store">უახლოესი ფილიალი</label>
                     </div>
                     <span id="storeName">-</span>
                 </div>
                 <div class="result-item">
-                    <div class="item-header">
+                    <div class="result-item-header">
                         <i class="fa-solid fa-route"></i>
                         <label id="lbl-distance">მანძილი</label>
                     </div>
                     <span id="distanceVal">-</span>
                 </div>
                 <div class="result-item">
-                    <div class="item-header">
-                        <i class="fa-solid fa-truck-fast"></i>
+                    <div class="result-item-header">
+                        <i class="fa-solid fa-tag"></i>
                         <label id="lbl-price">მიწოდების საფასური</label>
                     </div>
                     <span id="priceVal" class="price">-</span>
@@ -321,7 +304,7 @@ const translations = {
     ka: {
         title: "ელიტ ელექტრონიქსი",
         subtitle: "ავტომატური მიწოდების კალკულატორი",
-        rules: "<strong>მიწოდების პირობები:</strong> უახლოესი ფილიალიდან 20 კმ-მდე მანძილი უფასოა, ხოლო 20 კმ-ის ზემოთ ყოველ 1 კმ-ზე ემატება 3 ₾. (ქობულეთში მიწოდება შეადგენს 30-35 ₾-ს).",
+        rules: "<strong>მიწოდების პირობები:</strong> 20 კმ-მდე მიწოდება უფასოა, 20 კმ-ის ზემოთ ყოველ 1 კმ-ზე ემატება 3 ₾. (ქობულეთში მიწოდება შეადგენს 30-35 ₾-ს).",
         status: "თქვენი მდებარეობა განისაზღვრება...",
         lblAddress: "თქვენი მისამართი",
         lblStore: "უახლოესი ფილიალი",
@@ -336,7 +319,7 @@ const translations = {
     en: {
         title: "Elit Electronics",
         subtitle: "Automatic Delivery Calculator",
-        rules: "<strong>Delivery Terms:</strong> Free delivery up to 20 km from the nearest branch. Beyond 20 km, +3 GEL per additional 1 km. (Delivery to Kobuleti is 30-35 GEL).",
+        rules: "<strong>Delivery Terms:</strong> Free delivery up to 20 km. Beyond 20 km, +3 GEL per additional 1 km. (Delivery to Kobuleti is 30-35 GEL).",
         status: "Determining your location...",
         lblAddress: "Your Address",
         lblStore: "Nearest Branch",
@@ -351,7 +334,7 @@ const translations = {
     ru: {
         title: "Элит Электроникс",
         subtitle: "Автоматический калькулятор доставки",
-        rules: "<strong>Условия доставки:</strong> Бесплатно до 20 км от ближайшего филиала. Свыше 20 км — +3 GEL за каждый 1 км. (Доставка в Кобулети — 30-35 GEL).",
+        rules: "<strong>Условия доставки:</strong> Бесплатно до 20 км. Свыше 20 км — +3 GEL за каждый 1 км. (Доставка в Кобулети — 30-35 GEL).",
         status: "Определение вашего местоположения...",
         lblAddress: "Ваш адрес",
         lblStore: "Ближайший филиал",
@@ -365,18 +348,25 @@ const translations = {
     }
 };
 
-// ელიტ ელექტრონიქსის ფილიალები
+// ელიტ ელექტრონიქსის ფილიალები (სამენოვანი დასახელებებით)
 const eliteStores = [
+    // თბილისი
     { names: { ka: "თბილისი - ქავთარაძის #1", en: "Tbilisi - Kavtaradze #1", ru: "Тбилиси - Кавтарадзе #1" }, lat: 41.7238, lon: 44.7472 },
     { names: { ka: "თბილისი - აღმაშენებლის ხეივანი 16-ე კმ", en: "Tbilisi - Agmashenebeli Alley 16th km", ru: "Тбилиси - Аллея Агмашенебели 16-й км" }, lat: 41.7850, lon: 44.7681 },
     { names: { ka: "თბილისი - East Point", en: "Tbilisi - East Point", ru: "Тбилиси - East Point" }, lat: 41.6811, lon: 44.8912 },
     { names: { ka: "თბილისი - City Mall გლდანი", en: "Tbilisi - City Mall Gldani", ru: "Тбилиси - City Mall Глдани" }, lat: 41.7915, lon: 44.8153 },
     { names: { ka: "თბილისი - ცინცაძის #12", en: "Tbilisi - Tsintsadze #12", ru: "Тбилиси - Цинцадзе #12" }, lat: 41.7201, lon: 44.7735 },
+    
+    // ბათუმი
     { names: { ka: "ბათუმი - პეტრე ბაგრატიონის 133", en: "Batumi - Petre Bagrationi 133", ru: "Батуми - Петре Багратиони 133" }, lat: 41.6367, lon: 41.6214 },
     { names: { ka: "ბათუმი - ჭავჭავაძის #31", en: "Batumi - Chavchavadze #31", ru: "Батуми - Чавчавадзе #31" }, lat: 41.6441, lon: 41.6358 },
-    { names: { ka: "ბათუმი - Batumi Mall (აბუსერიძის #22)", en: "Batumi - Batumi Mall (Abuseridze #22)", ru: "Батуми - Batumi Mall (Абусеридзе #22)" }, lat: 41.6385, lon: 41.6189 },
+    { names: { ka: "ბათუმი - Batumi Mall (ტბელ აბუსერიძის #22)", en: "Batumi - Batumi Mall (Abuseridze #22)", ru: "Батуми - Batumi Mall (Абусеридзе #22)" }, lat: 41.6385, lon: 41.6189 },
+
+    // ქუთაისი
     { names: { ka: "ქუთაისი - ირაკლი აბაშიძის #21", en: "Kutaisi - Irakli Abashidze #21", ru: "Кутаиси - Иракли Абашидзе #21" }, lat: 42.2683, lon: 42.6711 },
     { names: { ka: "ქუთაისი - წერეთლის #4", en: "Kutaisi - Tsereteli #4", ru: "Кутаиси - Церетели #4" }, lat: 42.2691, lon: 42.7032 },
+
+    // სხვა ქალაქები
     { names: { ka: "რუსთავი - შარტავას #4", en: "Rustavi - Shartava #4", ru: "Рустави - Шартава #4" }, lat: 41.5412, lon: 45.0034 },
     { names: { ka: "ზუგდიდი - გამსახურდიას გამზ. #28", en: "Zugdidi - Gamsakhurdia Ave #28", ru: "Зугдиди - пр. Гамсахурдия #28" }, lat: 42.5088, lon: 41.8675 },
     { names: { ka: "გორი - სტალინის გამზირი #23", en: "Gori - Stalin Ave #23", ru: "Гори - проспект Сталина #23" }, lat: 41.9854, lon: 44.1102 },
@@ -413,7 +403,7 @@ function changeLanguage(lang) {
     }
 }
 
-// მანძილის გამოთვლა (Haversine)
+// მანძილის გამოთვლა (Haversine Formula)
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -433,6 +423,7 @@ function processResults() {
     let nearestStore = null;
     let minDistance = Infinity;
 
+    // უახლოესი ფილიალის მოძებნა
     eliteStores.forEach(store => {
         const dist = calculateDistance(globalUserLat, globalUserLon, store.lat, store.lon);
         if (dist < minDistance) {
@@ -441,6 +432,7 @@ function processResults() {
         }
     });
 
+    // მისამართის ფორმატირება
     let formattedAddr = t.unknownAddr;
     if (globalRawAddressData && globalRawAddressData.address) {
         const addr = globalRawAddressData.address;
@@ -457,7 +449,7 @@ function processResults() {
     document.getElementById('storeName').innerText = nearestStore.names[currentLang] || nearestStore.names['ka'];
     document.getElementById('distanceVal').innerText = `${minDistance.toFixed(2)} ${t.km}`;
 
-    // ქობულეთის ლოგიკა
+    // --- ქობულეთის სპეციალური ლოგიკა ---
     const addrLower = formattedAddr.toLowerCase();
     const isKobuleti = addrLower.includes("ქობულეთი") || addrLower.includes("kobuleti") || addrLower.includes("кобулети");
 
@@ -467,6 +459,7 @@ function processResults() {
         }
         document.getElementById('priceVal').innerText = `${chosenKobuletiPrice} ${t.gel}`;
     } else {
+        // სტანდარტული გამოთვლა
         if (minDistance <= 20) {
             document.getElementById('priceVal').innerText = t.free;
         } else {
@@ -543,7 +536,7 @@ function detectByIP() {
         });
 }
 
-// ავტომატური გაშვება
+// გვერდის ჩატვირთვისთანავე ავტომატურად გაშვება
 window.onload = function() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
