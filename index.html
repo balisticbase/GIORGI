@@ -111,26 +111,6 @@
             padding: 25px;
         }
 
-        /* მიწოდების პირობების განმარტებითი ბლოკი */
-        .info-card {
-            background: #fff5f5;
-            border-left: 4px solid var(--primary-color);
-            padding: 14px 16px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-size: 13px;
-            line-height: 1.5;
-            color: #4a5568;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .info-card i {
-            font-size: 18px;
-            color: var(--primary-color);
-        }
-
         .status-box {
             text-align: center;
             padding: 16px;
@@ -249,12 +229,6 @@
     </div>
 
     <div class="content">
-        <!-- პირობების განმარტებითი ბარათი -->
-        <div class="info-card">
-            <i class="fa-solid fa-truck-ramp-box"></i>
-            <span id="txt-rules"><strong>მიწოდების პირობები:</strong> 20 კმ-მდე მიწოდება უფასოა, 20 კმ-ის ზემოთ ყოველ 1 კმ-ზე ემატება 3 ₾. (ქობულეთში მიწოდება შეადგენს 30-35 ₾-ს).</span>
-        </div>
-
         <div id="status" class="status-box">
             <span class="spinner"></span> <span id="txt-status">თქვენი მდებარეობა განისაზღვრება...</span>
         </div>
@@ -304,7 +278,6 @@ const translations = {
     ka: {
         title: "ელიტ ელექტრონიქსი",
         subtitle: "ავტომატური მიწოდების კალკულატორი",
-        rules: "<strong>მიწოდების პირობები:</strong> 20 კმ-მდე მიწოდება უფასოა, 20 კმ-ის ზემოთ ყოველ 1 კმ-ზე ემატება 3 ₾. (ქობულეთში მიწოდება შეადგენს 30-35 ₾-ს).",
         status: "თქვენი მდებარეობა განისაზღვრება...",
         lblAddress: "თქვენი მისამართი",
         lblStore: "უახლოესი ფილიალი",
@@ -319,7 +292,6 @@ const translations = {
     en: {
         title: "Elit Electronics",
         subtitle: "Automatic Delivery Calculator",
-        rules: "<strong>Delivery Terms:</strong> Free delivery up to 20 km. Beyond 20 km, +3 GEL per additional 1 km. (Delivery to Kobuleti is 30-35 GEL).",
         status: "Determining your location...",
         lblAddress: "Your Address",
         lblStore: "Nearest Branch",
@@ -334,7 +306,6 @@ const translations = {
     ru: {
         title: "Элит Электроникс",
         subtitle: "Автоматический калькулятор доставки",
-        rules: "<strong>Условия доставки:</strong> Бесплатно до 20 км. Свыше 20 км — +3 GEL за каждый 1 км. (Доставка в Кобулети — 30-35 GEL).",
         status: "Определение вашего местоположения...",
         lblAddress: "Ваш адрес",
         lblStore: "Ближайший филиал",
@@ -348,25 +319,18 @@ const translations = {
     }
 };
 
-// ელიტ ელექტრონიქსის ფილიალები (სამენოვანი დასახელებებით)
+// ელიტ ელექტრონიქსის ფილიალები
 const eliteStores = [
-    // თბილისი
     { names: { ka: "თბილისი - ქავთარაძის #1", en: "Tbilisi - Kavtaradze #1", ru: "Тбилиси - Кавтарадзе #1" }, lat: 41.7238, lon: 44.7472 },
     { names: { ka: "თბილისი - აღმაშენებლის ხეივანი 16-ე კმ", en: "Tbilisi - Agmashenebeli Alley 16th km", ru: "Тбилиси - Аллея Агмашенебели 16-й км" }, lat: 41.7850, lon: 44.7681 },
     { names: { ka: "თბილისი - East Point", en: "Tbilisi - East Point", ru: "Тбилиси - East Point" }, lat: 41.6811, lon: 44.8912 },
     { names: { ka: "თბილისი - City Mall გლდანი", en: "Tbilisi - City Mall Gldani", ru: "Тбилиси - City Mall Глдани" }, lat: 41.7915, lon: 44.8153 },
     { names: { ka: "თბილისი - ცინცაძის #12", en: "Tbilisi - Tsintsadze #12", ru: "Тбилиси - Цинцадзе #12" }, lat: 41.7201, lon: 44.7735 },
-    
-    // ბათუმი
     { names: { ka: "ბათუმი - პეტრე ბაგრატიონის 133", en: "Batumi - Petre Bagrationi 133", ru: "Батуми - Петре Багратиони 133" }, lat: 41.6367, lon: 41.6214 },
     { names: { ka: "ბათუმი - ჭავჭავაძის #31", en: "Batumi - Chavchavadze #31", ru: "Батуми - Чавчавадзе #31" }, lat: 41.6441, lon: 41.6358 },
     { names: { ka: "ბათუმი - Batumi Mall (ტბელ აბუსერიძის #22)", en: "Batumi - Batumi Mall (Abuseridze #22)", ru: "Батуми - Batumi Mall (Абусеридзе #22)" }, lat: 41.6385, lon: 41.6189 },
-
-    // ქუთაისი
     { names: { ka: "ქუთაისი - ირაკლი აბაშიძის #21", en: "Kutaisi - Irakli Abashidze #21", ru: "Кутаиси - Иракли Абашидзе #21" }, lat: 42.2683, lon: 42.6711 },
     { names: { ka: "ქუთაისი - წერეთლის #4", en: "Kutaisi - Tsereteli #4", ru: "Кутаиси - Церетели #4" }, lat: 42.2691, lon: 42.7032 },
-
-    // სხვა ქალაქები
     { names: { ka: "რუსთავი - შარტავას #4", en: "Rustavi - Shartava #4", ru: "Рустави - Шартава #4" }, lat: 41.5412, lon: 45.0034 },
     { names: { ka: "ზუგდიდი - გამსახურდიას გამზ. #28", en: "Zugdidi - Gamsakhurdia Ave #28", ru: "Зугдиди - пр. Гамсахурдия #28" }, lat: 42.5088, lon: 41.8675 },
     { names: { ka: "გორი - სტალინის გამზირი #23", en: "Gori - Stalin Ave #23", ru: "Гори - проспект Сталина #23" }, lat: 41.9854, lon: 44.1102 },
@@ -391,7 +355,6 @@ function changeLanguage(lang) {
     const t = translations[lang];
     document.getElementById('txt-title').innerText = t.title;
     document.getElementById('txt-subtitle').innerText = t.subtitle;
-    document.getElementById('txt-rules').innerHTML = t.rules;
     document.getElementById('txt-status').innerText = t.status;
     document.getElementById('lbl-address').innerText = t.lblAddress;
     document.getElementById('lbl-store').innerText = t.lblStore;
@@ -459,7 +422,7 @@ function processResults() {
         }
         document.getElementById('priceVal').innerText = `${chosenKobuletiPrice} ${t.gel}`;
     } else {
-        // სტანდარტული გამოთვლა
+        // სტანდარტული გამოთვლა (20 კმ-მდე უფასო, შემდეგ +3 ₾/კმ)
         if (minDistance <= 20) {
             document.getElementById('priceVal').innerText = t.free;
         } else {
@@ -536,7 +499,7 @@ function detectByIP() {
         });
 }
 
-// გვერდის ჩატვირთვისთანავე ავტომატურად გაშვება
+// ავტომატური გაშვება ჩატვირთვისას
 window.onload = function() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
