@@ -560,6 +560,14 @@ function handlePaymentAction(val) {
     const closeFreeBtn = document.getElementById('btn-close-free');
     const demontazhVal = document.getElementById('demontazhSelect').value;
     
+    // თუ დემონტაჟის ველი არ არის არჩეული, სრულად ვბლოკავთ მოქმედებებს
+    if (demontazhVal === "") {
+        methodSelect.style.display = 'none';
+        transferInfo.style.display = 'none';
+        closeFreeBtn.style.display = 'none';
+        return;
+    }
+
     if (val === 'refused') {
         methodSelect.style.display = 'none';
         transferInfo.style.display = 'none';
@@ -569,15 +577,12 @@ function handlePaymentAction(val) {
         let addOnCost = demontazhVal === 'demontazh_montazh' ? 30 : 0;
         let totalCost = baseDeliveryCost + addOnCost;
 
-        if (totalCost === 0 && demontazhVal !== "") {
+        if (totalCost === 0) {
             methodSelect.style.display = 'none';
             transferInfo.style.display = 'none';
             closeFreeBtn.style.display = 'block';
-        } else if (totalCost > 0) {
-            methodSelect.style.display = 'block';
-            closeFreeBtn.style.display = 'none';
         } else {
-            methodSelect.style.display = 'none';
+            methodSelect.style.display = 'block';
             closeFreeBtn.style.display = 'none';
         }
     }
@@ -602,13 +607,25 @@ function updateTotalPriceDisplay() {
     const closeFreeBtn = document.getElementById('btn-close-free');
     const transferInfo = document.getElementById('transferInfo');
     
+    // თუ დემონტაჟი არ არის არჩეული, ვმალავთ გადახდის მეთოდებსა და ჩახურვის ღილაკს
+    if (demontazhVal === "") {
+        if (totalCost === 0) {
+            document.getElementById('priceVal').innerText = `${t.free} (0 ${t.gel})`;
+        } else {
+            document.getElementById('priceVal').innerText = `${totalCost} ${t.gel}${baseDeliveryText ? ' ' + baseDeliveryText : ''}`;
+        }
+        paymentMethodSelect.style.display = 'none';
+        transferInfo.style.display = 'none';
+        closeFreeBtn.style.display = 'none';
+        return;
+    }
+
     if (totalCost === 0) {
         document.getElementById('priceVal').innerText = `${t.free} (0 ${t.gel})`;
         paymentMethodSelect.style.display = 'none';
         transferInfo.style.display = 'none';
         
-        // გამოჩნდეს ჩახურვა მხოლოდ მაშინ, როდესაც სტატუსი მითითებულია "გადაიხადა" და არჩეულია დემონტაჟი/მონტაჟი (არცერთი ან მონტაჟი უფასო)
-        if (paymentActionVal === 'paid' && demontazhVal !== "") {
+        if (paymentActionVal === 'paid') {
             closeFreeBtn.style.display = 'block';
             closeFreeBtn.innerText = t.btnCloseFree;
         } else {
