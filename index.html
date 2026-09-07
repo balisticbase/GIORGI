@@ -340,7 +340,7 @@
                         </select>
 
                         <select id="demontazhSelect" class="demontazh-select-inline" onchange="handleDemontazhAction(this.value)">
-                            <option value="" disabled selected id="opt-demontazh-select">დემონტაჟი / მონტაჟი</option>
+                            <option value="" disabled selected id="opt-demontazh-select">სერვისის საფასური</option>
                             <option value="none" id="opt-demontazh-none">არცერთი</option>
                             <option value="montazh_free" id="opt-montazh-free">მონტაჟი უფასო</option>
                             <option value="demontazh_montazh" id="opt-demontazh-montazh">დემონტაჟი მონტაჟი 30 ₾</option>
@@ -382,7 +382,7 @@ const translations = {
         status: "თქვენი მდებარეობა განისაზღვრება...",
         lblAddress: "თქვენი მისამართი",
         lblStore: "უახლოესი ფილიალი",
-        lblPrice: "მიწოდების საფასური",
+        lblPrice: "მიწოდების და სერვისის საფასური",
         free: "უფასო",
         gel: "₾",
         unknownAddr: "მისამართი ვერ დაზუსტდა",
@@ -390,7 +390,7 @@ const translations = {
         optSelect: "სტატუსის არჩევა",
         optPaid: "გადაიხადა",
         optRefused: "უარს ამბობს გადახდაზე",
-        optDemontazhSelect: "დემონტაჟი / მონტაჟი",
+        optDemontazhSelect: "სერვისის საფასური",
         optDemontazhNone: "არცერთი",
         optMontazhFree: "მონტაჟი უფასო",
         optDemontazhMontazh: "დემონტაჟი მონტაჟი 30 ₾",
@@ -411,7 +411,7 @@ const translations = {
         status: "Determining your location...",
         lblAddress: "Your Address",
         lblStore: "Nearest Branch",
-        lblPrice: "Delivery Fee",
+        lblPrice: "Delivery & Service Fee",
         free: "Free",
         gel: "GEL",
         unknownAddr: "Address could not be determined",
@@ -419,7 +419,7 @@ const translations = {
         optSelect: "Select Status",
         optPaid: "Paid",
         optRefused: "Refused to pay",
-        optDemontazhSelect: "Installation/Dismantling",
+        optDemontazhSelect: "Service Fee",
         optDemontazhNone: "None",
         optMontazhFree: "Free Installation",
         optDemontazhMontazh: "Dismantling & Installation 30 GEL",
@@ -440,7 +440,7 @@ const translations = {
         status: "Определение вашего местоположения...",
         lblAddress: "Ваш адрес",
         lblStore: "Ближайший филиал",
-        lblPrice: "Стоимость доставки",
+        lblPrice: "Стоимость доставки и услуг",
         free: "Бесплатно",
         gel: "GEL",
         unknownAddr: "Адрес не определен",
@@ -448,7 +448,7 @@ const translations = {
         optSelect: "Выберите статус",
         optPaid: "Оплачено",
         optRefused: "Отказ от оплаты",
-        optDemontazhSelect: "Монтаж / Демонтаж",
+        optDemontazhSelect: "Плата за обслуживание",
         optDemontazhNone: "Ничего",
         optMontazhFree: "Монтаж бесплатный",
         optDemontazhMontazh: "Демонтаж Монтаж 30 ₾",
@@ -560,7 +560,7 @@ function handlePaymentAction(val) {
     const closeFreeBtn = document.getElementById('btn-close-free');
     const demontazhVal = document.getElementById('demontazhSelect').value;
     
-    // თუ დემონტაჟის ველი არ არის არჩეული, სრულად ვბლოკავთ მოქმედებებს
+    // თუ სერვისის საფასურის ველი არ არის არჩეული, სრულად ვბლოკავთ მოქმედებებს
     if (demontazhVal === "") {
         methodSelect.style.display = 'none';
         transferInfo.style.display = 'none';
@@ -607,7 +607,7 @@ function updateTotalPriceDisplay() {
     const closeFreeBtn = document.getElementById('btn-close-free');
     const transferInfo = document.getElementById('transferInfo');
     
-    // თუ დემონტაჟი არ არის არჩეული, ვმალავთ გადახდის მეთოდებსა და ჩახურვის ღილაკს
+    // თუ სერვისის საფასური არ არის არჩეული, ვმალავთ გადახდის მეთოდებსა და ჩახურვის ღილაკს
     if (demontazhVal === "") {
         if (totalCost === 0) {
             document.getElementById('priceVal').innerText = `${t.free} (0 ${t.gel})`;
