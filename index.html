@@ -356,7 +356,6 @@ let globalRawAddressData = null;
 let map = null;
 let chosenKobuletiPrice = null;
 
-// ენის შეცვლა - ახლა თავიდან ითხოვს მისამართს არჩეულ ენაზე
 function changeLanguage(lang) {
     currentLang = lang;
 
@@ -372,7 +371,6 @@ function changeLanguage(lang) {
     document.getElementById('lbl-distance').innerText = t.lblDistance;
     document.getElementById('lbl-price').innerText = t.lblPrice;
 
-    // თუ კოორდინატები გვაქვს, თავიდან გამოვითხოვოთ მისამართი ახალ ენაზე
     if (globalUserLat !== null && globalUserLon !== null) {
         fetchAddressFromCoords(globalUserLat, globalUserLon);
     }
@@ -429,11 +427,12 @@ function processResults() {
         }
         document.getElementById('priceVal').innerText = `${chosenKobuletiPrice} ${t.gel}`;
     } else {
+        // ტარიფი: 20 კმ-მდე უფასო, 20 კმ-ის ზემოთ +4 ₾ ყოველ 1 კმ-ზე
         if (minDistance <= 20) {
             document.getElementById('priceVal').innerText = t.free;
         } else {
             const extraKm = Math.ceil(minDistance - 20);
-            document.getElementById('priceVal').innerText = `${extraKm * 3} ${t.gel} (+${extraKm} ${t.km})`;
+            document.getElementById('priceVal').innerText = `${extraKm * 4} ${t.gel} (+${extraKm} ${t.km})`;
         }
     }
 
@@ -443,12 +442,10 @@ function processResults() {
     renderMap(globalUserLat, globalUserLon, nearestStore);
 }
 
-// კოორდინატების მიხედვით მისამართის წამოღება არჩეულ ენაზე (accept-language-ის დამატებით)
 function fetchAddressFromCoords(lat, lon) {
     globalUserLat = lat;
     globalUserLon = lon;
     
-    // დავამატეთ &accept-language=
     const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=${currentLang}`;
     
     fetch(url)
