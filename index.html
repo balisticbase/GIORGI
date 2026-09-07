@@ -339,9 +339,9 @@
                         </select>
 
                         <div id="transferInfo" class="transfer-info-box">
-                            <div>პირადი ნომერი გადარიცხვისთვის:</div>
+                            <div id="txt-id-label">პირადი ნომერი გადარიცხვისთვის:</div>
                             <div style="font-size: 15px; font-weight: 800; color: #1e3a8a; margin-top: 4px;">61204074595</div>
-                            <button onclick="renderSuccessScreen()" style="margin-top:8px; width:100%; padding:6px; background:#10b981; color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">
+                            <button id="btn-transfer-done" onclick="renderSuccessScreen()" style="margin-top:8px; width:100%; padding:6px; background:#10b981; color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">
                                 გადარიცხვა დასრულდა
                             </button>
                         </div>
@@ -376,7 +376,13 @@ const translations = {
         optRefused: "უარს ამბობს გადახდაზე",
         optMethodSelect: "აირჩიეთ მეთოდი",
         optCash: "ქეში",
-        optTransfer: "გადარიცხვა"
+        optTransfer: "გადარიცხვა",
+        idLabel: "პირადი ნომერი გადარიცხვისთვის:",
+        btnTransferDone: "გადარიცხვა დასრულდა",
+        screenPaid: "გადახდილია",
+        screenDelivered: "ნივთი ჩაბარებულია",
+        screenAddressLabel: "მიწოდების მისამართი",
+        screenRefused: "დაბრუნდეს ნივთი საწყობში"
     },
     en: {
         title: "Elit Electronics",
@@ -396,7 +402,13 @@ const translations = {
         optRefused: "Refused to pay",
         optMethodSelect: "Select Method",
         optCash: "Cash",
-        optTransfer: "Transfer"
+        optTransfer: "Transfer",
+        idLabel: "Personal ID for transfer:",
+        btnTransferDone: "Transfer Completed",
+        screenPaid: "Paid",
+        screenDelivered: "Item delivered",
+        screenAddressLabel: "Delivery Address",
+        screenRefused: "Return item to warehouse"
     },
     ru: {
         title: "Элит Электроникс",
@@ -416,7 +428,13 @@ const translations = {
         optRefused: "Отказ от оплаты",
         optMethodSelect: "Выберите метод",
         optCash: "Наличные",
-        optTransfer: "Перевод"
+        optTransfer: "Перевод",
+        idLabel: "Личный номер для перевода:",
+        btnTransferDone: "Перевод завершен",
+        screenPaid: "Оплачено",
+        screenDelivered: "Товар доставлен",
+        screenAddressLabel: "Адрес доставки",
+        screenRefused: "Вернуть товар на склад"
     }
 };
 
@@ -464,24 +482,39 @@ function eraseCookie(name) {
 
 function changeLanguage(lang) {
     currentLang = lang;
+    setCookie('appLang', lang, 24 * 30);
 
     document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
     document.getElementById(`btn-${lang}`).classList.add('active');
 
     const t = translations[lang];
-    document.getElementById('txt-title').innerText = t.title;
-    document.getElementById('txt-subtitle').innerText = t.subtitle;
-    document.getElementById('txt-status').innerText = t.status;
-    document.getElementById('lbl-address').innerText = t.lblAddress;
-    document.getElementById('lbl-store').innerText = t.lblStore;
-    document.getElementById('lbl-distance').innerText = t.lblDistance;
-    document.getElementById('lbl-price').innerText = t.lblPrice;
-    document.getElementById('opt-select').innerText = t.optSelect;
-    document.getElementById('opt-paid').innerText = t.optPaid;
-    document.getElementById('opt-refused').innerText = t.optRefused;
-    document.getElementById('opt-method-select').innerText = t.optMethodSelect;
-    document.getElementById('opt-cash').innerText = t.optCash;
-    document.getElementById('opt-transfer').innerText = t.optTransfer;
+
+    let savedStatus = getCookie('deliveryStatus');
+    if (savedStatus === 'paid') {
+        renderSuccessScreen();
+        return;
+    } else if (savedStatus === 'refused') {
+        renderRefusedScreen();
+        return;
+    }
+
+    if (document.getElementById('txt-title')) {
+        document.getElementById('txt-title').innerText = t.title;
+        document.getElementById('txt-subtitle').innerText = t.subtitle;
+        document.getElementById('txt-status').innerText = t.status;
+        document.getElementById('lbl-address').innerText = t.lblAddress;
+        document.getElementById('lbl-store').innerText = t.lblStore;
+        document.getElementById('lbl-distance').innerText = t.lblDistance;
+        document.getElementById('lbl-price').innerText = t.lblPrice;
+        document.getElementById('opt-select').innerText = t.optSelect;
+        document.getElementById('opt-paid').innerText = t.optPaid;
+        document.getElementById('opt-refused').innerText = t.optRefused;
+        document.getElementById('opt-method-select').innerText = t.optMethodSelect;
+        document.getElementById('opt-cash').innerText = t.optCash;
+        document.getElementById('opt-transfer').innerText = t.optTransfer;
+        document.getElementById('txt-id-label').innerText = t.idLabel;
+        document.getElementById('btn-transfer-done').innerText = t.btnTransferDone;
+    }
 
     if (globalUserLat !== null && globalUserLon !== null) {
         fetchAddressFromCoords(globalUserLat, globalUserLon);
@@ -504,6 +537,7 @@ function handlePaymentAction(val) {
 function renderSuccessScreen() {
     setCookie('deliveryStatus', 'paid', 3);
     setCookie('deliveryAddress', currentFormattedAddress, 3);
+    const t = translations[currentLang];
 
     document.body.style.backgroundColor = '#ffffff';
     document.body.innerHTML = `
@@ -531,11 +565,11 @@ function renderSuccessScreen() {
             </div>
 
             <div style="font-size: 40px; font-weight: 800; color: #10b981; margin-bottom: 10px;">
-                გადახდილია
+                ${t.screenPaid}
             </div>
 
             <div style="font-size: 24px; font-weight: 700; color: #0f172a; margin-bottom: 20px;">
-                ნივთი ჩაბარებულია
+                ${t.screenDelivered}
             </div>
 
             <div style="
@@ -547,7 +581,7 @@ function renderSuccessScreen() {
                 width: 100%;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
                 <div style="font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 5px;">
-                    მიწოდების მისამართი
+                    ${t.screenAddressLabel}
                 </div>
                 <div style="font-size: 18px; font-weight: 600; color: #0f172a;">
                     ${currentFormattedAddress}
@@ -559,6 +593,7 @@ function renderSuccessScreen() {
 
 function renderRefusedScreen() {
     setCookie('deliveryStatus', 'refused', 3);
+    const t = translations[currentLang];
 
     document.body.style.backgroundColor = '#ffffff';
     document.body.innerHTML = `
@@ -586,7 +621,7 @@ function renderRefusedScreen() {
             </div>
 
             <div style="font-size: 34px; font-weight: 800; color: #ef4444;">
-                დაბრუნდეს ნივთი საწყობში
+                ${t.screenRefused}
             </div>
         </div>
     `;
@@ -727,26 +762,22 @@ function detectByIP() {
         });
 }
 
-// ---------------- ფარული 10-წამიანი დაჭერა (ორი თითით) ----------------
 let secretHoldTimer = null;
 
 function handleTouchStart(e) {
-    // ვამოწმებთ, რომ ზუსტად 2 თითია დაჭერილი
     if (e.touches.length === 2) {
         clearTimeout(secretHoldTimer);
-        
         secretHoldTimer = setTimeout(() => {
             eraseCookie('deliveryStatus');
             eraseCookie('deliveryAddress');
             window.location.reload();
-        }, 10000); // 10000 მლწ = 10 წამი
+        }, 10000);
     } else {
         clearTimeout(secretHoldTimer);
     }
 }
 
 function handleTouchEnd(e) {
-    // თუ თითებიდან ერთ-ერთი მაინც აუშვა, ტაიმერი უქმდება
     if (e.touches.length < 2) {
         clearTimeout(secretHoldTimer);
     }
@@ -756,15 +787,22 @@ window.addEventListener('touchstart', handleTouchStart);
 window.addEventListener('touchend', handleTouchEnd);
 window.addEventListener('touchcancel', handleTouchEnd);
 
-// --------------------------------------------------------------------------
-
 window.onload = function() {
+    let savedLang = getCookie('appLang');
+    if (savedLang && translations[savedLang]) {
+        currentLang = savedLang;
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        if (document.getElementById(`btn-${savedLang}`)) {
+            document.getElementById(`btn-${savedLang}`).classList.add('active');
+        }
+    }
+
     let savedStatus = getCookie('deliveryStatus');
     let savedAddr = getCookie('deliveryAddress');
 
     if (savedStatus) {
+        if (savedAddr) currentFormattedAddress = savedAddr;
         if (savedStatus === 'paid') {
-            if (savedAddr) currentFormattedAddress = savedAddr;
             renderSuccessScreen();
         } else if (savedStatus === 'refused') {
             renderRefusedScreen();
