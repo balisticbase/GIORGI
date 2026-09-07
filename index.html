@@ -1,1 +1,315 @@
-<script>location='https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/blocklist'</script>
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ელიტ ელექტრონიქსი - ავტომატური ლოკატორი</title>
+    
+    <!-- Leaflet CSS რუკისთვის -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        :root {
+            --primary-color: #e60012;
+            --primary-hover: #cc0010;
+            --bg-color: #f4f6f8;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 25px;
+        }
+
+        .status-box {
+            text-align: center;
+            padding: 15px;
+            background: #eef2f7;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .results-container {
+            display: none;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .result-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .result-item label {
+            display: block;
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
+        .result-item span {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .result-item span.price {
+            color: #27ae60;
+            font-size: 18px;
+        }
+
+        #map {
+            height: 350px;
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(230,0,18,0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>ელიტ ელექტრონიქსი</h1>
+        <p>ავტომატური მიწოდების კალკულატორი</p>
+    </div>
+
+    <div class="content">
+        <div id="status" class="status-box">
+            <span class="spinner"></span> თქვენი მდებარეობა განისაზღვრება...
+        </div>
+
+        <div id="results" class="results-container">
+            <div class="result-grid">
+                <div class="result-item">
+                    <label>თქვენი ლოკაცია</label>
+                    <span id="userLocName">-</span>
+                </div>
+                <div class="result-item">
+                    <label>უახლოესი ფილიალი</label>
+                    <span id="storeName">-</span>
+                </div>
+                <div class="result-item">
+                    <label>მანძილი</label>
+                    <span id="distanceVal">-</span>
+                </div>
+                <div class="result-item">
+                    <label>მიწოდების საფასური</label>
+                    <span id="priceVal" class="price">-</span>
+                </div>
+            </div>
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+// ელიტ ელექტრონიქსის ფილიალები
+const eliteStores = [
+    // თბილისი
+    { name: "თბილისი - ქავთარაძის #1", lat: 41.7238, lon: 44.7472 },
+    { name: "თბილისი - აღმაშენებლის ხეივანი 16-ე კმ", lat: 41.7850, lon: 44.7681 },
+    { name: "თბილისი - East Point", lat: 41.6811, lon: 44.8912 },
+    { name: "თბილისი - City Mall გლდანი", lat: 41.7915, lon: 44.8153 },
+    { name: "თბილისი - ცინცაძის #12", lat: 41.7201, lon: 44.7735 },
+    
+    // ბათუმი
+    { name: "ბათუმი - პეტრე ბაგრატიონის 133", lat: 41.6367, lon: 41.6214 },
+    { name: "ბათუმი - ჭავჭავაძის #31", lat: 41.6441, lon: 41.6358 },
+    { name: "ბათუმი - Batumi Mall (ტბელ აბუსერიძის #22)", lat: 41.6385, lon: 41.6189 },
+
+    // ქუთაისი
+    { name: "ქუთაისი - ირაკლი აბაშიძის #21", lat: 42.2683, lon: 42.6711 },
+    { name: "ქუთაისი - წერეთლის #4", lat: 42.2691, lon: 42.7032 },
+
+    // სხვა ქალაქები
+    { name: "რუსთავი - შარტავას #4", lat: 41.5412, lon: 45.0034 },
+    { name: "ზუგდიდი - გამსახურდიას გამზ. #28", lat: 42.5088, lon: 41.8675 },
+    { name: "გორი - სტალინის გამზირი #23", lat: 41.9854, lon: 44.1102 },
+    { name: "თელავი - ერეკლე II-ის გამზირი #3", lat: 41.9189, lon: 45.4761 },
+    { name: "ფოთი - ჭანტურიას #1", lat: 42.1481, lon: 41.6718 }
+];
+
+let map = null;
+
+// მანძილის გამოთვლა (Haversine Formula)
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
+
+// მიწოდების ფასის გამოთვლა
+function calculatePrice(dist) {
+    if (dist <= 20) {
+        return "უფასო (0 ₾)";
+    } else {
+        const extraKm = Math.ceil(dist - 20);
+        return `${extraKm * 3} ₾ (+${extraKm} კმ)`;
+    }
+}
+
+// შედეგების დახატვა
+function showResults(userLat, userLon, locationLabel) {
+    let nearestStore = null;
+    let minDistance = Infinity;
+
+    eliteStores.forEach(store => {
+        const dist = calculateDistance(userLat, userLon, store.lat, store.lon);
+        if (dist < minDistance) {
+            minDistance = dist;
+            nearestStore = store;
+        }
+    });
+
+    document.getElementById('userLocName').innerText = locationLabel;
+    document.getElementById('storeName').innerText = nearestStore.name;
+    document.getElementById('distanceVal').innerText = minDistance.toFixed(2) + " კმ";
+    document.getElementById('priceVal').innerText = calculatePrice(minDistance);
+
+    document.getElementById('status').style.display = 'none';
+    document.getElementById('results').style.display = 'block';
+
+    renderMap(userLat, userLon, nearestStore);
+}
+
+// რუკის გამოჩენა
+function renderMap(userLat, userLon, store) {
+    map = L.map('map');
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    const userLatLng = [userLat, userLon];
+    const storeLatLng = [store.lat, store.lon];
+
+    L.marker(userLatLng).addTo(map).bindPopup("<b>თქვენი მდებარეობა</b>").openPopup();
+    L.marker(storeLatLng).addTo(map).bindPopup(`<b>${store.name}</b>`);
+
+    L.polyline([userLatLng, storeLatLng], { color: '#e60012', weight: 4 }).addTo(map);
+
+    const bounds = L.latLngBounds([userLatLng, storeLatLng]);
+    map.fitBounds(bounds, { padding: [50, 50] });
+}
+
+// IP-ით ლოკაციის დადგენა (Fallback)
+function detectByIP() {
+    fetch('https://ipapi.co/json/')
+        .then(res => res.json())
+        .then(data => {
+            if(data.latitude && data.longitude) {
+                showResults(data.latitude, data.longitude, `${data.city || 'თქვენი ქალაქი'} (IP)`);
+            } else {
+                document.getElementById('status').innerText = "მდებარეობის ავტომატურად დადგენა ვერ მოხერხდა.";
+            }
+        })
+        .catch(() => {
+            document.getElementById('status').innerText = "მდებარეობის ავტომატურად დადგენა ვერ მოხერხდა.";
+        });
+}
+
+// გვერდის ჩატვირთვისთანავე ავტომატურად გაშვება
+window.onload = function() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                // ზუსტი GPS კოორდინატები
+                showResults(position.coords.latitude, position.coords.longitude, "ზუსტი GPS ლოკაცია");
+            },
+            error => {
+                // თუ მომხმარებელმა GPS დაბლოკა ან ვერ იპოვა, გადადის IP დეტექციაზე
+                detectByIP();
+            },
+            { timeout: 5000 } // 5 წამი ელოდება GPS-ს
+        );
+    } else {
+        detectByIP();
+    }
+};
+</script>
+
+</body>
+</html>
