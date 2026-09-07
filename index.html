@@ -425,7 +425,7 @@ const eliteStores = [
     { names: { ka: "თბილისი - ქავთარაძის #1", en: "Tbilisi - Kavtaradze #1", ru: "Тбилиси - Кавтарадзе #1" }, lat: 41.7238, lon: 44.7472 },
     { names: { ka: "თბილისი - აღმაშენებლის ხეივანი 16-ე კმ", en: "Tbilisi - Agmashenebeli Alley 16th km", ru: "Тбилиси - Аллея Агмашенебели 16-й км" }, lat: 41.7850, lon: 44.7681 },
     { names: { ka: "თბილისი - East Point", en: "Tbilisi - East Point", ru: "Тбилиси - East Point" }, lat: 41.6811, lon: 44.8912 },
-    { names: { ka: "თბილისი - City Mall გლდანი", en: "Tbilisi - City Mall Gldani", ru: "Тбилиси - City Mall Глдани" }, lat: 41.7915, lon: 44.8153 },
+    { names: { ka: "თბილისი - City Mall გლდანი", en: "Tbilisi - City Mall Глдани", ru: "Тбилиси - City Mall Глдани" }, lat: 41.7915, lon: 44.8153 },
     { names: { ka: "თბილისი - ცინცაძის #12", en: "Tbilisi - Tsintsadze #12", ru: "Тбилиси - Цинцадзе #12" }, lat: 41.7201, lon: 44.7735 },
     { names: { ka: "ბათუმი - პეტრე ბაგრატიონის 133", en: "Batumi - Petre Bagrationi 133", ru: "Батуми - Петре Багратиони 133" }, lat: 41.6367, lon: 41.6214 },
     { names: { ka: "ბათუმი - ჭავჭავაძის #31", en: "Batumi - Chavchavadze #31", ru: "Батуми - Чавчавадзе #31" }, lat: 41.6441, lon: 41.6358 },
@@ -447,7 +447,7 @@ let currentFormattedAddress = "";
 let map = null;
 let chosenKobuletiPrice = null;
 
-// Cookie-ს შენახვა 3 საათით (10800 წამი)
+// Cookie-ს შენახვა 3 საათით (3 * 3600 წამი)
 function setCookie(name, value, hours) {
     let maxAge = hours * 3600;
     document.cookie = `${name}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/`;
@@ -500,7 +500,7 @@ function handlePaymentAction(val) {
     }
 }
 
-// წარმატებული გადახდის ეკრანი
+// წარმატებული გადახდის ეკრანი (აჩვენებს მისამართს)
 function renderSuccessScreen() {
     setCookie('deliveryStatus', 'paid', 3);
     setCookie('deliveryAddress', currentFormattedAddress, 3);
@@ -557,10 +557,9 @@ function renderSuccessScreen() {
     `;
 }
 
-// უარის ეკრანი
+// უარის ეკრანი (არ აჩვენებს მისამართს)
 function renderRefusedScreen() {
     setCookie('deliveryStatus', 'refused', 3);
-    setCookie('deliveryAddress', currentFormattedAddress, 3);
 
     document.body.style.backgroundColor = '#ffffff';
     document.body.innerHTML = `
@@ -587,24 +586,8 @@ function renderRefusedScreen() {
                 <i class="fa-solid fa-xmark" style="font-size: 55px; color: white;"></i>
             </div>
 
-            <div style="font-size: 32px; font-weight: 800; color: #ef4444; margin-bottom: 20px;">
+            <div style="font-size: 34px; font-weight: 800; color: #ef4444;">
                 დაბრუნდეს ნივთი საწყობში
-            </div>
-
-            <div style="
-                background: #f8fafc;
-                border: 1px solid #e2e8f0;
-                border-radius: 12px;
-                padding: 15px 20px;
-                max-width: 450px;
-                width: 100%;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
-                <div style="font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 5px;">
-                    მიწოდების მისამართი
-                </div>
-                <div style="font-size: 18px; font-weight: 600; color: #0f172a;">
-                    ${currentFormattedAddress}
-                </div>
             </div>
         </div>
     `;
@@ -750,9 +733,9 @@ window.onload = function() {
     let savedStatus = getCookie('deliveryStatus');
     let savedAddr = getCookie('deliveryAddress');
 
-    if (savedStatus && savedAddr) {
-        currentFormattedAddress = savedAddr;
+    if (savedStatus) {
         if (savedStatus === 'paid') {
+            if (savedAddr) currentFormattedAddress = savedAddr;
             renderSuccessScreen();
         } else if (savedStatus === 'refused') {
             renderRefusedScreen();
