@@ -386,7 +386,7 @@
                     <span id="storeName">-</span>
                 </div>
                 
-                <!-- ხელმოწერის ბლოკი (დაემატა) -->
+                <!-- ხელმოწერის ბლოკი -->
                 <div class="result-item full-width">
                     <div class="result-item-header">
                         <i class="fa-solid fa-signature"></i>
@@ -411,14 +411,14 @@
                     <div class="price-inline-container">
                         <span id="priceVal" class="price">-</span>
                         
-                        <select id="demontazhSelect" class="demontazh-select-inline" disabled onchange="handleDemontazhAction(this.value)">
+                        <select id="demontazhSelect" class="demontazh-select-inline" onchange="handleDemontazhAction(this.value)">
                             <option value="" disabled selected id="opt-demontazh-select">სერვისის საფასური</option>
                             <option value="none" id="opt-demontazh-none">არცერთი</option>
                             <option value="montazh_free" id="opt-montazh-free">მონტაჟი უფასო</option>
                             <option value="demontazh_montazh" id="opt-demontazh-montazh">დემონტაჟი მონტაჟი 30 ₾</option>
                         </select>
 
-                        <select id="paymentActionSelect" class="payment-select-inline" disabled onchange="handlePaymentAction(this.value)">
+                        <select id="paymentActionSelect" class="payment-select-inline" onchange="handlePaymentAction(this.value)">
                             <option value="" disabled selected id="opt-select">სტატუსის არჩევა</option>
                             <option value="paid" id="opt-paid">გადაიხადა</option>
                             <option value="refused" id="opt-refused">უარს ამბობს გადახდაზე</option>
@@ -683,7 +683,6 @@ function initSignatureCanvas() {
     if (!canvas) return;
     ctx = canvas.getContext('2d');
 
-    // Resize canvas to element resolution
     const rect = canvas.parentElement.getBoundingClientRect();
     canvas.width = rect.width || 350;
     canvas.height = 140;
@@ -748,9 +747,6 @@ function clearSignature() {
     isSignatureConfirmed = false;
     savedSignatureDataUrl = "";
     
-    // Disable payment controls again
-    document.getElementById('demontazhSelect').disabled = true;
-    document.getElementById('paymentActionSelect').disabled = true;
     document.getElementById('paymentMethodSelect').style.display = 'none';
     document.getElementById('transferInfo').style.display = 'none';
     document.getElementById('btn-close-free').style.display = 'none';
@@ -777,10 +773,6 @@ function confirmSignature() {
     msg.style.display = 'block';
     msg.style.color = '#10b981';
     msg.innerText = t.sigConfirmedOk;
-
-    // Enable Payment & Service Selectors
-    document.getElementById('demontazhSelect').disabled = false;
-    document.getElementById('paymentActionSelect').disabled = false;
 }
 
 function handlePaymentAction(val) {
@@ -794,13 +786,6 @@ function handlePaymentAction(val) {
         transferInfo.style.display = 'none';
         closeFreeBtn.style.display = 'none';
         renderRefusedScreen();
-        return;
-    }
-    
-    if (demontazhVal === "") {
-        methodSelect.style.display = 'none';
-        transferInfo.style.display = 'none';
-        closeFreeBtn.style.display = 'none';
         return;
     }
 
