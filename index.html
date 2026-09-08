@@ -192,12 +192,6 @@
             word-break: break-word;
         }
 
-        .result-item span.price {
-            color: var(--success-color);
-            font-size: 19px;
-            font-weight: 700;
-        }
-
         .price-inline-container {
             display: flex;
             flex-direction: column;
@@ -314,6 +308,40 @@
             display: none;
         }
 
+        /* 📊 ანგარიშის / ბოლო სექციის სტილები */
+        .price-summary-box {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 14px;
+            margin-top: 10px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-color);
+            margin-bottom: 8px;
+        }
+
+        .summary-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .summary-divider {
+            height: 1px;
+            background-color: #e2e8f0;
+            margin: 10px 0;
+        }
+
+        .summary-total {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--success-color);
+        }
+
         #map {
             height: 300px;
             width: 100%;
@@ -403,11 +431,10 @@
 
                 <div class="result-item full-width">
                     <div class="result-item-header">
-                        <i class="fa-solid fa-tag"></i>
+                        <i class="fa-solid fa-receipt"></i>
                         <label id="lbl-price">ᲛᲘᲬᲝᲓᲔᲑᲘᲡ ᲓᲐ ᲡᲔᲠᲕᲘᲡᲘᲡ ᲡᲐᲤᲐᲡᲣᲠᲘ</label>
                     </div>
                     <div class="price-inline-container">
-                        <span id="priceVal" class="price">-</span>
                         
                         <select id="demontazhSelect" class="demontazh-select-inline" disabled onchange="handleDemontazhAction(this.value)">
                             <option value="" disabled selected id="opt-demontazh-select">სერვისის საფასური</option>
@@ -439,6 +466,24 @@
                                 გადარიცხვა დასრულდა
                             </button>
                         </div>
+
+                        <!-- 📊 ანგარიშის ბლოკი (ბოლოში) -->
+                        <div class="price-summary-box">
+                            <div class="summary-row">
+                                <span id="lbl-transport-title">ტრანსპორტირება:</span>
+                                <span id="val-transport">0 ₾</span>
+                            </div>
+                            <div class="summary-row">
+                                <span id="lbl-service-title">სერვისის საფასური:</span>
+                                <span id="val-service">0 ₾</span>
+                            </div>
+                            <div class="summary-divider"></div>
+                            <div class="summary-row summary-total">
+                                <span id="lbl-total-title">ჯამური თანხა:</span>
+                                <span id="val-total">0 ₾</span>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -486,7 +531,10 @@ const translations = {
         screenAddressLabel: "მიწოდების მისამართი",
         screenServiceLabel: "არჩეული სერვისი",
         screenRefused: "ნივთის დაბრუნება საწყობში",
-        screenSigLabel: "მომხმარებლის ხელმოწერა:"
+        screenSigLabel: "მომხმარებლის ხელმოწერა:",
+        lblTransportTitle: "ტრანსპორტირება:",
+        lblServiceTitle: "სერვისის საფასური:",
+        lblTotalTitle: "ჯამური თანხა:"
     },
     en: {
         title: "Elit Electronics",
@@ -522,7 +570,10 @@ const translations = {
         screenAddressLabel: "Delivery Address",
         screenServiceLabel: "Selected Service",
         screenRefused: "Return item to warehouse",
-        screenSigLabel: "Customer Signature:"
+        screenSigLabel: "Customer Signature:",
+        lblTransportTitle: "Transportation:",
+        lblServiceTitle: "Service Fee:",
+        lblTotalTitle: "Total Amount:"
     },
     ru: {
         title: "Элит Электроникс",
@@ -558,7 +609,10 @@ const translations = {
         screenAddressLabel: "Адрес доставки",
         screenServiceLabel: "Выбранная услуга",
         screenRefused: "Возврат товара на склад",
-        screenSigLabel: "Подпись клиента:"
+        screenSigLabel: "Подпись клиента:",
+        lblTransportTitle: "Транспортировка:",
+        lblServiceTitle: "Плата за услугу:",
+        lblTotalTitle: "Итоговая сумма:"
     }
 };
 
@@ -671,6 +725,9 @@ function changeLanguage(lang) {
         document.getElementById('btn-close-free').innerText = t.btnCloseFree;
         document.getElementById('txt-id-label').innerText = t.idLabel;
         document.getElementById('btn-transfer-done').innerText = t.btnTransferDone;
+        document.getElementById('lbl-transport-title').innerText = t.lblTransportTitle;
+        document.getElementById('lbl-service-title').innerText = t.lblServiceTitle;
+        document.getElementById('lbl-total-title').innerText = t.lblTotalTitle;
     }
 
     if (globalUserLat !== null && globalUserLon !== null) {
@@ -770,8 +827,6 @@ function confirmSignature() {
 
     isSignatureConfirmed = true;
     savedSignatureDataUrl = canvas.toDataURL('image/png');
-    
-    // ხელმოწერის შენახვა LocalStorage-ში
     localStorage.setItem('userSignature', savedSignatureDataUrl);
 
     msg.style.display = 'block';
@@ -833,8 +888,24 @@ function updateTotalPriceDisplay() {
     const closeFreeBtn = document.getElementById('btn-close-free');
     const transferInfo = document.getElementById('transferInfo');
 
+    // ტრანსპორტირების გამოჩენა
+    if (baseDeliveryCost === 0) {
+        document.getElementById('val-transport').innerText = `${t.free} (0 ${t.gel})`;
+    } else {
+        document.getElementById('val-transport').innerText = `${baseDeliveryCost} ${t.gel}${baseDeliveryText ? ' ' + baseDeliveryText : ''}`;
+    }
+
+    // სერვისის გამოჩენა
+    document.getElementById('val-service').innerText = `${addOnCost} ${t.gel}`;
+
+    // ჯამური თანხის გამოჩენა
     if (totalCost === 0) {
-        document.getElementById('priceVal').innerText = `${t.free} (0 ${t.gel})`;
+        document.getElementById('val-total').innerText = `${t.free} (0 ${t.gel})`;
+    } else {
+        document.getElementById('val-total').innerText = `${totalCost} ${t.gel}`;
+    }
+
+    if (totalCost === 0) {
         paymentMethodSelect.style.display = 'none';
         transferInfo.style.display = 'none';
         
@@ -845,7 +916,6 @@ function updateTotalPriceDisplay() {
             closeFreeBtn.style.display = 'none';
         }
     } else {
-        document.getElementById('priceVal').innerText = `${totalCost} ${t.gel}${baseDeliveryText ? ' ' + baseDeliveryText : ''}`;
         closeFreeBtn.style.display = 'none';
         if (paymentActionVal === 'paid') {
             paymentMethodSelect.style.display = 'block';
@@ -861,6 +931,10 @@ function renderSuccessScreen() {
     const sigImg = savedSignatureDataUrl || localStorage.getItem('userSignature');
     const serviceText = getCookie('selectedService') || '-';
 
+    const demontazhVal = document.getElementById('demontazhSelect') ? document.getElementById('demontazhSelect').value : '';
+    let addOnCost = demontazhVal === 'demontazh_montazh' ? 30 : 0;
+    let totalCost = baseDeliveryCost + addOnCost;
+
     document.body.style.backgroundColor = '#ffffff';
     document.body.innerHTML = `
         <div style="
@@ -874,8 +948,8 @@ function renderSuccessScreen() {
             font-family: 'Outfit', sans-serif;">
             
             <div style="
-                width: 100px; 
-                height: 100px; 
+                width: 90px; 
+                height: 90px; 
                 background-color: #10b981; 
                 border-radius: 50%; 
                 display: flex; 
@@ -883,14 +957,14 @@ function renderSuccessScreen() {
                 justify-content: center; 
                 box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
                 margin-bottom: 20px;">
-                <i class="fa-solid fa-check" style="font-size: 50px; color: white;"></i>
+                <i class="fa-solid fa-check" style="font-size: 45px; color: white;"></i>
             </div>
 
-            <div style="font-size: 36px; font-weight: 800; color: #10b981; margin-bottom: 8px;">
+            <div style="font-size: 32px; font-weight: 800; color: #10b981; margin-bottom: 6px;">
                 ${t.screenPaid}
             </div>
 
-            <div style="font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 20px;">
+            <div style="font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 20px;">
                 ${t.screenDelivered}
             </div>
 
@@ -898,24 +972,41 @@ function renderSuccessScreen() {
                 background: #f8fafc;
                 border: 1px solid #e2e8f0;
                 border-radius: 12px;
-                padding: 15px 20px;
+                padding: 18px 20px;
                 max-width: 450px;
                 width: 100%;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+                box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+                text-align: left;">
                 
-                <div style="font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">
+                <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">
                     ${t.screenAddressLabel}
                 </div>
-                <div style="font-size: 15px; font-weight: 600; color: #0f172a; margin-bottom: 12px;">
+                <div style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px;">
                     ${currentFormattedAddress}
                 </div>
 
                 <div style="border-top: 1px dashed #cbd5e1; padding-top: 10px; margin-bottom: 12px;">
-                    <div style="font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">
+                    <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">
                         ${t.screenServiceLabel}
                     </div>
-                    <div style="font-size: 15px; font-weight: 700; color: #e60012;">
+                    <div style="font-size: 14px; font-weight: 700; color: #e60012;">
                         ${serviceText}
+                    </div>
+                </div>
+
+                <!-- 📊 ფასების დეტალური ჩამონათვალი -->
+                <div style="border-top: 1px dashed #cbd5e1; padding-top: 10px; margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 13px; color: #334155; margin-bottom: 4px;">
+                        <span>${t.lblTransportTitle}</span>
+                        <span style="font-weight: 600;">${baseDeliveryCost === 0 ? t.free : baseDeliveryCost + ' ' + t.gel}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 13px; color: #334155; margin-bottom: 6px;">
+                        <span>${t.lblServiceTitle}</span>
+                        <span style="font-weight: 600;">${addOnCost} ${t.gel}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 800; color: #10b981; border-top: 1px solid #cbd5e1; padding-top: 6px;">
+                        <span>${t.lblTotalTitle}</span>
+                        <span>${totalCost === 0 ? t.free : totalCost + ' ' + t.gel}</span>
                     </div>
                 </div>
 
@@ -924,7 +1015,7 @@ function renderSuccessScreen() {
                         <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 5px;">
                             ${t.screenSigLabel}
                         </div>
-                        <img src="${sigImg}" style="max-width: 100%; height: 80px; object-fit: contain; border: 1px solid #e2e8f0; border-radius: 8px; background: white;" />
+                        <img src="${sigImg}" style="max-width: 100%; height: 70px; object-fit: contain; border: 1px solid #e2e8f0; border-radius: 8px; background: white;" />
                     </div>
                 ` : ''}
             </div>
@@ -949,8 +1040,8 @@ function renderRefusedScreen() {
             font-family: 'Outfit', sans-serif;">
             
             <div style="
-                width: 100px; 
-                height: 100px; 
+                width: 90px; 
+                height: 90px; 
                 background-color: #ef4444; 
                 border-radius: 50%; 
                 display: flex; 
@@ -958,10 +1049,10 @@ function renderRefusedScreen() {
                 justify-content: center; 
                 box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
                 margin-bottom: 20px;">
-                <i class="fa-solid fa-xmark" style="font-size: 50px; color: white;"></i>
+                <i class="fa-solid fa-xmark" style="font-size: 45px; color: white;"></i>
             </div>
 
-            <div style="font-size: 32px; font-weight: 800; color: #ef4444;">
+            <div style="font-size: 30px; font-weight: 800; color: #ef4444;">
                 ${t.screenRefused}
             </div>
         </div>
