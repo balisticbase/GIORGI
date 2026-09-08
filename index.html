@@ -200,22 +200,8 @@
             gap: 8px;
         }
 
-        .payment-select-inline {
+        .payment-select-inline, .demontazh-select-inline {
             margin-top: 4px;
-            width: 100%;
-            padding: 6px 10px;
-            border-radius: 6px;
-            border: 1px solid #cbd5e1;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-color);
-            background: #ffffff;
-            cursor: pointer;
-            outline: none;
-        }
-
-        .demontazh-select-inline {
-            margin-top: 2px;
             width: 100%;
             padding: 6px 10px;
             border-radius: 6px;
@@ -466,25 +452,18 @@ const translations = {
 };
 
 const eliteStores = [
-    // თბილისი
     { names: { ka: "თბილისი - ქავთარაძის #3", en: "Tbilisi - Kavtaradze #3", ru: "Тбилиси - Кавтарадзе #3" }, lat: 41.7247, lon: 44.7431 },
     { names: { ka: "თბილისი - სითი მოლი გლდანი", en: "Tbilisi - City Mall Gldani", ru: "Тбилиси - Сити Молл Глдани" }, lat: 41.7956, lon: 44.8236 },
     { names: { ka: "თბილისი - ისთ ფოინთი", en: "Tbilisi - East Point", ru: "Тбилиси - Ист Поинт" }, lat: 41.6853, lon: 44.8871 },
     { names: { ka: "თბილისი - ცენტრალი (სადგურის მოედანი)", en: "Tbilisi - Tsentrali (Railway Sq)", ru: "Тбилиси - Централи (Вокзальная пл.)" }, lat: 41.7208, lon: 44.7981 },
     { names: { ka: "თბილისი - აღმაშენებლის ხეივანი 2ა (აუთლეტი)", en: "Tbilisi - Agmashenebeli Alley 2a", ru: "Тбилиси - Аллея Агмашенебели 2а" }, lat: 41.7766, lon: 44.7709 },
-
-    // ბათუმი
     { names: { ka: "ბათუმი - ჭავჭავაძის #78/88", en: "Batumi - Chavchavadze #78/88", ru: "Батуми - Чавчавадзе #78/88" }, lat: 41.6425, lon: 41.6247 },
     { names: { ka: "ბათუმი - გორგილაძის #94", en: "Batumi - Gorgiladze #94", ru: "Батуми - Горгиладзе #94" }, lat: 41.6441, lon: 41.6186 },
     { names: { ka: "ბათუმი - ფრიდონ ხალვაშის #20 (აუთლეტი)", en: "Batumi - Pridon Khalvashi #20", ru: "Батуми - Фридон Халваши #20" }, lat: 41.6171, lon: 41.6094 },
-
-    // ქუთაისი
     { names: { ka: "ქუთაისი - გამსახურდიას #5", en: "Kutaisi - Gamsakhurdia #5", ru: "Кутаиси - Гамсахурдия #5" }, lat: 42.2699, lon: 42.7024 },
     { names: { ka: "ქუთაისი - რუსთაველის #95", en: "Kutaisi - Rustaveli #95", ru: "Кутаиси - Руставели #95" }, lat: 42.2588, lon: 42.6963 },
-
-    // სხვა რეგიონები და ქალაქები
     { names: { ka: "რუსთავი - შარტავას #4", en: "Rustavi - Shartava #4", ru: "Рустави - Шартава #4" }, lat: 41.5435, lon: 44.9961 },
-    { names: { ka: "ზუგდიდი - კიკალიშვილის #6", en: "Zugdidi - Kikalishvili #6", ru: "Зугдиди - Кикалишвили #6" }, lat: 42.5085, lon: 41.8741 },
+    { names: { ka: "ზუგდიდი - კიკალიშვილის #6", en: "Zugdidi - Kikalishvili #6", ru: "Зუგდიדי - Кикалишвили #6" }, lat: 42.5085, lon: 41.8741 },
     { names: { ka: "ფოთი - რუსთაველის მოედანი #5", en: "Poti - Rustaveli sq. #5", ru: "Поти - пл. Руставели #5" }, lat: 42.1466, lon: 41.6698 },
     { names: { ka: "ოზურგეთი - გაბრიელ ეპისკოპოსის #2", en: "Ozurgeti - Gabriel Episkoposi #2", ru: "Озургети - Габриела Епископоса #2" }, lat: 41.9231, lon: 42.0003 },
     { names: { ka: "ახალციხე - კოსტავას #39ა", en: "Akhaltsikhe - Kostava #39a", ru: "Ахалцихе - Костава #39а" }, lat: 41.6405, lon: 42.9868 },
@@ -503,6 +482,8 @@ let globalUserLat = null;
 let globalUserLon = null;
 let globalRawAddressData = null;
 let currentFormattedAddress = "";
+let initialAddress = null; // პირველადი მისამართის შესანახად
+let watchId = null;
 let map = null;
 let chosenKobuletiPrice = null;
 let baseDeliveryCost = 0;
@@ -614,12 +595,9 @@ function updateTotalPriceDisplay() {
     const demontazhVal = document.getElementById('demontazhSelect').value;
     const paymentActionVal = document.getElementById('paymentActionSelect').value;
     
-    let addOnCost = 0;
-    if (demontazhVal === 'demontazh_montazh') {
-        addOnCost = 30;
-    }
-    
+    let addOnCost = (demontazhVal === 'demontazh_montazh') ? 30 : 0;
     let totalCost = baseDeliveryCost + addOnCost;
+    
     const paymentMethodSelect = document.getElementById('paymentMethodSelect');
     const closeFreeBtn = document.getElementById('btn-close-free');
     const transferInfo = document.getElementById('transferInfo');
@@ -798,6 +776,20 @@ function processResults() {
         formattedAddr = globalRawAddressData;
     }
 
+    // ავტომატური ჩახურვის ლოგიკა მისამართის შეცვლისას
+    if (!initialAddress && formattedAddr && formattedAddr !== t.unknownAddr) {
+        initialAddress = formattedAddr;
+    } else if (initialAddress && formattedAddr && formattedAddr !== t.unknownAddr && initialAddress !== formattedAddr) {
+        let paymentStatus = getCookie('deliveryStatus') || document.getElementById('paymentActionSelect')?.value;
+        if (paymentStatus === 'refused') {
+            renderRefusedScreen();
+        } else {
+            renderSuccessScreen();
+        }
+        if (watchId !== null) navigator.geolocation.clearWatch(watchId);
+        return;
+    }
+
     currentFormattedAddress = formattedAddr;
     document.getElementById('userAddressVal').innerText = formattedAddr;
     document.getElementById('storeName').innerText = nearestStore.names[currentLang] || nearestStore.names['ka'];
@@ -937,14 +929,14 @@ window.onload = function() {
     }
 
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
+        watchId = navigator.geolocation.watchPosition(
             position => {
                 fetchAddressFromCoords(position.coords.latitude, position.coords.longitude);
             },
             error => {
                 detectByIP();
             },
-            { timeout: 5000 }
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 3000 }
         );
     } else {
         detectByIP();
