@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ელიტ ელექტრონიქსი - ავტომატური ლოკატორი</title>
     
-    <!-- Leaflet CSS რუკისთვის -->
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <!-- Google Font & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Outfit', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            user-select: none;
+            /* user-select: none; - ამოღებულია თარგმანის კონფლიქტის გამო */
         }
 
         body {
@@ -308,7 +308,6 @@
             display: none;
         }
 
-        /* განახლებული სტილები ინვოისის/ფასების ბლოკისთვის */
         .price-summary-box {
             background: #ffffff;
             border: 1px solid #cbd5e1;
@@ -438,7 +437,7 @@
                 <div class="result-item full-width">
                     <div class="result-item-header">
                         <i class="fa-solid fa-receipt"></i>
-                        <label id="lbl-price">ᲛᲘᲬᲝᲓᲔᲑᲘᲡ ᲓᲐ ᲡᲔᲠᲕᲘᲡᲘᲡ ᲡᲐᲤᲐᲡᲣᲠᲘ</label>
+                        <label id="lbl-price">მიწოდების და სერვისის საფასური</label>
                     </div>
                     <div class="price-inline-container">
                         
@@ -690,6 +689,7 @@ function clearAllCookiesAndReload() {
 
 function changeLanguage(lang) {
     currentLang = lang;
+    document.documentElement.lang = lang; // აცნობებს ბრაუზერს ენის ცვლილების შესახებ
     setCookie('appLang', lang, 24 * 30);
 
     document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
@@ -1234,6 +1234,7 @@ window.onload = function() {
     let savedLang = getCookie('appLang');
     if (savedLang && translations[savedLang]) {
         currentLang = savedLang;
+        document.documentElement.lang = savedLang;
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
         if (document.getElementById(`btn-${savedLang}`)) {
             document.getElementById(`btn-${savedLang}`).classList.add('active');
