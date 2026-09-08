@@ -308,6 +308,7 @@
             display: none;
         }
 
+        /* განახლებული სტილები ინვოისის/ფასების ბლოკისთვის */
         .price-summary-box {
             background: #ffffff;
             border: 1px solid #cbd5e1;
@@ -318,10 +319,8 @@
 
         .summary-row {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-            color: var(--text-color);
+            flex-direction: column;
+            gap: 2px;
             margin-bottom: 8px;
         }
 
@@ -329,16 +328,24 @@
             margin-bottom: 0;
         }
 
+        .summary-row label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-color);
+            text-transform: none;
+            letter-spacing: normal;
+        }
+
+        .summary-row span {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
         .summary-divider {
             height: 1px;
             background-color: #e2e8f0;
             margin: 10px 0;
-        }
-
-        .summary-total {
-            font-size: 13px;
-            font-weight: 400;
-            color: var(--text-color);
         }
 
         #map {
@@ -468,16 +475,16 @@
 
                         <div class="price-summary-box">
                             <div class="summary-row">
-                                <span id="lbl-transport-title">ტრანსპორტირება:</span>
+                                <label id="lbl-transport-title">ტრანსპორტირება:</label>
                                 <span id="val-transport">უფასო 0 ₾</span>
                             </div>
                             <div class="summary-row">
-                                <span id="lbl-service-title">სერვისის საფასური:</span>
+                                <label id="lbl-service-title">სერვისის საფასური:</label>
                                 <span id="val-service">0 ₾</span>
                             </div>
                             <div class="summary-divider"></div>
-                            <div class="summary-row summary-total">
-                                <span id="lbl-total-title">ჯამური თანხა:</span>
+                            <div class="summary-row">
+                                <label id="lbl-total-title">ჯამური თანხა:</label>
                                 <span id="val-total">უფასო 0 ₾</span>
                             </div>
                         </div>
@@ -626,7 +633,7 @@ const eliteStores = [
     { names: { ka: "ქუთაისი - გამსახურდიას #5", en: "Kutaisi - Gamsakhurdia #5", ru: "Кутаиси - Гамсахурдия #5" }, lat: 42.2699, lon: 42.7024 },
     { names: { ka: "ქუთაისი - რუსთაველის #95", en: "Kutaisi - Rustaveli #95", ru: "Кутаиси - Руставели #95" }, lat: 42.2588, lon: 42.6963 },
     { names: { ka: "რუსთავი - შარტავას #4", en: "Rustavi - Shartava #4", ru: "Рустави - Шартава #4" }, lat: 41.5435, lon: 44.9961 },
-    { names: { ka: "ზუგდიდი - კიკალიშვილის #6", en: "Zugdidi - Kikalishvili #6", ru: "Зუგდიדי - Кикалишвили #6" }, lat: 42.5085, lon: 41.8741 },
+    { names: { ka: "ზუგდიდი - კიკალიშვილის #6", en: "Zugdidi - Kikalishvili #6", ru: "Зუგდიდი - Кикалишвили #6" }, lat: 42.5085, lon: 41.8741 },
     { names: { ka: "ფოთი - რუსთაველის მოედანი #5", en: "Poti - Rustaveli sq. #5", ru: "Поти - пл. Руставели #5" }, lat: 42.1466, lon: 41.6698 },
     { names: { ka: "ოზურგეთი - გაბრიელ ეპისკოპოსის #2", en: "Ozurgeti - Gabriel Episkoposi #2", ru: "Озургети - Габриела Епископоса #2" }, lat: 41.9231, lon: 42.0003 },
     { names: { ka: "ახალციხე - კოსტავას #39ა", en: "Akhaltsikhe - Kostava #39a", ru: "Ахалцихе - Костава #39а" }, lat: 41.6405, lon: 42.9868 },
@@ -989,17 +996,17 @@ function renderSuccessScreen() {
                 </div>
 
                 <div style="border-top: 1px dashed #cbd5e1; padding-top: 10px; margin-bottom: 12px;">
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; color: #334155; margin-bottom: 4px;">
-                        <span>${t.lblTransportTitle}</span>
-                        <span style="font-weight: 600;">${baseDeliveryCost === 0 ? t.free + ' 0 ' + t.gel : baseDeliveryCost + ' ' + t.gel}</span>
+                    <div style="margin-bottom: 8px;">
+                        <div style="font-size: 13px; font-weight: 500; color: #0f172a;">${t.lblTransportTitle}</div>
+                        <div style="font-size: 15px; font-weight: 600; color: #0f172a;">${baseDeliveryCost === 0 ? t.free + ' 0 ' + t.gel : baseDeliveryCost + ' ' + t.gel}</div>
                     </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; color: #334155; margin-bottom: 6px;">
-                        <span>${t.lblServiceTitle}</span>
-                        <span style="font-weight: 600;">${addOnCost} ${t.gel}</span>
+                    <div style="margin-bottom: 8px;">
+                        <div style="font-size: 13px; font-weight: 500; color: #0f172a;">${t.lblServiceTitle}</div>
+                        <div style="font-size: 15px; font-weight: 600; color: #0f172a;">${addOnCost} ${t.gel}</div>
                     </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 400; color: #334155; border-top: 1px solid #cbd5e1; padding-top: 6px;">
-                        <span>${t.lblTotalTitle}</span>
-                        <span>${totalCost === 0 ? t.free + ' 0 ' + t.gel : totalCost + ' ' + t.gel}</span>
+                    <div style="border-top: 1px solid #cbd5e1; padding-top: 8px;">
+                        <div style="font-size: 13px; font-weight: 500; color: #0f172a;">${t.lblTotalTitle}</div>
+                        <div style="font-size: 15px; font-weight: 600; color: #0f172a;">${totalCost === 0 ? t.free + ' 0 ' + t.gel : totalCost + ' ' + t.gel}</div>
                     </div>
                 </div>
 
