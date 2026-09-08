@@ -254,7 +254,6 @@
             font-weight: 600;
         }
 
-        /* Canvas Signature Style */
         .signature-wrapper {
             position: relative;
             border: 2px dashed #cbd5e1;
@@ -387,7 +386,6 @@
                     <span id="storeName">-</span>
                 </div>
                 
-                <!-- ხელმოწერის ბლოკი -->
                 <div class="result-item full-width">
                     <div class="result-item-header">
                         <i class="fa-solid fa-signature"></i>
@@ -403,7 +401,6 @@
                     <div id="sigStatusMsg" class="sig-status-text"></div>
                 </div>
 
-                <!-- გადახდისა და სერვისის ბლოკი -->
                 <div class="result-item full-width">
                     <div class="result-item-header">
                         <i class="fa-solid fa-tag"></i>
@@ -412,7 +409,6 @@
                     <div class="price-inline-container">
                         <span id="priceVal" class="price">-</span>
                         
-                        <!-- დაბლოკილია ხელმოწერამდე -->
                         <select id="demontazhSelect" class="demontazh-select-inline" disabled onchange="handleDemontazhAction(this.value)">
                             <option value="" disabled selected id="opt-demontazh-select">სერვისის საფასური</option>
                             <option value="none" id="opt-demontazh-none">არცერთი</option>
@@ -420,7 +416,6 @@
                             <option value="demontazh_montazh" id="opt-demontazh-montazh">დემონტაჟი მონტაჟი 30 ₾</option>
                         </select>
 
-                        <!-- სტატუსის არჩევა ("გადაიხადა" დაბლოკილია ხელმოწერამდე, "უარს ამბობს" ღიაა) -->
                         <select id="paymentActionSelect" class="payment-select-inline" onchange="handlePaymentAction(this.value)">
                             <option value="" disabled selected id="opt-select">სტატუსის არჩევა</option>
                             <option value="paid" id="opt-paid" disabled>გადაიხადა</option>
@@ -489,6 +484,7 @@ const translations = {
         screenPaid: "გადახდილია",
         screenDelivered: "ნივთი ჩაბარებულია",
         screenAddressLabel: "მიწოდების მისამართი",
+        screenServiceLabel: "არჩეული სერვისი",
         screenRefused: "ნივთის დაბრუნება საწყობში",
         screenSigLabel: "მომხმარებლის ხელმოწერა:"
     },
@@ -524,6 +520,7 @@ const translations = {
         screenPaid: "Paid",
         screenDelivered: "Item delivered",
         screenAddressLabel: "Delivery Address",
+        screenServiceLabel: "Selected Service",
         screenRefused: "Return item to warehouse",
         screenSigLabel: "Customer Signature:"
     },
@@ -559,6 +556,7 @@ const translations = {
         screenPaid: "Оплачено",
         screenDelivered: "Товар доставлен",
         screenAddressLabel: "Адрес доставки",
+        screenServiceLabel: "Выбранная услуга",
         screenRefused: "Возврат товара на склад",
         screenSigLabel: "Подпись клиента:"
     }
@@ -600,7 +598,6 @@ let chosenKobuletiPrice = null;
 let baseDeliveryCost = 0;
 let baseDeliveryText = "";
 
-// Signature State variables
 let canvas, ctx;
 let isDrawing = false;
 let isSigned = false;
@@ -626,9 +623,10 @@ function eraseCookie(name) {
 function clearAllCookiesAndReload() {
     eraseCookie('deliveryStatus');
     eraseCookie('deliveryAddress');
+    eraseCookie('selectedService');
     eraseCookie('lastLat');
     eraseCookie('lastLon');
-    eraseCookie('userSignature');
+    localStorage.removeItem('userSignature');
     window.location.reload();
 }
 
@@ -680,7 +678,6 @@ function changeLanguage(lang) {
     }
 }
 
-// Canvas Initialization & Handlers
 function initSignatureCanvas() {
     canvas = document.getElementById('signatureCanvas');
     if (!canvas) return;
@@ -695,13 +692,11 @@ function initSignatureCanvas() {
     ctx.lineJoin = 'round';
     ctx.strokeStyle = '#0f172a';
 
-    // Mouse Events
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', stopDrawing);
     canvas.addEventListener('mouseleave', stopDrawing);
 
-    // Touch Events
     canvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
         startDrawing(e.touches[0]);
@@ -749,8 +744,8 @@ function clearSignature() {
     isSigned = false;
     isSignatureConfirmed = false;
     savedSignatureDataUrl = "";
+    localStorage.removeItem('userSignature');
     
-    // ხელმოწერის გასუფთავებისას იბლოკება სერვისის არჩევა და "გადაიხადა" ოფცია
     document.getElementById('demontazhSelect').disabled = true;
     document.getElementById('opt-paid').disabled = true;
     
@@ -775,13 +770,14 @@ function confirmSignature() {
 
     isSignatureConfirmed = true;
     savedSignatureDataUrl = canvas.toDataURL('image/png');
-    setCookie('userSignature', savedSignatureDataUrl, 3);
+    
+    // ხელმოწერის შენახვა LocalStorage-ში
+    localStorage.setItem('userSignature', savedSignatureDataUrl);
 
     msg.style.display = 'block';
     msg.style.color = '#10b981';
     msg.innerText = t.sigConfirmedOk;
 
-    // ხელმოწერის დადასტურებისას განბლოკოს სერვისიც და "გადაიხადა" ოფციაც
     document.getElementById('demontazhSelect').disabled = false;
     document.getElementById('opt-paid').disabled = false;
 }
@@ -816,6 +812,9 @@ function handlePaymentAction(val) {
 }
 
 function handleDemontazhAction(val) {
+    const selectElem = document.getElementById('demontazhSelect');
+    const selectedText = selectElem.options[selectElem.selectedIndex].text;
+    setCookie('selectedService', selectedText, 3);
     updateTotalPriceDisplay();
 }
 
@@ -857,8 +856,10 @@ function updateTotalPriceDisplay() {
 function renderSuccessScreen() {
     setCookie('deliveryStatus', 'paid', 3);
     setCookie('deliveryAddress', currentFormattedAddress, 3);
+    
     const t = translations[currentLang];
-    const sigImg = savedSignatureDataUrl || getCookie('userSignature');
+    const sigImg = savedSignatureDataUrl || localStorage.getItem('userSignature');
+    const serviceText = getCookie('selectedService') || '-';
 
     document.body.style.backgroundColor = '#ffffff';
     document.body.innerHTML = `
@@ -902,15 +903,24 @@ function renderSuccessScreen() {
                 width: 100%;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
                 
-                <div style="font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 5px;">
+                <div style="font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">
                     ${t.screenAddressLabel}
                 </div>
-                <div style="font-size: 16px; font-weight: 600; color: #0f172a; margin-bottom: 15px;">
+                <div style="font-size: 15px; font-weight: 600; color: #0f172a; margin-bottom: 12px;">
                     ${currentFormattedAddress}
                 </div>
 
+                <div style="border-top: 1px dashed #cbd5e1; padding-top: 10px; margin-bottom: 12px;">
+                    <div style="font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">
+                        ${t.screenServiceLabel}
+                    </div>
+                    <div style="font-size: 15px; font-weight: 700; color: #e60012;">
+                        ${serviceText}
+                    </div>
+                </div>
+
                 ${sigImg ? `
-                    <div style="border-top: 1px dashed #cbd5e1; pt-3; margin-top: 10px; padding-top: 10px;">
+                    <div style="border-top: 1px dashed #cbd5e1; padding-top: 10px;">
                         <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 5px;">
                             ${t.screenSigLabel}
                         </div>
