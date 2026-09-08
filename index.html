@@ -918,7 +918,8 @@ function updateTotalPriceDisplay() {
     const t = translations[currentLang];
     const demontazhElem = document.getElementById('demontazhSelect');
     const demontazhVal = demontazhElem ? demontazhElem.value : getCookie('selectedDemontazhVal');
-    const paymentActionVal = document.getElementById('paymentActionSelect').value;
+    const paymentActionSelect = document.getElementById('paymentActionSelect');
+    const paymentActionVal = paymentActionSelect.value;
     
     let addOnCost = (demontazhVal === 'demontazh_montazh') ? 30 : 0;
     setCookie('addOnCost', addOnCost, 3);
@@ -927,6 +928,18 @@ function updateTotalPriceDisplay() {
     const paymentMethodSelect = document.getElementById('paymentMethodSelect');
     const closeFreeBtn = document.getElementById('btn-close-free');
     const transferInfo = document.getElementById('transferInfo');
+    const optRefused = document.getElementById('opt-refused');
+
+    if (totalCost <= 0) {
+        optRefused.disabled = true;
+        if (paymentActionVal === 'refused') {
+            paymentActionSelect.value = "";
+            paymentMethodSelect.style.display = 'none';
+            transferInfo.style.display = 'none';
+        }
+    } else {
+        optRefused.disabled = false;
+    }
 
     if (baseDeliveryCost === 0) {
         document.getElementById('val-transport').innerText = `${t.free} 0 ${t.gel}`;
