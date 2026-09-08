@@ -631,7 +631,7 @@ const eliteStores = [
     { names: { ka: "ქუთაისი - გამსახურდიას #5", en: "Kutaisi - Gamsakhurdia #5", ru: "Кутаиси - Гамсахурдия #5" }, lat: 42.2699, lon: 42.7024 },
     { names: { ka: "ქუთაისი - რუსთაველის #95", en: "Kutaisi - Rustaveli #95", ru: "Кутаиси - Руставели #95" }, lat: 42.2588, lon: 42.6963 },
     { names: { ka: "რუსთავი - შარტავას #4", en: "Rustavi - Shartava #4", ru: "Рустави - Шартава #4" }, lat: 41.5435, lon: 44.9961 },
-    { names: { ka: "ზუგდიდი - კიკალიშვილის #6", en: "Zugdidi - Kikalishvili #6", ru: "Зუგдიდი - Кикалишвили #6" }, lat: 42.5085, lon: 41.8741 },
+    { names: { ka: "ზუგდიდი - კიკალიშვილის #6", en: "Zugdidi - Kikalishvili #6", ru: "Зუგდიდი - Кикалишвили #6" }, lat: 42.5085, lon: 41.8741 },
     { names: { ka: "ფოთი - რუსთაველის მოედანი #5", en: "Poti - Rustaveli sq. #5", ru: "Поти - пл. Руставели #5" }, lat: 42.1466, lon: 41.6698 },
     { names: { ka: "ოზურგეთი - გაბრიელ ეპისკოპოსის #2", en: "Ozurgeti - Gabriel Episkoposi #2", ru: "Озургети - Габриела Епископоса #2" }, lat: 41.9231, lon: 42.0003 },
     { names: { ka: "ახალციხე - კოსტავას #39ა", en: "Akhaltsikhe - Kostava #39a", ru: "Ахалцихе - Костава #39а" }, lat: 41.6405, lon: 42.9868 },
@@ -680,6 +680,9 @@ function clearAllCookiesAndReload() {
     eraseCookie('deliveryStatus');
     eraseCookie('deliveryAddress');
     eraseCookie('selectedService');
+    eraseCookie('selectedDemontazhVal');
+    eraseCookie('baseDeliveryCost');
+    eraseCookie('addOnCost');
     eraseCookie('lastLat');
     eraseCookie('lastLon');
     localStorage.removeItem('userSignature');
@@ -692,7 +695,9 @@ function changeLanguage(lang) {
     setCookie('appLang', lang, 24 * 30);
 
     document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(`btn-${lang}`).classList.add('active');
+    if (document.getElementById(`btn-${lang}`)) {
+        document.getElementById(`btn-${lang}`).classList.add('active');
+    }
 
     const t = translations[lang];
 
@@ -744,9 +749,7 @@ function initSignatureCanvas() {
     ctx = canvas.getContext('2d');
 
     const rect = canvas.parentElement.getBoundingClientRect();
-    const width = rect.width > 0 ? rect.width : 700;
-    
-    canvas.width = width;
+    canvas.width = rect.width || 350;
     canvas.height = 140;
 
     ctx.lineWidth = 2.5;
@@ -754,20 +757,22 @@ function initSignatureCanvas() {
     ctx.lineJoin = 'round';
     ctx.strokeStyle = '#0f172a';
 
-    canvas.onmousedown = startDrawing;
-    canvas.onmousemove = draw;
-    canvas.onmouseup = stopDrawing;
-    canvas.onmouseleave = stopDrawing;
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseleave', stopDrawing);
 
-    canvas.ontouchstart = (e) => {
+    canvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
         startDrawing(e.touches[0]);
-    };
-    canvas.ontouchmove = (e) => {
+    });
+    canvas.addEventListener('touchmove', (e) => {
         e.preventDefault();
         draw(e.touches[0]);
-    };
-    canvas.ontouchend = stopDrawing;
+    });
+    canvas.addEventListener('touchend', stopDrawing);
+
+    restoreSignatureState();
 }
 
 function getPos(e) {
@@ -842,6 +847,31 @@ function confirmSignature() {
     document.getElementById('opt-paid').disabled = false;
 }
 
+function restoreSignatureState() {
+    let savedSig = localStorage.getItem('userSignature');
+    if (savedSig) {
+        savedSignatureDataUrl = savedSig;
+        isSigned = true;
+        isSignatureConfirmed = true;
+        
+        let img = new Image();
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0);
+        };
+        img.src = savedSig;
+
+        document.getElementById('demontazhSelect').disabled = false;
+        document.getElementById('opt-paid').disabled = false;
+
+        const msg = document.getElementById('sigStatusMsg');
+        if (msg) {
+            msg.style.display = 'block';
+            msg.style.color = '#10b981';
+            msg.innerText = translations[currentLang].sigConfirmedOk;
+        }
+    }
+}
+
 function handlePaymentAction(val) {
     const methodSelect = document.getElementById('paymentMethodSelect');
     const transferInfo = document.getElementById('transferInfo');
@@ -874,20 +904,25 @@ function handlePaymentAction(val) {
 function handleDemontazhAction(val) {
     const selectElem = document.getElementById('demontazhSelect');
     const selectedText = selectElem.options[selectElem.selectedIndex].text;
+    
+    setCookie('selectedDemontazhVal', val, 3);
     setCookie('selectedService', selectedText, 3);
+    
+    let addOnCost = val === 'demontazh_montazh' ? 30 : 0;
+    setCookie('addOnCost', addOnCost, 3);
+    
     updateTotalPriceDisplay();
 }
 
 function updateTotalPriceDisplay() {
     const t = translations[currentLang];
-    const demontazhVal = document.getElementById('demontazhSelect').value;
+    const demontazhElem = document.getElementById('demontazhSelect');
+    const demontazhVal = demontazhElem ? demontazhElem.value : getCookie('selectedDemontazhVal');
     const paymentActionVal = document.getElementById('paymentActionSelect').value;
     
-    let addOnCost = 0;
-    if (demontazhVal === 'demontazh_montazh') {
-        addOnCost = 30;
-    }
-    
+    let addOnCost = (demontazhVal === 'demontazh_montazh') ? 30 : 0;
+    setCookie('addOnCost', addOnCost, 3);
+
     let totalCost = baseDeliveryCost + addOnCost;
     const paymentMethodSelect = document.getElementById('paymentMethodSelect');
     const closeFreeBtn = document.getElementById('btn-close-free');
@@ -927,15 +962,19 @@ function updateTotalPriceDisplay() {
 
 function renderSuccessScreen() {
     setCookie('deliveryStatus', 'paid', 3);
-    setCookie('deliveryAddress', currentFormattedAddress, 3);
+    if (currentFormattedAddress) {
+        setCookie('deliveryAddress', currentFormattedAddress, 3);
+    } else {
+        currentFormattedAddress = getCookie('deliveryAddress') || '';
+    }
     
     const t = translations[currentLang];
     const sigImg = savedSignatureDataUrl || localStorage.getItem('userSignature');
     const serviceText = getCookie('selectedService') || '-';
 
-    const demontazhVal = document.getElementById('demontazhSelect') ? document.getElementById('demontazhSelect').value : '';
-    let addOnCost = demontazhVal === 'demontazh_montazh' ? 30 : 0;
-    let totalCost = baseDeliveryCost + addOnCost;
+    let addOnCost = parseFloat(getCookie('addOnCost')) || 0;
+    let currentBaseCost = parseFloat(getCookie('baseDeliveryCost')) || baseDeliveryCost;
+    let totalCost = currentBaseCost + addOnCost;
 
     document.body.style.backgroundColor = '#ffffff';
     document.body.innerHTML = `
@@ -999,7 +1038,7 @@ function renderSuccessScreen() {
                 <div style="border-top: 1px dashed #cbd5e1; padding-top: 10px; margin-bottom: 12px;">
                     <div style="margin-bottom: 8px;">
                         <div style="font-size: 13px; font-weight: 500; color: #0f172a;">${t.lblTransportTitle}</div>
-                        <div style="font-size: 15px; font-weight: 600; color: #0f172a;">${baseDeliveryCost === 0 ? t.free + ' 0 ' + t.gel : baseDeliveryCost + ' ' + t.gel}</div>
+                        <div style="font-size: 15px; font-weight: 600; color: #0f172a;">${currentBaseCost === 0 ? t.free + ' 0 ' + t.gel : currentBaseCost + ' ' + t.gel}</div>
                     </div>
                     <div style="margin-bottom: 8px;">
                         <div style="font-size: 13px; font-weight: 500; color: #0f172a;">${t.lblServiceTitle}</div>
@@ -1079,7 +1118,8 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
         Math.sin(dLat/2) * Math.sin(dLat/2) +
         Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
         Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const clampedA = Math.min(1, Math.max(0, a));
+    const c = 2 * Math.atan2(Math.sqrt(clampedA), Math.sqrt(1 - clampedA));
     return R * c;
 }
 
@@ -1107,9 +1147,13 @@ function processResults() {
         if (!formattedAddr) formattedAddr = globalRawAddressData.display_name.split(',').slice(0, 3).join(',');
     } else if (typeof globalRawAddressData === 'string') {
         formattedAddr = globalRawAddressData;
+    } else if (getCookie('deliveryAddress')) {
+        formattedAddr = getCookie('deliveryAddress');
     }
 
     currentFormattedAddress = formattedAddr;
+    setCookie('deliveryAddress', currentFormattedAddress, 3);
+    
     document.getElementById('userAddressVal').innerText = formattedAddr;
     document.getElementById('storeName').innerText = nearestStore.names[currentLang] || nearestStore.names['ka'];
 
@@ -1121,15 +1165,19 @@ function processResults() {
         baseDeliveryCost = extraKm * 4;
         baseDeliveryText = `(+${extraKm} კმ)`;
     }
+    setCookie('baseDeliveryCost', baseDeliveryCost, 3);
 
-    updateTotalPriceDisplay();
-
-    // ჯერ DOM-ში გამოვაჩენთ კონტეინერს
     document.getElementById('status').style.display = 'none';
     document.getElementById('results').style.display = 'block';
 
-    // მხოლოდ ელემენტის გამოჩენის შემდეგ ვინიციალიზებთ Canvas-ს
     initSignatureCanvas();
+
+    let savedDemontazhVal = getCookie('selectedDemontazhVal');
+    if (savedDemontazhVal) {
+        document.getElementById('demontazhSelect').value = savedDemontazhVal;
+    }
+
+    updateTotalPriceDisplay();
     renderMap(globalUserLat, globalUserLon, nearestStore);
 }
 
@@ -1233,12 +1281,6 @@ window.addEventListener('touchstart', handleTouchStart);
 window.addEventListener('touchend', handleTouchEnd);
 window.addEventListener('touchcancel', handleTouchEnd);
 
-window.addEventListener('resize', () => {
-    if (document.getElementById('results').style.display === 'block' && !isSigned) {
-        initSignatureCanvas();
-    }
-});
-
 window.onload = function() {
     let savedLang = getCookie('appLang');
     if (savedLang && translations[savedLang]) {
@@ -1257,23 +1299,35 @@ window.onload = function() {
         if (savedAddr) currentFormattedAddress = savedAddr;
         if (savedStatus === 'paid') {
             renderSuccessScreen();
+            return;
         } else if (savedStatus === 'refused') {
             renderRefusedScreen();
+            return;
         }
     }
 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                fetchAddressFromCoords(position.coords.latitude, position.coords.longitude);
-            },
-            error => {
-                detectByIP();
-            },
-            { timeout: 5000 }
-        );
+    let lastLat = getCookie('lastLat');
+    let lastLon = getCookie('lastLon');
+
+    if (lastLat && lastLon) {
+        globalUserLat = parseFloat(lastLat);
+        globalUserLon = parseFloat(lastLon);
+        if (savedAddr) globalRawAddressData = savedAddr;
+        processResults();
     } else {
-        detectByIP();
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    fetchAddressFromCoords(position.coords.latitude, position.coords.longitude);
+                },
+                error => {
+                    detectByIP();
+                },
+                { timeout: 5000 }
+            );
+        } else {
+            detectByIP();
+        }
     }
 };
 </script>
