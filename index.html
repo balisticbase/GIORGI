@@ -441,8 +441,8 @@
                     <div class="price-inline-container">
                         
                         <select id="demontazhSelect" class="demontazh-select-inline" disabled onchange="handleDemontazhAction(this.value)">
-                            <option value="" disabled selected id="opt-demontazh-select">სერვისის საფასური</option>
-                            <option value="none" id="opt-demontazh-none">არცერთი</option>
+                            <option value="" disabled id="opt-demontazh-select">სერვისის საფასური</option>
+                            <option value="none" selected id="opt-demontazh-none">არცერთი</option>
                             <option value="montazh_free" id="opt-montazh-free">მონტაჟი უფასო</option>
                             <option value="demontazh_montazh" id="opt-demontazh-montazh">დემონტაჟი მონტაჟი 30 ₾</option>
                         </select>
@@ -917,7 +917,7 @@ function handleDemontazhAction(val) {
 function updateTotalPriceDisplay() {
     const t = translations[currentLang];
     const demontazhElem = document.getElementById('demontazhSelect');
-    const demontazhVal = demontazhElem ? demontazhElem.value : getCookie('selectedDemontazhVal');
+    const demontazhVal = demontazhElem ? demontazhElem.value : (getCookie('selectedDemontazhVal') || 'none');
     const paymentActionSelect = document.getElementById('paymentActionSelect');
     const paymentActionVal = paymentActionSelect.value;
     
@@ -983,7 +983,7 @@ function renderSuccessScreen() {
     
     const t = translations[currentLang];
     const sigImg = savedSignatureDataUrl || localStorage.getItem('userSignature');
-    const serviceText = getCookie('selectedService') || '-';
+    const serviceText = getCookie('selectedService') || document.getElementById('demontazhSelect').options[document.getElementById('demontazhSelect').selectedIndex].text;
 
     let addOnCost = parseFloat(getCookie('addOnCost')) || 0;
     let currentBaseCost = parseFloat(getCookie('baseDeliveryCost')) || baseDeliveryCost;
@@ -1189,6 +1189,9 @@ function processResults() {
     if (savedDemontazhVal) {
         const demontazhSelectElem = document.getElementById('demontazhSelect');
         demontazhSelectElem.value = savedDemontazhVal;
+    } else {
+        // Ensure default is 'none' if no cookie exists
+        handleDemontazhAction('none');
     }
 
     updateTotalPriceDisplay();
@@ -1301,7 +1304,7 @@ window.onload = function() {
         currentLang = savedLang;
         document.documentElement.lang = savedLang;
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-        if (document.getElementById(`btn-${savedLang}`)) {
+    if (document.getElementById(`btn-${savedLang}`)) {
             document.getElementById(`btn-${savedLang}`).classList.add('active');
         }
     }
