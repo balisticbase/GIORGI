@@ -411,13 +411,15 @@
                     <div class="price-inline-container">
                         <span id="priceVal" class="price">-</span>
                         
-                        <select id="demontazhSelect" class="demontazh-select-inline" onchange="handleDemontazhAction(this.value)">
+                        <!-- დაბლოკილია ხელმოწერამდე -->
+                        <select id="demontazhSelect" class="demontazh-select-inline" disabled onchange="handleDemontazhAction(this.value)">
                             <option value="" disabled selected id="opt-demontazh-select">სერვისის საფასური</option>
                             <option value="none" id="opt-demontazh-none">არცერთი</option>
                             <option value="montazh_free" id="opt-montazh-free">მონტაჟი უფასო</option>
                             <option value="demontazh_montazh" id="opt-demontazh-montazh">დემონტაჟი მონტაჟი 30 ₾</option>
                         </select>
 
+                        <!-- მისაწვდომია ხელმოწერის გარეშეც -->
                         <select id="paymentActionSelect" class="payment-select-inline" onchange="handlePaymentAction(this.value)">
                             <option value="" disabled selected id="opt-select">სტატუსის არჩევა</option>
                             <option value="paid" id="opt-paid">გადაიხადა</option>
@@ -747,6 +749,8 @@ function clearSignature() {
     isSignatureConfirmed = false;
     savedSignatureDataUrl = "";
     
+    // ხელმოწერის გასუფთავებისას დაბლოკოს მხოლოდ სერვისის არჩევა
+    document.getElementById('demontazhSelect').disabled = true;
     document.getElementById('paymentMethodSelect').style.display = 'none';
     document.getElementById('transferInfo').style.display = 'none';
     document.getElementById('btn-close-free').style.display = 'none';
@@ -773,6 +777,9 @@ function confirmSignature() {
     msg.style.display = 'block';
     msg.style.color = '#10b981';
     msg.innerText = t.sigConfirmedOk;
+
+    // ხელმოწერის შემდეგ გააქტიუროს სერვისის არჩევა
+    document.getElementById('demontazhSelect').disabled = false;
 }
 
 function handlePaymentAction(val) {
@@ -822,18 +829,6 @@ function updateTotalPriceDisplay() {
     const paymentMethodSelect = document.getElementById('paymentMethodSelect');
     const closeFreeBtn = document.getElementById('btn-close-free');
     const transferInfo = document.getElementById('transferInfo');
-    
-    if (demontazhVal === "") {
-        if (totalCost === 0) {
-            document.getElementById('priceVal').innerText = `${t.free} (0 ${t.gel})`;
-        } else {
-            document.getElementById('priceVal').innerText = `${totalCost} ${t.gel}${baseDeliveryText ? ' ' + baseDeliveryText : ''}`;
-        }
-        paymentMethodSelect.style.display = 'none';
-        transferInfo.style.display = 'none';
-        closeFreeBtn.style.display = 'none';
-        return;
-    }
 
     if (totalCost === 0) {
         document.getElementById('priceVal').innerText = `${t.free} (0 ${t.gel})`;
