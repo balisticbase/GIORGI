@@ -308,7 +308,6 @@
             display: none;
         }
 
-        /* 📊 ანგარიშის / ბოლო სექციის სტილები */
         .price-summary-box {
             background: #ffffff;
             border: 1px solid #cbd5e1;
@@ -467,7 +466,6 @@
                             </button>
                         </div>
 
-                        <!-- 📊 ანგარიშის ბლოკი (ბოლოში) -->
                         <div class="price-summary-box">
                             <div class="summary-row">
                                 <span id="lbl-transport-title">ტრანსპორტირება:</span>
@@ -648,7 +646,6 @@ let globalUserLon = null;
 let globalRawAddressData = null;
 let currentFormattedAddress = "";
 let map = null;
-let chosenKobuletiPrice = null;
 let baseDeliveryCost = 0;
 let baseDeliveryText = "";
 
@@ -888,17 +885,14 @@ function updateTotalPriceDisplay() {
     const closeFreeBtn = document.getElementById('btn-close-free');
     const transferInfo = document.getElementById('transferInfo');
 
-    // ტრანსპორტირების გამოჩენა
     if (baseDeliveryCost === 0) {
         document.getElementById('val-transport').innerText = `${t.free} (0 ${t.gel})`;
     } else {
         document.getElementById('val-transport').innerText = `${baseDeliveryCost} ${t.gel}${baseDeliveryText ? ' ' + baseDeliveryText : ''}`;
     }
 
-    // სერვისის გამოჩენა
     document.getElementById('val-service').innerText = `${addOnCost} ${t.gel}`;
 
-    // ჯამური თანხის გამოჩენა
     if (totalCost === 0) {
         document.getElementById('val-total').innerText = `${t.free} (0 ${t.gel})`;
     } else {
@@ -994,7 +988,6 @@ function renderSuccessScreen() {
                     </div>
                 </div>
 
-                <!-- 📊 ფასების დეტალური ჩამონათვალი -->
                 <div style="border-top: 1px dashed #cbd5e1; padding-top: 10px; margin-bottom: 12px;">
                     <div style="display: flex; justify-content: space-between; font-size: 13px; color: #334155; margin-bottom: 4px;">
                         <span>${t.lblTransportTitle}</span>
@@ -1112,24 +1105,13 @@ function processResults() {
     document.getElementById('userAddressVal').innerText = formattedAddr;
     document.getElementById('storeName').innerText = nearestStore.names[currentLang] || nearestStore.names['ka'];
 
-    const addrLower = formattedAddr.toLowerCase();
-    const isKobuleti = addrLower.includes("ქობულეთი") || addrLower.includes("kobuleti") || addrLower.includes("кобулети");
-
-    if (isKobuleti) {
-        if (!chosenKobuletiPrice) {
-            chosenKobuletiPrice = Math.random() < 0.5 ? 30 : 35;
-        }
-        baseDeliveryCost = chosenKobuletiPrice;
+    if (minDistance <= 20) {
+        baseDeliveryCost = 0;
         baseDeliveryText = "";
     } else {
-        if (minDistance <= 20) {
-            baseDeliveryCost = 0;
-            baseDeliveryText = "";
-        } else {
-            const extraKm = Math.ceil(minDistance - 20);
-            baseDeliveryCost = extraKm * 4;
-            baseDeliveryText = `(+${extraKm} კმ)`;
-        }
+        const extraKm = Math.ceil(minDistance - 20);
+        baseDeliveryCost = extraKm * 4;
+        baseDeliveryText = `(+${extraKm} კმ)`;
     }
 
     updateTotalPriceDisplay();
