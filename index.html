@@ -220,10 +220,11 @@
         }
 
         .payment-select-inline:disabled,
-        .demontazh-select-inline:disabled {
+        .demontazh-select-inline:disabled,
+        option:disabled {
             background: #e2e8f0;
             cursor: not-allowed;
-            opacity: 0.7;
+            opacity: 0.6;
         }
 
         .payment-method-select {
@@ -419,10 +420,10 @@
                             <option value="demontazh_montazh" id="opt-demontazh-montazh">დემონტაჟი მონტაჟი 30 ₾</option>
                         </select>
 
-                        <!-- მისაწვდომია ხელმოწერის გარეშეც -->
+                        <!-- სტატუსის არჩევა ("გადაიხადა" დაბლოკილია ხელმოწერამდე, "უარს ამბობს" ღიაა) -->
                         <select id="paymentActionSelect" class="payment-select-inline" onchange="handlePaymentAction(this.value)">
                             <option value="" disabled selected id="opt-select">სტატუსის არჩევა</option>
-                            <option value="paid" id="opt-paid">გადაიხადა</option>
+                            <option value="paid" id="opt-paid" disabled>გადაიხადა</option>
                             <option value="refused" id="opt-refused">უარს ამბობს გადახდაზე</option>
                         </select>
 
@@ -749,8 +750,10 @@ function clearSignature() {
     isSignatureConfirmed = false;
     savedSignatureDataUrl = "";
     
-    // ხელმოწერის გასუფთავებისას დაბლოკოს მხოლოდ სერვისის არჩევა
+    // ხელმოწერის გასუფთავებისას იბლოკება სერვისის არჩევა და "გადაიხადა" ოფცია
     document.getElementById('demontazhSelect').disabled = true;
+    document.getElementById('opt-paid').disabled = true;
+    
     document.getElementById('paymentMethodSelect').style.display = 'none';
     document.getElementById('transferInfo').style.display = 'none';
     document.getElementById('btn-close-free').style.display = 'none';
@@ -778,8 +781,9 @@ function confirmSignature() {
     msg.style.color = '#10b981';
     msg.innerText = t.sigConfirmedOk;
 
-    // ხელმოწერის შემდეგ გააქტიუროს სერვისის არჩევა
+    // ხელმოწერის დადასტურებისას განბლოკოს სერვისიც და "გადაიხადა" ოფციაც
     document.getElementById('demontazhSelect').disabled = false;
+    document.getElementById('opt-paid').disabled = false;
 }
 
 function handlePaymentAction(val) {
