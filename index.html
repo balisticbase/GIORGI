@@ -335,7 +335,6 @@
             margin: 10px 0;
         }
 
-        /* ჯამური თანხის სტილი გათანაბრებულია სხვა სტრიქონებთან */
         .summary-total {
             font-size: 13px;
             font-weight: 400;
@@ -470,7 +469,7 @@
                         <div class="price-summary-box">
                             <div class="summary-row">
                                 <span id="lbl-transport-title">ტრანსპორტირება:</span>
-                                <span id="val-transport">0 ₾</span>
+                                <span id="val-transport">უფასო 0 ₾</span>
                             </div>
                             <div class="summary-row">
                                 <span id="lbl-service-title">სერვისის საფასური:</span>
@@ -479,7 +478,7 @@
                             <div class="summary-divider"></div>
                             <div class="summary-row summary-total">
                                 <span id="lbl-total-title">ჯამური თანხა:</span>
-                                <span id="val-total">0 ₾</span>
+                                <span id="val-total">უფასო 0 ₾</span>
                             </div>
                         </div>
 
@@ -627,7 +626,7 @@ const eliteStores = [
     { names: { ka: "ქუთაისი - გამსახურდიას #5", en: "Kutaisi - Gamsakhurdia #5", ru: "Кутаиси - Гамсахурдия #5" }, lat: 42.2699, lon: 42.7024 },
     { names: { ka: "ქუთაისი - რუსთაველის #95", en: "Kutaisi - Rustaveli #95", ru: "Кутаиси - Руставели #95" }, lat: 42.2588, lon: 42.6963 },
     { names: { ka: "რუსთავი - შარტავას #4", en: "Rustavi - Shartava #4", ru: "Рустави - Шартава #4" }, lat: 41.5435, lon: 44.9961 },
-    { names: { ka: "ზუგდიდი - კიკალიშვილის #6", en: "Zugdidi - Kikalishvili #6", ru: "Зугдиди - Кикалишвили #6" }, lat: 42.5085, lon: 41.8741 },
+    { names: { ka: "ზუგდიდი - კიკალიშვილის #6", en: "Zugdidi - Kikalishvili #6", ru: "Зუგდიדי - Кикалишвили #6" }, lat: 42.5085, lon: 41.8741 },
     { names: { ka: "ფოთი - რუსთაველის მოედანი #5", en: "Poti - Rustaveli sq. #5", ru: "Поти - пл. Руставели #5" }, lat: 42.1466, lon: 41.6698 },
     { names: { ka: "ოზურგეთი - გაბრიელ ეპისკოპოსის #2", en: "Ozurgeti - Gabriel Episkoposi #2", ru: "Озургети - Габриела Епископоса #2" }, lat: 41.9231, lon: 42.0003 },
     { names: { ka: "ახალციხე - კოსტავას #39ა", en: "Akhaltsikhe - Kostava #39a", ru: "Ахалцихе - Костава #39а" }, lat: 41.6405, lon: 42.9868 },
@@ -887,7 +886,7 @@ function updateTotalPriceDisplay() {
     const transferInfo = document.getElementById('transferInfo');
 
     if (baseDeliveryCost === 0) {
-        document.getElementById('val-transport').innerText = `${t.free} (0 ${t.gel})`;
+        document.getElementById('val-transport').innerText = `${t.free} 0 ${t.gel}`;
     } else {
         document.getElementById('val-transport').innerText = `${baseDeliveryCost} ${t.gel}${baseDeliveryText ? ' ' + baseDeliveryText : ''}`;
     }
@@ -895,7 +894,7 @@ function updateTotalPriceDisplay() {
     document.getElementById('val-service').innerText = `${addOnCost} ${t.gel}`;
 
     if (totalCost === 0) {
-        document.getElementById('val-total').innerText = `${t.free} (0 ${t.gel})`;
+        document.getElementById('val-total').innerText = `${t.free} 0 ${t.gel}`;
     } else {
         document.getElementById('val-total').innerText = `${totalCost} ${t.gel}`;
     }
@@ -992,7 +991,7 @@ function renderSuccessScreen() {
                 <div style="border-top: 1px dashed #cbd5e1; padding-top: 10px; margin-bottom: 12px;">
                     <div style="display: flex; justify-content: space-between; font-size: 13px; color: #334155; margin-bottom: 4px;">
                         <span>${t.lblTransportTitle}</span>
-                        <span style="font-weight: 600;">${baseDeliveryCost === 0 ? t.free : baseDeliveryCost + ' ' + t.gel}</span>
+                        <span style="font-weight: 600;">${baseDeliveryCost === 0 ? t.free + ' 0 ' + t.gel : baseDeliveryCost + ' ' + t.gel}</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; font-size: 13px; color: #334155; margin-bottom: 6px;">
                         <span>${t.lblServiceTitle}</span>
@@ -1000,7 +999,7 @@ function renderSuccessScreen() {
                     </div>
                     <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 400; color: #334155; border-top: 1px solid #cbd5e1; padding-top: 6px;">
                         <span>${t.lblTotalTitle}</span>
-                        <span>${totalCost === 0 ? t.free : totalCost + ' ' + t.gel}</span>
+                        <span>${totalCost === 0 ? t.free + ' 0 ' + t.gel : totalCost + ' ' + t.gel}</span>
                     </div>
                 </div>
 
