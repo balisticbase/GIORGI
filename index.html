@@ -142,7 +142,7 @@
 
         .result-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 15px;
             margin-bottom: 15px;
         }
@@ -153,6 +153,10 @@
             border-radius: 12px;
             border: 1px solid #e2e8f0;
             transition: all 0.2s ease;
+        }
+
+        .result-item.full-width {
+            grid-column: 1 / -1;
         }
 
         .result-item:hover {
@@ -200,10 +204,11 @@
             gap: 8px;
         }
 
-        .payment-select-inline {
+        .payment-select-inline,
+        .demontazh-select-inline {
             margin-top: 4px;
             width: 100%;
-            padding: 6px 10px;
+            padding: 8px 10px;
             border-radius: 6px;
             border: 1px solid #cbd5e1;
             font-size: 12px;
@@ -214,25 +219,18 @@
             outline: none;
         }
 
-        .demontazh-select-inline {
-            margin-top: 2px;
-            width: 100%;
-            padding: 6px 10px;
-            border-radius: 6px;
-            border: 1px solid #cbd5e1;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-color);
-            background: #ffffff;
-            cursor: pointer;
-            outline: none;
+        .payment-select-inline:disabled,
+        .demontazh-select-inline:disabled {
+            background: #e2e8f0;
+            cursor: not-allowed;
+            opacity: 0.7;
         }
 
         .payment-method-select {
             display: none;
             margin-top: 4px;
             width: 100%;
-            padding: 6px 10px;
+            padding: 8px 10px;
             border-radius: 6px;
             border: 1px solid #10b981;
             font-size: 12px;
@@ -255,8 +253,69 @@
             font-weight: 600;
         }
 
+        /* Canvas Signature Style */
+        .signature-wrapper {
+            position: relative;
+            border: 2px dashed #cbd5e1;
+            border-radius: 10px;
+            background: #ffffff;
+            touch-action: none;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        canvas#signatureCanvas {
+            width: 100%;
+            height: 140px;
+            display: block;
+            cursor: crosshair;
+        }
+
+        .signature-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .sig-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-clear {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-clear:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-confirm {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-confirm:hover {
+            background: var(--primary-hover);
+        }
+
+        .sig-status-text {
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 6px;
+            display: none;
+        }
+
         #map {
-            height: 350px;
+            height: 300px;
             width: 100%;
             border-radius: 12px;
             margin-top: 15px;
@@ -318,6 +377,7 @@
                     </div>
                     <span id="userAddressVal">იტვირთება...</span>
                 </div>
+
                 <div class="result-item">
                     <div class="result-item-header">
                         <i class="fa-solid fa-store"></i>
@@ -326,24 +386,42 @@
                     <span id="storeName">-</span>
                 </div>
                 
-                <div class="result-item">
+                <!-- ხელმოწერის ბლოკი (დაემატა) -->
+                <div class="result-item full-width">
+                    <div class="result-item-header">
+                        <i class="fa-solid fa-signature"></i>
+                        <label id="lbl-signature">მომხმარებლის ონლაინ ხელმოწერა</label>
+                    </div>
+                    <div class="signature-wrapper">
+                        <canvas id="signatureCanvas"></canvas>
+                    </div>
+                    <div class="signature-actions">
+                        <button type="button" class="sig-btn btn-clear" id="btn-sig-clear" onclick="clearSignature()">გასუფთავება</button>
+                        <button type="button" class="sig-btn btn-confirm" id="btn-sig-confirm" onclick="confirmSignature()">ხელმოწერის დადასტურება</button>
+                    </div>
+                    <div id="sigStatusMsg" class="sig-status-text"></div>
+                </div>
+
+                <!-- გადახდისა და სერვისის ბლოკი -->
+                <div class="result-item full-width">
                     <div class="result-item-header">
                         <i class="fa-solid fa-tag"></i>
                         <label id="lbl-price">ᲛᲘᲬᲝᲓᲔᲑᲘᲡ ᲓᲐ ᲡᲔᲠᲕᲘᲡᲘᲡ ᲡᲐᲤᲐᲡᲣᲠᲘ</label>
                     </div>
                     <div class="price-inline-container">
                         <span id="priceVal" class="price">-</span>
-                        <select id="paymentActionSelect" class="payment-select-inline" onchange="handlePaymentAction(this.value)">
-                            <option value="" disabled selected id="opt-select">სტატუსის არჩევა</option>
-                            <option value="paid" id="opt-paid">გადაიხადა</option>
-                            <option value="refused" id="opt-refused">უარს ამბობს გადახდაზე</option>
-                        </select>
-
-                        <select id="demontazhSelect" class="demontazh-select-inline" onchange="handleDemontazhAction(this.value)">
+                        
+                        <select id="demontazhSelect" class="demontazh-select-inline" disabled onchange="handleDemontazhAction(this.value)">
                             <option value="" disabled selected id="opt-demontazh-select">სერვისის საფასური</option>
                             <option value="none" id="opt-demontazh-none">არცერთი</option>
                             <option value="montazh_free" id="opt-montazh-free">მონტაჟი უფასო</option>
                             <option value="demontazh_montazh" id="opt-demontazh-montazh">დემონტაჟი მონტაჟი 30 ₾</option>
+                        </select>
+
+                        <select id="paymentActionSelect" class="payment-select-inline" disabled onchange="handlePaymentAction(this.value)">
+                            <option value="" disabled selected id="opt-select">სტატუსის არჩევა</option>
+                            <option value="paid" id="opt-paid">გადაიხადა</option>
+                            <option value="refused" id="opt-refused">უარს ამბობს გადახდაზე</option>
                         </select>
 
                         <select id="paymentMethodSelect" class="payment-method-select" onchange="handleMethodAction(this.value)">
@@ -382,6 +460,11 @@ const translations = {
         status: "თქვენი მდებარეობა განისაზღვრება...",
         lblAddress: "თქვენი მისამართი",
         lblStore: "უახლოესი ფილიალი",
+        lblSignature: "მომხმარებლის ონლაინ ხელმოწერა",
+        btnSigClear: "გასუფთავება",
+        btnSigConfirm: "ხელმოწერის დადასტურება",
+        sigRequiredErr: "გთხოვთ ჯერ მოაწეროთ ხელი ველში!",
+        sigConfirmedOk: "✓ ხელმოწერა დადასტურებულია!",
         lblPrice: "მიწოდების და სერვისის საფასური",
         free: "უფასო",
         gel: "₾",
@@ -403,7 +486,8 @@ const translations = {
         screenPaid: "გადახდილია",
         screenDelivered: "ნივთი ჩაბარებულია",
         screenAddressLabel: "მიწოდების მისამართი",
-        screenRefused: "ნივთის დაბრუნება საწყობში"
+        screenRefused: "ნივთის დაბრუნება საწყობში",
+        screenSigLabel: "მომხმარებლის ხელმოწერა:"
     },
     en: {
         title: "Elit Electronics",
@@ -411,6 +495,11 @@ const translations = {
         status: "Determining your location...",
         lblAddress: "Your Address",
         lblStore: "Nearest Branch",
+        lblSignature: "Customer Online Signature",
+        btnSigClear: "Clear",
+        btnSigConfirm: "Confirm Signature",
+        sigRequiredErr: "Please sign in the box first!",
+        sigConfirmedOk: "✓ Signature Confirmed!",
         lblPrice: "Delivery & Service Fee",
         free: "Free",
         gel: "GEL",
@@ -432,7 +521,8 @@ const translations = {
         screenPaid: "Paid",
         screenDelivered: "Item delivered",
         screenAddressLabel: "Delivery Address",
-        screenRefused: "Return item to warehouse"
+        screenRefused: "Return item to warehouse",
+        screenSigLabel: "Customer Signature:"
     },
     ru: {
         title: "Элит Электроникс",
@@ -440,6 +530,11 @@ const translations = {
         status: "Определение вашего местоположения...",
         lblAddress: "Ваш адрес",
         lblStore: "Ближайший филиал",
+        lblSignature: "Онлайн подпись клиента",
+        btnSigClear: "Очистить",
+        btnSigConfirm: "Подтвердить подпись",
+        sigRequiredErr: "Пожалуйста, сначала распишитесь!",
+        sigConfirmedOk: "✓ Подпись подтверждена!",
         lblPrice: "Стоимость доставки и услуг",
         free: "Бесплатно",
         gel: "GEL",
@@ -461,28 +556,22 @@ const translations = {
         screenPaid: "Оплачено",
         screenDelivered: "Товар доставлен",
         screenAddressLabel: "Адрес доставки",
-        screenRefused: "Возврат товара на склад"
+        screenRefused: "Возврат товара на склад",
+        screenSigLabel: "Подпись клиента:"
     }
 };
 
 const eliteStores = [
-    // თბილისი
     { names: { ka: "თბილისი - ქავთარაძის #3", en: "Tbilisi - Kavtaradze #3", ru: "Тбилиси - Кавтарадзе #3" }, lat: 41.7247, lon: 44.7431 },
     { names: { ka: "თბილისი - სითი მოლი გლდანი", en: "Tbilisi - City Mall Gldani", ru: "Тбилиси - Сити Молл Глдани" }, lat: 41.7956, lon: 44.8236 },
     { names: { ka: "თბილისი - ისთ ფოინთი", en: "Tbilisi - East Point", ru: "Тбилиси - Ист Поинт" }, lat: 41.6853, lon: 44.8871 },
     { names: { ka: "თბილისი - ცენტრალი (სადგურის მოედანი)", en: "Tbilisi - Tsentrali (Railway Sq)", ru: "Тбилиси - Централи (Вокзальная пл.)" }, lat: 41.7208, lon: 44.7981 },
     { names: { ka: "თბილისი - აღმაშენებლის ხეივანი 2ა (აუთლეტი)", en: "Tbilisi - Agmashenebeli Alley 2a", ru: "Тбилиси - Аллея Агмашенебели 2а" }, lat: 41.7766, lon: 44.7709 },
-
-    // ბათუმი
     { names: { ka: "ბათუმი - ჭავჭავაძის #78/88", en: "Batumi - Chavchavadze #78/88", ru: "Батуми - Чавчавадзе #78/88" }, lat: 41.6425, lon: 41.6247 },
     { names: { ka: "ბათუმი - გორგილაძის #94", en: "Batumi - Gorgiladze #94", ru: "Батуми - Горгиладзе #94" }, lat: 41.6441, lon: 41.6186 },
     { names: { ka: "ბათუმი - ფრიდონ ხალვაშის #20 (აუთლეტი)", en: "Batumi - Pridon Khalvashi #20", ru: "Батуми - Фридон Халваши #20" }, lat: 41.6171, lon: 41.6094 },
-
-    // ქუთაისი
     { names: { ka: "ქუთაისი - გამსახურდიას #5", en: "Kutaisi - Gamsakhurdia #5", ru: "Кутаиси - Гамсахурдия #5" }, lat: 42.2699, lon: 42.7024 },
     { names: { ka: "ქუთაისი - რუსთაველის #95", en: "Kutaisi - Rustaveli #95", ru: "Кутаиси - Руставели #95" }, lat: 42.2588, lon: 42.6963 },
-
-    // სხვა რეგიონები და ქალაქები
     { names: { ka: "რუსთავი - შარტავას #4", en: "Rustavi - Shartava #4", ru: "Рустави - Шартава #4" }, lat: 41.5435, lon: 44.9961 },
     { names: { ka: "ზუგდიდი - კიკალიშვილის #6", en: "Zugdidi - Kikalishvili #6", ru: "Зугдиди - Кикалишвили #6" }, lat: 42.5085, lon: 41.8741 },
     { names: { ka: "ფოთი - რუსთაველის მოედანი #5", en: "Poti - Rustaveli sq. #5", ru: "Поти - пл. Руставели #5" }, lat: 42.1466, lon: 41.6698 },
@@ -508,6 +597,13 @@ let chosenKobuletiPrice = null;
 let baseDeliveryCost = 0;
 let baseDeliveryText = "";
 
+// Signature State variables
+let canvas, ctx;
+let isDrawing = false;
+let isSigned = false;
+let isSignatureConfirmed = false;
+let savedSignatureDataUrl = "";
+
 function setCookie(name, value, hours) {
     let maxAge = hours * 3600;
     document.cookie = `${name}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/`;
@@ -522,6 +618,15 @@ function getCookie(name) {
 
 function eraseCookie(name) {
     document.cookie = name + '=; Max-Age=-99999999; path=/';
+}
+
+function clearAllCookiesAndReload() {
+    eraseCookie('deliveryStatus');
+    eraseCookie('deliveryAddress');
+    eraseCookie('lastLat');
+    eraseCookie('lastLon');
+    eraseCookie('userSignature');
+    window.location.reload();
 }
 
 function changeLanguage(lang) {
@@ -548,6 +653,9 @@ function changeLanguage(lang) {
         document.getElementById('txt-status').innerText = t.status;
         document.getElementById('lbl-address').innerText = t.lblAddress;
         document.getElementById('lbl-store').innerText = t.lblStore;
+        document.getElementById('lbl-signature').innerText = t.lblSignature;
+        document.getElementById('btn-sig-clear').innerText = t.btnSigClear;
+        document.getElementById('btn-sig-confirm').innerText = t.btnSigConfirm;
         document.getElementById('lbl-price').innerText = t.lblPrice;
         document.getElementById('opt-select').innerText = t.optSelect;
         document.getElementById('opt-paid').innerText = t.optPaid;
@@ -567,6 +675,112 @@ function changeLanguage(lang) {
     if (globalUserLat !== null && globalUserLon !== null) {
         fetchAddressFromCoords(globalUserLat, globalUserLon);
     }
+}
+
+// Canvas Initialization & Handlers
+function initSignatureCanvas() {
+    canvas = document.getElementById('signatureCanvas');
+    if (!canvas) return;
+    ctx = canvas.getContext('2d');
+
+    // Resize canvas to element resolution
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width || 350;
+    canvas.height = 140;
+
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = '#0f172a';
+
+    // Mouse Events
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseleave', stopDrawing);
+
+    // Touch Events
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        startDrawing(e.touches[0]);
+    });
+    canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        draw(e.touches[0]);
+    });
+    canvas.addEventListener('touchend', stopDrawing);
+}
+
+function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+    };
+}
+
+function startDrawing(e) {
+    isDrawing = true;
+    isSigned = true;
+    const pos = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+}
+
+function draw(e) {
+    if (!isDrawing) return;
+    const pos = getPos(e);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+}
+
+function stopDrawing() {
+    if (isDrawing) {
+        ctx.closePath();
+        isDrawing = false;
+    }
+}
+
+function clearSignature() {
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    isSigned = false;
+    isSignatureConfirmed = false;
+    savedSignatureDataUrl = "";
+    
+    // Disable payment controls again
+    document.getElementById('demontazhSelect').disabled = true;
+    document.getElementById('paymentActionSelect').disabled = true;
+    document.getElementById('paymentMethodSelect').style.display = 'none';
+    document.getElementById('transferInfo').style.display = 'none';
+    document.getElementById('btn-close-free').style.display = 'none';
+    
+    const msg = document.getElementById('sigStatusMsg');
+    msg.style.display = 'none';
+}
+
+function confirmSignature() {
+    const t = translations[currentLang];
+    const msg = document.getElementById('sigStatusMsg');
+
+    if (!isSigned) {
+        msg.style.display = 'block';
+        msg.style.color = '#ef4444';
+        msg.innerText = t.sigRequiredErr;
+        return;
+    }
+
+    isSignatureConfirmed = true;
+    savedSignatureDataUrl = canvas.toDataURL('image/png');
+    setCookie('userSignature', savedSignatureDataUrl, 3);
+
+    msg.style.display = 'block';
+    msg.style.color = '#10b981';
+    msg.innerText = t.sigConfirmedOk;
+
+    // Enable Payment & Service Selectors
+    document.getElementById('demontazhSelect').disabled = false;
+    document.getElementById('paymentActionSelect').disabled = false;
 }
 
 function handlePaymentAction(val) {
@@ -660,6 +874,7 @@ function renderSuccessScreen() {
     setCookie('deliveryStatus', 'paid', 3);
     setCookie('deliveryAddress', currentFormattedAddress, 3);
     const t = translations[currentLang];
+    const sigImg = savedSignatureDataUrl || getCookie('userSignature');
 
     document.body.style.backgroundColor = '#ffffff';
     document.body.innerHTML = `
@@ -674,23 +889,23 @@ function renderSuccessScreen() {
             font-family: 'Outfit', sans-serif;">
             
             <div style="
-                width: 110px; 
-                height: 110px; 
+                width: 100px; 
+                height: 100px; 
                 background-color: #10b981; 
                 border-radius: 50%; 
                 display: flex; 
                 align-items: center; 
                 justify-content: center; 
                 box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-                margin-bottom: 25px;">
-                <i class="fa-solid fa-check" style="font-size: 55px; color: white;"></i>
+                margin-bottom: 20px;">
+                <i class="fa-solid fa-check" style="font-size: 50px; color: white;"></i>
             </div>
 
-            <div style="font-size: 40px; font-weight: 800; color: #10b981; margin-bottom: 10px;">
+            <div style="font-size: 36px; font-weight: 800; color: #10b981; margin-bottom: 8px;">
                 ${t.screenPaid}
             </div>
 
-            <div style="font-size: 24px; font-weight: 700; color: #0f172a; margin-bottom: 20px;">
+            <div style="font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 20px;">
                 ${t.screenDelivered}
             </div>
 
@@ -702,12 +917,22 @@ function renderSuccessScreen() {
                 max-width: 450px;
                 width: 100%;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
-                <div style="font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 5px;">
+                
+                <div style="font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 5px;">
                     ${t.screenAddressLabel}
                 </div>
-                <div style="font-size: 18px; font-weight: 600; color: #0f172a;">
+                <div style="font-size: 16px; font-weight: 600; color: #0f172a; margin-bottom: 15px;">
                     ${currentFormattedAddress}
                 </div>
+
+                ${sigImg ? `
+                    <div style="border-top: 1px dashed #cbd5e1; pt-3; margin-top: 10px; padding-top: 10px;">
+                        <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 5px;">
+                            ${t.screenSigLabel}
+                        </div>
+                        <img src="${sigImg}" style="max-width: 100%; height: 80px; object-fit: contain; border: 1px solid #e2e8f0; border-radius: 8px; background: white;" />
+                    </div>
+                ` : ''}
             </div>
         </div>
     `;
@@ -730,19 +955,19 @@ function renderRefusedScreen() {
             font-family: 'Outfit', sans-serif;">
             
             <div style="
-                width: 110px; 
-                height: 110px; 
+                width: 100px; 
+                height: 100px; 
                 background-color: #ef4444; 
                 border-radius: 50%; 
                 display: flex; 
                 align-items: center; 
                 justify-content: center; 
                 box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
-                margin-bottom: 25px;">
-                <i class="fa-solid fa-xmark" style="font-size: 55px; color: white;"></i>
+                margin-bottom: 20px;">
+                <i class="fa-solid fa-xmark" style="font-size: 50px; color: white;"></i>
             </div>
 
-            <div style="font-size: 34px; font-weight: 800; color: #ef4444;">
+            <div style="font-size: 32px; font-weight: 800; color: #ef4444;">
                 ${t.screenRefused}
             </div>
         </div>
@@ -827,12 +1052,30 @@ function processResults() {
     document.getElementById('status').style.display = 'none';
     document.getElementById('results').style.display = 'block';
 
+    initSignatureCanvas();
     renderMap(globalUserLat, globalUserLon, nearestStore);
 }
 
 function fetchAddressFromCoords(lat, lon) {
+    let prevLat = getCookie('lastLat');
+    let prevLon = getCookie('lastLon');
+
+    if (prevLat !== undefined && prevLon !== undefined) {
+        let distMoved = calculateDistance(parseFloat(prevLat), parseFloat(prevLon), lat, lon);
+        if (distMoved > 0.3) {
+            clearAllCookiesAndReload();
+            return;
+        }
+    }
+
+    setCookie('lastLat', lat, 24);
+    setCookie('lastLon', lon, 24);
+
     globalUserLat = lat;
     globalUserLon = lon;
+
+    let savedStatus = getCookie('deliveryStatus');
+    if (savedStatus) return;
     
     const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=${currentLang}`;
     
@@ -876,15 +1119,17 @@ function detectByIP() {
         .then(res => res.json())
         .then(data => {
             if(data.latitude && data.longitude) {
-                globalUserLat = data.latitude;
-                globalUserLon = data.longitude;
-                fetchAddressFromCoords(globalUserLat, globalUserLon);
+                fetchAddressFromCoords(data.latitude, data.longitude);
             } else {
-                document.getElementById('status').innerText = translations[currentLang].unknownAddr;
+                if(document.getElementById('status')) {
+                    document.getElementById('status').innerText = translations[currentLang].unknownAddr;
+                }
             }
         })
         .catch(() => {
-            document.getElementById('status').innerText = translations[currentLang].unknownAddr;
+            if(document.getElementById('status')) {
+                document.getElementById('status').innerText = translations[currentLang].unknownAddr;
+            }
         });
 }
 
@@ -894,9 +1139,7 @@ function handleTouchStart(e) {
     if (e.touches.length === 2) {
         clearTimeout(secretHoldTimer);
         secretHoldTimer = setTimeout(() => {
-            eraseCookie('deliveryStatus');
-            eraseCookie('deliveryAddress');
-            window.location.reload();
+            clearAllCookiesAndReload();
         }, 10000);
     } else {
         clearTimeout(secretHoldTimer);
@@ -933,7 +1176,6 @@ window.onload = function() {
         } else if (savedStatus === 'refused') {
             renderRefusedScreen();
         }
-        return;
     }
 
     if (navigator.geolocation) {
