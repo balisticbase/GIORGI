@@ -243,6 +243,15 @@ adjaranet.ai##.ad-catfish
 
 
 
+
+! ufasofilmebi.net
+
+
+ufasofilmebi.net##img
+
+
+
+
 ! asia.com.ge
 
 
@@ -263,18 +272,15 @@ myvideo.ge##.video-player-cont > div[style*="display: block"]
 
 
 
-! ufasofilmebi.net
-
-
-ufasofilmebi.net##img
-
-
 
 ! ufasofilmebi.ge
 
 
 ufasofilmebi.ge###banner-container
 ufasofilmebi.ge###donatePopup
+ufasofilmebi.tv###app-banner-container
+ufasofilmebi.tv###ufaso-chat
+
 
 
 
