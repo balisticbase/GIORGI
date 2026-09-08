@@ -631,7 +631,7 @@ const eliteStores = [
     { names: { ka: "ქუთაისი - გამსახურდიას #5", en: "Kutaisi - Gamsakhurdia #5", ru: "Кутаиси - Гамсахурдия #5" }, lat: 42.2699, lon: 42.7024 },
     { names: { ka: "ქუთაისი - რუსთაველის #95", en: "Kutaisi - Rustaveli #95", ru: "Кутаиси - Руставели #95" }, lat: 42.2588, lon: 42.6963 },
     { names: { ka: "რუსთავი - შარტავას #4", en: "Rustavi - Shartava #4", ru: "Рустави - Шартава #4" }, lat: 41.5435, lon: 44.9961 },
-    { names: { ka: "ზუგდიდი - კიკალიშვილის #6", en: "Zugdidi - Kikalishvili #6", ru: "Зუგდიდი - Кикалишвили #6" }, lat: 42.5085, lon: 41.8741 },
+    { names: { ka: "ზუგდიდი - კიკალიშვილის #6", en: "Zugdidi - Kikalishvili #6", ru: "Зугдиди - Кикалишвили #6" }, lat: 42.5085, lon: 41.8741 },
     { names: { ka: "ფოთი - რუსთაველის მოედანი #5", en: "Poti - Rustaveli sq. #5", ru: "Поти - пл. Руставели #5" }, lat: 42.1466, lon: 41.6698 },
     { names: { ka: "ოზურგეთი - გაბრიელ ეპისკოპოსის #2", en: "Ozurgeti - Gabriel Episkoposi #2", ru: "Озургети - Габриела Епископоса #2" }, lat: 41.9231, lon: 42.0003 },
     { names: { ka: "ახალციხე - კოსტავას #39ა", en: "Akhaltsikhe - Kostava #39a", ru: "Ахалцихе - Костава #39а" }, lat: 41.6405, lon: 42.9868 },
@@ -1174,7 +1174,8 @@ function processResults() {
 
     let savedDemontazhVal = getCookie('selectedDemontazhVal');
     if (savedDemontazhVal) {
-        document.getElementById('demontazhSelect').value = savedDemontazhVal;
+        const demontazhSelectElem = document.getElementById('demontazhSelect');
+        demontazhSelectElem.value = savedDemontazhVal;
     }
 
     updateTotalPriceDisplay();
@@ -1290,6 +1291,11 @@ window.onload = function() {
         if (document.getElementById(`btn-${savedLang}`)) {
             document.getElementById(`btn-${savedLang}`).classList.add('active');
         }
+    }
+
+    let savedBaseCost = getCookie('baseDeliveryCost');
+    if (savedBaseCost !== undefined) {
+        baseDeliveryCost = parseFloat(savedBaseCost) || 0;
     }
 
     let savedStatus = getCookie('deliveryStatus');
