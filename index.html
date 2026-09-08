@@ -560,7 +560,6 @@ function handlePaymentAction(val) {
     const closeFreeBtn = document.getElementById('btn-close-free');
     const demontazhVal = document.getElementById('demontazhSelect').value;
     
-    // თუ სერვისის საფასურის ველი არ არის არჩეული, სრულად ვბლოკავთ მოქმედებებს
     if (demontazhVal === "") {
         methodSelect.style.display = 'none';
         transferInfo.style.display = 'none';
@@ -607,7 +606,6 @@ function updateTotalPriceDisplay() {
     const closeFreeBtn = document.getElementById('btn-close-free');
     const transferInfo = document.getElementById('transferInfo');
     
-    // თუ სერვისის საფასური არ არის არჩეული, ვმალავთ გადახდის მეთოდებსა და ჩახურვის ღილაკს
     if (demontazhVal === "") {
         if (totalCost === 0) {
             document.getElementById('priceVal').innerText = `${t.free} (0 ${t.gel})`;
