@@ -559,6 +559,14 @@ function handlePaymentAction(val) {
     const transferInfo = document.getElementById('transferInfo');
     const closeFreeBtn = document.getElementById('btn-close-free');
     const demontazhVal = document.getElementById('demontazhSelect').value;
+
+    if (val === 'refused') {
+        methodSelect.style.display = 'none';
+        transferInfo.style.display = 'none';
+        closeFreeBtn.style.display = 'none';
+        renderRefusedScreen();
+        return;
+    }
     
     if (demontazhVal === "") {
         methodSelect.style.display = 'none';
@@ -567,12 +575,7 @@ function handlePaymentAction(val) {
         return;
     }
 
-    if (val === 'refused') {
-        methodSelect.style.display = 'none';
-        transferInfo.style.display = 'none';
-        closeFreeBtn.style.display = 'none';
-        renderRefusedScreen();
-    } else if (val === 'paid') {
+    if (val === 'paid') {
         let addOnCost = demontazhVal === 'demontazh_montazh' ? 30 : 0;
         let totalCost = baseDeliveryCost + addOnCost;
 
