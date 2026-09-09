@@ -1190,7 +1190,6 @@ function processResults() {
         const demontazhSelectElem = document.getElementById('demontazhSelect');
         demontazhSelectElem.value = savedDemontazhVal;
     } else {
-        // Ensure default is 'none' if no cookie exists
         handleDemontazhAction('none');
     }
 
@@ -1256,25 +1255,6 @@ function renderMap(userLat, userLon, store) {
     map.fitBounds(bounds, { padding: [50, 50] });
 }
 
-function detectByIP() {
-    fetch('https://ipapi.co/json/')
-        .then(res => res.json())
-        .then(data => {
-            if(data.latitude && data.longitude) {
-                fetchAddressFromCoords(data.latitude, data.longitude);
-            } else {
-                if(document.getElementById('status')) {
-                    document.getElementById('status').innerText = translations[currentLang].unknownAddr;
-                }
-            }
-        })
-        .catch(() => {
-            if(document.getElementById('status')) {
-                document.getElementById('status').innerText = translations[currentLang].unknownAddr;
-            }
-        });
-}
-
 let secretHoldTimer = null;
 
 function handleTouchStart(e) {
@@ -1304,7 +1284,7 @@ window.onload = function() {
         currentLang = savedLang;
         document.documentElement.lang = savedLang;
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-    if (document.getElementById(`btn-${savedLang}`)) {
+        if (document.getElementById(`btn-${savedLang}`)) {
             document.getElementById(`btn-${savedLang}`).classList.add('active');
         }
     }
@@ -1343,12 +1323,16 @@ window.onload = function() {
                     fetchAddressFromCoords(position.coords.latitude, position.coords.longitude);
                 },
                 error => {
-                    detectByIP();
+                    document.getElementById('status').innerHTML = `<span style="color:#ef4444;">ვერ მოხერხდა ზუსტი ლოკაციის მიღება. გთხოვთ ჩართოთ GPS.</span>`;
                 },
-                { timeout: 5000 }
+                { 
+                    timeout: 15000,
+                    enableHighAccuracy: true,
+                    maximumAge: 0
+                }
             );
         } else {
-            detectByIP();
+            document.getElementById('status').innerText = translations[currentLang].unknownAddr;
         }
     }
 };
