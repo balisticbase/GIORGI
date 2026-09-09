@@ -353,6 +353,8 @@
             flex-direction: column;
             gap: 2px;
             margin-bottom: 8px;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .summary-row:last-child {
@@ -521,7 +523,7 @@
                         </div>
 
                         <div class="price-summary-box">
-                            <div class="summary-row">
+                            <div class="summary-row" id="transportRow" style="cursor: pointer;" title="ხანგრძლივი დაჭერა ტრანსპორტირების შესაცვლელად">
                                 <label id="lbl-transport-title">ტრანსპორტირება:</label>
                                 <span id="val-transport">უფასო 0 ₾</span>
                             </div>
@@ -704,7 +706,6 @@ let globalRawAddressData = null;
 let currentFormattedAddress = "";
 let map = null;
 let baseDeliveryCost = 0;
-let baseDeliveryText = "";
 
 let canvas, ctx;
 let isDrawing = false;
@@ -997,7 +998,7 @@ function updateTotalPriceDisplay() {
     if (baseDeliveryCost === 0) {
         document.getElementById('val-transport').innerText = `${t.free} 0 ${t.gel}`;
     } else {
-        document.getElementById('val-transport').innerText = `${baseDeliveryCost} ${t.gel}${baseDeliveryText ? ' ' + baseDeliveryText : ''}`;
+        document.getElementById('val-transport').innerText = `${baseDeliveryCost} ${t.gel}`;
     }
 
     document.getElementById('val-service').innerText = `${addOnCost} ${t.gel}`;
@@ -1223,20 +1224,24 @@ function processResults() {
     document.getElementById('userAddressVal').innerText = formattedAddr;
     document.getElementById('storeName').innerText = nearestStore.names[currentLang] || nearestStore.names['ka'];
 
-    if (minDistance <= 20) {
-        baseDeliveryCost = 0;
-        baseDeliveryText = "";
+    let savedBaseCost = getCookie('baseDeliveryCost');
+    if (savedBaseCost === undefined || savedBaseCost === null) {
+        if (minDistance <= 20) {
+            baseDeliveryCost = 0;
+        } else {
+            const extraKm = Math.ceil(minDistance - 20);
+            baseDeliveryCost = extraKm * 4;
+        }
+        setCookie('baseDeliveryCost', baseDeliveryCost, 3);
     } else {
-        const extraKm = Math.ceil(minDistance - 20);
-        baseDeliveryCost = extraKm * 4;
-        baseDeliveryText = `(+${extraKm} კმ)`;
+        baseDeliveryCost = parseFloat(savedBaseCost) || 0;
     }
-    setCookie('baseDeliveryCost', baseDeliveryCost, 3);
 
     document.getElementById('status').style.display = 'none';
     document.getElementById('results').style.display = 'block';
 
     initSignatureCanvas();
+    initTransportLongPress();
 
     let savedDemontazhVal = getCookie('selectedDemontazhVal');
     if (savedDemontazhVal) {
@@ -1248,6 +1253,49 @@ function processResults() {
 
     updateTotalPriceDisplay();
     renderMap(globalUserLat, globalUserLon, nearestStore);
+}
+
+// 10-second long press listener for transportation fee modification
+let transportHoldTimer = null;
+
+function initTransportLongPress() {
+    const row = document.getElementById('transportRow');
+    if (!row) return;
+
+    const startPress = (e) => {
+        clearTimeout(transportHoldTimer);
+        transportHoldTimer = setTimeout(() => {
+            unlockTransportEditing();
+        }, 10000); // 10 seconds
+    };
+
+    const cancelPress = () => {
+        clearTimeout(transportHoldTimer);
+    };
+
+    row.addEventListener('mousedown', startPress);
+    row.addEventListener('mouseup', cancelPress);
+    row.addEventListener('mouseleave', cancelPress);
+
+    row.addEventListener('touchstart', (e) => {
+        startPress(e);
+    });
+    row.addEventListener('touchend', cancelPress);
+    row.addEventListener('touchcancel', cancelPress);
+}
+
+function unlockTransportEditing() {
+    let newCostStr = prompt("შეიყვანეთ ტრანსპორტირების ახალი საფასური (₾):", baseDeliveryCost);
+    if (newCostStr !== null) {
+        let parsed = parseFloat(newCostStr);
+        if (!isNaN(parsed) && parsed >= 0) {
+            baseDeliveryCost = parsed;
+            setCookie('baseDeliveryCost', baseDeliveryCost, 3);
+            updateTotalPriceDisplay();
+        } else {
+            alert("არასწორი მნიშვნელობა!");
+        }
+    }
 }
 
 function fetchAddressFromCoords(lat, lon) {
@@ -1396,7 +1444,6 @@ window.onload = function() {
         }
     }
 
-    // Always fetch fresh high-accuracy GPS coordinates on load instead of locking onto old cached cookie coordinates
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             position => {
