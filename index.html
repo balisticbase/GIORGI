@@ -651,9 +651,6 @@ let globalUserLon = null;
 let globalRawAddressData = null;
 let currentFormattedAddress = "";
 let map = null;
-let userMarker = null;
-let storeMarker = null;
-let routeLine = null;
 let baseDeliveryCost = 0;
 let baseDeliveryText = "";
 
@@ -1156,19 +1153,11 @@ function processResults() {
     let formattedAddr = t.unknownAddr;
     if (globalRawAddressData && globalRawAddressData.address) {
         const addr = globalRawAddressData.address;
-        const road = addr.road || addr.street || addr.pedestrian || addr.suburb || addr.neighbourhood || "";
+        const road = addr.road || addr.street || addr.pedestrian || "";
         const houseNumber = addr.house_number ? " #" + addr.house_number : "";
-        const settlement = addr.city || addr.town || addr.village || addr.hamlet || "";
-        
-        let parts = [];
-        if (road) parts.push(road + houseNumber);
-        if (settlement && settlement !== road) parts.push(settlement);
-        
-        if (parts.length > 0) {
-            formattedAddr = parts.join(", ");
-        } else {
-            formattedAddr = globalRawAddressData.display_name.split(',').slice(0, 2).map(s => s.trim()).join(', ');
-        }
+        const city = addr.city || addr.town || addr.village || addr.county || addr.state || "";
+        formattedAddr = [city, road + houseNumber].filter(Boolean).join(", ");
+        if (!formattedAddr) formattedAddr = globalRawAddressData.display_name.split(',').slice(0, 3).join(',');
     } else if (typeof globalRawAddressData === 'string') {
         formattedAddr = globalRawAddressData;
     } else if (getCookie('deliveryAddress')) {
@@ -1201,6 +1190,7 @@ function processResults() {
         const demontazhSelectElem = document.getElementById('demontazhSelect');
         demontazhSelectElem.value = savedDemontazhVal;
     } else {
+        // Ensure default is 'none' if no cookie exists
         handleDemontazhAction('none');
     }
 
@@ -1245,38 +1235,25 @@ function fetchAddressFromCoords(lat, lon) {
 
 function renderMap(userLat, userLon, store) {
     const t = translations[currentLang];
-    
-    if (!map) {
-        map = L.map('map');
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap'
-        }).addTo(map);
+    if (map) {
+        map.remove();
     }
+    
+    map = L.map('map');
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
 
     const userLatLng = [userLat, userLon];
     const storeLatLng = [store.lat, store.lon];
 
-    if (!userMarker) {
-        userMarker = L.marker(userLatLng).addTo(map).bindPopup(`<b>${t.userLoc}</b>`);
-    } else {
-        userMarker.setLatLng(userLatLng);
-    }
+    L.marker(userLatLng).addTo(map).bindPopup(`<b>${t.userLoc}</b>`).openPopup();
+    L.marker(storeLatLng).addTo(map).bindPopup(`<b>${store.names[currentLang]}</b>`);
 
-    if (!storeMarker) {
-        storeMarker = L.marker(storeLatLng).addTo(map).bindPopup(`<b>${store.names[currentLang]}</b>`);
-    } else {
-        storeMarker.setLatLng(storeLatLng);
-        storeMarker.getPopup().setContent(`<b>${store.names[currentLang]}</b>`);
-    }
-
-    if (!routeLine) {
-        routeLine = L.polyline([userLatLng, storeLatLng], { color: '#e60012', weight: 4 }).addTo(map);
-    } else {
-        routeLine.setLatLngs([userLatLng, storeLatLng]);
-    }
+    L.polyline([userLatLng, storeLatLng], { color: '#e60012', weight: 4 }).addTo(map);
 
     const bounds = L.latLngBounds([userLatLng, storeLatLng]);
-    map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
+    map.fitBounds(bounds, { padding: [50, 50] });
 }
 
 function detectByIP() {
@@ -1327,7 +1304,7 @@ window.onload = function() {
         currentLang = savedLang;
         document.documentElement.lang = savedLang;
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-        if (document.getElementById(`btn-${savedLang}`)) {
+    if (document.getElementById(`btn-${savedLang}`)) {
             document.getElementById(`btn-${savedLang}`).classList.add('active');
         }
     }
@@ -1351,36 +1328,28 @@ window.onload = function() {
         }
     }
 
-    if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(
-            position => {
-                const newLat = position.coords.latitude;
-                const newLon = position.coords.longitude;
-                
-                if (globalUserLat === null || globalUserLon === null || calculateDistance(globalUserLat, globalUserLon, newLat, newLon) > 0.01) {
-                    fetchAddressFromCoords(newLat, newLon);
-                }
-            },
-            error => {
-                let lastLat = getCookie('lastLat');
-                let lastLon = getCookie('lastLon');
-                if (lastLat && lastLon) {
-                    globalUserLat = parseFloat(lastLat);
-                    globalUserLon = parseFloat(lastLon);
-                    if (savedAddr) globalRawAddressData = savedAddr;
-                    processResults();
-                } else {
-                    detectByIP();
-                }
-            },
-            { 
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0 
-            }
-        );
+    let lastLat = getCookie('lastLat');
+    let lastLon = getCookie('lastLon');
+
+    if (lastLat && lastLon) {
+        globalUserLat = parseFloat(lastLat);
+        globalUserLon = parseFloat(lastLon);
+        if (savedAddr) globalRawAddressData = savedAddr;
+        processResults();
     } else {
-        detectByIP();
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    fetchAddressFromCoords(position.coords.latitude, position.coords.longitude);
+                },
+                error => {
+                    detectByIP();
+                },
+                { timeout: 5000 }
+            );
+        } else {
+            detectByIP();
+        }
     }
 };
 </script>
