@@ -651,6 +651,9 @@ let globalUserLon = null;
 let globalRawAddressData = null;
 let currentFormattedAddress = "";
 let map = null;
+let userMarker = null;
+let storeMarker = null;
+let routeLine = null;
 let baseDeliveryCost = 0;
 let baseDeliveryText = "";
 
@@ -1234,25 +1237,57 @@ function fetchAddressFromCoords(lat, lon) {
 
 function renderMap(userLat, userLon, store) {
     const t = translations[currentLang];
-    if (map) {
-        map.remove();
-    }
     
-    map = L.map('map');
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap'
-    }).addTo(map);
+    if (!map) {
+        map = L.map('map');
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+    }
 
     const userLatLng = [userLat, userLon];
     const storeLatLng = [store.lat, store.lon];
 
-    L.marker(userLatLng).addTo(map).bindPopup(`<b>${t.userLoc}</b>`).openPopup();
-    L.marker(storeLatLng).addTo(map).bindPopup(`<b>${store.names[currentLang]}</b>`);
+    if (!userMarker) {
+        userMarker = L.marker(userLatLng).addTo(map).bindPopup(`<b>${t.userLoc}</b>`);
+    } else {
+        userMarker.setLatLng(userLatLng);
+    }
 
-    L.polyline([userLatLng, storeLatLng], { color: '#e60012', weight: 4 }).addTo(map);
+    if (!storeMarker) {
+        storeMarker = L.marker(storeLatLng).addTo(map).bindPopup(`<b>${store.names[currentLang]}</b>`);
+    } else {
+        storeMarker.setLatLng(storeLatLng);
+        storeMarker.getPopup().setContent(`<b>${store.names[currentLang]}</b>`);
+    }
+
+    if (!routeLine) {
+        routeLine = L.polyline([userLatLng, storeLatLng], { color: '#e60012', weight: 4 }).addTo(map);
+    } else {
+        routeLine.setLatLngs([userLatLng, storeLatLng]);
+    }
 
     const bounds = L.latLngBounds([userLatLng, storeLatLng]);
-    map.fitBounds(bounds, { padding: [50, 50] });
+    map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
+}
+
+function detectByIP() {
+    fetch('https://ipapi.co/json/')
+        .then(res => res.json())
+        .then(data => {
+            if(data.latitude && data.longitude) {
+                fetchAddressFromCoords(data.latitude, data.longitude);
+            } else {
+                if(document.getElementById('status')) {
+                    document.getElementById('status').innerText = translations[currentLang].unknownAddr;
+                }
+            }
+        })
+        .catch(() => {
+            if(document.getElementById('status')) {
+                document.getElementById('status').innerText = translations[currentLang].unknownAddr;
+            }
+        });
 }
 
 let secretHoldTimer = null;
@@ -1308,32 +1343,36 @@ window.onload = function() {
         }
     }
 
-    let lastLat = getCookie('lastLat');
-    let lastLon = getCookie('lastLon');
-
-    if (lastLat && lastLon) {
-        globalUserLat = parseFloat(lastLat);
-        globalUserLon = parseFloat(lastLon);
-        if (savedAddr) globalRawAddressData = savedAddr;
-        processResults();
-    } else {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                position => {
-                    fetchAddressFromCoords(position.coords.latitude, position.coords.longitude);
-                },
-                error => {
-                    document.getElementById('status').innerHTML = `<span style="color:#ef4444;">ვერ მოხერხდა ზუსტი ლოკაციის მიღება. გთხოვთ ჩართოთ GPS.</span>`;
-                },
-                { 
-                    timeout: 15000,
-                    enableHighAccuracy: true,
-                    maximumAge: 0
+    if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(
+            position => {
+                const newLat = position.coords.latitude;
+                const newLon = position.coords.longitude;
+                
+                if (globalUserLat === null || globalUserLon === null || calculateDistance(globalUserLat, globalUserLon, newLat, newLon) > 0.01) {
+                    fetchAddressFromCoords(newLat, newLon);
                 }
-            );
-        } else {
-            document.getElementById('status').innerText = translations[currentLang].unknownAddr;
-        }
+            },
+            error => {
+                let lastLat = getCookie('lastLat');
+                let lastLon = getCookie('lastLon');
+                if (lastLat && lastLon) {
+                    globalUserLat = parseFloat(lastLat);
+                    globalUserLon = parseFloat(lastLon);
+                    if (savedAddr) globalRawAddressData = savedAddr;
+                    processResults();
+                } else {
+                    detectByIP();
+                }
+            },
+            { 
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0 
+            }
+        );
+    } else {
+        detectByIP();
     }
 };
 </script>
