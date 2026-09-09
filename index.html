@@ -1156,11 +1156,19 @@ function processResults() {
     let formattedAddr = t.unknownAddr;
     if (globalRawAddressData && globalRawAddressData.address) {
         const addr = globalRawAddressData.address;
-        const road = addr.road || addr.street || addr.pedestrian || "";
+        const road = addr.road || addr.street || addr.pedestrian || addr.suburb || addr.neighbourhood || "";
         const houseNumber = addr.house_number ? " #" + addr.house_number : "";
-        const city = addr.city || addr.town || addr.village || addr.county || addr.state || "";
-        formattedAddr = [city, road + houseNumber].filter(Boolean).join(", ");
-        if (!formattedAddr) formattedAddr = globalRawAddressData.display_name.split(',').slice(0, 3).join(',');
+        const settlement = addr.city || addr.town || addr.village || addr.hamlet || "";
+        
+        let parts = [];
+        if (road) parts.push(road + houseNumber);
+        if (settlement && settlement !== road) parts.push(settlement);
+        
+        if (parts.length > 0) {
+            formattedAddr = parts.join(", ");
+        } else {
+            formattedAddr = globalRawAddressData.display_name.split(',').slice(0, 2).map(s => s.trim()).join(', ');
+        }
     } else if (typeof globalRawAddressData === 'string') {
         formattedAddr = globalRawAddressData;
     } else if (getCookie('deliveryAddress')) {
