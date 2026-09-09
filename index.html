@@ -116,7 +116,7 @@
 
         .status-box {
             text-align: center;
-            padding: 16px;
+            padding: 20px;
             background: #f8fafc;
             border-radius: 12px;
             margin-bottom: 20px;
@@ -124,9 +124,36 @@
             color: #334155;
             border: 1px dashed #cbd5e1;
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .status-content {
+            display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+        }
+
+        .refresh-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .refresh-btn:hover {
+            background: var(--primary-hover);
         }
 
         .results-container {
@@ -166,8 +193,14 @@
         .result-item-header {
             display: flex;
             align-items: center;
-            gap: 6px;
+            justify-content: space-between;
             margin-bottom: 6px;
+        }
+
+        .result-item-header-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .result-item-header i {
@@ -397,31 +430,45 @@
 
     <div class="content">
         <div id="status" class="status-box">
-            <span class="spinner"></span> <span id="txt-status">თქვენი მდებარეობა განისაზღვრება...</span>
+            <div class="status-content">
+                <span class="spinner"></span> <span id="txt-status">თქვენი მდებარეობა განისაზღვრება...</span>
+            </div>
+            <button class="refresh-btn" id="btn-refresh-geo" onclick="triggerFreshGeolocation()">
+                <i class="fa-solid fa-location-crosshairs"></i> <span id="txt-refresh">მდებარეობის განახლება</span>
+            </button>
         </div>
 
         <div id="results" class="results-container">
             <div class="result-grid">
                 <div class="result-item">
                     <div class="result-item-header">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <label id="lbl-address">თქვენი მისამართი</label>
+                        <div class="result-item-header-left">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <label id="lbl-address">თქვენი მისამართი</label>
+                        </div>
+                        <button onclick="triggerFreshGeolocation()" style="background: none; border: none; cursor: pointer; color: var(--primary-color); font-size: 13px;" title="განახლება">
+                            <i class="fa-solid fa-rotate"></i>
+                        </button>
                     </div>
                     <span id="userAddressVal">იტვირთება...</span>
                 </div>
 
                 <div class="result-item">
                     <div class="result-item-header">
-                        <i class="fa-solid fa-store"></i>
-                        <label id="lbl-store">უახლოესი ფილიალი</label>
+                        <div class="result-item-header-left">
+                            <i class="fa-solid fa-store"></i>
+                            <label id="lbl-store">უახლოესი ფილიალი</label>
+                        </div>
                     </div>
                     <span id="storeName">-</span>
                 </div>
                 
                 <div class="result-item full-width">
                     <div class="result-item-header">
-                        <i class="fa-solid fa-signature"></i>
-                        <label id="lbl-signature">მომხმარებლის ონლაინ ხელმოწერა</label>
+                        <div class="result-item-header-left">
+                            <i class="fa-solid fa-signature"></i>
+                            <label id="lbl-signature">მომხმარებლის ონლაინ ხელმოწერა</label>
+                        </div>
                     </div>
                     <div class="signature-wrapper">
                         <canvas id="signatureCanvas"></canvas>
@@ -435,8 +482,10 @@
 
                 <div class="result-item full-width">
                     <div class="result-item-header">
-                        <i class="fa-solid fa-receipt"></i>
-                        <label id="lbl-price">მიწოდების და სერვისის საფასური</label>
+                        <div class="result-item-header-left">
+                            <i class="fa-solid fa-receipt"></i>
+                            <label id="lbl-price">მიწოდების და სერვისის საფასური</label>
+                        </div>
                     </div>
                     <div class="price-inline-container">
                         
@@ -503,7 +552,8 @@ const translations = {
     ka: {
         title: "ელიტ ელექტრონიქსი",
         subtitle: "ავტომატური მიწოდების კალკულატორი",
-        status: "თქვენი მდებარეობა განისაზღვრება...",
+        status: "თქვენი მდებარეობა განისაზღვრება ზუსტი GPS-ით...",
+        refreshLoc: "მდებარეობის განახლება",
         lblAddress: "თქვენი მისამართი",
         lblStore: "უახლოესი ფილიალი",
         lblSignature: "მომხმარებლის ონლაინ ხელმოწერა",
@@ -542,7 +592,8 @@ const translations = {
     en: {
         title: "Elit Electronics",
         subtitle: "Automatic Delivery Calculator",
-        status: "Determining your location...",
+        status: "Determining your location with precise GPS...",
+        refreshLoc: "Refresh Location",
         lblAddress: "Your Address",
         lblStore: "Nearest Branch",
         lblSignature: "Customer Online Signature",
@@ -581,7 +632,8 @@ const translations = {
     ru: {
         title: "Элит Электроникс",
         subtitle: "Автоматический калькулятор доставки",
-        status: "Определение вашего местоположения...",
+        status: "Определение вашего местоположения по точному GPS...",
+        refreshLoc: "Обновить геолокацию",
         lblAddress: "Ваш адрес",
         lblStore: "Ближайший филиал",
         lblSignature: "Онлайн подпись клиента",
@@ -714,6 +766,7 @@ function changeLanguage(lang) {
         document.getElementById('txt-title').innerText = t.title;
         document.getElementById('txt-subtitle').innerText = t.subtitle;
         document.getElementById('txt-status').innerText = t.status;
+        document.getElementById('txt-refresh').innerText = t.refreshLoc;
         document.getElementById('lbl-address').innerText = t.lblAddress;
         document.getElementById('lbl-store').innerText = t.lblStore;
         document.getElementById('lbl-signature').innerText = t.lblSignature;
@@ -1190,7 +1243,6 @@ function processResults() {
         const demontazhSelectElem = document.getElementById('demontazhSelect');
         demontazhSelectElem.value = savedDemontazhVal;
     } else {
-        // Ensure default is 'none' if no cookie exists
         handleDemontazhAction('none');
     }
 
@@ -1199,17 +1251,6 @@ function processResults() {
 }
 
 function fetchAddressFromCoords(lat, lon) {
-    let prevLat = getCookie('lastLat');
-    let prevLon = getCookie('lastLon');
-
-    if (prevLat !== undefined && prevLon !== undefined) {
-        let distMoved = calculateDistance(parseFloat(prevLat), parseFloat(prevLon), lat, lon);
-        if (distMoved > 0.3) {
-            clearAllCookiesAndReload();
-            return;
-        }
-    }
-
     setCookie('lastLat', lat, 24);
     setCookie('lastLon', lon, 24);
 
@@ -1231,6 +1272,33 @@ function fetchAddressFromCoords(lat, lon) {
             globalRawAddressData = null;
             processResults();
         });
+}
+
+function triggerFreshGeolocation() {
+    eraseCookie('lastLat');
+    eraseCookie('lastLon');
+    
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('status').style.display = 'flex';
+    document.getElementById('txt-status').innerText = translations[currentLang].status;
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                fetchAddressFromCoords(position.coords.latitude, position.coords.longitude);
+            },
+            error => {
+                detectByIP();
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 0
+            }
+        );
+    } else {
+        detectByIP();
+    }
 }
 
 function renderMap(userLat, userLon, store) {
@@ -1304,7 +1372,7 @@ window.onload = function() {
         currentLang = savedLang;
         document.documentElement.lang = savedLang;
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-    if (document.getElementById(`btn-${savedLang}`)) {
+        if (document.getElementById(`btn-${savedLang}`)) {
             document.getElementById(`btn-${savedLang}`).classList.add('active');
         }
     }
@@ -1328,28 +1396,32 @@ window.onload = function() {
         }
     }
 
-    let lastLat = getCookie('lastLat');
-    let lastLon = getCookie('lastLon');
-
-    if (lastLat && lastLon) {
-        globalUserLat = parseFloat(lastLat);
-        globalUserLon = parseFloat(lastLon);
-        if (savedAddr) globalRawAddressData = savedAddr;
-        processResults();
-    } else {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                position => {
-                    fetchAddressFromCoords(position.coords.latitude, position.coords.longitude);
-                },
-                error => {
+    // Always fetch fresh high-accuracy GPS coordinates on load instead of locking onto old cached cookie coordinates
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                fetchAddressFromCoords(position.coords.latitude, position.coords.longitude);
+            },
+            error => {
+                let lastLat = getCookie('lastLat');
+                let lastLon = getCookie('lastLon');
+                if (lastLat && lastLon) {
+                    globalUserLat = parseFloat(lastLat);
+                    globalUserLon = parseFloat(lastLon);
+                    if (savedAddr) globalRawAddressData = savedAddr;
+                    processResults();
+                } else {
                     detectByIP();
-                },
-                { timeout: 5000 }
-            );
-        } else {
-            detectByIP();
-        }
+                }
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 0
+            }
+        );
+    } else {
+        detectByIP();
     }
 };
 </script>
