@@ -36,6 +36,13 @@
 ! ads-adsplay-video
 
 
+
+! combatfootages.com
+
+||combatfootages.com/uploads*ads*$all
+
+
+
 ! ikinogo.com
 
 ||nwien.com*mp4*$all
@@ -176,6 +183,16 @@
 qartulad.in##div.avc-cro
 qartulad.in##.jw-banner
 qartulad.in##.ad-catfish
+
+
+
+! combatfootages.com
+
+
+combatfootages.com##.adblock-bait-wrap
+combatfootages.com##.adblock-wall
+combatfootages.com#$?#body { overflow: auto !important; }
+combatfootages.com#$?#html { overflow: auto !important; }
 
 
 
