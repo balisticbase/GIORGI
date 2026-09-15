@@ -1239,8 +1239,6 @@ function processResults() {
 
     let savedBaseCost = getCookie('baseDeliveryCost');
     if (savedBaseCost === undefined || savedBaseCost === null) {
-        // Use straight-line distance immediately so the UI isn't blocked,
-        // then refine with actual road distance (closer to what Google Maps shows).
         applyDistanceAndCost(minDistance);
 
         fetchRoadDistanceKm(globalUserLat, globalUserLon, nearestStore.lat, nearestStore.lon)
@@ -1248,8 +1246,6 @@ function processResults() {
                 applyDistanceAndCost(roadKm);
             })
             .catch(() => {
-                // Fallback: straight-line distance underestimates real road distance,
-                // so apply a typical road/straight-line ratio for a closer approximation.
                 applyDistanceAndCost(minDistance * 1.3);
             });
     } else {
@@ -1276,10 +1272,10 @@ function processResults() {
 
 function applyDistanceAndCost(distanceKm) {
     lastRoadDistanceKm = distanceKm;
-    if (distanceKm <= 20) {
+    if (distanceKm <= 10) {
         baseDeliveryCost = 0;
     } else {
-        const extraKm = Math.ceil(distanceKm - 20);
+        const extraKm = Math.ceil(distanceKm - 10);
         baseDeliveryCost = extraKm * 4;
     }
     setCookie('baseDeliveryCost', baseDeliveryCost, 3);
