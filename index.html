@@ -185,11 +185,6 @@
             grid-column: 1 / -1;
         }
 
-        .result-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-        }
-
         .result-item-header {
             display: flex;
             align-items: center;
@@ -320,17 +315,9 @@
             border: 1px solid #cbd5e1;
         }
 
-        .btn-clear:hover {
-            background: #e2e8f0;
-        }
-
         .btn-confirm {
             background: var(--primary-color);
             color: white;
-        }
-
-        .btn-confirm:hover {
-            background: var(--primary-hover);
         }
 
         .sig-status-text {
@@ -354,19 +341,12 @@
             gap: 2px;
             margin-bottom: 8px;
             user-select: none;
-            -webkit-user-select: none;
-        }
-
-        .summary-row:last-child {
-            margin-bottom: 0;
         }
 
         .summary-row label {
             font-size: 13px;
             font-weight: 500;
             color: var(--text-color);
-            text-transform: none;
-            letter-spacing: normal;
         }
 
         .summary-row span {
@@ -401,16 +381,6 @@
 
         @keyframes spin {
             to { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 500px) {
-            .header {
-                flex-direction: column;
-                text-align: center;
-            }
-            .header-text {
-                margin-bottom: 10px;
-            }
         }
     </style>
 </head>
@@ -525,7 +495,7 @@
                         <div class="price-summary-box">
                             <div class="summary-row" id="transportRow" style="cursor: pointer;" title="ხანგრძლივი დაჭერა ტრანსპორტირების შესაცვლელად">
                                 <label id="lbl-transport-title">ტრანსპორტირება:</label>
-                                <span id="val-transport">უფასო 0 ₾</span>
+                                <span id="val-transport">0 ₾</span>
                             </div>
                             <div class="summary-row">
                                 <label id="lbl-service-title">სერვისის საფასური:</label>
@@ -534,7 +504,7 @@
                             <div class="summary-divider"></div>
                             <div class="summary-row">
                                 <label id="lbl-total-title">ჯამური თანხა:</label>
-                                <span id="val-total">უფასო 0 ₾</span>
+                                <span id="val-total">0 ₾</span>
                             </div>
                         </div>
 
@@ -554,7 +524,7 @@ const translations = {
     ka: {
         title: "ელიტ ელექტრონიქსი",
         subtitle: "ავტომატური მიწოდების კალკულატორი",
-        status: "თქვენი მდებარეობა განისაზღვრება ზუსტი GPS-ით...",
+        status: "თქვენი მდებარეობა განისაზღვრება GPS-ით...",
         refreshLoc: "მდებარეობის განახლება",
         lblAddress: "თქვენი მისამართი",
         lblStore: "უახლოესი ფილიალი",
@@ -594,7 +564,7 @@ const translations = {
     en: {
         title: "Elit Electronics",
         subtitle: "Automatic Delivery Calculator",
-        status: "Determining your location with precise GPS...",
+        status: "Determining location...",
         refreshLoc: "Refresh Location",
         lblAddress: "Your Address",
         lblStore: "Nearest Branch",
@@ -606,7 +576,7 @@ const translations = {
         lblPrice: "Delivery & Service Fee",
         free: "Free",
         gel: "GEL",
-        unknownAddr: "Address could not be determined",
+        unknownAddr: "Address unknown",
         userLoc: "Your Location",
         optSelect: "Select Status",
         optPaid: "Paid",
@@ -634,14 +604,14 @@ const translations = {
     ru: {
         title: "Элит Электроникс",
         subtitle: "Автоматический калькулятор доставки",
-        status: "Определение вашего местоположения по точному GPS...",
+        status: "Определение местоположения...",
         refreshLoc: "Обновить геолокацию",
         lblAddress: "Ваш адрес",
         lblStore: "Ближайший филиал",
         lblSignature: "Онлайн подпись клиента",
         btnSigClear: "Очистить",
         btnSigConfirm: "Подтвердить подпись",
-        sigRequiredErr: "Пожалуйста, сначала распишитесь!",
+        sigRequiredErr: "Пожалуйста, распишитесь!",
         sigConfirmedOk: "✓ Подпись подтверждена!",
         lblPrice: "Стоимость доставки и услуг",
         free: "Бесплатно",
@@ -677,11 +647,11 @@ const eliteStores = [
     { names: { ka: "თბილისი - ქავთარაძის #3", en: "Tbilisi - Kavtaradze #3", ru: "Тбилиси - Кавтарадзе #3" }, lat: 41.7247, lon: 44.7431 },
     { names: { ka: "თბილისი - სითი მოლი გლდანი", en: "Tbilisi - City Mall Gldani", ru: "Тбилиси - Сити Молл Глдани" }, lat: 41.7956, lon: 44.8236 },
     { names: { ka: "თბილისი - ისთ ფოინთი", en: "Tbilisi - East Point", ru: "Тбилиси - Ист Поинт" }, lat: 41.6853, lon: 44.8871 },
-    { names: { ka: "თბილისი - ცენტრალი (სადგურის მოედანი)", en: "Tbilisi - Tsentrali (Railway Sq)", ru: "Тбилиси - Централи (Вокзальная пл.)" }, lat: 41.7208, lon: 44.7981 },
-    { names: { ka: "თბილისი - აღმაშენებლის ხეივანი 2ა (აუთლეტი)", en: "Tbilisi - Agmashenebeli Alley 2a", ru: "Тбилиси - Аллея Агмашенебели 2а" }, lat: 41.7766, lon: 44.7709 },
+    { names: { ka: "თბილისი - ცენტრალი (სადგურის მოედანი)", en: "Tbilisi - Tsentrali", ru: "Тбилиси - Централи" }, lat: 41.7208, lon: 44.7981 },
+    { names: { ka: "თბილისი - აღმაშენებლის ხეივანი 2ა", en: "Tbilisi - Agmashenebeli Alley 2a", ru: "Тбилиси - Аллея Агмашенебели 2а" }, lat: 41.7766, lon: 44.7709 },
     { names: { ka: "ბათუმი - ჭავჭავაძის #78/88", en: "Batumi - Chavchavadze #78/88", ru: "Батуми - Чавчавадзе #78/88" }, lat: 41.6425, lon: 41.6247 },
     { names: { ka: "ბათუმი - გორგილაძის #94", en: "Batumi - Gorgiladze #94", ru: "Батуми - Горгиладзе #94" }, lat: 41.6441, lon: 41.6186 },
-    { names: { ka: "ბათუმი - ფრიდონ ხალვაშის #20 (აუთლეტი)", en: "Batumi - Pridon Khalvashi #20", ru: "Батуми - Фридон Халваши #20" }, lat: 41.6171, lon: 41.6094 },
+    { names: { ka: "ბათუმი - ფრიდონ ხალვაშის #20", en: "Batumi - Pridon Khalvashi #20", ru: "Батуми - Фридон Халваши #20" }, lat: 41.6171, lon: 41.6094 },
     { names: { ka: "ქუთაისი - გამსახურდიას #5", en: "Kutaisi - Gamsakhurdia #5", ru: "Кутаиси - Гамсахурдия #5" }, lat: 42.2699, lon: 42.7024 },
     { names: { ka: "ქუთაისი - რუსთაველის #95", en: "Kutaisi - Rustaveli #95", ru: "Кутаиси - Руставели #95" }, lat: 42.2588, lon: 42.6963 },
     { names: { ka: "რუსთავი - შარტავას #4", en: "Rustavi - Shartava #4", ru: "Рустави - Шартава #4" }, lat: 41.5435, lon: 44.9961 },
@@ -689,7 +659,7 @@ const eliteStores = [
     { names: { ka: "ფოთი - რუსთაველის მოედანი #5", en: "Poti - Rustaveli sq. #5", ru: "Поти - пл. Руставели #5" }, lat: 42.1466, lon: 41.6698 },
     { names: { ka: "ოზურგეთი - გაბრიელ ეპისკოპოსის #2", en: "Ozurgeti - Gabriel Episkoposi #2", ru: "Озургети - Габриела Епископоса #2" }, lat: 41.9231, lon: 42.0003 },
     { names: { ka: "ახალციხე - კოსტავას #39ა", en: "Akhaltsikhe - Kostava #39a", ru: "Ахалцихе - Костава #39а" }, lat: 41.6405, lon: 42.9868 },
-    { names: { ka: "გორი - ცხინვალის გზატკეცილი #9", en: "Gori - Tskinvali Highway #9", ru: "Гори - Цхинвальское шоссе #9" }, lat: 41.9961, lon: 44.0931 },
+    { names: { ka: "გორი - ცხინვალის გზატკეცილი #9", en: "Gori - Tskinvali Hwy #9", ru: "Гори - Цхинвальское шоссе #9" }, lat: 41.9961, lon: 44.0931 },
     { names: { ka: "ხაშური - კოსტავას #1", en: "Khashuri - Kostava #1", ru: "Хашури - Костава #1" }, lat: 41.9953, lon: 43.5985 },
     { names: { ka: "ზესტაფონი - აღმაშენებლის #85", en: "Zestaponi - Agmashenebeli #85", ru: "Зестафони - Агмашенебели #85" }, lat: 42.1075, lon: 43.0375 },
     { names: { ka: "სენაკი - რუსთაველის #267ა", en: "Senaki - Rustaveli #267a", ru: "Сенаки - Руставели #267а" }, lat: 42.2687, lon: 42.0664 },
@@ -706,7 +676,6 @@ let globalRawAddressData = null;
 let currentFormattedAddress = "";
 let map = null;
 let baseDeliveryCost = 0;
-let lastRoadDistanceKm = null;
 
 let canvas, ctx;
 let isDrawing = false;
@@ -730,19 +699,6 @@ function eraseCookie(name) {
     document.cookie = name + '=; Max-Age=-99999999; path=/';
 }
 
-function clearAllCookiesAndReload() {
-    eraseCookie('deliveryStatus');
-    eraseCookie('deliveryAddress');
-    eraseCookie('selectedService');
-    eraseCookie('selectedDemontazhVal');
-    eraseCookie('baseDeliveryCost');
-    eraseCookie('addOnCost');
-    eraseCookie('lastLat');
-    eraseCookie('lastLon');
-    localStorage.removeItem('userSignature');
-    window.location.reload();
-}
-
 function changeLanguage(lang) {
     currentLang = lang;
     document.documentElement.lang = lang;
@@ -751,46 +707,6 @@ function changeLanguage(lang) {
     document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
     if (document.getElementById(`btn-${lang}`)) {
         document.getElementById(`btn-${lang}`).classList.add('active');
-    }
-
-    const t = translations[lang];
-
-    let savedStatus = getCookie('deliveryStatus');
-    if (savedStatus === 'paid') {
-        renderSuccessScreen();
-        return;
-    } else if (savedStatus === 'refused') {
-        renderRefusedScreen();
-        return;
-    }
-
-    if (document.getElementById('txt-title')) {
-        document.getElementById('txt-title').innerText = t.title;
-        document.getElementById('txt-subtitle').innerText = t.subtitle;
-        document.getElementById('txt-status').innerText = t.status;
-        document.getElementById('txt-refresh').innerText = t.refreshLoc;
-        document.getElementById('lbl-address').innerText = t.lblAddress;
-        document.getElementById('lbl-store').innerText = t.lblStore;
-        document.getElementById('lbl-signature').innerText = t.lblSignature;
-        document.getElementById('btn-sig-clear').innerText = t.btnSigClear;
-        document.getElementById('btn-sig-confirm').innerText = t.btnSigConfirm;
-        document.getElementById('lbl-price').innerText = t.lblPrice;
-        document.getElementById('opt-select').innerText = t.optSelect;
-        document.getElementById('opt-paid').innerText = t.optPaid;
-        document.getElementById('opt-refused').innerText = t.optRefused;
-        document.getElementById('opt-demontazh-select').innerText = t.optDemontazhSelect;
-        document.getElementById('opt-demontazh-none').innerText = t.optDemontazhNone;
-        document.getElementById('opt-montazh-free').innerText = t.optMontazhFree;
-        document.getElementById('opt-demontazh-montazh').innerText = t.optDemontazhMontazh;
-        document.getElementById('opt-method-select').innerText = t.optMethodSelect;
-        document.getElementById('opt-cash').innerText = t.optCash;
-        document.getElementById('opt-transfer').innerText = t.optTransfer;
-        document.getElementById('btn-close-free').innerText = t.btnCloseFree;
-        document.getElementById('txt-id-label').innerText = t.idLabel;
-        document.getElementById('btn-transfer-done').innerText = t.btnTransferDone;
-        document.getElementById('lbl-transport-title').innerText = t.lblTransportTitle;
-        document.getElementById('lbl-service-title').innerText = t.lblServiceTitle;
-        document.getElementById('lbl-total-title').innerText = t.lblTotalTitle;
     }
 
     if (globalUserLat !== null && globalUserLon !== null) {
@@ -832,10 +748,7 @@ function initSignatureCanvas() {
 
 function getPos(e) {
     const rect = canvas.getBoundingClientRect();
-    return {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
-    };
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
 }
 
 function startDrawing(e) {
@@ -910,9 +823,7 @@ function restoreSignatureState() {
         isSignatureConfirmed = true;
         
         let img = new Image();
-        img.onload = function() {
-            ctx.drawImage(img, 0, 0);
-        };
+        img.onload = function() { ctx.drawImage(img, 0, 0); };
         img.src = savedSig;
 
         document.getElementById('demontazhSelect').disabled = false;
@@ -972,53 +883,26 @@ function handleDemontazhAction(val) {
 function updateTotalPriceDisplay() {
     const t = translations[currentLang];
     const demontazhElem = document.getElementById('demontazhSelect');
-    const demontazhVal = demontazhElem ? demontazhElem.value : (getCookie('selectedDemontazhVal') || 'none');
+    const demontazhVal = demontazhElem ? demontazhElem.value : 'none';
     const paymentActionSelect = document.getElementById('paymentActionSelect');
     const paymentActionVal = paymentActionSelect.value;
     
     let addOnCost = (demontazhVal === 'demontazh_montazh') ? 30 : 0;
-    setCookie('addOnCost', addOnCost, 3);
-
     let totalCost = baseDeliveryCost + addOnCost;
+
     const paymentMethodSelect = document.getElementById('paymentMethodSelect');
     const closeFreeBtn = document.getElementById('btn-close-free');
     const transferInfo = document.getElementById('transferInfo');
-    const optRefused = document.getElementById('opt-refused');
 
-    if (totalCost <= 0) {
-        optRefused.disabled = true;
-        if (paymentActionVal === 'refused') {
-            paymentActionSelect.value = "";
-            paymentMethodSelect.style.display = 'none';
-            transferInfo.style.display = 'none';
-        }
-    } else {
-        optRefused.disabled = false;
-    }
-
-    if (baseDeliveryCost === 0) {
-        document.getElementById('val-transport').innerText = `${t.free} 0 ${t.gel}`;
-    } else {
-        document.getElementById('val-transport').innerText = `${baseDeliveryCost} ${t.gel}`;
-    }
-
+    document.getElementById('val-transport').innerText = (baseDeliveryCost === 0) ? `${t.free} 0 ${t.gel}` : `${baseDeliveryCost} ${t.gel}`;
     document.getElementById('val-service').innerText = `${addOnCost} ${t.gel}`;
-
-    if (totalCost === 0) {
-        document.getElementById('val-total').innerText = `${t.free} 0 ${t.gel}`;
-    } else {
-        document.getElementById('val-total').innerText = `${totalCost} ${t.gel}`;
-    }
+    document.getElementById('val-total').innerText = (totalCost === 0) ? `${t.free} 0 ${t.gel}` : `${totalCost} ${t.gel}`;
 
     if (totalCost === 0) {
         paymentMethodSelect.style.display = 'none';
         transferInfo.style.display = 'none';
-        
         if (paymentActionVal === 'paid') {
             closeFreeBtn.style.display = 'block';
-            closeFreeBtn.innerText = t.btnCloseFree;
-        } else {
-            closeFreeBtn.style.display = 'none';
         }
     } else {
         closeFreeBtn.style.display = 'none';
@@ -1028,180 +912,60 @@ function updateTotalPriceDisplay() {
     }
 }
 
-function renderSuccessScreen() {
-    setCookie('deliveryStatus', 'paid', 3);
-    if (currentFormattedAddress) {
-        setCookie('deliveryAddress', currentFormattedAddress, 3);
-    } else {
-        currentFormattedAddress = getCookie('deliveryAddress') || '';
-    }
-    
-    const t = translations[currentLang];
-    const sigImg = savedSignatureDataUrl || localStorage.getItem('userSignature');
-    const serviceText = getCookie('selectedService') || document.getElementById('demontazhSelect').options[document.getElementById('demontazhSelect').selectedIndex].text;
-
-    let addOnCost = parseFloat(getCookie('addOnCost')) || 0;
-    let currentBaseCost = parseFloat(getCookie('baseDeliveryCost')) || baseDeliveryCost;
-    let totalCost = currentBaseCost + addOnCost;
-
-    document.body.style.backgroundColor = '#ffffff';
-    document.body.innerHTML = `
-        <div style="
-            display: flex; 
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            text-align: center;
-            padding: 20px;
-            font-family: 'Outfit', sans-serif;">
-            
-            <div style="
-                width: 90px; 
-                height: 90px; 
-                background-color: #10b981; 
-                border-radius: 50%; 
-                display: flex; 
-                align-items: center; 
-                justify-content: center; 
-                box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-                margin-bottom: 20px;">
-                <i class="fa-solid fa-check" style="font-size: 45px; color: white;"></i>
-            </div>
-
-            <div style="font-size: 32px; font-weight: 800; color: #10b981; margin-bottom: 6px;">
-                ${t.screenPaid}
-            </div>
-
-            <div style="font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 20px;">
-                ${t.screenDelivered}
-            </div>
-
-            <div style="
-                background: #f8fafc;
-                border: 1px solid #e2e8f0;
-                border-radius: 12px;
-                padding: 18px 20px;
-                max-width: 450px;
-                width: 100%;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-                text-align: left;">
-                
-                <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">
-                    ${t.screenAddressLabel}
-                </div>
-                <div style="font-size: 14px; font-weight: 600; color: #0f172a; margin-bottom: 12px;">
-                    ${currentFormattedAddress}
-                </div>
-
-                <div style="border-top: 1px dashed #cbd5e1; padding-top: 10px; margin-bottom: 12px;">
-                    <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">
-                        ${t.screenServiceLabel}
-                    </div>
-                    <div style="font-size: 14px; font-weight: 700; color: #e60012;">
-                        ${serviceText}
-                    </div>
-                </div>
-
-                <div style="border-top: 1px dashed #cbd5e1; padding-top: 10px; margin-bottom: 12px;">
-                    <div style="margin-bottom: 8px;">
-                        <div style="font-size: 13px; font-weight: 500; color: #0f172a;">${t.lblTransportTitle}</div>
-                        <div style="font-size: 15px; font-weight: 600; color: #0f172a;">${currentBaseCost === 0 ? t.free + ' 0 ' + t.gel : currentBaseCost + ' ' + t.gel}</div>
-                    </div>
-                    <div style="margin-bottom: 8px;">
-                        <div style="font-size: 13px; font-weight: 500; color: #0f172a;">${t.lblServiceTitle}</div>
-                        <div style="font-size: 15px; font-weight: 600; color: #0f172a;">${addOnCost} ${t.gel}</div>
-                    </div>
-                    <div style="border-top: 1px solid #cbd5e1; padding-top: 8px;">
-                        <div style="font-size: 13px; font-weight: 500; color: #0f172a;">${t.lblTotalTitle}</div>
-                        <div style="font-size: 15px; font-weight: 600; color: #0f172a;">${totalCost === 0 ? t.free + ' 0 ' + t.gel : totalCost + ' ' + t.gel}</div>
-                    </div>
-                </div>
-
-                ${sigImg ? `
-                    <div style="border-top: 1px dashed #cbd5e1; padding-top: 10px;">
-                        <div style="font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 5px;">
-                            ${t.screenSigLabel}
-                        </div>
-                        <img src="${sigImg}" style="max-width: 100%; height: 70px; object-fit: contain; border: 1px solid #e2e8f0; border-radius: 8px; background: white;" />
-                    </div>
-                ` : ''}
-            </div>
-        </div>
-    `;
-}
-
-function renderRefusedScreen() {
-    setCookie('deliveryStatus', 'refused', 3);
-    const t = translations[currentLang];
-
-    document.body.style.backgroundColor = '#ffffff';
-    document.body.innerHTML = `
-        <div style="
-            display: flex; 
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            text-align: center;
-            padding: 20px;
-            font-family: 'Outfit', sans-serif;">
-            
-            <div style="
-                width: 90px; 
-                height: 90px; 
-                background-color: #ef4444; 
-                border-radius: 50%; 
-                display: flex; 
-                align-items: center; 
-                justify-content: center; 
-                box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
-                margin-bottom: 20px;">
-                <i class="fa-solid fa-xmark" style="font-size: 45px; color: white;"></i>
-            </div>
-
-            <div style="font-size: 30px; font-weight: 800; color: #ef4444;">
-                ${t.screenRefused}
-            </div>
-        </div>
-    `;
-}
-
-function handleMethodAction(val) {
-    const transferInfo = document.getElementById('transferInfo');
-
-    if (val === 'cash') {
-        transferInfo.style.display = 'none';
-        renderSuccessScreen();
-    } else if (val === 'transfer') {
-        transferInfo.style.display = 'block';
-    }
-}
-
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = 
-        Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-        Math.sin(dLon/2) * Math.sin(dLon/2);
-    const clampedA = Math.min(1, Math.max(0, a));
-    const c = 2 * Math.atan2(Math.sqrt(clampedA), Math.sqrt(1 - clampedA));
-    return R * c;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
 }
 
 async function fetchRoadDistanceKm(lat1, lon1, lat2, lon2) {
-    const url = `https://router.project-osrm.org/route/v1/driving/${lon1},${lat1};${lon2},${lat2}?overview=false`;
-    const res = await fetch(url);
-    const data = await res.json();
-    if (data && data.routes && data.routes.length > 0) {
-        return data.routes[0].distance / 1000;
-    }
-    throw new Error('no route');
+    try {
+        const url = `https://router.project-osrm.org/route/v1/driving/${lon1},${lat1};${lon2},${lat2}?overview=false`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data && data.routes && data.routes.length > 0) {
+            return data.routes[0].distance / 1000;
+        }
+    } catch(e) {}
+    return calculateDistance(lat1, lon1, lat2, lon2) * 1.3;
 }
 
-function processResults() {
+// მისამართის სწორი ფორმატირება (მაგისტრალების სახელების გაფილტვრა)
+function cleanAddressData(data) {
+    if (!data || !data.address) return translations[currentLang].unknownAddr;
+    const addr = data.address;
+
+    let city = addr.city || addr.town || addr.village || addr.hamlet || addr.municipality || "";
+    let district = addr.suburb || addr.neighbourhood || addr.city_district || addr.quarter || "";
+    let road = addr.road || addr.street || addr.pedestrian || addr.footway || "";
+    let house = addr.house_number || addr.building || "";
+
+    // თუ ქუჩის სახელი შეიცავს მაგისტრალს (მაგ. სენაკი — ფოთი — სარფი), ამოვიღოთ
+    if (road.includes('—') || road.includes(' - ') || road.toLowerCase().includes('სენაკი') || road.toLowerCase().includes('სარფი')) {
+        road = "";
+    }
+
+    let streetPart = road;
+    if (house) {
+        streetPart = streetPart ? `${streetPart} #${house}` : `#${house}`;
+    }
+
+    let parts = [city, district, streetPart].filter(p => p && p.trim() !== "");
+
+    if (parts.length === 0 && data.display_name) {
+        let rawParts = data.display_name.split(',').map(s => s.trim());
+        let clean = rawParts.filter(p => !p.includes('—') && !p.includes('E70') && !p.includes('E60'));
+        return clean.slice(0, 3).join(', ');
+    }
+
+    return parts.join(", ") || translations[currentLang].unknownAddr;
+}
+
+async function processResults() {
     const t = translations[currentLang];
     
     let nearestStore = null;
@@ -1215,139 +979,35 @@ function processResults() {
         }
     });
 
-    let formattedAddr = t.unknownAddr;
-    if (globalRawAddressData && globalRawAddressData.address) {
-        const addr = globalRawAddressData.address;
-        
-        // ზუსტი მისამართის დეტალების ამოღება
-        const city = addr.city || addr.town || addr.village || addr.municipality || "";
-        const district = addr.suburb || addr.neighbourhood || addr.city_district || "";
-        const road = addr.road || addr.street || addr.pedestrian || addr.footway || addr.path || "";
-        const house = addr.house_number || addr.building || addr.house_name || "";
-        
-        let streetWithHouse = road;
-        if (house) {
-            streetWithHouse += (streetWithHouse ? " #" : "#") + house;
-        }
-
-        const parts = [city, district, streetWithHouse].filter(p => p && p.trim() !== "");
-        
-        if (parts.length > 0) {
-            formattedAddr = parts.join(", ");
-        } else if (globalRawAddressData.display_name) {
-            formattedAddr = globalRawAddressData.display_name.split(',').slice(0, 4).join(',');
-        }
-    } else if (globalRawAddressData && globalRawAddressData.display_name) {
-        formattedAddr = globalRawAddressData.display_name.split(',').slice(0, 4).join(',');
-    } else if (typeof globalRawAddressData === 'string') {
-        formattedAddr = globalRawAddressData;
-    } else if (getCookie('deliveryAddress')) {
-        formattedAddr = getCookie('deliveryAddress');
-    }
-
-    currentFormattedAddress = formattedAddr;
+    currentFormattedAddress = cleanAddressData(globalRawAddressData);
     setCookie('deliveryAddress', currentFormattedAddress, 3);
     
-    document.getElementById('userAddressVal').innerText = formattedAddr;
+    document.getElementById('userAddressVal').innerText = currentFormattedAddress;
     document.getElementById('storeName').innerText = nearestStore.names[currentLang] || nearestStore.names['ka'];
 
-    let savedBaseCost = getCookie('baseDeliveryCost');
-    if (savedBaseCost === undefined || savedBaseCost === null) {
-        applyDistanceAndCost(minDistance);
-
-        fetchRoadDistanceKm(globalUserLat, globalUserLon, nearestStore.lat, nearestStore.lon)
-            .then(roadKm => {
-                applyDistanceAndCost(roadKm);
-            })
-            .catch(() => {
-                applyDistanceAndCost(minDistance * 1.3);
-            });
+    // მანძილის და ფასის გამოთვლა
+    let roadKm = await fetchRoadDistanceKm(globalUserLat, globalUserLon, nearestStore.lat, nearestStore.lon);
+    if (roadKm <= 10) {
+        baseDeliveryCost = 0;
     } else {
-        baseDeliveryCost = parseFloat(savedBaseCost) || 0;
+        let extraKm = Math.ceil(roadKm - 10);
+        baseDeliveryCost = extraKm * 4;
     }
+    setCookie('baseDeliveryCost', baseDeliveryCost, 3);
 
     document.getElementById('status').style.display = 'none';
     document.getElementById('results').style.display = 'block';
 
     initSignatureCanvas();
-    initTransportLongPress();
-
-    let savedDemontazhVal = getCookie('selectedDemontazhVal');
-    if (savedDemontazhVal) {
-        const demontazhSelectElem = document.getElementById('demontazhSelect');
-        demontazhSelectElem.value = savedDemontazhVal;
-    } else {
-        handleDemontazhAction('none');
-    }
-
+    handleDemontazhAction('none');
     updateTotalPriceDisplay();
     renderMap(globalUserLat, globalUserLon, nearestStore);
 }
 
-function applyDistanceAndCost(distanceKm) {
-    lastRoadDistanceKm = distanceKm;
-    if (distanceKm <= 10) {
-        baseDeliveryCost = 0;
-    } else {
-        const extraKm = Math.ceil(distanceKm - 10);
-        baseDeliveryCost = extraKm * 4;
-    }
-    setCookie('baseDeliveryCost', baseDeliveryCost, 3);
-    updateTotalPriceDisplay();
-}
-
-let transportHoldTimer = null;
-
-function initTransportLongPress() {
-    const row = document.getElementById('transportRow');
-    if (!row) return;
-
-    const startPress = (e) => {
-        clearTimeout(transportHoldTimer);
-        transportHoldTimer = setTimeout(() => {
-            unlockTransportEditing();
-        }, 10000);
-    };
-
-    const cancelPress = () => {
-        clearTimeout(transportHoldTimer);
-    };
-
-    row.addEventListener('mousedown', startPress);
-    row.addEventListener('mouseup', cancelPress);
-    row.addEventListener('mouseleave', cancelPress);
-
-    row.addEventListener('touchstart', (e) => {
-        startPress(e);
-    });
-    row.addEventListener('touchend', cancelPress);
-    row.addEventListener('touchcancel', cancelPress);
-}
-
-function unlockTransportEditing() {
-    let newCostStr = prompt("შეიყვანეთ ტრანსპორტირების ახალი საფასური (₾):", baseDeliveryCost);
-    if (newCostStr !== null) {
-        let parsed = parseFloat(newCostStr);
-        if (!isNaN(parsed) && parsed >= 0) {
-            baseDeliveryCost = parsed;
-            setCookie('baseDeliveryCost', baseDeliveryCost, 3);
-            updateTotalPriceDisplay();
-        } else {
-            alert("არასწორი მნიშვნელობა!");
-        }
-    }
-}
-
 function fetchAddressFromCoords(lat, lon) {
-    setCookie('lastLat', lat, 24);
-    setCookie('lastLon', lon, 24);
-
     globalUserLat = lat;
     globalUserLon = lon;
 
-    let savedStatus = getCookie('deliveryStatus');
-    if (savedStatus) return;
-    
     const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=${currentLang}&addressdetails=1&zoom=18`;
     
     fetch(url)
@@ -1363,26 +1023,15 @@ function fetchAddressFromCoords(lat, lon) {
 }
 
 function triggerFreshGeolocation() {
-    eraseCookie('lastLat');
-    eraseCookie('lastLon');
-    
+    eraseCookie('baseDeliveryCost');
     document.getElementById('results').style.display = 'none';
     document.getElementById('status').style.display = 'flex';
-    document.getElementById('txt-status').innerText = translations[currentLang].status;
 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-            position => {
-                fetchAddressFromCoords(position.coords.latitude, position.coords.longitude);
-            },
-            error => {
-                detectByIP();
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 15000,
-                maximumAge: 0
-            }
+            position => fetchAddressFromCoords(position.coords.latitude, position.coords.longitude),
+            error => detectByIP(),
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
         );
     } else {
         detectByIP();
@@ -1391,14 +1040,10 @@ function triggerFreshGeolocation() {
 
 function renderMap(userLat, userLon, store) {
     const t = translations[currentLang];
-    if (map) {
-        map.remove();
-    }
+    if (map) map.remove();
     
     map = L.map('map');
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap'
-    }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
 
     const userLatLng = [userLat, userLon];
     const storeLatLng = [store.lat, store.lon];
@@ -1407,109 +1052,72 @@ function renderMap(userLat, userLon, store) {
     L.marker(storeLatLng).addTo(map).bindPopup(`<b>${store.names[currentLang]}</b>`);
 
     L.polyline([userLatLng, storeLatLng], { color: '#e60012', weight: 4 }).addTo(map);
-
-    const bounds = L.latLngBounds([userLatLng, storeLatLng]);
-    map.fitBounds(bounds, { padding: [50, 50] });
+    map.fitBounds(L.latLngBounds([userLatLng, storeLatLng]), { padding: [50, 50] });
 }
 
 function detectByIP() {
     fetch('https://ipapi.co/json/')
         .then(res => res.json())
         .then(data => {
-            if(data.latitude && data.longitude) {
-                fetchAddressFromCoords(data.latitude, data.longitude);
-            } else {
-                if(document.getElementById('status')) {
-                    document.getElementById('status').innerText = translations[currentLang].unknownAddr;
-                }
-            }
-        })
-        .catch(() => {
-            if(document.getElementById('status')) {
-                document.getElementById('status').innerText = translations[currentLang].unknownAddr;
-            }
+            if(data.latitude && data.longitude) fetchAddressFromCoords(data.latitude, data.longitude);
         });
 }
 
-let secretHoldTimer = null;
+function renderSuccessScreen() {
+    setCookie('deliveryStatus', 'paid', 3);
+    const t = translations[currentLang];
+    const sigImg = savedSignatureDataUrl || localStorage.getItem('userSignature');
+    const serviceText = getCookie('selectedService') || "არცერთი";
+    let addOnCost = parseFloat(getCookie('addOnCost')) || 0;
+    let totalCost = baseDeliveryCost + addOnCost;
 
-function handleTouchStart(e) {
-    if (e.touches.length === 2) {
-        clearTimeout(secretHoldTimer);
-        secretHoldTimer = setTimeout(() => {
-            clearAllCookiesAndReload();
-        }, 10000);
-    } else {
-        clearTimeout(secretHoldTimer);
-    }
+    document.body.style.backgroundColor = '#ffffff';
+    document.body.innerHTML = `
+        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:100vh; text-align:center; padding:20px; font-family:'Outfit',sans-serif;">
+            <div style="width:90px; height:90px; background:#10b981; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:20px;">
+                <i class="fa-solid fa-check" style="font-size:45px; color:white;"></i>
+            </div>
+            <div style="font-size:32px; font-weight:800; color:#10b981; margin-bottom:6px;">${t.screenPaid}</div>
+            <div style="font-size:20px; font-weight:700; color:#0f172a; margin-bottom:20px;">${t.screenDelivered}</div>
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:18px 20px; max-width:450px; width:100%; text-align:left;">
+                <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase;">${t.screenAddressLabel}</div>
+                <div style="font-size:14px; font-weight:600; color:#0f172a; margin-bottom:12px;">${currentFormattedAddress}</div>
+                <div style="border-top:1px dashed #cbd5e1; padding-top:10px; margin-bottom:12px;">
+                    <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase;">${t.screenServiceLabel}</div>
+                    <div style="font-size:14px; font-weight:700; color:#e60012;">${serviceText}</div>
+                </div>
+                <div style="border-top:1px dashed #cbd5e1; padding-top:10px; margin-bottom:12px;">
+                    <div>${t.lblTransportTitle} <b>${baseDeliveryCost === 0 ? t.free : baseDeliveryCost + ' ' + t.gel}</b></div>
+                    <div>${t.lblServiceTitle} <b>${addOnCost} ${t.gel}</b></div>
+                    <div style="border-top:1px solid #cbd5e1; margin-top:6px; padding-top:6px;">${t.lblTotalTitle} <b>${totalCost === 0 ? t.free : totalCost + ' ' + t.gel}</b></div>
+                </div>
+                ${sigImg ? `<img src="${sigImg}" style="max-width:100%; height:70px; border:1px solid #e2e8f0; border-radius:8px; background:white;" />` : ''}
+            </div>
+        </div>
+    `;
 }
 
-function handleTouchEnd(e) {
-    if (e.touches.length < 2) {
-        clearTimeout(secretHoldTimer);
-    }
+function renderRefusedScreen() {
+    setCookie('deliveryStatus', 'refused', 3);
+    const t = translations[currentLang];
+    document.body.style.backgroundColor = '#ffffff';
+    document.body.innerHTML = `
+        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:100vh; text-align:center; padding:20px; font-family:'Outfit',sans-serif;">
+            <div style="width:90px; height:90px; background:#ef4444; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:20px;">
+                <i class="fa-solid fa-xmark" style="font-size:45px; color:white;"></i>
+            </div>
+            <div style="font-size:30px; font-weight:800; color:#ef4444;">${t.screenRefused}</div>
+        </div>
+    `;
 }
 
-window.addEventListener('touchstart', handleTouchStart);
-window.addEventListener('touchend', handleTouchEnd);
-window.addEventListener('touchcancel', handleTouchEnd);
+function handleMethodAction(val) {
+    if (val === 'cash') renderSuccessScreen();
+    else if (val === 'transfer') document.getElementById('transferInfo').style.display = 'block';
+}
 
 window.onload = function() {
-    let savedLang = getCookie('appLang');
-    if (savedLang && translations[savedLang]) {
-        currentLang = savedLang;
-        document.documentElement.lang = savedLang;
-        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-        if (document.getElementById(`btn-${savedLang}`)) {
-            document.getElementById(`btn-${savedLang}`).classList.add('active');
-        }
-    }
-
-    let savedBaseCost = getCookie('baseDeliveryCost');
-    if (savedBaseCost !== undefined) {
-        baseDeliveryCost = parseFloat(savedBaseCost) || 0;
-    }
-
-    let savedStatus = getCookie('deliveryStatus');
-    let savedAddr = getCookie('deliveryAddress');
-
-    if (savedStatus) {
-        if (savedAddr) currentFormattedAddress = savedAddr;
-        if (savedStatus === 'paid') {
-            renderSuccessScreen();
-            return;
-        } else if (savedStatus === 'refused') {
-            renderRefusedScreen();
-            return;
-        }
-    }
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                fetchAddressFromCoords(position.coords.latitude, position.coords.longitude);
-            },
-            error => {
-                let lastLat = getCookie('lastLat');
-                let lastLon = getCookie('lastLon');
-                if (lastLat && lastLon) {
-                    globalUserLat = parseFloat(lastLat);
-                    globalUserLon = parseFloat(lastLon);
-                    if (savedAddr) globalRawAddressData = savedAddr;
-                    processResults();
-                } else {
-                    detectByIP();
-                }
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 15000,
-                maximumAge: 0
-            }
-        );
-    } else {
-        detectByIP();
-    }
+    triggerFreshGeolocation();
 };
 </script>
 
