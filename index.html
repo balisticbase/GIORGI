@@ -1218,13 +1218,27 @@ function processResults() {
     let formattedAddr = t.unknownAddr;
     if (globalRawAddressData && globalRawAddressData.address) {
         const addr = globalRawAddressData.address;
-        const road = addr.road || addr.street || addr.pedestrian || "";
-        const houseNumber = addr.house_number ? " #" + addr.house_number : "";
-        const city = addr.city || addr.town || addr.village || addr.county || addr.state || "";
-        formattedAddr = [city, road + houseNumber].filter(Boolean).join(", ");
-        if (!formattedAddr) formattedAddr = globalRawAddressData.display_name.split(',').slice(0, 3).join(',');
+        
+        // ზუსტი მისამართის დეტალების ამოღება
+        const city = addr.city || addr.town || addr.village || addr.municipality || "";
+        const district = addr.suburb || addr.neighbourhood || addr.city_district || "";
+        const road = addr.road || addr.street || addr.pedestrian || addr.footway || addr.path || "";
+        const house = addr.house_number || addr.building || addr.house_name || "";
+        
+        let streetWithHouse = road;
+        if (house) {
+            streetWithHouse += (streetWithHouse ? " #" : "#") + house;
+        }
+
+        const parts = [city, district, streetWithHouse].filter(p => p && p.trim() !== "");
+        
+        if (parts.length > 0) {
+            formattedAddr = parts.join(", ");
+        } else if (globalRawAddressData.display_name) {
+            formattedAddr = globalRawAddressData.display_name.split(',').slice(0, 4).join(',');
+        }
     } else if (globalRawAddressData && globalRawAddressData.display_name) {
-        formattedAddr = globalRawAddressData.display_name.split(',').slice(0, 3).join(',');
+        formattedAddr = globalRawAddressData.display_name.split(',').slice(0, 4).join(',');
     } else if (typeof globalRawAddressData === 'string') {
         formattedAddr = globalRawAddressData;
     } else if (getCookie('deliveryAddress')) {
@@ -1282,7 +1296,6 @@ function applyDistanceAndCost(distanceKm) {
     updateTotalPriceDisplay();
 }
 
-// 10-second long press listener for transportation fee modification
 let transportHoldTimer = null;
 
 function initTransportLongPress() {
@@ -1293,7 +1306,7 @@ function initTransportLongPress() {
         clearTimeout(transportHoldTimer);
         transportHoldTimer = setTimeout(() => {
             unlockTransportEditing();
-        }, 10000); // 10 seconds
+        }, 10000);
     };
 
     const cancelPress = () => {
