@@ -467,7 +467,9 @@
                             <option value="" disabled id="opt-demontazh-select">სერვისის საფასური</option>
                             <option value="none" selected id="opt-demontazh-none">არცერთი</option>
                             <option value="montazh_free" id="opt-montazh-free">მონტაჟი უფასო</option>
-                            <option value="demontazh_montazh" id="opt-demontazh-montazh">დემონტაჟი მონტაჟი 30 ₾</option>
+                            <option value="washing_machine_montage" id="opt-washing-machine">სარეცხი მანქანის დემონტაჟი / მონტაჟი 30 ₾</option>
+                            <option value="tv_montage_standard" id="opt-tv-standard">ტელევიზორის მონტაჟი 80 ₾</option>
+                            <option value="tv_montage_wall" id="opt-tv-wall">ტელევიზორის მონტაჟი კედელზე 250 ₾</option>
                         </select>
 
                         <select id="paymentActionSelect" class="payment-select-inline" onchange="handlePaymentAction(this.value)">
@@ -522,6 +524,19 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
+const servicePrices = {
+    none: 0,
+    montazh_free: 0,
+    washing_machine_montage: 30,
+    tv_montage_standard: 80,
+    tv_montage_wall: 250,
+    demontazh_montazh: 30
+};
+
+function getServicePrice(serviceKey) {
+    return servicePrices[serviceKey] || 0;
+}
+
 const translations = {
     ka: {
         title: "ელიტ ელექტრონიქსი",
@@ -546,7 +561,9 @@ const translations = {
         optDemontazhSelect: "სერვისის საფასური",
         optDemontazhNone: "არცერთი",
         optMontazhFree: "მონტაჟი უფასო",
-        optDemontazhMontazh: "დემონტაჟი მონტაჟი 30 ₾",
+        optWashingMachine: "სარეცხი მანქანის დემონტაჟი / მონტაჟი 30 ₾",
+        optTvStandard: "ტელევიზორის მონტაჟი 80 ₾",
+        optTvWall: "ტელევიზორის მონტაჟი კედელზე 250 ₾",
         optMethodSelect: "აირჩიეთ მეთოდი",
         optCash: "ქეში",
         optTransfer: "გადარიცხვა",
@@ -586,7 +603,9 @@ const translations = {
         optDemontazhSelect: "Service Fee",
         optDemontazhNone: "None",
         optMontazhFree: "Free Installation",
-        optDemontazhMontazh: "Dismantling & Installation 30 GEL",
+        optWashingMachine: "Washing machine dismantling / installation 30 GEL",
+        optTvStandard: "TV installation 80 GEL",
+        optTvWall: "TV wall mounting 250 GEL",
         optMethodSelect: "Select Method",
         optCash: "Cash",
         optTransfer: "Transfer",
@@ -626,7 +645,9 @@ const translations = {
         optDemontazhSelect: "Плата за обслуживание",
         optDemontazhNone: "Ничего",
         optMontazhFree: "Монтаж бесплатный",
-        optDemontazhMontazh: "Демонтаж Монтаж 30 ₾",
+        optWashingMachine: "Демонтаж / монтаж стиральной машины 30 ₾",
+        optTvStandard: "Монтаж телевизора 80 ₾",
+        optTvWall: "Монтаж телевизора на стену 250 ₾",
         optMethodSelect: "Выберите метод",
         optCash: "Наличные",
         optTransfer: "Перевод",
@@ -701,6 +722,43 @@ function eraseCookie(name) {
     document.cookie = name + '=; Max-Age=-99999999; path=/';
 }
 
+function updateStaticTranslations() {
+    const t = translations[currentLang];
+    if (!t) return;
+    
+    document.getElementById('txt-title').innerText = t.title;
+    document.getElementById('txt-subtitle').innerText = t.subtitle;
+    document.getElementById('txt-status').innerText = t.status;
+    document.getElementById('txt-refresh').innerText = t.refreshLoc;
+    document.getElementById('lbl-address').innerText = t.lblAddress;
+    document.getElementById('lbl-store').innerText = t.lblStore;
+    document.getElementById('lbl-signature').innerText = t.lblSignature;
+    document.getElementById('btn-sig-clear').innerText = t.btnSigClear;
+    document.getElementById('btn-sig-confirm').innerText = t.btnSigConfirm;
+    document.getElementById('lbl-price').innerText = t.lblPrice;
+    
+    document.getElementById('opt-demontazh-select').innerText = t.optDemontazhSelect;
+    document.getElementById('opt-demontazh-none').innerText = t.optDemontazhNone;
+    document.getElementById('opt-montazh-free').innerText = t.optMontazhFree;
+    document.getElementById('opt-washing-machine').innerText = t.optWashingMachine;
+    document.getElementById('opt-tv-standard').innerText = t.optTvStandard;
+    document.getElementById('opt-tv-wall').innerText = t.optTvWall;
+
+    document.getElementById('opt-select').innerText = t.optSelect;
+    document.getElementById('opt-paid').innerText = t.optPaid;
+    document.getElementById('opt-refused').innerText = t.optRefused;
+    document.getElementById('opt-method-select').innerText = t.optMethodSelect;
+    document.getElementById('opt-cash').innerText = t.optCash;
+    document.getElementById('opt-transfer').innerText = t.optTransfer;
+    
+    document.getElementById('lbl-transport-title').innerText = t.lblTransportTitle;
+    document.getElementById('lbl-service-title').innerText = t.lblServiceTitle;
+    document.getElementById('lbl-total-title').innerText = t.lblTotalTitle;
+    document.getElementById('txt-id-label').innerText = t.idLabel;
+    document.getElementById('btn-transfer-done').innerText = t.btnTransferDone;
+    document.getElementById('btn-close-free').innerText = t.btnCloseFree;
+}
+
 function changeLanguage(lang) {
     currentLang = lang;
     document.documentElement.lang = lang;
@@ -710,6 +768,8 @@ function changeLanguage(lang) {
     if (document.getElementById(`btn-${lang}`)) {
         document.getElementById(`btn-${lang}`).classList.add('active');
     }
+
+    updateStaticTranslations();
 
     if (globalUserLat !== null && globalUserLon !== null) {
         fetchAddressFromCoords(globalUserLat, globalUserLon);
@@ -855,7 +915,7 @@ function handlePaymentAction(val) {
     }
 
     if (val === 'paid') {
-        let addOnCost = demontazhVal === 'demontazh_montazh' ? 30 : 0;
+        let addOnCost = getServicePrice(demontazhVal);
         let totalCost = baseDeliveryCost + addOnCost;
 
         if (totalCost === 0) {
@@ -876,7 +936,7 @@ function handleDemontazhAction(val) {
     setCookie('selectedDemontazhVal', val, 3);
     setCookie('selectedService', selectedText, 3);
     
-    let addOnCost = val === 'demontazh_montazh' ? 30 : 0;
+    let addOnCost = getServicePrice(val);
     setCookie('addOnCost', addOnCost, 3);
     
     updateTotalPriceDisplay();
@@ -889,7 +949,7 @@ function updateTotalPriceDisplay() {
     const paymentActionSelect = document.getElementById('paymentActionSelect');
     const paymentActionVal = paymentActionSelect.value;
     
-    let addOnCost = (demontazhVal === 'demontazh_montazh') ? 30 : 0;
+    let addOnCost = getServicePrice(demontazhVal);
     let totalCost = baseDeliveryCost + addOnCost;
 
     const paymentMethodSelect = document.getElementById('paymentMethodSelect');
@@ -985,7 +1045,6 @@ async function processResults() {
     document.getElementById('userAddressVal').innerText = currentFormattedAddress;
     document.getElementById('storeName').innerText = nearestStore.names[currentLang] || nearestStore.names['ka'];
 
-    // 20 კილომეტრამდე უფასო მიწოდების ლოგიკა
     let roadKm = await fetchRoadDistanceKm(globalUserLat, globalUserLon, nearestStore.lat, nearestStore.lon);
     if (roadKm <= 20) {
         baseDeliveryCost = 0;
