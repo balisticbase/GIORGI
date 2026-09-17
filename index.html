@@ -797,7 +797,6 @@ function initSignatureCanvas() {
     ctx.lineJoin = 'round';
     ctx.strokeStyle = '#0f172a';
 
-    // Защита от дублирования слушателей событий при повторных вызовах
     if (!canvas.dataset.bound) {
         canvas.dataset.bound = 'true';
         canvas.addEventListener('mousedown', startDrawing);
@@ -1017,33 +1016,52 @@ async function fetchRoadRoute(lat1, lon1, lat2, lon2) {
     };
 }
 
+// ოპტიმიზებული და გაუმჯობესებული cleanAddressData ფუნქცია
 function cleanAddressData(data) {
-    if (!data || !data.address) return translations[currentLang].unknownAddr;
-    const addr = data.address;
+    if (!data) return translations[currentLang].unknownAddr;
+    
+    // 1. სტრუქტურირებული მისამართის აწყობა
+    if (data.address) {
+        const addr = data.address;
 
-    let city = addr.city || addr.town || addr.village || addr.hamlet || addr.municipality || "";
-    let district = addr.suburb || addr.neighbourhood || addr.city_district || addr.quarter || "";
-    let road = addr.road || addr.street || addr.pedestrian || addr.footway || "";
-    let house = addr.house_number || addr.building || "";
+        let city = addr.city || addr.town || addr.village || addr.municipality || addr.county || "";
+        let district = addr.suburb || addr.neighbourhood || addr.city_district || addr.quarter || "";
+        let road = addr.road || addr.street || addr.pedestrian || addr.footway || addr.residential || "";
+        let house = addr.house_number || addr.building || addr.housename || "";
 
-    if (road.includes('—') || road.includes(' - ') || road.toLowerCase().includes('სენაკი') || road.toLowerCase().includes('სარფი')) {
-        road = "";
+        if (road.includes('—') || road.includes(' - ')) {
+            road = road.split(/—|\s-\s/)[0].trim();
+        }
+
+        let streetPart = road;
+        if (house) {
+            streetPart = streetPart ? `${streetPart}, #${house}` : `#${house}`;
+        }
+
+        let parts = [city, district, streetPart].filter(p => 
+            p && p.trim() !== "" && 
+            p.toLowerCase() !== "საქართველო" && 
+            p.toLowerCase() !== "georgia"
+        );
+
+        if (parts.length > 0) {
+            return parts.join(", ");
+        }
     }
 
-    let streetPart = road;
-    if (house) {
-        streetPart = streetPart ? `${streetPart} #${house}` : `#${house}`;
-    }
-
-    let parts = [city, district, streetPart].filter(p => p && p.trim() !== "");
-
-    if (parts.length === 0 && data.display_name) {
+    // 2. ფოლბექი display_name-იდან
+    if (data.display_name) {
         let rawParts = data.display_name.split(',').map(s => s.trim());
-        let clean = rawParts.filter(p => !p.includes('—') && !p.includes('E70') && !p.includes('E60'));
-        return clean.slice(0, 3).join(', ');
+        let clean = rawParts.filter(p => 
+            p.toLowerCase() !== 'საქართველო' && 
+            p.toLowerCase() !== 'georgia' && 
+            !/^\d{4}$/.test(p) && 
+            !p.includes('რაიონი') && !p.includes('Municipality')
+        );
+        return clean.slice(0, 4).join(', ') || data.display_name;
     }
 
-    return parts.join(", ") || translations[currentLang].unknownAddr;
+    return translations[currentLang].unknownAddr;
 }
 
 async function processResults() {
@@ -1159,7 +1177,6 @@ function renderMap(userLat, userLon, store, routeCoords) {
         map.fitBounds(L.latLngBounds([userLatLng, storeLatLng]), { padding: [50, 50] });
     }
 
-    // Исправление бага Leaflet с отображением тайлов после display: block
     setTimeout(() => {
         if (map) map.invalidateSize();
     }, 150);
