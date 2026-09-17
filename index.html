@@ -789,7 +789,7 @@ function initSignatureCanvas() {
     ctx = canvas.getContext('2d');
 
     const rect = canvas.parentElement.getBoundingClientRect();
-    canvas.width = rect.width || 350;
+    canvas.width = rect.width > 0 ? rect.width : 350;
     canvas.height = 140;
 
     ctx.lineWidth = 2.5;
@@ -806,13 +806,14 @@ function initSignatureCanvas() {
 
         canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            startDrawing(e.touches[0]);
+            if (e.touches.length > 0) startDrawing(e.touches[0]);
         }, { passive: false });
         canvas.addEventListener('touchmove', (e) => {
             e.preventDefault();
-            draw(e.touches[0]);
+            if (e.touches.length > 0) draw(e.touches[0]);
         }, { passive: false });
         canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('touchcancel', stopDrawing);
     }
 
     restoreSignatureState();
@@ -861,7 +862,7 @@ function clearSignature() {
     document.getElementById('btn-close-free').style.display = 'none';
     
     const msg = document.getElementById('sigStatusMsg');
-    msg.style.display = 'none';
+    if (msg) msg.style.display = 'none';
 }
 
 function confirmSignature() {
@@ -895,7 +896,9 @@ function restoreSignatureState() {
         isSignatureConfirmed = true;
         
         let img = new Image();
-        img.onload = function() { ctx.drawImage(img, 0, 0); };
+        img.onload = function() { 
+            if (ctx) ctx.drawImage(img, 0, 0); 
+        };
         img.src = savedSig;
 
         document.getElementById('demontazhSelect').disabled = false;
