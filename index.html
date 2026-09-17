@@ -437,42 +437,6 @@
                     </div>
                     <span id="storeName">-</span>
                 </div>
-
-                <!-- ნივთების რაოდენობა -->
-                <div class="result-item">
-                    <div class="result-item-header">
-                        <div class="result-item-header-left">
-                            <i class="fa-solid fa-boxes-stacked"></i>
-                            <label id="lbl-items">ნივთების რაოდენობა</label>
-                        </div>
-                    </div>
-                    <input type="number" id="itemsInput" class="payment-select-inline" value="1" min="1" max="50" onchange="handleDeliveryParamsChange()" oninput="handleDeliveryParamsChange()" style="text-align: center; font-weight: 700;">
-                </div>
-
-                <!-- სართული -->
-                <div class="result-item">
-                    <div class="result-item-header">
-                        <div class="result-item-header-left">
-                            <i class="fa-solid fa-building"></i>
-                            <label id="lbl-floor">სართული</label>
-                        </div>
-                    </div>
-                    <input type="number" id="floorInput" class="payment-select-inline" value="1" min="1" max="30" onchange="handleDeliveryParamsChange()" oninput="handleDeliveryParamsChange()" style="text-align: center; font-weight: 700;">
-                </div>
-
-                <!-- ლიფტი -->
-                <div class="result-item" id="elevatorContainer">
-                    <div class="result-item-header">
-                        <div class="result-item-header-left">
-                            <i class="fa-solid fa-elevator"></i>
-                            <label id="lbl-elevator">ლიფტი</label>
-                        </div>
-                    </div>
-                    <select id="elevatorSelect" class="payment-select-inline" onchange="handleDeliveryParamsChange()">
-                        <option value="working" id="opt-elevator-working">მუშაობს / არის</option>
-                        <option value="not_working" id="opt-elevator-not-working">არ მუშაობს</option>
-                    </select>
-                </div>
                 
                 <div class="result-item full-width">
                     <div class="result-item-header">
@@ -542,10 +506,6 @@
                                 <label id="lbl-service-title">სერვისის საფასური:</label>
                                 <span id="val-service">0 ₾</span>
                             </div>
-                            <div class="summary-row" id="liftingRow" style="display: none;">
-                                <label id="lbl-lifting-title">სართულზე ატანა / მუშების საფასური:</label>
-                                <span id="val-lifting">0 ₾</span>
-                            </div>
                             <div class="summary-divider"></div>
                             <div class="summary-row">
                                 <label id="lbl-total-title">ჯამური თანხა:</label>
@@ -578,27 +538,6 @@ function getServicePrice(serviceKey) {
     return servicePrices[serviceKey] || 0;
 }
 
-function getLiftingFee() {
-    const floorInput = document.getElementById('floorInput');
-    const elevatorSelect = document.getElementById('elevatorSelect');
-    const itemsInput = document.getElementById('itemsInput');
-
-    const floor = parseInt(floorInput ? floorInput.value : 1) || 1;
-    const elevatorStatus = elevatorSelect ? elevatorSelect.value : 'working';
-    const itemsCount = parseInt(itemsInput ? itemsInput.value : 1) || 1;
-
-    // თუ ნივთების რაოდენობა მეტია 4-ზე (> 4) და სართული არის 5 ან უფრო მაღალი (>= 5)
-    if (itemsCount > 4 && floor >= 5) {
-        return 200;
-    }
-
-    // ახალი წესი: თუ სართული მეტია 3-ზე (> 3) და ლიფტი არ მუშაობს, 3 სართულამდე უფასოა, ყოველი შემდგომი სართული 10 ლარი
-    if (floor > 3 && elevatorStatus === 'not_working') {
-        return (floor - 3) * 10;
-    }
-    return 0;
-}
-
 const translations = {
     ka: {
         title: "ელიტ ელექტრონიქსი",
@@ -609,12 +548,6 @@ const translations = {
         refreshLoc: "მდებარეობის განახლება",
         lblAddress: "თქვენი მისამართი",
         lblStore: "უახლოესი ფილიალი",
-        lblItems: "ნივთების რაოდენობა",
-        lblFloor: "სართული",
-        lblElevator: "ლიფტი",
-        optElevatorWorking: "მუშაობს / არის",
-        optElevatorNotWorking: "არ მუშაობს",
-        lblLiftingTitle: "სართულზე ატანა / მუშების საფასური:",
         lblSignature: "მომხმარებლის ონლაინ ხელმოწერა",
         btnSigClear: "გასუფთავება",
         btnSigConfirm: "ხელმოწერის დადასტურება",
@@ -659,12 +592,6 @@ const translations = {
         refreshLoc: "Refresh Location",
         lblAddress: "Your Address",
         lblStore: "Nearest Branch",
-        lblItems: "Item Quantity",
-        lblFloor: "Floor",
-        lblElevator: "Elevator",
-        optElevatorWorking: "Working / Available",
-        optElevatorNotWorking: "Not Working",
-        lblLiftingTitle: "Lifting / Workers Fee:",
         lblSignature: "Customer Online Signature",
         btnSigClear: "Clear",
         btnSigConfirm: "Confirm Signature",
@@ -709,12 +636,6 @@ const translations = {
         refreshLoc: "Обновить геолокацию",
         lblAddress: "Ваш адрес",
         lblStore: "Ближайший филиал",
-        lblItems: "Количество предметов",
-        lblFloor: "Этаж",
-        lblElevator: "Лифт",
-        optElevatorWorking: "Работает",
-        optElevatorNotWorking: "Не работает",
-        lblLiftingTitle: "Подъем / Услуги грузчиков:",
         lblSignature: "Онлайн подпись клиента",
         btnSigClear: "Очистить",
         btnSigConfirm: "Подтвердить подпись",
@@ -818,11 +739,6 @@ function updateStaticTranslations() {
     document.getElementById('txt-refresh').innerText = t.refreshLoc;
     document.getElementById('lbl-address').innerText = t.lblAddress;
     document.getElementById('lbl-store').innerText = t.lblStore;
-    document.getElementById('lbl-items').innerText = t.lblItems;
-    document.getElementById('lbl-floor').innerText = t.lblFloor;
-    document.getElementById('lbl-elevator').innerText = t.lblElevator;
-    document.getElementById('opt-elevator-working').innerText = t.optElevatorWorking;
-    document.getElementById('opt-elevator-not-working').innerText = t.optElevatorNotWorking;
     document.getElementById('lbl-signature').innerText = t.lblSignature;
     document.getElementById('btn-sig-clear').innerText = t.btnSigClear;
     document.getElementById('btn-sig-confirm').innerText = t.btnSigConfirm;
@@ -844,7 +760,6 @@ function updateStaticTranslations() {
     
     document.getElementById('lbl-transport-title').innerText = t.lblTransportTitle;
     document.getElementById('lbl-service-title').innerText = t.lblServiceTitle;
-    document.getElementById('lbl-lifting-title').innerText = t.lblLiftingTitle;
     document.getElementById('lbl-total-title').innerText = t.lblTotalTitle;
     document.getElementById('txt-id-label').innerText = t.idLabel;
     document.getElementById('btn-transfer-done').innerText = t.btnTransferDone;
@@ -882,6 +797,7 @@ function initSignatureCanvas() {
     ctx.lineJoin = 'round';
     ctx.strokeStyle = '#0f172a';
 
+    // Защита от дублирования слушателей событий при повторных вызовах
     if (!canvas.dataset.bound) {
         canvas.dataset.bound = 'true';
         canvas.addEventListener('mousedown', startDrawing);
@@ -1011,8 +927,7 @@ function handlePaymentAction(val) {
 
     if (val === 'paid') {
         let addOnCost = getServicePrice(demontazhVal);
-        let liftingCost = getLiftingFee();
-        let totalCost = baseDeliveryCost + addOnCost + liftingCost;
+        let totalCost = baseDeliveryCost + addOnCost;
 
         if (totalCost === 0) {
             methodSelect.style.display = 'none';
@@ -1038,18 +953,6 @@ function handleDemontazhAction(val) {
     updateTotalPriceDisplay();
 }
 
-function handleDeliveryParamsChange() {
-    const itemsCount = document.getElementById('itemsInput').value;
-    const floor = document.getElementById('floorInput').value;
-    const elevator = document.getElementById('elevatorSelect').value;
-    
-    setCookie('deliveryItemsCount', itemsCount, 3);
-    setCookie('deliveryFloor', floor, 3);
-    setCookie('elevatorStatus', elevator, 3);
-    
-    updateTotalPriceDisplay();
-}
-
 function updateTotalPriceDisplay() {
     const t = translations[currentLang];
     const demontazhElem = document.getElementById('demontazhSelect');
@@ -1058,8 +961,7 @@ function updateTotalPriceDisplay() {
     const paymentActionVal = paymentActionSelect.value;
     
     let addOnCost = getServicePrice(demontazhVal);
-    let liftingCost = getLiftingFee();
-    let totalCost = baseDeliveryCost + addOnCost + liftingCost;
+    let totalCost = baseDeliveryCost + addOnCost;
 
     const paymentMethodSelect = document.getElementById('paymentMethodSelect');
     const closeFreeBtn = document.getElementById('btn-close-free');
@@ -1067,15 +969,6 @@ function updateTotalPriceDisplay() {
 
     document.getElementById('val-transport').innerText = (baseDeliveryCost === 0) ? `${t.free} 0 ${t.gel}` : `${baseDeliveryCost} ${t.gel}`;
     document.getElementById('val-service').innerText = `${addOnCost} ${t.gel}`;
-    
-    const liftingRow = document.getElementById('liftingRow');
-    if (liftingCost > 0) {
-        liftingRow.style.display = 'flex';
-        document.getElementById('val-lifting').innerText = `${liftingCost} ${t.gel}`;
-    } else {
-        liftingRow.style.display = 'none';
-    }
-
     document.getElementById('val-total').innerText = (totalCost === 0) ? `${t.free} 0 ${t.gel}` : `${totalCost} ${t.gel}`;
 
     if (totalCost === 0) {
@@ -1266,6 +1159,7 @@ function renderMap(userLat, userLon, store, routeCoords) {
         map.fitBounds(L.latLngBounds([userLatLng, storeLatLng]), { padding: [50, 50] });
     }
 
+    // Исправление бага Leaflet с отображением тайлов после display: block
     setTimeout(() => {
         if (map) map.invalidateSize();
     }, 150);
@@ -1276,12 +1170,8 @@ function renderSuccessScreen() {
     const t = translations[currentLang];
     const sigImg = savedSignatureDataUrl || localStorage.getItem('userSignature');
     const serviceText = getCookie('selectedService') || "არცერთი";
-    const itemsVal = document.getElementById('itemsInput').value;
-    const floorVal = document.getElementById('floorInput').value;
-    const elevatorVal = document.getElementById('elevatorSelect').value;
     let addOnCost = parseFloat(getCookie('addOnCost')) || 0;
-    let liftingCost = getLiftingFee();
-    let totalCost = baseDeliveryCost + addOnCost + liftingCost;
+    let totalCost = baseDeliveryCost + addOnCost;
 
     document.body.style.backgroundColor = '#ffffff';
     document.body.innerHTML = `
@@ -1293,7 +1183,7 @@ function renderSuccessScreen() {
             <div style="font-size:20px; font-weight:700; color:#0f172a; margin-bottom:20px;">${t.screenDelivered}</div>
             <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:18px 20px; max-width:450px; width:100%; text-align:left;">
                 <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase;">${t.screenAddressLabel}</div>
-                <div style="font-size:14px; font-weight:600; color:#0f172a; margin-bottom:12px;">${currentFormattedAddress} (ნივთები: ${itemsVal}, სართული: ${floorVal}, ლიფტი: ${elevatorVal === 'working' ? 'მუშაობს' : 'არ მუშაობს'})</div>
+                <div style="font-size:14px; font-weight:600; color:#0f172a; margin-bottom:12px;">${currentFormattedAddress}</div>
                 <div style="border-top:1px dashed #cbd5e1; padding-top:10px; margin-bottom:12px;">
                     <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase;">${t.screenServiceLabel}</div>
                     <div style="font-size:14px; font-weight:700; color:#e60012;">${serviceText}</div>
@@ -1301,7 +1191,6 @@ function renderSuccessScreen() {
                 <div style="border-top:1px dashed #cbd5e1; padding-top:10px; margin-bottom:12px;">
                     <div>${t.lblTransportTitle} <b>${baseDeliveryCost === 0 ? t.free : baseDeliveryCost + ' ' + t.gel}</b></div>
                     <div>${t.lblServiceTitle} <b>${addOnCost} ${t.gel}</b></div>
-                    ${liftingCost > 0 ? `<div>${t.lblLiftingTitle} <b>${liftingCost}${t.gel}</b></div>` : ''}
                     <div style="border-top:1px solid #cbd5e1; margin-top:6px; padding-top:6px;">${t.lblTotalTitle} <b>${totalCost === 0 ? t.free : totalCost + ' ' + t.gel}</b></div>
                 </div>
                 ${sigImg ? `<img src="${sigImg}" style="max-width:100%; height:70px; border:1px solid #e2e8f0; border-radius:8px; background:white;" />` : ''}
@@ -1374,29 +1263,6 @@ function initTransportHoldToEdit() {
     transportRow.addEventListener('touchcancel', cancelHold);
     
     transportRow.addEventListener('contextmenu', (e) => e.preventDefault());
-}
-
-// განახლებული ფუნქცია მუშების საფასურის გამოსათვლელად
-function getLiftingFee() {
-    const floorInput = document.getElementById('floorInput');
-    const elevatorSelect = document.getElementById('elevatorSelect');
-    const itemsInput = document.getElementById('itemsInput');
-
-    const floor = parseInt(floorInput ? floorInput.value : 1) || 1;
-    const elevatorStatus = elevatorSelect ? elevatorSelect.value : 'working';
-    const itemsCount = parseInt(itemsInput ? itemsInput.value : 1) || 1;
-
-    // 1. თუ ნივთების რაოდენობა მეტია 4-ზე და სართული 5 ან უფრო მაღალია -> 200 ლარი
-    if (itemsCount > 4 && floor >= 5) {
-        return 200;
-    }
-
-    // 2. თუ ლიფტი არ მუშაობს: 3 სართულამდე უფასოა, ხოლო მე-4 სართულიდან ყოველი სართული 10 ლარი
-    if (floor > 3 && elevatorStatus === 'not_working') {
-        return (floor - 3) * 10;
-    }
-
-    return 0;
 }
 
 window.onload = function() {
