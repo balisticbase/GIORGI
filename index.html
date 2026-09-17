@@ -587,14 +587,14 @@ function getLiftingFee() {
     const elevatorStatus = elevatorSelect ? elevatorSelect.value : 'working';
     const itemsCount = parseInt(itemsInput ? itemsInput.value : 1) || 1;
 
-    // ახალი პირობა: თუ ნივთების რაოდენობა მეტია 4-ზე (> 4) და სართული არის 5 ან უფრო მაღალი (>= 5)
+    // თუ ნივთების რაოდენობა მეტია 4-ზე (> 4) და სართული არის 5 ან უფრო მაღალი (>= 5)
     if (itemsCount > 4 && floor >= 5) {
         return 200;
     }
 
-    // ძველი პირობა: თუ სართული მეტია 1-ზე და ლიფტი არ მუშაობს
-    if (floor > 1 && elevatorStatus === 'not_working') {
-        return (floor - 1) * 5;
+    // ახალი წესი: თუ სართული მეტია 3-ზე (> 3) და ლიფტი არ მუშაობს, 3 სართულამდე უფასოა, ყოველი შემდგომი სართული 10 ლარი
+    if (floor > 3 && elevatorStatus === 'not_working') {
+        return (floor - 3) * 10;
     }
     return 0;
 }
@@ -1374,6 +1374,29 @@ function initTransportHoldToEdit() {
     transportRow.addEventListener('touchcancel', cancelHold);
     
     transportRow.addEventListener('contextmenu', (e) => e.preventDefault());
+}
+
+// განახლებული ფუნქცია მუშების საფასურის გამოსათვლელად
+function getLiftingFee() {
+    const floorInput = document.getElementById('floorInput');
+    const elevatorSelect = document.getElementById('elevatorSelect');
+    const itemsInput = document.getElementById('itemsInput');
+
+    const floor = parseInt(floorInput ? floorInput.value : 1) || 1;
+    const elevatorStatus = elevatorSelect ? elevatorSelect.value : 'working';
+    const itemsCount = parseInt(itemsInput ? itemsInput.value : 1) || 1;
+
+    // 1. თუ ნივთების რაოდენობა მეტია 4-ზე და სართული 5 ან უფრო მაღალია -> 200 ლარი
+    if (itemsCount > 4 && floor >= 5) {
+        return 200;
+    }
+
+    // 2. თუ ლიფტი არ მუშაობს: 3 სართულამდე უფასოა, ხოლო მე-4 სართულიდან ყოველი სართული 10 ლარი
+    if (floor > 3 && elevatorStatus === 'not_working') {
+        return (floor - 3) * 10;
+    }
+
+    return 0;
 }
 
 window.onload = function() {
