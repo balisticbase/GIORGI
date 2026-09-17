@@ -365,7 +365,7 @@
         }
 
         #map {
-            height: 300px;
+            height: 320px;
             width: 100%;
             border-radius: 12px;
             margin-top: 15px;
@@ -406,7 +406,7 @@
     <div class="content">
         <div id="status" class="status-box">
             <div class="status-content">
-                <span class="spinner"></span> <span id="txt-status">თქვენი მდებარეობა განისაზღვრება...</span>
+                <span class="spinner"></span> <span id="txt-status">თქვენი მდებარეობა განისაზღვრება GPS-ით...</span>
             </div>
             <button class="refresh-btn" id="btn-refresh-geo" onclick="triggerFreshGeolocation()">
                 <i class="fa-solid fa-location-crosshairs"></i> <span id="txt-refresh">მდებარეობის განახლება</span>
@@ -975,7 +975,7 @@ function updateTotalPriceDisplay() {
     }
 }
 
-function calculateDistance(lat1, lon1, lat2, lon2) {
+function calculateDirectDistance(lat1, lon1, lat2, lon2) {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
@@ -985,16 +985,29 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
 }
 
-async function fetchRoadDistanceKm(lat1, lon1, lat2, lon2) {
+// OSRM სერვისის მეშვეობით რეალური საგზაო მარშრუტის და მანძილის გამოთვლა (Google Maps-ის მსგავსად)
+async function fetchRoadRoute(lat1, lon1, lat2, lon2) {
     try {
-        const url = `https://router.project-osrm.org/route/v1/driving/${lon1},${lat1};${lon2},${lat2}?overview=false`;
+        const url = `https://router.project-osrm.org/route/v1/driving/${lon1},${lat1};${lon2},${lat2}?overview=full&geometries=geojson`;
         const res = await fetch(url);
         const data = await res.json();
         if (data && data.routes && data.routes.length > 0) {
-            return data.routes[0].distance / 1000;
+            const route = data.routes[0];
+            const distanceKm = route.distance / 1000;
+            // Leaflet-ისთვის კოორდინატების გარდაქმნა [lat, lon] ფორმატში
+            const coordinates = route.geometry.coordinates.map(coord => [coord[1], coord[0]]);
+            return { distanceKm, coordinates };
         }
-    } catch(e) {}
-    return calculateDistance(lat1, lon1, lat2, lon2) * 1.3;
+    } catch(e) {
+        console.error("OSRM Route fetching error:", e);
+    }
+    
+    // ალტერნატიული რეზერვი შეცდომის შემთხვევაში
+    const directKm = calculateDirectDistance(lat1, lon1, lat2, lon2) * 1.25;
+    return {
+        distanceKm: directKm,
+        coordinates: [[lat1, lon1], [lat2, lon2]]
+    };
 }
 
 function cleanAddressData(data) {
@@ -1029,24 +1042,39 @@ function cleanAddressData(data) {
 async function processResults() {
     const t = translations[currentLang];
     
-    let nearestStore = null;
-    let minDistance = Infinity;
+    // 1. იპოვოს უახლოესი ფილიალები ჰაერის მანძილით (სწრაფი სორტირება)
+    let storesWithDist = eliteStores.map(store => ({
+        store,
+        directDist: calculateDirectDistance(globalUserLat, globalUserLon, store.lat, store.lon)
+    }));
+    storesWithDist.sort((a, b) => a.directDist - b.directDist);
 
-    eliteStores.forEach(store => {
-        const dist = calculateDistance(globalUserLat, globalUserLon, store.lat, store.lon);
-        if (dist < minDistance) {
-            minDistance = dist;
-            nearestStore = store;
+    // 2. საუკეთესო კანდიდატებს შორის გამოითვალოს რეალური საგზაო მარშრუტი (Road Km)
+    const topCandidates = storesWithDist.slice(0, 3);
+    let nearestStore = topCandidates[0].store;
+    let minRoadKm = Infinity;
+    let bestRouteCoords = null;
+
+    for (let candidate of topCandidates) {
+        const routeData = await fetchRoadRoute(globalUserLat, globalUserLon, candidate.store.lat, candidate.store.lon);
+        if (routeData.distanceKm < minRoadKm) {
+            minRoadKm = routeData.distanceKm;
+            nearestStore = candidate.store;
+            bestRouteCoords = routeData.coordinates;
         }
-    });
+    }
 
     currentFormattedAddress = cleanAddressData(globalRawAddressData);
     setCookie('deliveryAddress', currentFormattedAddress, 3);
     
     document.getElementById('userAddressVal').innerText = currentFormattedAddress;
-    document.getElementById('storeName').innerText = nearestStore.names[currentLang] || nearestStore.names['ka'];
+    
+    // გამოაჩინოს ფილიალის სახელი + რეალური საგზაო მანძილი კილომეტრებში
+    const storeLabelName = nearestStore.names[currentLang] || nearestStore.names['ka'];
+    document.getElementById('storeName').innerText = `${storeLabelName} (${minRoadKm.toFixed(1)} კმ)`;
 
-    let roadKm = await fetchRoadDistanceKm(globalUserLat, globalUserLon, nearestStore.lat, nearestStore.lon);
+    // ტრანსპორტირების ღირებულების გაანგარიშება
+    let roadKm = minRoadKm;
     if (roadKm <= 20) {
         baseDeliveryCost = 0;
     } else {
@@ -1061,7 +1089,7 @@ async function processResults() {
     initSignatureCanvas();
     handleDemontazhAction('none');
     updateTotalPriceDisplay();
-    renderMap(globalUserLat, globalUserLon, nearestStore);
+    renderMap(globalUserLat, globalUserLon, nearestStore, bestRouteCoords);
 }
 
 function fetchAddressFromCoords(lat, lon) {
@@ -1098,7 +1126,7 @@ function triggerFreshGeolocation() {
     }
 }
 
-function renderMap(userLat, userLon, store) {
+function renderMap(userLat, userLon, store, routeCoords) {
     const t = translations[currentLang];
     if (map) map.remove();
     
@@ -1111,8 +1139,14 @@ function renderMap(userLat, userLon, store) {
     L.marker(userLatLng).addTo(map).bindPopup(`<b>${t.userLoc}</b>`).openPopup();
     L.marker(storeLatLng).addTo(map).bindPopup(`<b>${store.names[currentLang]}</b>`);
 
-    L.polyline([userLatLng, storeLatLng], { color: '#e60012', weight: 4 }).addTo(map);
-    map.fitBounds(L.latLngBounds([userLatLng, storeLatLng]), { padding: [50, 50] });
+    // რუკაზე რეალური გზის დახაზვა (Polyline გზების მიხედვით)
+    if (routeCoords && routeCoords.length > 0) {
+        const polyline = L.polyline(routeCoords, { color: '#e60012', weight: 5, opacity: 0.85 }).addTo(map);
+        map.fitBounds(polyline.getBounds(), { padding: [50, 50] });
+    } else {
+        const polyline = L.polyline([userLatLng, storeLatLng], { color: '#e60012', weight: 4 }).addTo(map);
+        map.fitBounds(L.latLngBounds([userLatLng, storeLatLng]), { padding: [50, 50] });
+    }
 }
 
 function detectByIP() {
