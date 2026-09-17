@@ -438,6 +438,17 @@
                     <span id="storeName">-</span>
                 </div>
 
+                <!-- ნივთების რაოდენობა -->
+                <div class="result-item">
+                    <div class="result-item-header">
+                        <div class="result-item-header-left">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                            <label id="lbl-items">ნივთების რაოდენობა</label>
+                        </div>
+                    </div>
+                    <input type="number" id="itemsInput" class="payment-select-inline" value="1" min="1" max="50" onchange="handleDeliveryParamsChange()" oninput="handleDeliveryParamsChange()" style="text-align: center; font-weight: 700;">
+                </div>
+
                 <!-- სართული -->
                 <div class="result-item">
                     <div class="result-item-header">
@@ -446,7 +457,7 @@
                             <label id="lbl-floor">სართული</label>
                         </div>
                     </div>
-                    <input type="number" id="floorInput" class="payment-select-inline" value="1" min="1" max="30" onchange="handleFloorOrElevatorChange()" oninput="handleFloorOrElevatorChange()" style="text-align: center; font-weight: 700;">
+                    <input type="number" id="floorInput" class="payment-select-inline" value="1" min="1" max="30" onchange="handleDeliveryParamsChange()" oninput="handleDeliveryParamsChange()" style="text-align: center; font-weight: 700;">
                 </div>
 
                 <!-- ლიფტი -->
@@ -457,7 +468,7 @@
                             <label id="lbl-elevator">ლიფტი</label>
                         </div>
                     </div>
-                    <select id="elevatorSelect" class="payment-select-inline" onchange="handleFloorOrElevatorChange()">
+                    <select id="elevatorSelect" class="payment-select-inline" onchange="handleDeliveryParamsChange()">
                         <option value="working" id="opt-elevator-working">მუშაობს / არის</option>
                         <option value="not_working" id="opt-elevator-not-working">არ მუშაობს</option>
                     </select>
@@ -532,7 +543,7 @@
                                 <span id="val-service">0 ₾</span>
                             </div>
                             <div class="summary-row" id="liftingRow" style="display: none;">
-                                <label id="lbl-lifting-title">სართულზე ატანა:</label>
+                                <label id="lbl-lifting-title">სართულზე ატანა / მუშების საფასური:</label>
                                 <span id="val-lifting">0 ₾</span>
                             </div>
                             <div class="summary-divider"></div>
@@ -570,10 +581,18 @@ function getServicePrice(serviceKey) {
 function getLiftingFee() {
     const floorInput = document.getElementById('floorInput');
     const elevatorSelect = document.getElementById('elevatorSelect');
+    const itemsInput = document.getElementById('itemsInput');
+
     const floor = parseInt(floorInput ? floorInput.value : 1) || 1;
     const elevatorStatus = elevatorSelect ? elevatorSelect.value : 'working';
+    const itemsCount = parseInt(itemsInput ? itemsInput.value : 1) || 1;
 
-    // თუ სართული მეტია 1-ზე და ლიფტი არ მუშაობს: 5 ლარი ყოველ სართულზე (პირველის გარდა)
+    // ახალი პირობა: თუ ნივთების რაოდენობა მეტია 4-ზე (> 4) და სართული არის 5 ან უფრო მაღალი (>= 5)
+    if (itemsCount > 4 && floor >= 5) {
+        return 200;
+    }
+
+    // ძველი პირობა: თუ სართული მეტია 1-ზე და ლიფტი არ მუშაობს
     if (floor > 1 && elevatorStatus === 'not_working') {
         return (floor - 1) * 5;
     }
@@ -590,11 +609,12 @@ const translations = {
         refreshLoc: "მდებარეობის განახლება",
         lblAddress: "თქვენი მისამართი",
         lblStore: "უახლოესი ფილიალი",
+        lblItems: "ნივთების რაოდენობა",
         lblFloor: "სართული",
         lblElevator: "ლიფტი",
         optElevatorWorking: "მუშაობს / არის",
         optElevatorNotWorking: "არ მუშაობს",
-        lblLiftingTitle: "სართულზე ატანა:",
+        lblLiftingTitle: "სართულზე ატანა / მუშების საფასური:",
         lblSignature: "მომხმარებლის ონლაინ ხელმოწერა",
         btnSigClear: "გასუფთავება",
         btnSigConfirm: "ხელმოწერის დადასტურება",
@@ -639,11 +659,12 @@ const translations = {
         refreshLoc: "Refresh Location",
         lblAddress: "Your Address",
         lblStore: "Nearest Branch",
+        lblItems: "Item Quantity",
         lblFloor: "Floor",
         lblElevator: "Elevator",
         optElevatorWorking: "Working / Available",
         optElevatorNotWorking: "Not Working",
-        lblLiftingTitle: "Lifting Fee:",
+        lblLiftingTitle: "Lifting / Workers Fee:",
         lblSignature: "Customer Online Signature",
         btnSigClear: "Clear",
         btnSigConfirm: "Confirm Signature",
@@ -688,11 +709,12 @@ const translations = {
         refreshLoc: "Обновить геолокацию",
         lblAddress: "Ваш адрес",
         lblStore: "Ближайший филиал",
+        lblItems: "Количество предметов",
         lblFloor: "Этаж",
         lblElevator: "Лифт",
         optElevatorWorking: "Работает",
         optElevatorNotWorking: "Не работает",
-        lblLiftingTitle: "Подъем на этаж:",
+        lblLiftingTitle: "Подъем / Услуги грузчиков:",
         lblSignature: "Онлайн подпись клиента",
         btnSigClear: "Очистить",
         btnSigConfirm: "Подтвердить подпись",
@@ -796,6 +818,7 @@ function updateStaticTranslations() {
     document.getElementById('txt-refresh').innerText = t.refreshLoc;
     document.getElementById('lbl-address').innerText = t.lblAddress;
     document.getElementById('lbl-store').innerText = t.lblStore;
+    document.getElementById('lbl-items').innerText = t.lblItems;
     document.getElementById('lbl-floor').innerText = t.lblFloor;
     document.getElementById('lbl-elevator').innerText = t.lblElevator;
     document.getElementById('opt-elevator-working').innerText = t.optElevatorWorking;
@@ -1015,11 +1038,15 @@ function handleDemontazhAction(val) {
     updateTotalPriceDisplay();
 }
 
-function handleFloorOrElevatorChange() {
+function handleDeliveryParamsChange() {
+    const itemsCount = document.getElementById('itemsInput').value;
     const floor = document.getElementById('floorInput').value;
     const elevator = document.getElementById('elevatorSelect').value;
+    
+    setCookie('deliveryItemsCount', itemsCount, 3);
     setCookie('deliveryFloor', floor, 3);
     setCookie('elevatorStatus', elevator, 3);
+    
     updateTotalPriceDisplay();
 }
 
@@ -1249,6 +1276,7 @@ function renderSuccessScreen() {
     const t = translations[currentLang];
     const sigImg = savedSignatureDataUrl || localStorage.getItem('userSignature');
     const serviceText = getCookie('selectedService') || "არცერთი";
+    const itemsVal = document.getElementById('itemsInput').value;
     const floorVal = document.getElementById('floorInput').value;
     const elevatorVal = document.getElementById('elevatorSelect').value;
     let addOnCost = parseFloat(getCookie('addOnCost')) || 0;
@@ -1265,7 +1293,7 @@ function renderSuccessScreen() {
             <div style="font-size:20px; font-weight:700; color:#0f172a; margin-bottom:20px;">${t.screenDelivered}</div>
             <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:18px 20px; max-width:450px; width:100%; text-align:left;">
                 <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase;">${t.screenAddressLabel}</div>
-                <div style="font-size:14px; font-weight:600; color:#0f172a; margin-bottom:12px;">${currentFormattedAddress} (სართული: ${floorVal}, ლიფტი: ${elevatorVal === 'working' ? 'მუშაობს' : 'არ მუშაობს'})</div>
+                <div style="font-size:14px; font-weight:600; color:#0f172a; margin-bottom:12px;">${currentFormattedAddress} (ნივთები: ${itemsVal}, სართული: ${floorVal}, ლიფტი: ${elevatorVal === 'working' ? 'მუშაობს' : 'არ მუშაობს'})</div>
                 <div style="border-top:1px dashed #cbd5e1; padding-top:10px; margin-bottom:12px;">
                     <div style="font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase;">${t.screenServiceLabel}</div>
                     <div style="font-size:14px; font-weight:700; color:#e60012;">${serviceText}</div>
