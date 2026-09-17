@@ -797,20 +797,24 @@ function initSignatureCanvas() {
     ctx.lineJoin = 'round';
     ctx.strokeStyle = '#0f172a';
 
-    canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', stopDrawing);
-    canvas.addEventListener('mouseleave', stopDrawing);
+    // Защита от дублирования слушателей событий при повторных вызовах
+    if (!canvas.dataset.bound) {
+        canvas.dataset.bound = 'true';
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
 
-    canvas.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        startDrawing(e.touches[0]);
-    });
-    canvas.addEventListener('touchmove', (e) => {
-        e.preventDefault();
-        draw(e.touches[0]);
-    });
-    canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startDrawing(e.touches[0]);
+        }, { passive: false });
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            draw(e.touches[0]);
+        }, { passive: false });
+        canvas.addEventListener('touchend', stopDrawing);
+    }
 
     restoreSignatureState();
 }
@@ -1133,7 +1137,10 @@ function triggerFreshGeolocation() {
 
 function renderMap(userLat, userLon, store, routeCoords) {
     const t = translations[currentLang];
-    if (map) map.remove();
+    if (map) {
+        map.remove();
+        map = null;
+    }
     
     map = L.map('map');
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
@@ -1151,6 +1158,11 @@ function renderMap(userLat, userLon, store, routeCoords) {
         const polyline = L.polyline([userLatLng, storeLatLng], { color: '#e60012', weight: 4 }).addTo(map);
         map.fitBounds(L.latLngBounds([userLatLng, storeLatLng]), { padding: [50, 50] });
     }
+
+    // Исправление бага Leaflet с отображением тайлов после display: block
+    setTimeout(() => {
+        if (map) map.invalidateSize();
+    }, 150);
 }
 
 function renderSuccessScreen() {
