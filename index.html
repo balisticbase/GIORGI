@@ -822,7 +822,6 @@ function initSignatureCanvas() {
     restoreSignatureState();
 }
 
-// Window resize listener for canvas responsiveness
 window.addEventListener('resize', () => {
     if (canvas && canvas.parentElement) {
         const rect = canvas.parentElement.getBoundingClientRect();
@@ -1188,7 +1187,13 @@ function renderMap(userLat, userLon, store, routeCoords) {
     }
     
     map = L.map('map');
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+
+    // Google Maps ფილები (არ საჭიროებს API გასაღებს ან რეგისტრაციას)
+    L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+        attribution: '© Google Maps'
+    }).addTo(map);
 
     const userLatLng = [userLat, userLon];
     const storeLatLng = [store.lat, store.lon];
