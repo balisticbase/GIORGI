@@ -343,6 +343,7 @@
             gap: 2px;
             margin-bottom: 8px;
             user-select: none;
+            -webkit-user-select: none;
         }
 
         .summary-row label {
@@ -497,7 +498,7 @@
                         </div>
 
                         <div class="price-summary-box">
-                            <div class="summary-row" id="transportRow" style="cursor: pointer;" title="ხანგრძლივი დაჭერა ტრანსპორტირების შესაცვლელად">
+                            <div class="summary-row" id="transportRow" style="cursor: pointer;" title="3 წამი ეჭირეთ ტრანსპორტირების შესაცვლელად">
                                 <label id="lbl-transport-title">ტრანსპორტირება:</label>
                                 <span id="val-transport">0 ₾</span>
                             </div>
@@ -1175,7 +1176,59 @@ function handleMethodAction(val) {
     else if (val === 'transfer') document.getElementById('transferInfo').style.display = 'block';
 }
 
+// 3-წამიანი დაჭერის (Long Press) ლოგიკა ტრანსპორტირების ფასის შესაცვლელად
+function initTransportHoldToEdit() {
+    const transportRow = document.getElementById('transportRow');
+    if (!transportRow) return;
+
+    let holdTimer = null;
+    const holdDuration = 3000; // 3 წამი
+
+    function startHold(e) {
+        cancelHold();
+        holdTimer = setTimeout(() => {
+            promptNewTransportCost();
+        }, holdDuration);
+    }
+
+    function cancelHold() {
+        if (holdTimer) {
+            clearTimeout(holdTimer);
+            holdTimer = null;
+        }
+    }
+
+    function promptNewTransportCost() {
+        cancelHold();
+        const input = prompt("შეიყვანეთ ტრანსპორტირების ახალი ფასი (₾):", baseDeliveryCost);
+        if (input !== null && input.trim() !== "") {
+            const newCost = parseFloat(input);
+            if (!isNaN(newCost) && newCost >= 0) {
+                baseDeliveryCost = newCost;
+                setCookie('baseDeliveryCost', baseDeliveryCost, 3);
+                updateTotalPriceDisplay();
+            } else {
+                alert("გთხოვთ შეიყვანოთ სწორი ციფრი!");
+            }
+        }
+    }
+
+    // მაუსის მოვლენები
+    transportRow.addEventListener('mousedown', startHold);
+    transportRow.addEventListener('mouseup', cancelHold);
+    transportRow.addEventListener('mouseleave', cancelHold);
+
+    // სენსორული ეკრანის (Touch) მოვლენები
+    transportRow.addEventListener('touchstart', startHold);
+    transportRow.addEventListener('touchend', cancelHold);
+    transportRow.addEventListener('touchcancel', cancelHold);
+    
+    // კონტექსტური მენიუს გამორთვა მობილურზე ხანგრძლივი დაჭერისას
+    transportRow.addEventListener('contextmenu', (e) => e.preventDefault());
+}
+
 window.onload = function() {
+    initTransportHoldToEdit();
     triggerFreshGeolocation();
 };
 </script>
