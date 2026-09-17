@@ -1049,7 +1049,6 @@ function cleanAddressData(data) {
         const addr = data.address;
 
         let city = addr.city || addr.town || addr.village || addr.municipality || addr.county || "";
-        let district = addr.suburb || addr.neighbourhood || addr.city_district || addr.quarter || "";
         let road = addr.road || addr.street || addr.pedestrian || addr.footway || addr.residential || "";
         let house = addr.house_number || addr.building || addr.housename || "";
 
@@ -1057,31 +1056,26 @@ function cleanAddressData(data) {
             road = road.split(/—|\s-\s/)[0].trim();
         }
 
-        let streetPart = road;
-        if (house) {
-            streetPart = streetPart ? `${streetPart}, #${house}` : `#${house}`;
+        let cityPrefix = "";
+        if (city) {
+            if (currentLang === 'ka') cityPrefix = `ქალაქი ${city}`;
+            else if (currentLang === 'ru') cityPrefix = `город ${city}`;
+            else cityPrefix = `City ${city}`;
         }
 
-        let parts = [city, district, streetPart].filter(p => 
-            p && p.trim() !== "" && 
-            p.toLowerCase() !== "საქართველო" && 
-            p.toLowerCase() !== "georgia"
-        );
+        let streetPart = road;
+        if (house) {
+            streetPart = streetPart ? `${streetPart} #${house}` : `#${house}`;
+        }
 
+        let parts = [cityPrefix, streetPart].filter(p => p && p.trim() !== "");
         if (parts.length > 0) {
-            return parts.join(", ");
+            return parts.join(" ");
         }
     }
 
     if (data.display_name) {
-        let rawParts = data.display_name.split(',').map(s => s.trim());
-        let clean = rawParts.filter(p => 
-            p.toLowerCase() !== 'საქართველო' && 
-            p.toLowerCase() !== 'georgia' && 
-            !/^\d{4}$/.test(p) && 
-            !p.includes('რაიონი') && !p.includes('Municipality')
-        );
-        return clean.slice(0, 4).join(', ') || data.display_name;
+        return data.display_name;
     }
 
     return translations[currentLang].unknownAddr;
@@ -1188,7 +1182,7 @@ function renderMap(userLat, userLon, store, routeCoords) {
     
     map = L.map('map');
 
-    // Google Maps ფილები (არ საჭიროებს API გასაღებს ან რეგისტრაციას)
+    // Google Maps ფილები
     L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
         maxZoom: 20,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
