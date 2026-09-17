@@ -985,7 +985,7 @@ function calculateDirectDistance(lat1, lon1, lat2, lon2) {
     return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
 }
 
-// OSRM სერვისის მეშვეობით რეალური საგზაო მარშრუტის და მანძილის გამოთვლა (Google Maps-ის მსგავსად)
+// OSRM სერვისის მეშვეობით რეალური საგზაო მარშრუტის და მანძილის გამოთვლა
 async function fetchRoadRoute(lat1, lon1, lat2, lon2) {
     try {
         const url = `https://router.project-osrm.org/route/v1/driving/${lon1},${lat1};${lon2},${lat2}?overview=full&geometries=geojson`;
@@ -994,7 +994,6 @@ async function fetchRoadRoute(lat1, lon1, lat2, lon2) {
         if (data && data.routes && data.routes.length > 0) {
             const route = data.routes[0];
             const distanceKm = route.distance / 1000;
-            // Leaflet-ისთვის კოორდინატების გარდაქმნა [lat, lon] ფორმატში
             const coordinates = route.geometry.coordinates.map(coord => [coord[1], coord[0]]);
             return { distanceKm, coordinates };
         }
@@ -1002,7 +1001,6 @@ async function fetchRoadRoute(lat1, lon1, lat2, lon2) {
         console.error("OSRM Route fetching error:", e);
     }
     
-    // ალტერნატიული რეზერვი შეცდომის შემთხვევაში
     const directKm = calculateDirectDistance(lat1, lon1, lat2, lon2) * 1.25;
     return {
         distanceKm: directKm,
@@ -1042,14 +1040,14 @@ function cleanAddressData(data) {
 async function processResults() {
     const t = translations[currentLang];
     
-    // 1. იპოვოს უახლოესი ფილიალები ჰაერის მანძილით (სწრაფი სორტირება)
+    // 1. იპოვოს უახლოესი ფილიალები
     let storesWithDist = eliteStores.map(store => ({
         store,
         directDist: calculateDirectDistance(globalUserLat, globalUserLon, store.lat, store.lon)
     }));
     storesWithDist.sort((a, b) => a.directDist - b.directDist);
 
-    // 2. საუკეთესო კანდიდატებს შორის გამოითვალოს რეალური საგზაო მარშრუტი (Road Km)
+    // 2. საუკეთესო კანდიდატებს შორის გამოითვალოს რეალური საგზაო მარშრუტი
     const topCandidates = storesWithDist.slice(0, 3);
     let nearestStore = topCandidates[0].store;
     let minRoadKm = Infinity;
@@ -1069,9 +1067,9 @@ async function processResults() {
     
     document.getElementById('userAddressVal').innerText = currentFormattedAddress;
     
-    // გამოაჩინოს ფილიალის სახელი + რეალური საგზაო მანძილი კილომეტრებში
+    // გამოაჩინოს მხოლოდ ფილიალის სახელი (მანძილის/კილომეტრების გარეშე)
     const storeLabelName = nearestStore.names[currentLang] || nearestStore.names['ka'];
-    document.getElementById('storeName').innerText = `${storeLabelName} (${minRoadKm.toFixed(1)} კმ)`;
+    document.getElementById('storeName').innerText = storeLabelName;
 
     // ტრანსპორტირების ღირებულების გაანგარიშება
     let roadKm = minRoadKm;
@@ -1139,7 +1137,6 @@ function renderMap(userLat, userLon, store, routeCoords) {
     L.marker(userLatLng).addTo(map).bindPopup(`<b>${t.userLoc}</b>`).openPopup();
     L.marker(storeLatLng).addTo(map).bindPopup(`<b>${store.names[currentLang]}</b>`);
 
-    // რუკაზე რეალური გზის დახაზვა (Polyline გზების მიხედვით)
     if (routeCoords && routeCoords.length > 0) {
         const polyline = L.polyline(routeCoords, { color: '#e60012', weight: 5, opacity: 0.85 }).addTo(map);
         map.fitBounds(polyline.getBounds(), { padding: [50, 50] });
@@ -1210,13 +1207,12 @@ function handleMethodAction(val) {
     else if (val === 'transfer') document.getElementById('transferInfo').style.display = 'block';
 }
 
-// 3-წამიანი დაჭერის (Long Press) ლოგიკა ტრანსპორტირების ფასის შესაცვლელად
 function initTransportHoldToEdit() {
     const transportRow = document.getElementById('transportRow');
     if (!transportRow) return;
 
     let holdTimer = null;
-    const holdDuration = 3000; // 3 წამი
+    const holdDuration = 3000;
 
     function startHold(e) {
         cancelHold();
@@ -1247,17 +1243,14 @@ function initTransportHoldToEdit() {
         }
     }
 
-    // მაუსის მოვლენები
     transportRow.addEventListener('mousedown', startHold);
     transportRow.addEventListener('mouseup', cancelHold);
     transportRow.addEventListener('mouseleave', cancelHold);
 
-    // სენსორული ეკრანის (Touch) მოვლენები
     transportRow.addEventListener('touchstart', startHold);
     transportRow.addEventListener('touchend', cancelHold);
     transportRow.addEventListener('touchcancel', cancelHold);
     
-    // კონტექსტური მენიუს გამორთვა მობილურზე ხანგრძლივი დაჭერისას
     transportRow.addEventListener('contextmenu', (e) => e.preventDefault());
 }
 
