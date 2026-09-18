@@ -6,7 +6,7 @@
     <title>ელიტ ელექტრონიქსი - ავტომატური ლოკატორი</title>
     
     <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <!-- Google Font & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -548,7 +548,7 @@
     </div>
 </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 
 <script>
 const servicePrices = {
@@ -1181,25 +1181,62 @@ async function fetchRoadRoute(lat1, lon1, lat2, lon2) {
     };
 }
 
+const settlementLabels = {
+    ka: { city: "ქალაქი", town: "დაბა", village: "სოფელი" },
+    en: { city: "City", town: "Town", village: "Village" },
+    ru: { city: "город", town: "пос.", village: "село" }
+};
+
+// True when `a` and `b` are effectively the same place name (handles cases like
+// "სენაკი" vs "სენაკის მუნიციპალიტეტი" so we never print the same place twice).
+function isSameOrSubsetName(a, b) {
+    if (!a || !b) return false;
+    const na = a.trim().toLowerCase();
+    const nb = b.trim().toLowerCase();
+    if (na === nb) return true;
+    return na.includes(nb) || nb.includes(na);
+}
+
 function cleanAddressData(data) {
     if (!data) return translations[currentLang].unknownAddr;
-    
+
     if (data.address) {
         const addr = data.address;
+        const labels = settlementLabels[currentLang] || settlementLabels.ka;
 
-        let city = addr.city || addr.town || addr.village || addr.municipality || addr.county || "";
+        // Pick the single most specific settlement and remember what KIND it is,
+        // so a village gets labeled "village" and not mislabeled as a "city".
+        let settlementName = "";
+        let settlementKind = "";
+        if (addr.city) { settlementName = addr.city; settlementKind = "city"; }
+        else if (addr.town) { settlementName = addr.town; settlementKind = "town"; }
+        else if (addr.village) { settlementName = addr.village; settlementKind = "village"; }
+        else if (addr.municipality) { settlementName = addr.municipality; settlementKind = ""; }
+        else if (addr.county) { settlementName = addr.county; settlementKind = ""; }
+
+        // Broader administrative area (municipality/county), kept only if it
+        // actually adds information beyond the settlement name we already have.
+        let areaName = addr.municipality || addr.county || "";
+        if (isSameOrSubsetName(areaName, settlementName)) areaName = "";
+
         let road = addr.road || addr.street || addr.pedestrian || addr.footway || addr.residential || "";
+        // Guard against the rural-data bug: sometimes the "road" field a source
+        // returns is actually another settlement/municipality name, not a real
+        // street - drop it instead of bolting it onto the settlement name.
+        if (isSameOrSubsetName(road, settlementName) || isSameOrSubsetName(road, areaName)) {
+            road = "";
+        }
+
         let house = addr.house_number || addr.building || addr.housename || "";
 
         if (road.includes('—') || road.includes(' - ')) {
             road = road.split(/—|\s-\s/)[0].trim();
         }
 
-        let cityPrefix = "";
-        if (city) {
-            if (currentLang === 'ka') cityPrefix = `ქალაქი ${city}`;
-            else if (currentLang === 'ru') cityPrefix = `город ${city}`;
-            else cityPrefix = `City ${city}`;
+        let settlementPart = "";
+        if (settlementName) {
+            const prefix = settlementKind ? labels[settlementKind] : "";
+            settlementPart = prefix ? `${prefix} ${settlementName}` : settlementName;
         }
 
         let streetPart = road;
@@ -1207,9 +1244,13 @@ function cleanAddressData(data) {
             streetPart = streetPart ? `${streetPart} #${house}` : `#${house}`;
         }
 
-        let parts = [cityPrefix, streetPart].filter(p => p && p.trim() !== "");
+        let parts = [settlementPart, streetPart].filter(p => p && p.trim() !== "");
+        if (areaName) {
+            parts.push(`(${areaName})`);
+        }
+
         if (parts.length > 0) {
-            return parts.join(" ");
+            return parts.join(", ");
         }
     }
 
