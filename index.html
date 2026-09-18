@@ -1187,18 +1187,45 @@ const settlementLabels = {
     ru: { city: "город", town: "пос.", village: "село" }
 };
 
+const roadContextLabels = {
+    ka: { bridge: "ხიდი", highway: "მაგისტრალი", vicinity: "მიდამო" },
+    en: { bridge: "Bridge", highway: "Highway", vicinity: "Near" },
+    ru: { bridge: "Мост", highway: "Магистраль", vicinity: "Возле" }
+};
+
+const MOTORWAY_TYPES = ["motorway", "motorway_link", "trunk", "trunk_link"];
+
 function cleanAddressData(data) {
     if (!data) return translations[currentLang].unknownAddr;
+    const rcLabels = roadContextLabels[currentLang] || roadContextLabels.ka;
 
     if (data.address) {
         const addr = data.address;
         const labels = settlementLabels[currentLang] || settlementLabels.ka;
+        const extratags = data.extratags || {};
 
-        let road = addr.road || addr.street || addr.pedestrian || addr.footway || addr.residential || "";
+        let road = addr.road || addr.street || addr.pedestrian || addr.footway || addr.residential || data.name || "";
         let house = addr.house_number || addr.building || addr.housename || "";
 
         if (road.includes('—') || road.includes(' - ')) {
             road = road.split(/—|\s-\s/)[0].trim();
+        }
+
+        const routeRef = extratags.ref || "";
+        const isBridge = extratags.bridge === "yes" || extratags.man_made === "bridge" ||
+            /ხიდი|bridge|мост/i.test(road);
+        const isMotorway = data.class === "highway" && MOTORWAY_TYPES.includes(data.type);
+
+        // On a bridge or a numbered highway/motorway, say so explicitly and
+        // include the route name/number and km marker (house_number on a
+        // highway is usually the km post) instead of forcing a street format.
+        if (isBridge || isMotorway) {
+            let label = isBridge ? rcLabels.bridge : rcLabels.highway;
+            let parts = [label];
+            if (road) parts.push(road);
+            if (routeRef) parts.push(`(${routeRef})`);
+            if (house) parts.push(`- ${house} კმ`.trim());
+            return parts.join(" ");
         }
 
         let streetPart = road;
@@ -1214,8 +1241,8 @@ function cleanAddressData(data) {
             return streetPart;
         }
 
-        // No street data at all (rural area with no mapped road) - fall back
-        // to the most specific settlement name, correctly labeled.
+        // No street data at all (rural area/road with nothing mapped) - fall
+        // back to the most specific settlement name, correctly labeled.
         let settlementName = "";
         let settlementKind = "";
         if (addr.city) { settlementName = addr.city; settlementKind = "city"; }
@@ -1225,8 +1252,11 @@ function cleanAddressData(data) {
         else if (addr.county) { settlementName = addr.county; }
 
         if (settlementName) {
-            const prefix = settlementKind ? labels[settlementKind] : "";
-            return prefix ? `${prefix} ${settlementName}` : settlementName;
+            // A municipality/county is a broad administrative area, not the
+            // exact spot - label it "vicinity of X" so it's never mistaken
+            // for "you are physically in X".
+            const prefix = settlementKind ? labels[settlementKind] : rcLabels.vicinity;
+            return `${prefix} ${settlementName}`;
         }
     }
 
@@ -1289,7 +1319,7 @@ function fetchAddressFromCoords(lat, lon) {
     globalUserLat = lat;
     globalUserLon = lon;
 
-    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=${currentLang}&addressdetails=1&zoom=18`;
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=${currentLang}&addressdetails=1&extratags=1&namedetails=1&zoom=18`;
     
     fetch(url)
         .then(res => {
