@@ -1187,16 +1187,6 @@ const settlementLabels = {
     ru: { city: "город", town: "пос.", village: "село" }
 };
 
-// True when `a` and `b` are effectively the same place name (handles cases like
-// "სენაკი" vs "სენაკის მუნიციპალიტეტი" so we never print the same place twice).
-function isSameOrSubsetName(a, b) {
-    if (!a || !b) return false;
-    const na = a.trim().toLowerCase();
-    const nb = b.trim().toLowerCase();
-    if (na === nb) return true;
-    return na.includes(nb) || nb.includes(na);
-}
-
 function cleanAddressData(data) {
     if (!data) return translations[currentLang].unknownAddr;
 
@@ -1204,39 +1194,11 @@ function cleanAddressData(data) {
         const addr = data.address;
         const labels = settlementLabels[currentLang] || settlementLabels.ka;
 
-        // Pick the single most specific settlement and remember what KIND it is,
-        // so a village gets labeled "village" and not mislabeled as a "city".
-        let settlementName = "";
-        let settlementKind = "";
-        if (addr.city) { settlementName = addr.city; settlementKind = "city"; }
-        else if (addr.town) { settlementName = addr.town; settlementKind = "town"; }
-        else if (addr.village) { settlementName = addr.village; settlementKind = "village"; }
-        else if (addr.municipality) { settlementName = addr.municipality; settlementKind = ""; }
-        else if (addr.county) { settlementName = addr.county; settlementKind = ""; }
-
-        // Broader administrative area (municipality/county), kept only if it
-        // actually adds information beyond the settlement name we already have.
-        let areaName = addr.municipality || addr.county || "";
-        if (isSameOrSubsetName(areaName, settlementName)) areaName = "";
-
         let road = addr.road || addr.street || addr.pedestrian || addr.footway || addr.residential || "";
-        // Guard against the rural-data bug: sometimes the "road" field a source
-        // returns is actually another settlement/municipality name, not a real
-        // street - drop it instead of bolting it onto the settlement name.
-        if (isSameOrSubsetName(road, settlementName) || isSameOrSubsetName(road, areaName)) {
-            road = "";
-        }
-
         let house = addr.house_number || addr.building || addr.housename || "";
 
         if (road.includes('—') || road.includes(' - ')) {
             road = road.split(/—|\s-\s/)[0].trim();
-        }
-
-        let settlementPart = "";
-        if (settlementName) {
-            const prefix = settlementKind ? labels[settlementKind] : "";
-            settlementPart = prefix ? `${prefix} ${settlementName}` : settlementName;
         }
 
         let streetPart = road;
@@ -1244,13 +1206,27 @@ function cleanAddressData(data) {
             streetPart = streetPart ? `${streetPart} #${house}` : `#${house}`;
         }
 
-        let parts = [settlementPart, streetPart].filter(p => p && p.trim() !== "");
-        if (areaName) {
-            parts.push(`(${areaName})`);
+        // City/village/municipality fields from the geocoder are often
+        // unreliable or overlap oddly (e.g. wrong city paired with a
+        // neighboring municipality's name), so show only the street and
+        // house number whenever we have one - never mix in a settlement name.
+        if (streetPart) {
+            return streetPart;
         }
 
-        if (parts.length > 0) {
-            return parts.join(", ");
+        // No street data at all (rural area with no mapped road) - fall back
+        // to the most specific settlement name, correctly labeled.
+        let settlementName = "";
+        let settlementKind = "";
+        if (addr.city) { settlementName = addr.city; settlementKind = "city"; }
+        else if (addr.town) { settlementName = addr.town; settlementKind = "town"; }
+        else if (addr.village) { settlementName = addr.village; settlementKind = "village"; }
+        else if (addr.municipality) { settlementName = addr.municipality; }
+        else if (addr.county) { settlementName = addr.county; }
+
+        if (settlementName) {
+            const prefix = settlementKind ? labels[settlementKind] : "";
+            return prefix ? `${prefix} ${settlementName}` : settlementName;
         }
     }
 
