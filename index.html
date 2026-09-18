@@ -570,8 +570,8 @@ const servicePrices = {
     fridge_demontage: 25
 };
 
-const FLOOR_CARRY_RATE = 10; // ₾ per floor above the free threshold, no elevator
-const FLOOR_FREE_COUNT = 3;  // first 3 floors carried free of charge
+const FLOOR_CARRY_RATE = 10;
+const FLOOR_FREE_COUNT = 3;
 
 function getFloorCost(floors) {
     return Math.max(0, floors - FLOOR_FREE_COUNT) * FLOOR_CARRY_RATE;
@@ -1195,10 +1195,6 @@ const roadContextLabels = {
 
 const MOTORWAY_TYPES = ["motorway", "motorway_link", "trunk", "trunk_link"];
 
-// Rough Georgian genitive for place names ("სენაკი" -> "სენაკის",
-// "ქობულეთი" -> "ქობულეთის") so we can say "<place>-ის მაგისტრალი".
-// Covers the common case (names ending in "ი"); not perfect for every
-// irregular place name, but right for the vast majority of Georgian toponyms.
 function georgianGenitive(name) {
     if (!name) return "";
     return /ი$/.test(name) ? `${name}ს` : `${name}ის`;
@@ -1213,7 +1209,7 @@ function cleanAddressData(data) {
         const labels = settlementLabels[currentLang] || settlementLabels.ka;
         const extratags = data.extratags || {};
 
-        let road = addr.road || addr.street || addr.pedestrian || addr.footway || addr.residential || "";
+        let road = addr.road || addr.street || addr.pedestrian || addr.footway || addr.residential || addr.suburb || addr.neighbourhood || "";
         let house = addr.house_number || addr.building || addr.housename || "";
 
         if (road.includes('—') || road.includes(' - ')) {
@@ -1225,21 +1221,13 @@ function cleanAddressData(data) {
             /ხიდი|bridge|мост/i.test(road);
         const isMotorway = data.class === "highway" && MOTORWAY_TYPES.includes(data.type);
 
-        // On a bridge or a numbered highway/motorway, say so explicitly and
-        // include the route name/number and km marker (house_number on a
-        // highway is usually the km post) if available. "road" only ever
-        // comes from real address tags (never the generic nearest-place
-        // name), so this never fabricates a highway named after a town -
-        // but the "you're on a highway/bridge" fact itself is always shown,
-        // even with no road name or route number, since that's what matters.
         if (isBridge || isMotorway) {
             let label = isBridge ? rcLabels.bridge : rcLabels.highway;
-            const nearSettlement = addr.city || addr.town || addr.village || addr.municipality || addr.county || "";
+            const nearSettlement = addr.city || addr.town || addr.village || addr.municipality || addr.county || addr.suburb || "";
 
             let parts = [];
             if (nearSettlement) {
                 if (currentLang === 'ka') {
-                    // "სენაკის მაგისტრალი" / "ქობულეთის ხიდი"
                     parts.push(`${georgianGenitive(nearSettlement)} ${label}`);
                 } else if (currentLang === 'ru') {
                     parts.push(`${label} ${nearSettlement}`);
@@ -1261,28 +1249,22 @@ function cleanAddressData(data) {
             streetPart = streetPart ? `${streetPart} #${house}` : `#${house}`;
         }
 
-        // City/village/municipality fields from the geocoder are often
-        // unreliable or overlap oddly (e.g. wrong city paired with a
-        // neighboring municipality's name), so show only the street and
-        // house number whenever we have one - never mix in a settlement name.
         if (streetPart) {
             return streetPart;
         }
 
-        // No street data at all (rural area/road with nothing mapped) - fall
-        // back to the most specific settlement name, correctly labeled.
         let settlementName = "";
         let settlementKind = "";
         if (addr.city) { settlementName = addr.city; settlementKind = "city"; }
         else if (addr.town) { settlementName = addr.town; settlementKind = "town"; }
         else if (addr.village) { settlementName = addr.village; settlementKind = "village"; }
+        else if (addr.suburb) { settlementName = addr.suburb; }
+        else if (addr.neighbourhood) { settlementName = addr.neighbourhood; }
+        else if (addr.city_district) { settlementName = addr.city_district; }
         else if (addr.municipality) { settlementName = addr.municipality; }
         else if (addr.county) { settlementName = addr.county; }
 
         if (settlementName) {
-            // A municipality/county is a broad administrative area, not the
-            // exact spot - label it "vicinity of X" so it's never mistaken
-            // for "you are physically in X".
             const prefix = settlementKind ? labels[settlementKind] : rcLabels.vicinity;
             return `${prefix} ${settlementName}`;
         }
@@ -1364,11 +1346,7 @@ function fetchAddressFromCoords(lat, lon) {
         });
 }
 
-// GPS accuracy is physically limited by the device's hardware/signal, so no
-// method reaches literal 100% precision - but watching several fixes and
-// keeping the tightest one gets you as close to the device's true limit as
-// possible, instead of settling for the first (often noisier) reading.
-const GPS_ACCURACY_TARGET_METERS = 12; // stop early once a fix this tight arrives
+const GPS_ACCURACY_TARGET_METERS = 12;
 const GPS_MAX_SAMPLES = 10;
 const GPS_MAX_WAIT_MS = 12000;
 
@@ -1450,7 +1428,6 @@ function renderMap(userLat, userLon, store, routeCoords) {
     
     map = L.map('map');
 
-    // Google Maps ფილები
     L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
         maxZoom: 20,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -1597,6 +1574,5 @@ window.onload = function() {
     triggerFreshGeolocation();
 };
 </script>
-
 </body>
 </html>
