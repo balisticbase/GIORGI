@@ -471,6 +471,28 @@
                             <option value="washing_machine_montage" id="opt-washing-machine">სარეცხი მანქანის დემონტაჟი / მონტაჟი 30 ₾</option>
                             <option value="tv_montage_standard" id="opt-tv-standard">ტელევიზორის მონტაჟი 80 ₾</option>
                             <option value="tv_montage_wall" id="opt-tv-wall">ტელევიზორის მონტაჟი კედელზე 250 ₾</option>
+                            <option value="fridge_montage" id="opt-fridge">მაცივრის მონტაჟი 40 ₾</option>
+                            <option value="dishwasher_montage" id="opt-dishwasher">ჭურჭლის სარეცხი მანქანის მონტაჟი 45 ₾</option>
+                            <option value="gas_stove_montage" id="opt-gas-stove">გაზქურის მონტაჟი 35 ₾</option>
+                            <option value="oven_montage" id="opt-oven">ელექტრო ღუმელის მონტაჟი 40 ₾</option>
+                            <option value="boiler_montage" id="opt-boiler">წყლის გამაცხელებლის მონტაჟი 60 ₾</option>
+                            <option value="ac_montage" id="opt-ac">კონდიციონერის მონტაჟი 150 ₾</option>
+                            <option value="dryer_montage" id="opt-dryer">საშრობის მონტაჟი 40 ₾</option>
+                            <option value="microwave_montage" id="opt-microwave">მიკროტალღური ღუმლის მონტაჟი 30 ₾</option>
+                        </select>
+
+                        <select id="floorSelect" class="demontazh-select-inline" disabled onchange="handleFloorAction(this.value)">
+                            <option value="0" selected id="opt-floor-0">სართულზე ატანა არ სჭირდება (ლიფტი არის)</option>
+                            <option value="1" id="opt-floor-1">1 სართული ატანა (ლიფტის გარეშე) - 10 ₾</option>
+                            <option value="2" id="opt-floor-2">2 სართული ატანა (ლიფტის გარეშე) - 20 ₾</option>
+                            <option value="3" id="opt-floor-3">3 სართული ატანა (ლიფტის გარეშე) - 30 ₾</option>
+                            <option value="4" id="opt-floor-4">4 სართული ატანა (ლიფტის გარეშე) - 40 ₾</option>
+                            <option value="5" id="opt-floor-5">5 სართული ატანა (ლიფტის გარეშე) - 50 ₾</option>
+                            <option value="6" id="opt-floor-6">6 სართული ატანა (ლიფტის გარეშე) - 60 ₾</option>
+                            <option value="7" id="opt-floor-7">7 სართული ატანა (ლიფტის გარეშე) - 70 ₾</option>
+                            <option value="8" id="opt-floor-8">8 სართული ატანა (ლიფტის გარეშე) - 80 ₾</option>
+                            <option value="9" id="opt-floor-9">9 სართული ატანა (ლიფტის გარეშე) - 90 ₾</option>
+                            <option value="10" id="opt-floor-10">10+ სართული ატანა (ლიფტის გარეშე) - 100 ₾</option>
                         </select>
 
                         <select id="paymentActionSelect" class="payment-select-inline" onchange="handlePaymentAction(this.value)">
@@ -506,6 +528,10 @@
                                 <label id="lbl-service-title">სერვისის საფასური:</label>
                                 <span id="val-service">0 ₾</span>
                             </div>
+                            <div class="summary-row">
+                                <label id="lbl-floor-title">სართულზე ატანა:</label>
+                                <span id="val-floor">0 ₾</span>
+                            </div>
                             <div class="summary-divider"></div>
                             <div class="summary-row">
                                 <label id="lbl-total-title">ჯამური თანხა:</label>
@@ -531,8 +557,20 @@ const servicePrices = {
     washing_machine_montage: 30,
     tv_montage_standard: 80,
     tv_montage_wall: 250,
-    demontazh_montazh: 30
+    demontazh_montazh: 30,
+    fridge_montage: 40,
+    dishwasher_montage: 45,
+    gas_stove_montage: 35,
+    oven_montage: 40,
+    boiler_montage: 60,
+    ac_montage: 150,
+    dryer_montage: 40,
+    microwave_montage: 30,
+    dishwasher_demontage: 25,
+    fridge_demontage: 25
 };
+
+const FLOOR_CARRY_RATE = 10; // ₾ per floor, no elevator
 
 function getServicePrice(serviceKey) {
     return servicePrices[serviceKey] || 0;
@@ -567,6 +605,27 @@ const translations = {
         optWashingMachine: "სარეცხი მანქანის დემონტაჟი / მონტაჟი 30 ₾",
         optTvStandard: "ტელევიზორის მონტაჟი 80 ₾",
         optTvWall: "ტელევიზორის მონტაჟი კედელზე 250 ₾",
+        optFridge: "მაცივრის მონტაჟი 40 ₾",
+        optDishwasher: "ჭურჭლის სარეცხი მანქანის მონტაჟი 45 ₾",
+        optGasStove: "გაზქურის მონტაჟი 35 ₾",
+        optOven: "ელექტრო ღუმელის მონტაჟი 40 ₾",
+        optBoiler: "წყლის გამაცხელებლის მონტაჟი 60 ₾",
+        optAc: "კონდიციონერის მონტაჟი 150 ₾",
+        optDryer: "საშრობის მონტაჟი 40 ₾",
+        optMicrowave: "მიკროტალღური ღუმლის მონტაჟი 30 ₾",
+        optFloor0: "სართულზე ატანა არ სჭირდება (ლიფტი არის)",
+        optFloor1: "1 სართული ატანა (ლიფტის გარეშე) - 10 ₾",
+        optFloor2: "2 სართული ატანა (ლიფტის გარეშე) - 20 ₾",
+        optFloor3: "3 სართული ატანა (ლიფტის გარეშე) - 30 ₾",
+        optFloor4: "4 სართული ატანა (ლიფტის გარეშე) - 40 ₾",
+        optFloor5: "5 სართული ატანა (ლიფტის გარეშე) - 50 ₾",
+        optFloor6: "6 სართული ატანა (ლიფტის გარეშე) - 60 ₾",
+        optFloor7: "7 სართული ატანა (ლიფტის გარეშე) - 70 ₾",
+        optFloor8: "8 სართული ატანა (ლიფტის გარეშე) - 80 ₾",
+        optFloor9: "9 სართული ატანა (ლიფტის გარეშე) - 90 ₾",
+        optFloor10: "10+ სართული ატანა (ლიფტის გარეშე) - 100 ₾",
+        lblFloorTitle: "სართულზე ატანა:",
+        screenFloorLabel: "სართულზე ატანა",
         optMethodSelect: "აირჩიეთ მეთოდი",
         optCash: "ქეში",
         optTransfer: "გადარიცხვა",
@@ -612,6 +671,27 @@ const translations = {
         optWashingMachine: "Washing machine dismantling / installation 30 GEL",
         optTvStandard: "TV installation 80 GEL",
         optTvWall: "TV wall mounting 250 GEL",
+        optFridge: "Refrigerator installation 40 GEL",
+        optDishwasher: "Dishwasher installation 45 GEL",
+        optGasStove: "Gas stove installation 35 GEL",
+        optOven: "Electric oven installation 40 GEL",
+        optBoiler: "Water heater installation 60 GEL",
+        optAc: "AC installation 150 GEL",
+        optDryer: "Dryer installation 40 GEL",
+        optMicrowave: "Microwave installation 30 GEL",
+        optFloor0: "No floor carrying needed (elevator available)",
+        optFloor1: "1 floor carrying (no elevator) - 10 GEL",
+        optFloor2: "2 floors carrying (no elevator) - 20 GEL",
+        optFloor3: "3 floors carrying (no elevator) - 30 GEL",
+        optFloor4: "4 floors carrying (no elevator) - 40 GEL",
+        optFloor5: "5 floors carrying (no elevator) - 50 GEL",
+        optFloor6: "6 floors carrying (no elevator) - 60 GEL",
+        optFloor7: "7 floors carrying (no elevator) - 70 GEL",
+        optFloor8: "8 floors carrying (no elevator) - 80 GEL",
+        optFloor9: "9 floors carrying (no elevator) - 90 GEL",
+        optFloor10: "10+ floors carrying (no elevator) - 100 GEL",
+        lblFloorTitle: "Floor Carrying:",
+        screenFloorLabel: "Floor Carrying",
         optMethodSelect: "Select Method",
         optCash: "Cash",
         optTransfer: "Transfer",
@@ -657,6 +737,27 @@ const translations = {
         optWashingMachine: "Демонтаж / монтаж стиральной машины 30 ₾",
         optTvStandard: "Монтаж телевизора 80 ₾",
         optTvWall: "Монтаж телевизора на стену 250 ₾",
+        optFridge: "Монтаж холодильника 40 ₾",
+        optDishwasher: "Монтаж посудомоечной машины 45 ₾",
+        optGasStove: "Монтаж газовой плиты 35 ₾",
+        optOven: "Монтаж электрической духовки 40 ₾",
+        optBoiler: "Монтаж водонагревателя 60 ₾",
+        optAc: "Монтаж кондиционера 150 ₾",
+        optDryer: "Монтаж сушильной машины 40 ₾",
+        optMicrowave: "Монтаж микроволновой печи 30 ₾",
+        optFloor0: "Подъём на этаж не нужен (есть лифт)",
+        optFloor1: "Подъём на 1 этаж (без лифта) - 10 ₾",
+        optFloor2: "Подъём на 2 этажа (без лифта) - 20 ₾",
+        optFloor3: "Подъём на 3 этажа (без лифта) - 30 ₾",
+        optFloor4: "Подъём на 4 этажа (без лифта) - 40 ₾",
+        optFloor5: "Подъём на 5 этажей (без лифта) - 50 ₾",
+        optFloor6: "Подъём на 6 этажей (без лифта) - 60 ₾",
+        optFloor7: "Подъём на 7 этажей (без лифта) - 70 ₾",
+        optFloor8: "Подъём на 8 этажей (без лифта) - 80 ₾",
+        optFloor9: "Подъём на 9 этажей (без лифта) - 90 ₾",
+        optFloor10: "Подъём на 10+ этажей (без лифта) - 100 ₾",
+        lblFloorTitle: "Подъём на этаж:",
+        screenFloorLabel: "Подъём на этаж",
         optMethodSelect: "Выберите метод",
         optCash: "Наличные",
         optTransfer: "Перевод",
@@ -753,6 +854,20 @@ function updateStaticTranslations() {
     document.getElementById('opt-washing-machine').innerText = t.optWashingMachine;
     document.getElementById('opt-tv-standard').innerText = t.optTvStandard;
     document.getElementById('opt-tv-wall').innerText = t.optTvWall;
+    document.getElementById('opt-fridge').innerText = t.optFridge;
+    document.getElementById('opt-dishwasher').innerText = t.optDishwasher;
+    document.getElementById('opt-gas-stove').innerText = t.optGasStove;
+    document.getElementById('opt-oven').innerText = t.optOven;
+    document.getElementById('opt-boiler').innerText = t.optBoiler;
+    document.getElementById('opt-ac').innerText = t.optAc;
+    document.getElementById('opt-dryer').innerText = t.optDryer;
+    document.getElementById('opt-microwave').innerText = t.optMicrowave;
+
+    for (let i = 0; i <= 10; i++) {
+        const el = document.getElementById(`opt-floor-${i}`);
+        if (el) el.innerText = t[`optFloor${i}`];
+    }
+    document.getElementById('lbl-floor-title').innerText = t.lblFloorTitle;
 
     document.getElementById('opt-select').innerText = t.optSelect;
     document.getElementById('opt-paid').innerText = t.optPaid;
@@ -877,6 +992,7 @@ function clearSignature() {
     localStorage.removeItem('userSignature');
     
     document.getElementById('demontazhSelect').disabled = true;
+    document.getElementById('floorSelect').disabled = true;
     document.getElementById('opt-paid').disabled = true;
     
     document.getElementById('paymentMethodSelect').style.display = 'none';
@@ -907,6 +1023,7 @@ function confirmSignature() {
     msg.innerText = t.sigConfirmedOk;
 
     document.getElementById('demontazhSelect').disabled = false;
+    document.getElementById('floorSelect').disabled = false;
     document.getElementById('opt-paid').disabled = false;
 }
 
@@ -924,6 +1041,7 @@ function restoreSignatureState() {
         img.src = savedSig;
 
         document.getElementById('demontazhSelect').disabled = false;
+        document.getElementById('floorSelect').disabled = false;
         document.getElementById('opt-paid').disabled = false;
 
         const msg = document.getElementById('sigStatusMsg');
@@ -940,6 +1058,7 @@ function handlePaymentAction(val) {
     const transferInfo = document.getElementById('transferInfo');
     const closeFreeBtn = document.getElementById('btn-close-free');
     const demontazhVal = document.getElementById('demontazhSelect').value;
+    const floorVal = parseInt(document.getElementById('floorSelect').value) || 0;
 
     if (val === 'refused') {
         methodSelect.style.display = 'none';
@@ -951,7 +1070,8 @@ function handlePaymentAction(val) {
 
     if (val === 'paid') {
         let addOnCost = getServicePrice(demontazhVal);
-        let totalCost = baseDeliveryCost + addOnCost;
+        let floorCost = floorVal * FLOOR_CARRY_RATE;
+        let totalCost = baseDeliveryCost + addOnCost + floorCost;
 
         if (totalCost === 0) {
             methodSelect.style.display = 'none';
@@ -977,15 +1097,28 @@ function handleDemontazhAction(val) {
     updateTotalPriceDisplay();
 }
 
+function handleFloorAction(val) {
+    const floors = parseInt(val) || 0;
+    const floorCost = floors * FLOOR_CARRY_RATE;
+
+    setCookie('selectedFloors', floors, 3);
+    setCookie('floorCost', floorCost, 3);
+
+    updateTotalPriceDisplay();
+}
+
 function updateTotalPriceDisplay() {
     const t = translations[currentLang];
     const demontazhElem = document.getElementById('demontazhSelect');
     const demontazhVal = demontazhElem ? demontazhElem.value : 'none';
+    const floorElem = document.getElementById('floorSelect');
+    const floorVal = floorElem ? (parseInt(floorElem.value) || 0) : 0;
     const paymentActionSelect = document.getElementById('paymentActionSelect');
     const paymentActionVal = paymentActionSelect.value;
     
     let addOnCost = getServicePrice(demontazhVal);
-    let totalCost = baseDeliveryCost + addOnCost;
+    let floorCost = floorVal * FLOOR_CARRY_RATE;
+    let totalCost = baseDeliveryCost + addOnCost + floorCost;
 
     const paymentMethodSelect = document.getElementById('paymentMethodSelect');
     const closeFreeBtn = document.getElementById('btn-close-free');
@@ -993,6 +1126,7 @@ function updateTotalPriceDisplay() {
 
     document.getElementById('val-transport').innerText = (baseDeliveryCost === 0) ? `${t.free} 0 ${t.gel}` : `${baseDeliveryCost} ${t.gel}`;
     document.getElementById('val-service').innerText = `${addOnCost} ${t.gel}`;
+    document.getElementById('val-floor').innerText = `${floorCost} ${t.gel}`;
     document.getElementById('val-total').innerText = (totalCost === 0) ? `${t.free} 0 ${t.gel}` : `${totalCost} ${t.gel}`;
 
     if (totalCost === 0) {
@@ -1124,6 +1258,7 @@ async function processResults() {
 
     initSignatureCanvas();
     handleDemontazhAction('none');
+    handleFloorAction('0');
     updateTotalPriceDisplay();
     renderMap(globalUserLat, globalUserLon, nearestStore, bestRouteCoords);
 }
@@ -1149,6 +1284,16 @@ function fetchAddressFromCoords(lat, lon) {
         });
 }
 
+// GPS accuracy is physically limited by the device's hardware/signal, so no
+// method reaches literal 100% precision - but watching several fixes and
+// keeping the tightest one gets you as close to the device's true limit as
+// possible, instead of settling for the first (often noisier) reading.
+const GPS_ACCURACY_TARGET_METERS = 12; // stop early once a fix this tight arrives
+const GPS_MAX_SAMPLES = 10;
+const GPS_MAX_WAIT_MS = 12000;
+
+let gpsWatchId = null;
+
 function triggerFreshGeolocation() {
     eraseCookie('baseDeliveryCost');
     document.getElementById('results').style.display = 'none';
@@ -1157,20 +1302,63 @@ function triggerFreshGeolocation() {
     const spinner = document.getElementById('statusSpinner');
     if (spinner) spinner.style.display = 'inline-block';
 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            position => fetchAddressFromCoords(position.coords.latitude, position.coords.longitude),
-            error => {
-                console.error("GPS Error:", error);
-                if (spinner) spinner.style.display = 'none';
-                document.getElementById('txt-status').innerText = translations[currentLang].geoErr;
-            },
-            { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-        );
-    } else {
+    if (gpsWatchId !== null) {
+        navigator.geolocation.clearWatch(gpsWatchId);
+        gpsWatchId = null;
+    }
+
+    if (!navigator.geolocation) {
         if (spinner) spinner.style.display = 'none';
         document.getElementById('txt-status').innerText = translations[currentLang].geoUnsup;
+        return;
     }
+
+    let bestPosition = null;
+    let sampleCount = 0;
+
+    const finishGeolocation = () => {
+        if (gpsWatchId !== null) {
+            navigator.geolocation.clearWatch(gpsWatchId);
+            gpsWatchId = null;
+        }
+        clearTimeout(safetyTimeout);
+        if (bestPosition) {
+            fetchAddressFromCoords(bestPosition.coords.latitude, bestPosition.coords.longitude);
+        } else {
+            if (spinner) spinner.style.display = 'none';
+            document.getElementById('txt-status').innerText = translations[currentLang].geoErr;
+        }
+    };
+
+    const safetyTimeout = setTimeout(finishGeolocation, GPS_MAX_WAIT_MS);
+
+    gpsWatchId = navigator.geolocation.watchPosition(
+        position => {
+            sampleCount++;
+            const accuracy = position.coords.accuracy;
+
+            if (!bestPosition || accuracy < bestPosition.coords.accuracy) {
+                bestPosition = position;
+                const t = translations[currentLang];
+                document.getElementById('txt-status').innerText = `${t.status} (±${Math.round(accuracy)}m)`;
+            }
+
+            if (accuracy <= GPS_ACCURACY_TARGET_METERS || sampleCount >= GPS_MAX_SAMPLES) {
+                finishGeolocation();
+            }
+        },
+        error => {
+            console.error("GPS Error:", error);
+            clearTimeout(safetyTimeout);
+            if (gpsWatchId !== null) {
+                navigator.geolocation.clearWatch(gpsWatchId);
+                gpsWatchId = null;
+            }
+            if (spinner) spinner.style.display = 'none';
+            document.getElementById('txt-status').innerText = translations[currentLang].geoErr;
+        },
+        { enableHighAccuracy: true, timeout: GPS_MAX_WAIT_MS, maximumAge: 0 }
+    );
 }
 
 function renderMap(userLat, userLon, store, routeCoords) {
@@ -1214,7 +1402,8 @@ function renderSuccessScreen() {
     const sigImg = savedSignatureDataUrl || localStorage.getItem('userSignature');
     const serviceText = getCookie('selectedService') || "არცერთი";
     let addOnCost = parseFloat(getCookie('addOnCost')) || 0;
-    let totalCost = baseDeliveryCost + addOnCost;
+    let floorCost = parseFloat(getCookie('floorCost')) || 0;
+    let totalCost = baseDeliveryCost + addOnCost + floorCost;
 
     document.body.style.backgroundColor = '#ffffff';
     document.body.innerHTML = `
@@ -1234,6 +1423,7 @@ function renderSuccessScreen() {
                 <div style="border-top:1px dashed #cbd5e1; padding-top:10px; margin-bottom:12px;">
                     <div>${t.lblTransportTitle} <b>${baseDeliveryCost === 0 ? t.free : baseDeliveryCost + ' ' + t.gel}</b></div>
                     <div>${t.lblServiceTitle} <b>${addOnCost} ${t.gel}</b></div>
+                    <div>${t.lblFloorTitle} <b>${floorCost} ${t.gel}</b></div>
                     <div style="border-top:1px solid #cbd5e1; margin-top:6px; padding-top:6px;">${t.lblTotalTitle} <b>${totalCost === 0 ? t.free : totalCost + ' ' + t.gel}</b></div>
                 </div>
                 ${sigImg ? `<img src="${sigImg}" style="max-width:100%; height:70px; border:1px solid #e2e8f0; border-radius:8px; background:white;" />` : ''}
