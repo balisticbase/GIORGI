@@ -1188,12 +1188,21 @@ const settlementLabels = {
 };
 
 const roadContextLabels = {
-    ka: { bridge: "ხიდი", highway: "მაგისტრალი", vicinity: "მიდამო" },
-    en: { bridge: "Bridge", highway: "Highway", vicinity: "Near" },
-    ru: { bridge: "Мост", highway: "Магистраль", vicinity: "Возле" }
+    ka: { bridge: "ხიდი", highway: "მაგისტრალი", vicinity: "მიდამო", km: "კმ" },
+    en: { bridge: "Bridge", highway: "Highway", vicinity: "Near", km: "km" },
+    ru: { bridge: "Мост", highway: "Магистраль", vicinity: "Возле", km: "км" }
 };
 
 const MOTORWAY_TYPES = ["motorway", "motorway_link", "trunk", "trunk_link"];
+
+// Rough Georgian genitive for place names ("სენაკი" -> "სენაკის",
+// "ქობულეთი" -> "ქობულეთის") so we can say "<place>-ის მაგისტრალი".
+// Covers the common case (names ending in "ი"); not perfect for every
+// irregular place name, but right for the vast majority of Georgian toponyms.
+function georgianGenitive(name) {
+    if (!name) return "";
+    return /ი$/.test(name) ? `${name}ს` : `${name}ის`;
+}
 
 function cleanAddressData(data) {
     if (!data) return translations[currentLang].unknownAddr;
@@ -1218,17 +1227,32 @@ function cleanAddressData(data) {
 
         // On a bridge or a numbered highway/motorway, say so explicitly and
         // include the route name/number and km marker (house_number on a
-        // highway is usually the km post) instead of forcing a street format.
-        // Only do this when there's an actual road name or route number to
-        // show - "road" only ever comes from real address tags now (never
-        // the generic nearest-place name), so this never fabricates a
-        // highway named after a town.
-        if ((isBridge || isMotorway) && (road || routeRef)) {
+        // highway is usually the km post) if available. "road" only ever
+        // comes from real address tags (never the generic nearest-place
+        // name), so this never fabricates a highway named after a town -
+        // but the "you're on a highway/bridge" fact itself is always shown,
+        // even with no road name or route number, since that's what matters.
+        if (isBridge || isMotorway) {
             let label = isBridge ? rcLabels.bridge : rcLabels.highway;
-            let parts = [label];
+            const nearSettlement = addr.city || addr.town || addr.village || addr.municipality || addr.county || "";
+
+            let parts = [];
+            if (nearSettlement) {
+                if (currentLang === 'ka') {
+                    // "სენაკის მაგისტრალი" / "ქობულეთის ხიდი"
+                    parts.push(`${georgianGenitive(nearSettlement)} ${label}`);
+                } else if (currentLang === 'ru') {
+                    parts.push(`${label} ${nearSettlement}`);
+                } else {
+                    parts.push(`${nearSettlement} ${label}`);
+                }
+            } else {
+                parts.push(label);
+            }
+
             if (road) parts.push(road);
             if (routeRef) parts.push(`(${routeRef})`);
-            if (house) parts.push(`- ${house} კმ`.trim());
+            if (house) parts.push(`- ${house} ${rcLabels.km}`.trim());
             return parts.join(" ");
         }
 
