@@ -1204,7 +1204,7 @@ function cleanAddressData(data) {
         const labels = settlementLabels[currentLang] || settlementLabels.ka;
         const extratags = data.extratags || {};
 
-        let road = addr.road || addr.street || addr.pedestrian || addr.footway || addr.residential || data.name || "";
+        let road = addr.road || addr.street || addr.pedestrian || addr.footway || addr.residential || "";
         let house = addr.house_number || addr.building || addr.housename || "";
 
         if (road.includes('—') || road.includes(' - ')) {
@@ -1219,7 +1219,11 @@ function cleanAddressData(data) {
         // On a bridge or a numbered highway/motorway, say so explicitly and
         // include the route name/number and km marker (house_number on a
         // highway is usually the km post) instead of forcing a street format.
-        if (isBridge || isMotorway) {
+        // Only do this when there's an actual road name or route number to
+        // show - "road" only ever comes from real address tags now (never
+        // the generic nearest-place name), so this never fabricates a
+        // highway named after a town.
+        if ((isBridge || isMotorway) && (road || routeRef)) {
             let label = isBridge ? rcLabels.bridge : rcLabels.highway;
             let parts = [label];
             if (road) parts.push(road);
