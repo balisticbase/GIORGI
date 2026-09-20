@@ -471,14 +471,9 @@
                             <option value="washing_machine_montage" id="opt-washing-machine">სარეცხი მანქანის დემონტაჟი / მონტაჟი 30 ₾</option>
                             <option value="tv_montage_standard" id="opt-tv-standard">ტელევიზორის მონტაჟი 80 ₾</option>
                             <option value="tv_montage_wall" id="opt-tv-wall">ტელევიზორის მონტაჟი კედელზე 250 ₾</option>
-                            <option value="fridge_montage" id="opt-fridge">მაცივრის მონტაჟი 40 ₾</option>
-                            <option value="dishwasher_montage" id="opt-dishwasher">ჭურჭლის სარეცხი მანქანის მონტაჟი 45 ₾</option>
+                            <option value="dishwasher_demontazh_montazh" id="opt-dishwasher">ჭურჭლის სარეცხი მანქანის დემონტაჟი / მონტაჟი 30 ₾</option>
                             <option value="gas_stove_montage" id="opt-gas-stove">გაზქურის მონტაჟი 35 ₾</option>
-                            <option value="oven_montage" id="opt-oven">ელექტრო ღუმელის მონტაჟი 40 ₾</option>
-                            <option value="boiler_montage" id="opt-boiler">წყლის გამაცხელებლის მონტაჟი 60 ₾</option>
-                            <option value="ac_montage" id="opt-ac">კონდიციონერის მონტაჟი 150 ₾</option>
                             <option value="dryer_montage" id="opt-dryer">საშრობის მონტაჟი 40 ₾</option>
-                            <option value="microwave_montage" id="opt-microwave">მიკროტალღური ღუმლის მონტაჟი 30 ₾</option>
                         </select>
 
                         <select id="floorSelect" class="demontazh-select-inline" disabled onchange="handleFloorAction(this.value)">
@@ -556,16 +551,9 @@ const servicePrices = {
     tv_montage_standard: 80,
     tv_montage_wall: 250,
     demontazh_montazh: 30,
-    fridge_montage: 40,
-    dishwasher_montage: 45,
+    dishwasher_demontazh_montazh: 30,
     gas_stove_montage: 35,
-    oven_montage: 40,
-    boiler_montage: 60,
-    ac_montage: 150,
-    dryer_montage: 40,
-    microwave_montage: 30,
-    dishwasher_demontage: 25,
-    fridge_demontage: 25
+    dryer_montage: 40
 };
 
 const FLOOR_CARRY_RATE = 10;
@@ -608,14 +596,9 @@ const translations = {
         optWashingMachine: "სარეცხი მანქანის დემონტაჟი / მონტაჟი 30 ₾",
         optTvStandard: "ტელევიზორის მონტაჟი 80 ₾",
         optTvWall: "ტელევიზორის მონტაჟი კედელზე 250 ₾",
-        optFridge: "მაცივრის მონტაჟი 40 ₾",
-        optDishwasher: "ჭურჭლის სარეცხი მანქანის მონტაჟი 45 ₾",
+        optDishwasher: "ჭურჭლის სარეცხი მანქანის დემონტაჟი / მონტაჟი 30 ₾",
         optGasStove: "გაზქურის მონტაჟი 35 ₾",
-        optOven: "ელექტრო ღუმელის მონტაჟი 40 ₾",
-        optBoiler: "წყლის გამაცხელებლის მონტაჟი 60 ₾",
-        optAc: "კონდიციონერის მონტაჟი 150 ₾",
         optDryer: "საშრობის მონტაჟი 40 ₾",
-        optMicrowave: "მიკროტალღური ღუმლის მონტაჟი 30 ₾",
         optFloor0: "სართულზე ატანა არ სჭირდება (ლიფტი არის)",
         optFloor3: "1-3 სართული ატანა (ლიფტის გარეშე) - უფასო",
         optFloor4: "4 სართული ატანა (ლიფტის გარეშე) - 10 ₾",
@@ -672,14 +655,9 @@ const translations = {
         optWashingMachine: "Washing machine dismantling / installation 30 GEL",
         optTvStandard: "TV installation 80 GEL",
         optTvWall: "TV wall mounting 250 GEL",
-        optFridge: "Refrigerator installation 40 GEL",
-        optDishwasher: "Dishwasher installation 45 GEL",
+        optDishwasher: "Dishwasher dismantling / installation 30 GEL",
         optGasStove: "Gas stove installation 35 GEL",
-        optOven: "Electric oven installation 40 GEL",
-        optBoiler: "Water heater installation 60 GEL",
-        optAc: "AC installation 150 GEL",
         optDryer: "Dryer installation 40 GEL",
-        optMicrowave: "Microwave installation 30 GEL",
         optFloor0: "No floor carrying needed (elevator available)",
         optFloor3: "1-3 floors carrying (no elevator) - free",
         optFloor4: "4 floors carrying (no elevator) - 10 GEL",
@@ -736,14 +714,9 @@ const translations = {
         optWashingMachine: "Демонтаж / монтаж стиральной машины 30 ₾",
         optTvStandard: "Монтаж телевизора 80 ₾",
         optTvWall: "Монтаж телевизора на стену 250 ₾",
-        optFridge: "Монтаж холодильника 40 ₾",
-        optDishwasher: "Монтаж посудомоечной машины 45 ₾",
+        optDishwasher: "Демонтаж / монтаж посудомоечной машины 30 ₾",
         optGasStove: "Монтаж газовой плиты 35 ₾",
-        optOven: "Монтаж электрической духовки 40 ₾",
-        optBoiler: "Монтаж водонагревателя 60 ₾",
-        optAc: "Монтаж кондиционера 150 ₾",
         optDryer: "Монтаж сушильной машины 40 ₾",
-        optMicrowave: "Монтаж микроволновой печи 30 ₾",
         optFloor0: "Подъём на этаж не нужен (есть лифт)",
         optFloor3: "Подъём на 1-3 этажа (без лифта) - бесплатно",
         optFloor4: "Подъём на 4 этажа (без лифта) - 10 ₾",
@@ -851,14 +824,9 @@ function updateStaticTranslations() {
     document.getElementById('opt-washing-machine').innerText = t.optWashingMachine;
     document.getElementById('opt-tv-standard').innerText = t.optTvStandard;
     document.getElementById('opt-tv-wall').innerText = t.optTvWall;
-    document.getElementById('opt-fridge').innerText = t.optFridge;
     document.getElementById('opt-dishwasher').innerText = t.optDishwasher;
     document.getElementById('opt-gas-stove').innerText = t.optGasStove;
-    document.getElementById('opt-oven').innerText = t.optOven;
-    document.getElementById('opt-boiler').innerText = t.optBoiler;
-    document.getElementById('opt-ac').innerText = t.optAc;
     document.getElementById('opt-dryer').innerText = t.optDryer;
-    document.getElementById('opt-microwave').innerText = t.optMicrowave;
 
     const floorIndices = [0, 3, 4, 5, 6, 7, 8, 9, 10];
     floorIndices.forEach(i => {
