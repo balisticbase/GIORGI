@@ -572,7 +572,7 @@ const translations = {
         title: "ელიტ ელექტრონიქსი",
         subtitle: "ავტომატური მიწოდების კალკულატორი",
         status: "ფილიალების და თქვენი მდებარეობის ჩატვირთვა...",
-        geoErr: "GPS მდებარეობის დადგენა ვერ მოხერხდა. გამოყენებულია ნაგულისხმევო მდებარეობა.",
+        geoErr: "GPS მდებარეობის დადგენა ვერ მოხერხდა. სერვერი არ პასუხობს ან GPS მიუწვდომელია.",
         geoUnsup: "თქვენს ბრაუზერს არ აქვს GPS გეოლოკაციის მხარდაჭერა.",
         refreshLoc: "მდებარეობის განახლება",
         lblAddress: "თქვენი მისამართი",
@@ -630,7 +630,7 @@ const translations = {
         title: "Elit Electronics",
         subtitle: "Automatic Delivery Calculator",
         status: "Loading branches and location...",
-        geoErr: "Could not determine GPS location. Using default location.",
+        geoErr: "Could not determine GPS location. Server not responding or GPS unavailable.",
         geoUnsup: "Your browser does not support GPS geolocation.",
         refreshLoc: "Refresh Location",
         lblAddress: "Your Address",
@@ -688,7 +688,7 @@ const translations = {
         title: "Элит Электроникс",
         subtitle: "Автоматический калькулятор доставки",
         status: "Загрузка филиалов и местоположения...",
-        geoErr: "Не удалось определить GPS. Используется стандартное положение.",
+        geoErr: "Не удалось определить GPS. Сервер не отвечает или GPS недоступен.",
         geoUnsup: "Ваш браузер не поддерживает геолокацию GPS.",
         refreshLoc: "Обновить геолокацию",
         lblAddress: "Ваш адрес",
@@ -1092,37 +1092,18 @@ function updateTotalPriceDisplay() {
     }
 }
 
-function calculateDirectDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371;
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-              Math.sin(dLon/2) * Math.sin(dLon/2);
-    return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
-}
-
 async function fetchRoadRoute(lat1, lon1, lat2, lon2) {
-    try {
-        const url = `https://router.project-osrm.org/route/v1/driving/${lon1},${lat1};${lon2},${lat2}?overview=full&geometries=geojson`;
-        const res = await fetch(url);
-        if (!res.ok) throw new Error("OSRM Network response was not ok");
-        const data = await res.json();
-        if (data && data.routes && data.routes.length > 0) {
-            const route = data.routes[0];
-            const distanceKm = route.distance / 1000;
-            const coordinates = route.geometry.coordinates.map(coord => [coord[1], coord[0]]);
-            return { distanceKm, coordinates };
-        }
-    } catch(e) {
-        console.error("OSRM Route fetching error:", e);
+    const url = `https://router.project-osrm.org/route/v1/driving/${lon1},${lat1};${lon2},${lat2}?overview=full&geometries=geojson`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("OSRM Network response was not ok");
+    const data = await res.json();
+    if (data && data.routes && data.routes.length > 0) {
+        const route = data.routes[0];
+        const distanceKm = route.distance / 1000;
+        const coordinates = route.geometry.coordinates.map(coord => [coord[1], coord[0]]);
+        return { distanceKm, coordinates };
     }
-    
-    const directKm = calculateDirectDistance(lat1, lon1, lat2, lon2) * 1.25;
-    return {
-        distanceKm: directKm,
-        coordinates: [[lat1, lon1], [lat2, lon2]]
-    };
+    throw new Error("No route found");
 }
 
 function cleanAddressData(data) {
@@ -1187,7 +1168,6 @@ async function fetchStoresFromGitHub() {
                 } catch (err) {
                     console.warn("Geocoding failed for address:", addr);
                 }
-                // 2 წამიანი პაუზა სერვერის ლიმიტის დასაცავად
                 await new Promise(r => setTimeout(r, 2000));
             }
         }
@@ -1212,24 +1192,28 @@ async function processResults() {
         return;
     }
 
-    let storesWithDist = eliteStores.map(store => ({
-        store,
-        directDist: calculateDirectDistance(globalUserLat, globalUserLon, store.lat, store.lon)
-    }));
-    storesWithDist.sort((a, b) => a.directDist - b.directDist);
-
-    const topCandidates = storesWithDist.slice(0, 3);
-    let nearestStore = topCandidates[0].store;
     let minRoadKm = Infinity;
+    let nearestStore = eliteStores[0];
     let bestRouteCoords = null;
 
-    for (let candidate of topCandidates) {
-        const routeData = await fetchRoadRoute(globalUserLat, globalUserLon, candidate.store.lat, candidate.store.lon);
-        if (routeData.distanceKm < minRoadKm) {
-            minRoadKm = routeData.distanceKm;
-            nearestStore = candidate.store;
-            bestRouteCoords = routeData.coordinates;
+    for (let candidate of eliteStores) {
+        try {
+            const routeData = await fetchRoadRoute(globalUserLat, globalUserLon, candidate.lat, candidate.lon);
+            if (routeData.distanceKm < minRoadKm) {
+                minRoadKm = routeData.distanceKm;
+                nearestStore = candidate;
+                bestRouteCoords = routeData.coordinates;
+            }
+        } catch(e) {
+            console.error("Route calculation failed for store:", candidate.name, e);
         }
+    }
+
+    if (minRoadKm === Infinity) {
+        document.getElementById('status').style.display = 'flex';
+        document.getElementById('statusSpinner').style.display = 'none';
+        document.getElementById('txt-status').innerText = translations[currentLang].geoErr;
+        return;
     }
 
     currentFormattedAddress = cleanAddressData(globalRawAddressData);
@@ -1291,7 +1275,7 @@ function initializeApp() {
 
         if (!navigator.geolocation) {
             if (spinner) spinner.style.display = 'none';
-            fetchAddressFromCoords(41.6168, 41.6367);
+            document.getElementById('txt-status').innerText = translations[currentLang].geoUnsup;
             return;
         }
 
@@ -1301,7 +1285,7 @@ function initializeApp() {
             if (!geolocationCompleted) {
                 geolocationCompleted = true;
                 if (spinner) spinner.style.display = 'none';
-                fetchAddressFromCoords(41.6168, 41.6367);
+                document.getElementById('txt-status').innerText = translations[currentLang].geoErr;
             }
         }, 8000);
 
@@ -1319,7 +1303,7 @@ function initializeApp() {
                     geolocationCompleted = true;
                     clearTimeout(geoTimeout);
                     if (spinner) spinner.style.display = 'none';
-                    fetchAddressFromCoords(41.6168, 41.6367);
+                    document.getElementById('txt-status').innerText = translations[currentLang].geoErr;
                 }
             },
             { enableHighAccuracy: true, timeout: 7000, maximumAge: 10000 }
@@ -1352,9 +1336,6 @@ function renderMap(userLat, userLon, store, routeCoords) {
     if (routeCoords && routeCoords.length > 0) {
         const polyline = L.polyline(routeCoords, { color: '#e60012', weight: 5, opacity: 0.85 }).addTo(map);
         map.fitBounds(polyline.getBounds(), { padding: [50, 50] });
-    } else {
-        const polyline = L.polyline([userLatLng, storeLatLng], { color: '#e60012', weight: 4 }).addTo(map);
-        map.fitBounds(L.latLngBounds([userLatLng, storeLatLng]), { padding: [50, 50] });
     }
 
     setTimeout(() => {
