@@ -1221,8 +1221,8 @@ function cleanAddressData(data) {
     return translations[currentLang].unknownAddr;
 }
 
-// Fixed coordinate database corresponding to your exact addresses so they load instantly and accurately
-const hardcodedStoresGeo = {
+// Fallback coordinate dictionary in case dynamic geocoding fails
+const fallbackGeo = {
     "ბათუმი ჭავჭავაძის ქუჩა 78/88": { lat: 41.6425, lon: 41.6247 },
     "ბათუმი ფრიდონ ხალვაშის გამზირი 20": { lat: 41.6215, lon: 41.6092 },
     "ფოთი შოთა რუსთაველის რკალი 24": { lat: 42.1462, lon: 41.6702 },
@@ -1233,25 +1233,45 @@ const hardcodedStoresGeo = {
     "რუსთავი შარტავას ქუჩა 4": { lat: 41.5492, lon: 45.0034 }
 };
 
+// Automatically fetches addresses from your GitHub link and dynamically finds their coordinates
 async function fetchStoresFromGitHub() {
     try {
         const res = await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/Elite%20Automatic%20Delivery.txt', { cache: 'no-store' });
         if (!res.ok) throw new Error("Failed to fetch stores");
         const text = await res.text();
         
-        // Split text by lines
         const lines = text.split(/\r?\n/);
         let parsedStores = [];
 
         for (let line of lines) {
             let addr = line.trim();
             if (addr.length > 0) {
-                // If coordinates exist in our map, use them, otherwise assign default Batumi coords
-                let coords = hardcodedStoresGeo[addr] || { lat: 41.6168, lon: 41.6367 };
+                let lat = 41.6168;
+                let lon = 41.6367;
+
+                // Check fallback first for instant load
+                if (fallbackGeo[addr]) {
+                    lat = fallbackGeo[addr].lat;
+                    lon = fallbackGeo[addr].lon;
+                } else {
+                    // Dynamically geocode any new address added to GitHub
+                    try {
+                        const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addr)}&limit=1`);
+                        const geoData = await geoRes.json();
+                        if (geoData && geoData.length > 0) {
+                            lat = parseFloat(geoData[0].lat);
+                            lon = parseFloat(geoData[0].lon);
+                        }
+                    } catch (err) {
+                        console.warn("Geocoding failed for:", addr);
+                    }
+                    await new Promise(r => setTimeout(r, 150)); // Gentle pause for API limits
+                }
+
                 parsedStores.push({
                     name: addr,
-                    lat: coords.lat,
-                    lon: coords.lon
+                    lat: lat,
+                    lon: lon
                 });
             }
         }
@@ -1260,10 +1280,9 @@ async function fetchStoresFromGitHub() {
             return parsedStores;
         }
     } catch(e) {
-        console.warn("Could not fetch stores from GitHub, using fallback:", e);
+        console.warn("Could not fetch stores from GitHub:", e);
     }
     
-    // Fallback default list
     return [
         { name: "ბათუმი ჭავჭავაძის ქუჩა 78/88", lat: 41.6425, lon: 41.6247 }
     ];
@@ -1298,8 +1317,6 @@ async function processResults() {
     setCookie('deliveryAddress', currentFormattedAddress, 3);
     
     document.getElementById('userAddressVal').innerText = currentFormattedAddress;
-    
-    // Displays the exact raw address line from your GitHub text file
     document.getElementById('storeName').innerText = nearestStore.name || "";
 
     let roadKm = minRoadKm;
