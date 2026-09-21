@@ -1172,7 +1172,7 @@ async function fetchStoresFromGitHub() {
                     console.warn("Geocoding failed for address:", addr);
                 }
                 // ზუსტად 5 წამიანი პაუზა თითოეულ მოთხოვნას შორის, რათა არ მოხდეს სერვისის მხრიდან დაბლოკვა
-                await new Promise(r => setTimeout(r, 5000));
+                await new Promise(r => setTimeout(r, 10000));
             }
         }
 
