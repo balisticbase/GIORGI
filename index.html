@@ -1221,19 +1221,7 @@ function cleanAddressData(data) {
     return translations[currentLang].unknownAddr;
 }
 
-// Fallback coordinate dictionary in case dynamic geocoding fails
-const fallbackGeo = {
-    "ბათუმი ჭავჭავაძის ქუჩა 78/88": { lat: 41.6425, lon: 41.6247 },
-    "ბათუმი ფრიდონ ხალვაშის გამზირი 20": { lat: 41.6215, lon: 41.6092 },
-    "ფოთი შოთა რუსთაველის რკალი 24": { lat: 42.1462, lon: 41.6702 },
-    "თბილისი პეტრე ქავთარაძის ქ 3": { lat: 41.7247, lon: 44.7431 },
-    "თბილისი აღმაშენებლის ხეივანი 2ა": { lat: 41.7782, lon: 44.7891 },
-    "თბილისი ვაგზლის მოედანი N2": { lat: 41.7165, lon: 44.8005 },
-    "ქუთაისი შოთა რუსთაველის ქუჩა 95": { lat: 42.2588, lon: 42.6963 },
-    "რუსთავი შარტავას ქუჩა 4": { lat: 41.5492, lon: 45.0034 }
-};
-
-// Automatically fetches addresses from your GitHub link and dynamically finds their coordinates
+// აიღებს მისამართებს მხოლოდ GitHub-ის ლინკიდან და დინამიკურად დაადგენს კოორდინატებს (კოდში არანაირი ფილიალი ან კოორდინატი არ აწერია)
 async function fetchStoresFromGitHub() {
     try {
         const res = await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/Elite%20Automatic%20Delivery.txt', { cache: 'no-store' });
@@ -1246,33 +1234,25 @@ async function fetchStoresFromGitHub() {
         for (let line of lines) {
             let addr = line.trim();
             if (addr.length > 0) {
-                let lat = 41.6168;
-                let lon = 41.6367;
-
-                // Check fallback first for instant load
-                if (fallbackGeo[addr]) {
-                    lat = fallbackGeo[addr].lat;
-                    lon = fallbackGeo[addr].lon;
-                } else {
-                    // Dynamically geocode any new address added to GitHub
-                    try {
-                        const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addr)}&limit=1`);
-                        const geoData = await geoRes.json();
-                        if (geoData && geoData.length > 0) {
-                            lat = parseFloat(geoData[0].lat);
-                            lon = parseFloat(geoData[0].lon);
-                        }
-                    } catch (err) {
-                        console.warn("Geocoding failed for:", addr);
+                try {
+                    const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addr)}&limit=1`, {
+                        headers: { 'Accept-Language': 'ka' }
+                    });
+                    const geoData = await geoRes.json();
+                    if (geoData && geoData.length > 0) {
+                        let lat = parseFloat(geoData[0].lat);
+                        let lon = parseFloat(geoData[0].lon);
+                        parsedStores.push({
+                            name: addr,
+                            lat: lat,
+                            lon: lon
+                        });
                     }
-                    await new Promise(r => setTimeout(r, 150)); // Gentle pause for API limits
+                } catch (err) {
+                    console.warn("Geocoding failed for address:", addr);
                 }
-
-                parsedStores.push({
-                    name: addr,
-                    lat: lat,
-                    lon: lon
-                });
+                // მცირე პაუზა სერვერის გადატვირთვის თავიდან ასაცილებლად
+                await new Promise(r => setTimeout(r, 200));
             }
         }
 
@@ -1283,14 +1263,17 @@ async function fetchStoresFromGitHub() {
         console.warn("Could not fetch stores from GitHub:", e);
     }
     
-    return [
-        { name: "ბათუმი ჭავჭავაძის ქუჩა 78/88", lat: 41.6425, lon: 41.6247 }
-    ];
+    return [];
 }
 
 async function processResults() {
     if (!eliteStores || eliteStores.length === 0) {
         eliteStores = await fetchStoresFromGitHub();
+    }
+
+    if (eliteStores.length === 0) {
+        document.getElementById('storeName').innerText = "ფილიალები ვერ მოიძებნა ლინკზე";
+        return;
     }
 
     let storesWithDist = eliteStores.map(store => ({
