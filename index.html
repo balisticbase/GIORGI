@@ -869,7 +869,6 @@ function initSignatureCanvas() {
     const rect = canvas.parentElement.getBoundingClientRect();
     const newWidth = rect.width > 0 ? rect.width : 350;
 
-    // Preserve existing drawing when re-initializing (e.g. language change or resize)
     let currentDataUrl = (isSigned && canvas.width > 0 && canvas.height > 0) ? canvas.toDataURL() : (savedSignatureDataUrl || localStorage.getItem('userSignature'));
 
     canvas.width = newWidth;
@@ -1352,7 +1351,8 @@ function renderMap(userLat, userLon, store, routeCoords) {
     
     map = L.map('map');
 
-    L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+    // შეცვლილია 'lyrs=m'-დან 'lyrs=y'-ზე (Google Hybrid - სატელიტი + სახლები და ქუჩების დასახელებები)
+    L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
         maxZoom: 20,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
         attribution: '© Google Maps'
