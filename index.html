@@ -567,6 +567,12 @@ function getServicePrice(serviceKey) {
     return servicePrices[serviceKey] || 0;
 }
 
+function formatStoreName(name) {
+    if (!name) return "";
+    // Replaces the first " - " with ": " to format nicely (e.g. "ბათუმი: ჭავჭავაძის #78/88")
+    return name.replace(' - ', ': ');
+}
+
 const translations = {
     ka: {
         title: "ელიტ ელექტრონიქსი",
@@ -1228,7 +1234,6 @@ async function fetchStoresFromGitHub() {
         const text = await res.text();
         
         let cleaned = text.trim();
-        // Handle JS variable assignment format if present
         if (cleaned.startsWith('const') || cleaned.startsWith('let') || cleaned.startsWith('var')) {
             const eqIdx = cleaned.indexOf('=');
             if (eqIdx !== -1) {
@@ -1245,7 +1250,6 @@ async function fetchStoresFromGitHub() {
         console.warn("Could not fetch stores from GitHub, using default fallback stores:", e);
     }
     
-    // Fallback default stores so it never fails or gets stuck
     return [
         { names: { ka: "თბილისი - ქავთარაძის #3", en: "Tbilisi - Kavtaradze #3", ru: "Тбилиси - Кавтарадзе #3" }, lat: 41.7247, lon: 44.7431 },
         { names: { ka: "ბათუმი - ჭავჭავაძის #78/88", en: "Batumi - Chavchavadze #78/88", ru: "Батуми - Чавчавадзе #78/88" }, lat: 41.6425, lon: 41.6247 },
@@ -1283,7 +1287,8 @@ async function processResults() {
     
     document.getElementById('userAddressVal').innerText = currentFormattedAddress;
     
-    const storeLabelName = nearestStore.names[currentLang] || nearestStore.names['ka'];
+    const rawStoreName = nearestStore.names[currentLang] || nearestStore.names['ka'];
+    const storeLabelName = formatStoreName(rawStoreName);
     document.getElementById('storeName').innerText = storeLabelName;
 
     let roadKm = minRoadKm;
@@ -1334,26 +1339,22 @@ function initializeApp() {
     const spinner = document.getElementById('statusSpinner');
     if (spinner) spinner.style.display = 'inline-block';
 
-    // Fetch stores first from GitHub
     fetchStoresFromGitHub().then(stores => {
         eliteStores = stores;
 
         if (!navigator.geolocation) {
             if (spinner) spinner.style.display = 'none';
-            // Fallback to Batumi center if geolocation unsupported
             fetchAddressFromCoords(41.6168, 41.6367);
             return;
         }
 
         let geolocationCompleted = false;
 
-        // Safety timeout so it never hangs infinitely if GPS takes too long or fails
         const geoTimeout = setTimeout(() => {
             if (!geolocationCompleted) {
                 geolocationCompleted = true;
                 if (spinner) spinner.style.display = 'none';
-                console.warn("Geolocation timeout, falling back to default location.");
-                fetchAddressFromCoords(41.6168, 41.6367); // Default Batumi
+                fetchAddressFromCoords(41.6168, 41.6367);
             }
         }, 8000);
 
@@ -1370,9 +1371,7 @@ function initializeApp() {
                 if (!geolocationCompleted) {
                     geolocationCompleted = true;
                     clearTimeout(geoTimeout);
-                    console.warn("GPS Error/Denied:", error);
                     if (spinner) spinner.style.display = 'none';
-                    // Fallback to default location on error
                     fetchAddressFromCoords(41.6168, 41.6367);
                 }
             },
@@ -1390,7 +1389,6 @@ function renderMap(userLat, userLon, store, routeCoords) {
     
     map = L.map('map');
 
-    // Google Hybrid (Satellite + Labels)
     L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
         maxZoom: 20,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -1399,9 +1397,10 @@ function renderMap(userLat, userLon, store, routeCoords) {
 
     const userLatLng = [userLat, userLon];
     const storeLatLng = [store.lat, store.lon];
+    const formattedStoreName = formatStoreName(store.names[currentLang] || store.names['ka']);
 
     L.marker(userLatLng).addTo(map).bindPopup(`<b>${t.userLoc}</b>`).openPopup();
-    L.marker(storeLatLng).addTo(map).bindPopup(`<b>${store.names[currentLang] || store.names['ka']}</b>`);
+    L.marker(storeLatLng).addTo(map).bindPopup(`<b>${formattedStoreName}</b>`);
 
     if (routeCoords && routeCoords.length > 0) {
         const polyline = L.polyline(routeCoords, { color: '#e60012', weight: 5, opacity: 0.85 }).addTo(map);
