@@ -20,7 +20,6 @@
             --text-color: #0f172a;
             --text-muted: #64748b;
             --success-color: #10b981;
-            --warning-color: #f59e0b;
             --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
         }
 
@@ -120,7 +119,7 @@
 
         .status-box {
             text-align: center;
-            padding: 25px;
+            padding: 20px;
             background: #f8fafc;
             border-radius: 12px;
             margin-bottom: 20px;
@@ -131,7 +130,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 14px;
+            gap: 12px;
         }
 
         .status-content {
@@ -139,73 +138,6 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            font-size: 15px;
-        }
-
-        /* ლამაზი დიზაინის შეცდომის (Error/Warning) ბლოკი */
-        .error-card {
-            background: #fffbeb;
-            border: 1px solid #fde68a;
-            border-radius: 14px;
-            padding: 30px 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            display: none;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-
-        .error-icon-wrapper {
-            width: 70px;
-            height: 70px;
-            background: #fef3c7;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px auto;
-        }
-
-        .error-icon-wrapper i {
-            font-size: 32px;
-            color: #d97706;
-        }
-
-        .error-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #92400e;
-            margin-bottom: 8px;
-        }
-
-        .error-desc {
-            font-size: 14px;
-            color: #b45309;
-            margin-bottom: 20px;
-            line-height: 1.5;
-            max-width: 450px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .error-action-btn {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: white;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .error-action-btn:hover {
-            opacity: 0.95;
-            transform: translateY(-1px);
         }
 
         .refresh-btn {
@@ -472,25 +404,12 @@
     </div>
 
     <div class="content">
-        <!-- ჩატვირთვის სტატუსის ბლოკი -->
         <div id="status" class="status-box">
             <div class="status-content">
                 <span class="spinner" id="statusSpinner"></span> <span id="txt-status">ფილიალების და თქვენი მდებარეობის ჩატვირთვა...</span>
             </div>
             <button class="refresh-btn" id="btn-refresh-geo" onclick="initializeApp()">
                 <i class="fa-solid fa-location-crosshairs"></i> <span id="txt-refresh">მდებარეობის განახლება</span>
-            </button>
-        </div>
-
-        <!-- ლამაზი შეცდომის (Error/Warning) ბლოკი GPS-ის ან მონაცემების პრობლემისთვის -->
-        <div id="errorCard" class="error-card">
-            <div class="error-icon-wrapper">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-            </div>
-            <div class="error-title" id="errTitle">ყურადღება: GPS ან ინტერნეტის პრობლემა</div>
-            <div class="error-desc" id="errDesc">მდებარეობის ან ფილიალების ჩატვირთვა ვერ მოხერხდა. გთხოვთ, ჩართოთ GPS (გეოლოკაცია) ან შეამოწმოთ ინტერნეტ კავშირი, შემდეგ კი სცადეთ თავიდან.</div>
-            <button class="error-action-btn" onclick="initializeApp()">
-                <i class="fa-solid fa-rotate-right"></i> <span id="errBtnText">ხელახლა ცდა / GPS-ის ჩართვა</span>
             </button>
         </div>
 
@@ -653,10 +572,9 @@ const translations = {
         title: "ელიტ ელექტრონიქსი",
         subtitle: "ავტომატური მიწოდების კალკულატორი",
         status: "ფილიალების და თქვენი მდებარეობის ჩატვირთვა...",
+        geoErr: "GPS მდებარეობის დადგენა ვერ მოხერხდა. გამოყენებულია ნაგულისხმევო მდებარეობა.",
+        geoUnsup: "თქვენს ბრაუზერს არ აქვს GPS გეოლოკაციის მხარდაჭერა.",
         refreshLoc: "მდებარეობის განახლება",
-        errTitle: "ყურადღება: GPS ან ინტერნეტის პრობლემა",
-        errDesc: "მდებარეობის ან ფილიალების ჩატვირთვა ვერ მოხერხდა. გთხოვთ, ჩართოთ GPS (გეოლოკაცია) ან შეამოწმოთ ინტერნეტ კავშირი, შემდეგ კი სცადეთ თავიდან.",
-        errBtnText: "ხელახლა ცდა / GPS-ის ჩართვა",
         lblAddress: "თქვენი მისამართი",
         lblStore: "უახლოესი ფილიალი",
         lblSignature: "მომხმარებლის ონლაინ ხელმოწერა",
@@ -712,10 +630,9 @@ const translations = {
         title: "Elit Electronics",
         subtitle: "Automatic Delivery Calculator",
         status: "Loading branches and location...",
+        geoErr: "Could not determine GPS location. Using default location.",
+        geoUnsup: "Your browser does not support GPS geolocation.",
         refreshLoc: "Refresh Location",
-        errTitle: "Attention: GPS or Network Issue",
-        errDesc: "Could not load location or branches. Please enable GPS (geolocation) or check your internet connection, then try again.",
-        errBtnText: "Try Again / Enable GPS",
         lblAddress: "Your Address",
         lblStore: "Nearest Branch",
         lblSignature: "Customer Online Signature",
@@ -771,10 +688,9 @@ const translations = {
         title: "Элит Электроникс",
         subtitle: "Автоматический калькулятор доставки",
         status: "Загрузка филиалов и местоположения...",
+        geoErr: "Не удалось определить GPS. Используется стандартное положение.",
+        geoUnsup: "Ваш браузер не поддерживает геолокацию GPS.",
         refreshLoc: "Обновить геолокацию",
-        errTitle: "Внимание: Проблемы с GPS или интернетом",
-        errDesc: "Не удалось определить местоположение или загрузить филиалы. Пожалуйста, включите GPS (геолокацию) или проверьте интернет-соединение.",
-        errBtnText: "Повторить попытку / Включить GPS",
         lblAddress: "Ваш адрес",
         lblStore: "Ближайший филиал",
         lblSignature: "Онлайн подпись клиента",
@@ -866,11 +782,6 @@ function updateStaticTranslations() {
     document.getElementById('txt-subtitle').innerText = t.subtitle;
     document.getElementById('txt-status').innerText = t.status;
     document.getElementById('txt-refresh').innerText = t.refreshLoc;
-    
-    document.getElementById('errTitle').innerText = t.errTitle;
-    document.getElementById('errDesc').innerText = t.errDesc;
-    document.getElementById('errBtnText').innerText = t.errBtnText;
-
     document.getElementById('lbl-address').innerText = t.lblAddress;
     document.getElementById('lbl-store').innerText = t.lblStore;
     document.getElementById('lbl-signature').innerText = t.lblSignature;
@@ -1122,14 +1033,6 @@ function handlePaymentAction(val) {
     }
 }
 
-function handleMethodAction(val) {
-    if (val === 'cash') {
-        renderSuccessScreen();
-    } else if (val === 'transfer') {
-        document.getElementById('transferInfo').style.display = 'block';
-    }
-}
-
 function handleDemontazhAction(val) {
     const selectElem = document.getElementById('demontazhSelect');
     const selectedText = selectElem.options[selectElem.selectedIndex].text;
@@ -1318,7 +1221,7 @@ function cleanAddressData(data) {
     return translations[currentLang].unknownAddr;
 }
 
-// GitHub-იდან მისამართების წამოღება და დინამიური გეოკოდირება
+// აიღებს მისამართებს მხოლოდ GitHub-ის ლინკიდან და დინამიკურად დაადგენს კოორდინატებს (კოდში არანაირი ფილიალი ან კოორდინატი არ აწერია)
 async function fetchStoresFromGitHub() {
     try {
         const res = await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/Elite%20Automatic%20Delivery.txt', { cache: 'no-store' });
@@ -1348,15 +1251,19 @@ async function fetchStoresFromGitHub() {
                 } catch (err) {
                     console.warn("Geocoding failed for address:", addr);
                 }
-                await new Promise(r => setTimeout(r, 150));
+                // მცირე პაუზა სერვერის გადატვირთვის თავიდან ასაცილებლად
+                await new Promise(r => setTimeout(r, 200));
             }
         }
 
-        return parsedStores;
+        if (parsedStores.length > 0) {
+            return parsedStores;
+        }
     } catch(e) {
         console.warn("Could not fetch stores from GitHub:", e);
-        return [];
     }
+    
+    return [];
 }
 
 async function processResults() {
@@ -1364,8 +1271,8 @@ async function processResults() {
         eliteStores = await fetchStoresFromGitHub();
     }
 
-    if (!eliteStores || eliteStores.length === 0) {
-        showErrorState();
+    if (eliteStores.length === 0) {
+        document.getElementById('storeName').innerText = "ფილიალები ვერ მოიძებნა ლინკზე";
         return;
     }
 
@@ -1405,7 +1312,6 @@ async function processResults() {
     setCookie('baseDeliveryCost', baseDeliveryCost, 3);
 
     document.getElementById('status').style.display = 'none';
-    document.getElementById('errorCard').style.display = 'none';
     document.getElementById('results').style.display = 'block';
 
     initSignatureCanvas();
@@ -1436,52 +1342,53 @@ function fetchAddressFromCoords(lat, lon) {
         });
 }
 
-function showErrorState() {
-    document.getElementById('status').style.display = 'none';
-    document.getElementById('results').style.display = 'none';
-    document.getElementById('errorCard').style.display = 'block';
-}
-
 function initializeApp() {
     eraseCookie('baseDeliveryCost');
     document.getElementById('results').style.display = 'none';
-    document.getElementById('errorCard').style.display = 'none';
     document.getElementById('status').style.display = 'flex';
     document.getElementById('txt-status').innerText = translations[currentLang].status;
     const spinner = document.getElementById('statusSpinner');
     if (spinner) spinner.style.display = 'inline-block';
 
-    if (!navigator.geolocation) {
-        showErrorState();
-        return;
-    }
+    fetchStoresFromGitHub().then(stores => {
+        eliteStores = stores;
 
-    let geolocationCompleted = false;
-
-    const geoTimeout = setTimeout(() => {
-        if (!geolocationCompleted) {
-            geolocationCompleted = true;
-            showErrorState();
+        if (!navigator.geolocation) {
+            if (spinner) spinner.style.display = 'none';
+            fetchAddressFromCoords(41.6168, 41.6367);
+            return;
         }
-    }, 9000);
 
-    navigator.geolocation.getCurrentPosition(
-        position => {
+        let geolocationCompleted = false;
+
+        const geoTimeout = setTimeout(() => {
             if (!geolocationCompleted) {
                 geolocationCompleted = true;
-                clearTimeout(geoTimeout);
-                fetchAddressFromCoords(position.coords.latitude, position.coords.longitude);
+                if (spinner) spinner.style.display = 'none';
+                fetchAddressFromCoords(41.6168, 41.6367);
             }
-        },
-        error => {
-            if (!geolocationCompleted) {
-                geolocationCompleted = true;
-                clearTimeout(geoTimeout);
-                showErrorState();
-            }
-        },
-        { enableHighAccuracy: true, timeout: 8000, maximumAge: 10000 }
-    );
+        }, 8000);
+
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                if (!geolocationCompleted) {
+                    geolocationCompleted = true;
+                    clearTimeout(geoTimeout);
+                    if (spinner) spinner.style.display = 'none';
+                    fetchAddressFromCoords(position.coords.latitude, position.coords.longitude);
+                }
+            },
+            error => {
+                if (!geolocationCompleted) {
+                    geolocationCompleted = true;
+                    clearTimeout(geoTimeout);
+                    if (spinner) spinner.style.display = 'none';
+                    fetchAddressFromCoords(41.6168, 41.6367);
+                }
+            },
+            { enableHighAccuracy: true, timeout: 7000, maximumAge: 10000 }
+        );
+    });
 }
 
 function renderMap(userLat, userLon, store, routeCoords) {
@@ -1569,6 +1476,11 @@ function renderRefusedScreen() {
             <button onclick="location.reload()" style="padding: 10px 20px; background: var(--primary-color); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">${t.btnRestart}</button>
         </div>
     `;
+}
+
+function handleMethodAction(val) {
+    if (val === 'cash') renderSuccessScreen();
+    else if (val === 'transfer') document.getElementById('transferInfo').style.display = 'block';
 }
 
 function initTransportHoldToEdit() {
