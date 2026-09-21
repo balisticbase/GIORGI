@@ -1293,7 +1293,7 @@ function initializeApp() {
                 if (spinner) spinner.style.display = 'none';
                 document.getElementById('txt-status').innerText = translations[currentLang].geoErr;
             }
-        }, 8000);
+        }, 10000);
 
         navigator.geolocation.getCurrentPosition(
             position => {
