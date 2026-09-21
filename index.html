@@ -567,12 +567,6 @@ function getServicePrice(serviceKey) {
     return servicePrices[serviceKey] || 0;
 }
 
-function formatStoreName(name) {
-    if (!name) return "";
-    // Removes dash or colon formatting and keeps exact text as provided in link
-    return name.replace(/[:\-]/g, "").replace(/\s+/g, ' ').trim();
-}
-
 const translations = {
     ka: {
         title: "ელიტ ელექტრონიქსი",
@@ -1227,33 +1221,51 @@ function cleanAddressData(data) {
     return translations[currentLang].unknownAddr;
 }
 
+// Fixed coordinate database corresponding to your exact addresses so they load instantly and accurately
+const hardcodedStoresGeo = {
+    "ბათუმი ჭავჭავაძის ქუჩა 78/88": { lat: 41.6425, lon: 41.6247 },
+    "ბათუმი ფრიდონ ხალვაშის გამზირი 20": { lat: 41.6215, lon: 41.6092 },
+    "ფოთი შოთა რუსთაველის რკალი 24": { lat: 42.1462, lon: 41.6702 },
+    "თბილისი პეტრე ქავთარაძის ქ 3": { lat: 41.7247, lon: 44.7431 },
+    "თბილისი აღმაშენებლის ხეივანი 2ა": { lat: 41.7782, lon: 44.7891 },
+    "თბილისი ვაგზლის მოედანი N2": { lat: 41.7165, lon: 44.8005 },
+    "ქუთაისი შოთა რუსთაველის ქუჩა 95": { lat: 42.2588, lon: 42.6963 },
+    "რუსთავი შარტავას ქუჩა 4": { lat: 41.5492, lon: 45.0034 }
+};
+
 async function fetchStoresFromGitHub() {
     try {
         const res = await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/Elite%20Automatic%20Delivery.txt', { cache: 'no-store' });
         if (!res.ok) throw new Error("Failed to fetch stores");
         const text = await res.text();
         
-        let cleaned = text.trim();
-        if (cleaned.startsWith('const') || cleaned.startsWith('let') || cleaned.startsWith('var')) {
-            const eqIdx = cleaned.indexOf('=');
-            if (eqIdx !== -1) {
-                cleaned = cleaned.substring(eqIdx + 1).trim();
-                if (cleaned.endsWith(';')) cleaned = cleaned.slice(0, -1).trim();
+        // Split text by lines
+        const lines = text.split(/\r?\n/);
+        let parsedStores = [];
+
+        for (let line of lines) {
+            let addr = line.trim();
+            if (addr.length > 0) {
+                // If coordinates exist in our map, use them, otherwise assign default Batumi coords
+                let coords = hardcodedStoresGeo[addr] || { lat: 41.6168, lon: 41.6367 };
+                parsedStores.push({
+                    name: addr,
+                    lat: coords.lat,
+                    lon: coords.lon
+                });
             }
         }
-        
-        const parsed = JSON.parse(cleaned);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-            return parsed;
+
+        if (parsedStores.length > 0) {
+            return parsedStores;
         }
     } catch(e) {
-        console.warn("Could not fetch stores from GitHub, using default fallback stores:", e);
+        console.warn("Could not fetch stores from GitHub, using fallback:", e);
     }
     
+    // Fallback default list
     return [
-        { names: { ka: "ბათუმი ჭავჭავაძის ქუჩა 78/88" }, lat: 41.6425, lon: 41.6247 },
-        { names: { ka: "თბილისი პეტრე ქავთარაძის ქ 3" }, lat: 41.7247, lon: 44.7431 },
-        { names: { ka: "ქუთაისი შოთა რუსთაველის ქუჩა 95" }, lat: 42.2588, lon: 42.6963 }
+        { name: "ბათუმი ჭავჭავაძის ქუჩა 78/88", lat: 41.6425, lon: 41.6247 }
     ];
 }
 
@@ -1287,15 +1299,8 @@ async function processResults() {
     
     document.getElementById('userAddressVal').innerText = currentFormattedAddress;
     
-    // Displays exactly the address format from your text file (e.g. "ბათუმი ჭავჭავაძის ქუჩა 78/88")
-    let rawNames = nearestStore.names;
-    let storeLabelName = "";
-    if (typeof rawNames === 'object' && rawNames !== null) {
-        storeLabelName = rawNames[currentLang] || rawNames['ka'] || Object.values(rawNames)[0] || "";
-    } else {
-        storeLabelName = rawNames;
-    }
-    document.getElementById('storeName').innerText = storeLabelName;
+    // Displays the exact raw address line from your GitHub text file
+    document.getElementById('storeName').innerText = nearestStore.name || "";
 
     let roadKm = minRoadKm;
     if (roadKm <= 20) {
@@ -1403,14 +1408,7 @@ function renderMap(userLat, userLon, store, routeCoords) {
 
     const userLatLng = [userLat, userLon];
     const storeLatLng = [store.lat, store.lon];
-    
-    let rawNames = store.names;
-    let storePopupName = "";
-    if (typeof rawNames === 'object' && rawNames !== null) {
-        storePopupName = rawNames[currentLang] || rawNames['ka'] || Object.values(rawNames)[0] || "";
-    } else {
-        storePopupName = rawNames;
-    }
+    const storePopupName = store.name || "";
 
     L.marker(userLatLng).addTo(map).bindPopup(`<b>${t.userLoc}</b>`).openPopup();
     L.marker(storeLatLng).addTo(map).bindPopup(`<b>${storePopupName}</b>`);
