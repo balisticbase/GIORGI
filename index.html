@@ -1138,7 +1138,7 @@ function cleanAddressData(data) {
     return translations[currentLang].unknownAddr;
 }
 
-// აიღებს მისამართებს GitHub-ის ლინკიდან და დინამიკურად დაადგენს კოორდინატებს (3 წამიანი დაყოვნება სერვისის დასაბლოკად)
+// GitHub-იდან მისამართების წამოღება და 5-წამიანი ინტერვალით გადამოწმება სერვისის დაბლოკვისგან დასაცავად
 async function fetchStoresFromGitHub() {
     try {
         const res = await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/Elite%20Automatic%20Delivery.txt', { cache: 'no-store' });
@@ -1153,7 +1153,10 @@ async function fetchStoresFromGitHub() {
             if (addr.length > 0) {
                 try {
                     const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addr)}&limit=1`, {
-                        headers: { 'Accept-Language': 'ka' }
+                        headers: { 
+                            'Accept-Language': 'ka',
+                            'User-Agent': 'EliteElectronicsApp/1.0'
+                        }
                     });
                     const geoData = await geoRes.json();
                     if (geoData && geoData.length > 0) {
@@ -1168,8 +1171,8 @@ async function fetchStoresFromGitHub() {
                 } catch (err) {
                     console.warn("Geocoding failed for address:", addr);
                 }
-                // 3 წამიანი დაყოვნება GitHub/Nominatim სერვისის დასაბლოკად
-                await new Promise(r => setTimeout(r, 3000));
+                // ზუსტად 5 წამიანი პაუზა თითოეულ მოთხოვნას შორის, რათა არ მოხდეს სერვისის მხრიდან დაბლოკვა
+                await new Promise(r => setTimeout(r, 5000));
             }
         }
 
@@ -1242,28 +1245,27 @@ async function processResults() {
     renderMap(globalUserLat, globalUserLon, nearestStore, bestRouteCoords);
 }
 
-// გეოლოკაციის/რევერს-გეოკოდინგის ლინკი 5 წამიანი დაყოვნებით
 function fetchAddressFromCoords(lat, lon) {
     globalUserLat = lat;
     globalUserLon = lon;
 
-    setTimeout(() => {
-        const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=${currentLang}&addressdetails=1&extratags=1&namedetails=1&zoom=18`;
-        
-        fetch(url)
-            .then(res => {
-                if (!res.ok) throw new Error("Nominatim Network response was not ok");
-                return res.json();
-            })
-            .then(data => {
-                globalRawAddressData = data;
-                processResults();
-            })
-            .catch(() => {
-                globalRawAddressData = null;
-                processResults();
-            });
-    }, 5000); // 5 წამიანი დაყოვნება გეოლოკაციის სერვისის დასაბლოკად
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=${currentLang}&addressdetails=1&extratags=1&namedetails=1&zoom=18`;
+    
+    fetch(url, {
+        headers: { 'User-Agent': 'EliteElectronicsApp/1.0' }
+    })
+        .then(res => {
+            if (!res.ok) throw new Error("Nominatim Network response was not ok");
+            return res.json();
+        })
+        .then(data => {
+            globalRawAddressData = data;
+            processResults();
+        })
+        .catch(() => {
+            globalRawAddressData = null;
+            processResults();
+        });
 }
 
 function initializeApp() {
