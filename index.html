@@ -1172,7 +1172,7 @@ async function fetchStoresFromGitHub() {
                     console.warn("Geocoding failed for address:", addr);
                 }
                 // ზუსტად 5 წამიანი პაუზა თითოეულ მოთხოვნას შორის, რათა არ მოხდეს სერვისის მხრიდან დაბლოკვა
-                await new Promise(r => setTimeout(r, 10000));
+                await new Promise(r => setTimeout(r, 5000));
             }
         }
 
@@ -1293,7 +1293,7 @@ function initializeApp() {
                 if (spinner) spinner.style.display = 'none';
                 document.getElementById('txt-status').innerText = translations[currentLang].geoErr;
             }
-        }, 10000);
+        }, 8000);
 
         navigator.geolocation.getCurrentPosition(
             position => {
