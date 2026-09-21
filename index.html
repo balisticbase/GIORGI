@@ -1138,7 +1138,7 @@ function cleanAddressData(data) {
     return translations[currentLang].unknownAddr;
 }
 
-// GitHub-იდან მისამართების წამოღება და 5-წამიანი ინტერვალით გადამოწმება სერვისის დაბლოკვისგან დასაცავად
+// აიღებს მისამართებს მხოლოდ GitHub-ის ლინკიდან და დინამიკურად დაადგენს კოორდინატებს
 async function fetchStoresFromGitHub() {
     try {
         const res = await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/Elite%20Automatic%20Delivery.txt', { cache: 'no-store' });
@@ -1153,10 +1153,7 @@ async function fetchStoresFromGitHub() {
             if (addr.length > 0) {
                 try {
                     const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addr)}&limit=1`, {
-                        headers: { 
-                            'Accept-Language': 'ka',
-                            'User-Agent': 'EliteElectronicsApp/1.0'
-                        }
+                        headers: { 'Accept-Language': 'ka' }
                     });
                     const geoData = await geoRes.json();
                     if (geoData && geoData.length > 0) {
@@ -1171,8 +1168,7 @@ async function fetchStoresFromGitHub() {
                 } catch (err) {
                     console.warn("Geocoding failed for address:", addr);
                 }
-                // ზუსტად 5 წამიანი პაუზა თითოეულ მოთხოვნას შორის, რათა არ მოხდეს სერვისის მხრიდან დაბლოკვა
-                await new Promise(r => setTimeout(r, 5000));
+                await new Promise(r => setTimeout(r, 2000));
             }
         }
 
@@ -1251,9 +1247,7 @@ function fetchAddressFromCoords(lat, lon) {
 
     const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=${currentLang}&addressdetails=1&extratags=1&namedetails=1&zoom=18`;
     
-    fetch(url, {
-        headers: { 'User-Agent': 'EliteElectronicsApp/1.0' }
-    })
+    fetch(url)
         .then(res => {
             if (!res.ok) throw new Error("Nominatim Network response was not ok");
             return res.json();
