@@ -1157,7 +1157,7 @@ function cleanAddressData(data) {
     return translations[currentLang].unknownAddr;
 }
 
-// აიღებს მისამართებს მხოლოდ GitHub-ის ლინკიდან და დინამიკურად დაადგენს კოორდინატებს (კოდში არანაირი ფილიალი ან კოორდინატი არ აწერია)
+// აიღებს მისამართებს მხოლოდ GitHub-ის ლინკიდან და დინამიკურად დაადგენს კოორდინატებს
 async function fetchStoresFromGitHub() {
     try {
         const res = await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/Elite%20Automatic%20Delivery.txt', { cache: 'no-store' });
@@ -1187,8 +1187,8 @@ async function fetchStoresFromGitHub() {
                 } catch (err) {
                     console.warn("Geocoding failed for address:", addr);
                 }
-                // მცირე პაუზა სერვერის გადატვირთვის თავიდან ასაცილებლად
-                await new Promise(r => setTimeout(r, 200));
+                // 2 წამიანი პაუზა სერვერის ლიმიტის დასაცავად
+                await new Promise(r => setTimeout(r, 2000));
             }
         }
 
