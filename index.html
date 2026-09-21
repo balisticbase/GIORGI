@@ -867,13 +867,26 @@ function initSignatureCanvas() {
     ctx = canvas.getContext('2d');
 
     const rect = canvas.parentElement.getBoundingClientRect();
-    canvas.width = rect.width > 0 ? rect.width : 350;
+    const newWidth = rect.width > 0 ? rect.width : 350;
+
+    // Preserve existing drawing when re-initializing (e.g. language change or resize)
+    let currentDataUrl = (isSigned && canvas.width > 0 && canvas.height > 0) ? canvas.toDataURL() : (savedSignatureDataUrl || localStorage.getItem('userSignature'));
+
+    canvas.width = newWidth;
     canvas.height = 140;
 
     ctx.lineWidth = 2.5;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.strokeStyle = '#0f172a';
+
+    if (currentDataUrl) {
+        let img = new Image();
+        img.onload = () => {
+            if (ctx) ctx.drawImage(img, 0, 0);
+        };
+        img.src = currentDataUrl;
+    }
 
     if (!canvas.dataset.bound) {
         canvas.dataset.bound = 'true';
@@ -901,8 +914,9 @@ window.addEventListener('resize', () => {
     if (canvas && canvas.parentElement) {
         const rect = canvas.parentElement.getBoundingClientRect();
         if (rect.width > 0 && rect.width !== canvas.width) {
-            let dataUrl = isSigned ? canvas.toDataURL() : null;
+            let dataUrl = isSigned ? canvas.toDataURL() : (savedSignatureDataUrl || localStorage.getItem('userSignature'));
             canvas.width = rect.width;
+            canvas.height = 140;
             ctx.lineWidth = 2.5;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
