@@ -543,13 +543,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 
 <script>
-// ==========================================
-// ფასიანი სერვისის (Google Maps API) კონფიგურაცია
-// თუ გაქვთ Google Maps API Key, ჩასვით აქ. 
-// თუ ცარიელია, გამოიყენებს OSRM Driving Engine-ს.
-// ==========================================
-const GOOGLE_MAPS_API_KEY = ""; 
-
 const servicePrices = {
     none: 0,
     montazh_free: 0,
@@ -1103,29 +1096,9 @@ function updateTotalPriceDisplay() {
 }
 
 // =========================================================================
-// ფასიანი სერვისი / მარშრუტიზაციის ძრავი: მანქანით სავალი მანძილის გამოთვლა
+// მარშრუტიზაციის ძრავი: OSRM-ით მანქანით სავალი მანძილის გამოთვლა (Free)
 // =========================================================================
 async function fetchRoadRoute(lat1, lon1, lat2, lon2) {
-    // თუ Google Maps API Key შეყვანილია, იყენებს Google-ის ფასიან სერვისს
-    if (GOOGLE_MAPS_API_KEY && GOOGLE_MAPS_API_KEY.trim() !== "") {
-        try {
-            const googleUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${lat1},${lon1}&destination=${lat2},${lat2}&mode=driving&key=${GOOGLE_MAPS_API_KEY}`;
-            const res = await fetch(googleUrl);
-            const data = await res.json();
-            if (data.status === "OK" && data.routes.length > 0) {
-                const leg = data.routes[0].legs[0];
-                const distanceKm = leg.distance.value / 1000;
-                // Google polyline-ის დეკოდირება Leaflet-ისთვის
-                const points = data.routes[0].overview_polyline.points;
-                const coordinates = decodePolyline(points);
-                return { distanceKm, coordinates };
-            }
-        } catch(e) {
-            console.warn("Google Maps API-ს შეცდომა, გადავდივართ OSRM სერვერზე:", e);
-        }
-    }
-
-    // OSRM Driving Engine (ავტომობილის მარშრუტები)
     const url = `https://router.project-osrm.org/route/v1/driving/${lon1},${lat1};${lon2},${lat2}?overview=full&geometries=geojson`;
     const res = await fetch(url);
     if (!res.ok) throw new Error("Routing service error");
@@ -1137,29 +1110,6 @@ async function fetchRoadRoute(lat1, lon1, lat2, lon2) {
         return { distanceKm, coordinates };
     }
     throw new Error("No driving route found");
-}
-
-function decodePolyline(str, precision) {
-    let index = 0, lat = 0, lng = 0, coordinates = [], shift = 0, result = 0, byte = null;
-    let factor = Math.pow(10, precision || 5);
-    while (index < str.length) {
-        byte = null; shift = 0; result = 0;
-        do {
-            byte = str.charCodeAt(index++) - 63;
-            result |= (byte & 0x1f) << shift;
-            shift += 5;
-        } while (byte >= 0x20);
-        lat += ((result & 1) ? ~(result >> 1) : (result >> 1));
-        shift = 0; result = 0;
-        do {
-            byte = str.charCodeAt(index++) - 63;
-            result |= (byte & 0x1f) << shift;
-            shift += 5;
-        } while (byte >= 0x20);
-        lng += ((result & 1) ? ~(result >> 1) : (result >> 1));
-        coordinates.push([lat / factor, lng / factor]);
-    }
-    return coordinates;
 }
 
 function cleanAddressData(data) {
@@ -1270,7 +1220,6 @@ async function processResults() {
         return;
     }
 
-    // 1. სწრაფი Haversine ფილტრაცია ყველაზე ახლო 3 კანდიდატზე
     let storesWithStraightDistance = eliteStores.map(store => {
         let dist = calculateHaversineDistance(globalUserLat, globalUserLon, store.lat, store.lon);
         return { ...store, straightDist: dist };
@@ -1283,7 +1232,6 @@ async function processResults() {
     let nearestStore = topCandidates[0];
     let bestRouteCoords = null;
 
-    // 2. ფასიანი/სამარშრუტო ძრავით (Google Maps API / OSRM Driving) მანქანით სავალი ზუსტი გზის დათვლა
     for (let candidate of topCandidates) {
         try {
             const routeData = await fetchRoadRoute(globalUserLat, globalUserLon, candidate.lat, candidate.lon);
@@ -1307,7 +1255,6 @@ async function processResults() {
     
     document.getElementById('userAddressVal').innerText = currentFormattedAddress;
     
-    // ზუსტი მანძილის გამოჩენა UI-ში (კილომეტრებით)
     let displayKmStr = minRoadKm.toFixed(1);
     document.getElementById('storeName').innerText = `${nearestStore.name || ""} (${displayKmStr} კმ ${t.byCar})`;
 
@@ -1330,7 +1277,6 @@ async function processResults() {
     renderMap(globalUserLat, globalUserLon, nearestStore, bestRouteCoords);
 }
 
-// უფასო სერვისი: GPS კოორდინატებიდან მისამართის დადგენა
 function fetchAddressFromCoords(lat, lon) {
     globalUserLat = lat;
     globalUserLon = lon;
@@ -1410,10 +1356,9 @@ function renderMap(userLat, userLon, store, routeCoords) {
     
     map = L.map('map');
 
-    L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-        attribution: '© Google Maps'
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
     const userLatLng = [userLat, userLon];
