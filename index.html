@@ -1255,8 +1255,8 @@ async function processResults() {
     
     document.getElementById('userAddressVal').innerText = currentFormattedAddress;
     
-    let displayKmStr = minRoadKm.toFixed(1);
-    document.getElementById('storeName').innerText = `${nearestStore.name || ""} (${displayKmStr} კმ ${t.byCar})`;
+    // აჩვენებს მხოლოდ ფილიალის სახელს (მანძილის გარეშე)
+    document.getElementById('storeName').innerText = `${nearestStore.name || ""}`;
 
     let roadKm = minRoadKm;
     if (roadKm <= 20) {
