@@ -874,13 +874,11 @@ function initSignatureCanvas() {
         canvas.addEventListener('mouseleave', stopDrawing);
 
         canvas.addEventListener('touchstart', (e) => {
-            e.preventDefault();
             if (e.touches.length > 0) startDrawing(e.touches[0]);
-        }, { passive: false });
+        }, { passive: true });
         canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault();
             if (e.touches.length > 0) draw(e.touches[0]);
-        }, { passive: false });
+        }, { passive: true });
         canvas.addEventListener('touchend', stopDrawing);
         canvas.addEventListener('touchcancel', stopDrawing);
     }
@@ -1157,55 +1155,16 @@ function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
 }
 
 async function fetchStoresFromGitHub() {
-    const cachedStores = localStorage.getItem('eliteStoresGeoCache');
-    const cachedTime = localStorage.getItem('eliteStoresGeoTime');
-    const cacheDuration = 24 * 60 * 60 * 1000;
-
-    if (cachedStores && cachedTime && (Date.now() - parseInt(cachedTime) < cacheDuration)) {
-        try {
-            return JSON.parse(cachedStores);
-        } catch(e) {}
-    }
-
     try {
         const res = await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/Elite%20Automatic%20Delivery.txt', { cache: 'no-store' });
         if (!res.ok) throw new Error("Failed to fetch stores");
-        const text = await res.text();
-        
-        const lines = text.split(/\r?\n/);
-        let parsedStores = [];
-
-        for (let line of lines) {
-            let addr = line.trim();
-            if (addr.length > 0) {
-                try {
-                    const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(addr)}&limit=1`, {
-                        headers: { 'Accept-Language': 'ka' }
-                    });
-                    const geoData = await geoRes.json();
-                    if (geoData && geoData.length > 0) {
-                        parsedStores.push({
-                            name: addr,
-                            lat: parseFloat(geoData[0].lat),
-                            lon: parseFloat(geoData[0].lon)
-                        });
-                    }
-                } catch (err) {
-                    console.warn("Geocoding failed for address:", addr);
-                }
-                await new Promise(r => setTimeout(r, 400));
-            }
-        }
-
-        if (parsedStores.length > 0) {
-            localStorage.setItem('eliteStoresGeoCache', JSON.stringify(parsedStores));
-            localStorage.setItem('eliteStoresGeoTime', Date.now().toString());
-            return parsedStores;
+        const stores = await res.json();
+        if (Array.isArray(stores)) {
+            return stores;
         }
     } catch(e) {
         console.warn("Could not fetch stores from GitHub:", e);
     }
-    
     return [];
 }
 
@@ -1254,8 +1213,6 @@ async function processResults() {
     setCookie('deliveryAddress', currentFormattedAddress, 3);
     
     document.getElementById('userAddressVal').innerText = currentFormattedAddress;
-    
-    // აჩვენებს მხოლოდ ფილიალის სახელს (მანძილის გარეშე)
     document.getElementById('storeName').innerText = `${nearestStore.name || ""}`;
 
     let roadKm = minRoadKm;
@@ -1387,9 +1344,11 @@ function renderSuccessScreen() {
     let floorCost = parseFloat(getCookie('floorCost')) || 0;
     let totalCost = baseDeliveryCost + addOnCost + floorCost;
 
-    document.body.style.backgroundColor = '#ffffff';
-    document.body.innerHTML = `
-        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:100vh; text-align:center; padding:20px; font-family:'Outfit',sans-serif;">
+    const container = document.getElementById('mainContainer');
+    if (!container) return;
+
+    container.innerHTML = `
+        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:40px 20px; font-family:'Outfit',sans-serif;">
             <div style="width:90px; height:90px; background:#10b981; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:20px;">
                 <i class="fa-solid fa-check" style="font-size:45px; color:white;"></i>
             </div>
@@ -1418,9 +1377,11 @@ function renderSuccessScreen() {
 function renderRefusedScreen() {
     setCookie('deliveryStatus', 'refused', 3);
     const t = translations[currentLang];
-    document.body.style.backgroundColor = '#ffffff';
-    document.body.innerHTML = `
-        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:100vh; text-align:center; padding:20px; font-family:'Outfit',sans-serif;">
+    const container = document.getElementById('mainContainer');
+    if (!container) return;
+
+    container.innerHTML = `
+        <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:40px 20px; font-family:'Outfit',sans-serif;">
             <div style="width:90px; height:90px; background:#ef4444; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:20px;">
                 <i class="fa-solid fa-xmark" style="font-size:45px; color:white;"></i>
             </div>
@@ -1442,7 +1403,7 @@ function initTransportHoldToEdit() {
     let holdTimer = null;
     const holdDuration = 3000;
 
-    function startHold(e) {
+    function startHold() {
         cancelHold();
         holdTimer = setTimeout(() => {
             promptNewTransportCost();
@@ -1475,10 +1436,9 @@ function initTransportHoldToEdit() {
     transportRow.addEventListener('mouseup', cancelHold);
     transportRow.addEventListener('mouseleave', cancelHold);
 
-    transportRow.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        startHold(e);
-    }, { passive: false });
+    transportRow.addEventListener('touchstart', () => {
+        startHold();
+    }, { passive: true });
     transportRow.addEventListener('touchend', cancelHold);
     transportRow.addEventListener('touchcancel', cancelHold);
     
