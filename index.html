@@ -1138,8 +1138,31 @@ function cleanAddressData(data) {
     return translations[currentLang].unknownAddr;
 }
 
-// აიღებს მისამართებს მხოლოდ GitHub-ის ლინკიდან და დინამიკურად დაადგენს კოორდინატებს
+// Haversine ფორმულა მანძილის სწრაფი გამოთვლისთვის (სწორი ხაზით)
+function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // დედამიწის რადიუსი კმ-ში
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
+
+// ოპტიმიზებული ფილიალების წამოღება (LocalStorage ქეშით + სწრაფი ლიმიტით)
 async function fetchStoresFromGitHub() {
+    const cachedStores = localStorage.getItem('eliteStoresGeoCache');
+    const cachedTime = localStorage.getItem('eliteStoresGeoTime');
+    const cacheDuration = 24 * 60 * 60 * 1000; // 24 საათიანი ქეში
+
+    if (cachedStores && cachedTime && (Date.now() - parseInt(cachedTime) < cacheDuration)) {
+        try {
+            return JSON.parse(cachedStores);
+        } catch(e) {}
+    }
+
     try {
         const res = await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/Elite%20Automatic%20Delivery.txt', { cache: 'no-store' });
         if (!res.ok) throw new Error("Failed to fetch stores");
@@ -1157,22 +1180,23 @@ async function fetchStoresFromGitHub() {
                     });
                     const geoData = await geoRes.json();
                     if (geoData && geoData.length > 0) {
-                        let lat = parseFloat(geoData[0].lat);
-                        let lon = parseFloat(geoData[0].lon);
                         parsedStores.push({
                             name: addr,
-                            lat: lat,
-                            lon: lon
+                            lat: parseFloat(geoData[0].lat),
+                            lon: parseFloat(geoData[0].lon)
                         });
                     }
                 } catch (err) {
                     console.warn("Geocoding failed for address:", addr);
                 }
-                await new Promise(r => setTimeout(r, 2000));
+                // პაუზა ოპტიმიზებულია 400 მილიწამამდე (ბლოკირების თავიდან ასაცილებლად და სწრაფი მუშაობისთვის)
+                await new Promise(r => setTimeout(r, 400));
             }
         }
 
         if (parsedStores.length > 0) {
+            localStorage.setItem('eliteStoresGeoCache', JSON.stringify(parsedStores));
+            localStorage.setItem('eliteStoresGeoTime', Date.now().toString());
             return parsedStores;
         }
     } catch(e) {
@@ -1192,11 +1216,21 @@ async function processResults() {
         return;
     }
 
+    // 1. Haversine-ით ვარჩევთ მხოლოდ ყველაზე ახლო 3 კანდიდატს OSRM-მდე
+    let storesWithStraightDistance = eliteStores.map(store => {
+        let dist = calculateHaversineDistance(globalUserLat, globalUserLon, store.lat, store.lon);
+        return { ...store, straightDist: dist };
+    });
+
+    storesWithStraightDistance.sort((a, b) => a.straightDist - b.straightDist);
+    let topCandidates = storesWithStraightDistance.slice(0, 3); // ვამოწმებთ მხოლოდ ტოპ 3-ს!
+
     let minRoadKm = Infinity;
-    let nearestStore = eliteStores[0];
+    let nearestStore = topCandidates[0];
     let bestRouteCoords = null;
 
-    for (let candidate of eliteStores) {
+    // 2. OSRM-ით ზუსტ გზას ვთვლით მხოლოდ რეალურ 3 ფილიალზე
+    for (let candidate of topCandidates) {
         try {
             const routeData = await fetchRoadRoute(globalUserLat, globalUserLon, candidate.lat, candidate.lon);
             if (routeData.distanceKm < minRoadKm) {
@@ -1210,10 +1244,8 @@ async function processResults() {
     }
 
     if (minRoadKm === Infinity) {
-        document.getElementById('status').style.display = 'flex';
-        document.getElementById('statusSpinner').style.display = 'none';
-        document.getElementById('txt-status').innerText = translations[currentLang].geoErr;
-        return;
+        nearestStore = topCandidates[0];
+        minRoadKm = topCandidates[0].straightDist;
     }
 
     currentFormattedAddress = cleanAddressData(globalRawAddressData);
