@@ -19,7 +19,6 @@
             --card-bg: #ffffff;
             --text-color: #0f172a;
             --text-muted: #64748b;
-            --success-color: #10b981;
             --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
         }
 
@@ -40,6 +39,159 @@
             padding: 20px;
         }
 
+        /* --- SAFE / PIN LOCK MODAL STYLES --- */
+        .pin-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(12px);
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .safe-card {
+            background: #0f172a;
+            border: 2px solid #1e293b;
+            border-radius: 28px;
+            padding: 30px 25px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.1);
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .safe-header {
+            margin-bottom: 20px;
+        }
+
+        .safe-icon {
+            font-size: 38px;
+            color: #38bdf8;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.5));
+        }
+
+        .safe-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .safe-subtitle {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        /* 6-DIGIT PIN DISPLAY */
+        .pin-display {
+            background: #020617;
+            border: 1.5px solid #334155;
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 22px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            min-height: 52px;
+            align-items: center;
+        }
+
+        .pin-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #334155;
+            transition: all 0.2s ease;
+        }
+
+        .pin-dot.filled {
+            background: #38bdf8;
+            box-shadow: 0 0 12px #38bdf8;
+            transform: scale(1.15);
+        }
+
+        /* 4-COLUMN KEYPAD MATCHING THE SMART LOCK PANEL */
+        .pin-keypad {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .pin-btn {
+            background: #1e293b;
+            color: #f8fafc;
+            border: 1px solid #334155;
+            border-radius: 14px;
+            padding: 16px 0;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pin-btn:active {
+            transform: scale(0.92);
+            background: #334155;
+            border-color: #38bdf8;
+        }
+
+        .pin-btn.action {
+            background: #0f172a;
+            color: #f87171;
+            font-size: 18px;
+        }
+
+        .pin-btn.submit {
+            background: #0284c7;
+            color: white;
+            border-color: #38bdf8;
+            font-size: 18px;
+        }
+
+        .fingerprint-sensor {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto;
+            border-radius: 50%;
+            border: 2px solid #38bdf8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #38bdf8;
+            font-size: 24px;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .fingerprint-sensor:hover {
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.5);
+            transform: scale(1.05);
+        }
+
+        .pin-error {
+            color: #f87171;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 12px;
+            min-height: 18px;
+        }
+
+        /* --- MAIN APP CONTAINER --- */
         .container {
             background: var(--card-bg);
             border-radius: 20px;
@@ -389,6 +541,51 @@
 </head>
 <body>
 
+<!-- SAFE / PIN LOCK OVERLAY (6-DIGIT SMART LOCK) -->
+<div class="pin-overlay" id="pinOverlay">
+    <div class="safe-card">
+        <div class="safe-header">
+            <i class="fa-solid fa-shield-halved safe-icon"></i>
+            <div class="safe-title">უსაფრთხოების კოდი</div>
+            <div class="safe-subtitle">შეიყვანეთ 6-ნიშნა სეიფის PIN კოდი</div>
+        </div>
+
+        <!-- 6-Digit Display Dots -->
+        <div class="pin-display">
+            <div class="pin-dot" id="dot-0"></div>
+            <div class="pin-dot" id="dot-1"></div>
+            <div class="pin-dot" id="dot-2"></div>
+            <div class="pin-dot" id="dot-3"></div>
+            <div class="pin-dot" id="dot-4"></div>
+            <div class="pin-dot" id="dot-5"></div>
+        </div>
+
+        <!-- Keypad Layout (1 2 3 4 / 5 6 7 8 / ✕ 9 0 ✓) -->
+        <div class="pin-keypad">
+            <button class="pin-btn" onclick="pressPin('1')">1</button>
+            <button class="pin-btn" onclick="pressPin('2')">2</button>
+            <button class="pin-btn" onclick="pressPin('3')">3</button>
+            <button class="pin-btn" onclick="pressPin('4')">4</button>
+            
+            <button class="pin-btn" onclick="pressPin('5')">5</button>
+            <button class="pin-btn" onclick="pressPin('6')">6</button>
+            <button class="pin-btn" onclick="pressPin('7')">7</button>
+            <button class="pin-btn" onclick="pressPin('8')">8</button>
+            
+            <button class="pin-btn action" onclick="clearPin()">✕</button>
+            <button class="pin-btn" onclick="pressPin('9')">9</button>
+            <button class="pin-btn" onclick="pressPin('0')">0</button>
+            <button class="pin-btn submit" onclick="validatePin()">✓</button>
+        </div>
+
+        <div class="fingerprint-sensor" onclick="validatePin()" title="თითის ანაბეჭდის სენსორი">
+            <i class="fa-solid fa-fingerprint"></i>
+        </div>
+
+        <div class="pin-error" id="pinError"></div>
+    </div>
+</div>
+
 <div class="container" id="mainContainer">
     <div class="header">
         <div class="header-text">
@@ -505,7 +702,7 @@
 
                         <div id="transferInfo" class="transfer-info-box">
                             <div id="txt-id-label">პირადი ნომერი გადარიცხვისთვის:</div>
-                            <div style="font-size: 15px; font-weight: 800; color: #1e3a8a; margin-top: 4px;">61204074595</div>
+                            <div id="obfPersonalIdDisplay" style="font-size: 15px; font-weight: 800; color: #1e3a8a; margin-top: 4px;">-</div>
                             <button id="btn-transfer-done" onclick="renderSuccessScreen()" style="margin-top:8px; width:100%; padding:6px; background:#10b981; color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">
                                 გადარიცხვა დასრულდა
                             </button>
@@ -543,6 +740,68 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 
 <script>
+// =========================================================================
+// OBFUSCATED DATA DECODER (დაშიფრული მონაცემების დეკოდერი)
+// =========================================================================
+function _d(encoded) {
+    try {
+        return atob(encoded);
+    } catch(e) {
+        return '';
+    }
+}
+
+// Encoded Secrets (Base64)
+const OBF_ID = "NjEyMDQwNzQ1OTU="; // 61204074595
+const OBF_STORES_URL = "aHR0cHM6Ly9yYXcuZ2l0aHViaXVzZXJjb250ZW50LmNvbS9iYWxpc3RpY2Jhc2UvR0lPUkdJL3JlZnMvaGVhZHMvbWFpbi9FbGl0ZSUyMEF1dG9tYXRpYyUyMERlbGl2ZXJ5LnR4dA==";
+const OBF_OSRM_URL = "aHR0cHM6Ly9yb3V0ZXIucHJvamVjdC1vc3JtLm9yZy9yb3V0ZS92MS9kcml2aW5nLw==";
+const OBF_NOMINATIM_URL = "aHR0cHM6Ly9ub21pbmF0aW0ub3BlbnN0cmVldG1hcC5vcmcvcmV2ZXJzZQ==";
+
+// Default PIN = "666666" (Base64 Obfuscated: "NjY2NjY2")
+const DEFAULT_PIN_HASH = "NjY2NjY2";
+
+let enteredPin = "";
+
+function pressPin(num) {
+    if (enteredPin.length < 6) {
+        enteredPin += num;
+        updatePinDots();
+    }
+}
+
+function clearPin() {
+    enteredPin = "";
+    updatePinDots();
+    document.getElementById('pinError').innerText = "";
+}
+
+function updatePinDots() {
+    for (let i = 0; i < 6; i++) {
+        const dot = document.getElementById(`dot-${i}`);
+        if (dot) {
+            if (i < enteredPin.length) {
+                dot.classList.add('filled');
+            } else {
+                dot.classList.remove('filled');
+            }
+        }
+    }
+}
+
+function validatePin() {
+    if (btoa(enteredPin) === DEFAULT_PIN_HASH) {
+        document.getElementById('pinOverlay').style.display = 'none';
+        startApplication();
+    } else {
+        document.getElementById('pinError').innerText = "არასწორი PIN კოდი! სცადეთ თავიდან.";
+        enteredPin = "";
+        updatePinDots();
+    }
+}
+
+// =========================================================================
+// APPLICATION LOGIC
+// =========================================================================
 const servicePrices = {
     none: 0,
     montazh_free: 0,
@@ -821,6 +1080,8 @@ function updateStaticTranslations() {
     document.getElementById('txt-id-label').innerText = t.idLabel;
     document.getElementById('btn-transfer-done').innerText = t.btnTransferDone;
     document.getElementById('btn-close-free').innerText = t.btnCloseFree;
+
+    document.getElementById('obfPersonalIdDisplay').innerText = _d(OBF_ID);
 }
 
 function changeLanguage(lang) {
@@ -1093,11 +1354,9 @@ function updateTotalPriceDisplay() {
     }
 }
 
-// =========================================================================
-// მარშრუტიზაციის ძრავი: OSRM-ით მანქანით სავალი მანძილის გამოთვლა (Free)
-// =========================================================================
 async function fetchRoadRoute(lat1, lon1, lat2, lon2) {
-    const url = `https://router.project-osrm.org/route/v1/driving/${lon1},${lat1};${lon2},${lat2}?overview=full&geometries=geojson`;
+    const baseUrl = _d(OBF_OSRM_URL);
+    const url = `${baseUrl}${lon1},${lat1};${lon2},${lat2}?overview=full&geometries=geojson`;
     const res = await fetch(url);
     if (!res.ok) throw new Error("Routing service error");
     const data = await res.json();
@@ -1156,14 +1415,15 @@ function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
 
 async function fetchStoresFromGitHub() {
     try {
-        const res = await fetch('https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/Elite%20Automatic%20Delivery.txt', { cache: 'no-store' });
+        const url = _d(OBF_STORES_URL);
+        const res = await fetch(url, { cache: 'no-store' });
         if (!res.ok) throw new Error("Failed to fetch stores");
         const stores = await res.json();
         if (Array.isArray(stores)) {
             return stores;
         }
     } catch(e) {
-        console.warn("Could not fetch stores from GitHub:", e);
+        console.warn("Could not fetch stores:", e);
     }
     return [];
 }
@@ -1200,7 +1460,7 @@ async function processResults() {
                 bestRouteCoords = routeData.coordinates;
             }
         } catch(e) {
-            console.error("Route calculation failed for store:", candidate.name, e);
+            console.error("Route calculation failed:", candidate.name, e);
         }
     }
 
@@ -1238,11 +1498,12 @@ function fetchAddressFromCoords(lat, lon) {
     globalUserLat = lat;
     globalUserLon = lon;
 
-    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=${currentLang}&addressdetails=1&extratags=1&namedetails=1&zoom=18`;
+    const baseUrl = _d(OBF_NOMINATIM_URL);
+    const url = `${baseUrl}?format=json&lat=${lat}&lon=${lon}&accept-language=${currentLang}&addressdetails=1&extratags=1&namedetails=1&zoom=18`;
     
     fetch(url)
         .then(res => {
-            if (!res.ok) throw new Error("Nominatim Network response was not ok");
+            if (!res.ok) throw new Error("Network response was not ok");
             return res.json();
         })
         .then(data => {
@@ -1445,7 +1706,7 @@ function initTransportHoldToEdit() {
     transportRow.addEventListener('contextmenu', (e) => e.preventDefault());
 }
 
-window.onload = function() {
+function startApplication() {
     let savedLang = getCookie('appLang');
     if (savedLang && translations[savedLang]) {
         currentLang = savedLang;
@@ -1457,6 +1718,10 @@ window.onload = function() {
     updateStaticTranslations();
     initTransportHoldToEdit();
     initializeApp();
+}
+
+window.onload = function() {
+    // Application starts upon valid PIN input
 };
 </script>
 </body>
