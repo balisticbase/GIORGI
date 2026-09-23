@@ -178,7 +178,7 @@
             width: 100%;
             max-width: 800px;
             overflow: hidden;
-            display: none; /* იხსნება მხოლოდ PIN-ის შეყვანის შემდეგ */
+            display: none;
             flex-direction: column;
         }
 
@@ -715,7 +715,7 @@
 // =========================================================================
 // PIN კოდის / დაცვის ლოგიკა
 // =========================================================================
-const CORRECT_PIN = "666666"; // ნაგულისხმევი PIN კოდი
+const CORRECT_PIN = "666666";
 let currentPin = "";
 const pinDots = document.querySelectorAll('.pin-dot');
 const pinBox = document.getElementById('pinBox');
@@ -766,7 +766,6 @@ function unlockApp() {
     const mainContainer = document.getElementById('mainContainer');
     mainContainer.style.display = 'flex';
     
-    // განბლოკვის შემდეგ ეშვება აპლიკაცია
     initializeApp();
 }
 
@@ -802,7 +801,7 @@ const translations = {
         title: "ელიტ ელექტრონიქსი",
         subtitle: "ავტომატური მიწოდების კალკულატორი",
         status: "ფილიალების და თქვენი მდებარეობის ჩატვირთვა...",
-        geoErr: "GPS მდებარეობის დადგენა ვერ მოხერხდა. სერვერი არ პასუხობს ან GPS მიუწვდომელია.",
+        geoErr: "GPS მდებარეობის დადგენა ვერ მოხერხდა. გთხოვთ ჩართოთ GPS ან მიუთითოთ რუკაზე.",
         geoUnsup: "თქვენს ბრაუზერს არ აქვს GPS გეოლოკაციის მხარდაჭერა.",
         refreshLoc: "მდებარეობის განახლება",
         lblAddress: "თქვენი მისამართი",
@@ -861,7 +860,7 @@ const translations = {
         title: "Elit Electronics",
         subtitle: "Automatic Delivery Calculator",
         status: "Loading branches and location...",
-        geoErr: "Could not determine GPS location. Server not responding or GPS unavailable.",
+        geoErr: "Could not determine GPS location. Please enable GPS or click on the map.",
         geoUnsup: "Your browser does not support GPS geolocation.",
         refreshLoc: "Refresh Location",
         lblAddress: "Your Address",
@@ -920,7 +919,7 @@ const translations = {
         title: "Элит Электроникс",
         subtitle: "Автоматический калькулятор доставки",
         status: "Загрузка филиалов и местоположения...",
-        geoErr: "Не удалось определить GPS. Сервер не отвечает или GPS недоступен.",
+        geoErr: "Не удалось определить GPS. Включите GPS или выберите на карте.",
         geoUnsup: "Ваш браузер не поддерживает геолокацию GPS.",
         refreshLoc: "Обновить геолокацию",
         lblAddress: "Ваш адрес",
@@ -1126,7 +1125,6 @@ window.addEventListener('resize', () => {
     if (canvas && canvas.parentElement) {
         const rect = canvas.parentElement.getBoundingClientRect();
         if (rect.width > 0 && rect.width !== (canvas.width / (window.devicePixelRatio || 1))) {
-            let dataUrl = isSigned ? canvas.toDataURL() : (savedSignatureDataUrl || localStorage.getItem('userSignature'));
             initSignatureCanvas();
         }
     }
@@ -1336,29 +1334,34 @@ async function fetchRoadRoute(lat1, lon1, lat2, lon2) {
 }
 
 function cleanAddressData(data) {
-    if (!data || !data.address) return data && data.display_name ? data.display_name : translations[currentLang].unknownAddr;
-
-    const addr = data.address;
-    let road = addr.road || addr.street || addr.pedestrian || addr.footway || addr.residential || addr.suburb || addr.neighbourhood || "";
-    let house = addr.house_number || addr.building || addr.housename || "";
-
-    if (road.includes('—') || road.includes(' - ')) {
-        road = road.split(/—|\s-\s/)[0].trim();
+    if (!data) {
+        return (globalUserLat && globalUserLon) ? `GPS: ${globalUserLat.toFixed(5)}, ${globalUserLon.toFixed(5)}` : translations[currentLang].unknownAddr;
     }
 
-    let streetPart = road;
-    if (house) {
-        streetPart = streetPart ? `${streetPart} #${house}` : `#${house}`;
+    if (typeof data === 'string') return data;
+    if (data.display_name && !data.address) return data.display_name;
+
+    if (data.address) {
+        const addr = data.address;
+        let road = addr.road || addr.street || addr.pedestrian || addr.footway || addr.residential || addr.suburb || addr.neighbourhood || "";
+        let house = addr.house_number || addr.building || addr.housename || "";
+
+        if (road.includes('—') || road.includes(' - ')) {
+            road = road.split(/—|\s-\s/)[0].trim();
+        }
+
+        let streetPart = road;
+        if (house) {
+            streetPart = streetPart ? `${streetPart} #${house}` : `#${house}`;
+        }
+
+        if (streetPart) return streetPart;
+
+        let settlementName = addr.city || addr.town || addr.village || addr.suburb || addr.neighbourhood || addr.city_district || addr.municipality || addr.county || "";
+        if (settlementName) return settlementName;
     }
 
-    if (streetPart) return streetPart;
-
-    let settlementName = addr.city || addr.town || addr.village || addr.suburb || addr.neighbourhood || addr.city_district || addr.municipality || addr.county || "";
-    if (settlementName) return settlementName;
-
-    if (data.display_name) return data.display_name;
-
-    return translations[currentLang].unknownAddr;
+    return data.display_name || `GPS: ${globalUserLat.toFixed(5)}, ${globalUserLon.toFixed(5)}`;
 }
 
 function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
@@ -1490,25 +1493,48 @@ async function processResults() {
     renderMap(globalUserLat, globalUserLon, nearestStore, bestRouteCoords);
 }
 
-function fetchAddressFromCoords(lat, lon) {
+async function fetchAddressFromCoords(lat, lon) {
     globalUserLat = lat;
     globalUserLon = lon;
 
-    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=${currentLang}&addressdetails=1&extratags=1&namedetails=1&zoom=18`;
-    
-    fetch(url)
-        .then(res => {
-            if (!res.ok) throw new Error("Nominatim Network response was not ok");
-            return res.json();
-        })
-        .then(data => {
-            globalRawAddressData = data;
-            processResults();
-        })
-        .catch(() => {
-            globalRawAddressData = null;
-            processResults();
-        });
+    const formattedCoords = `GPS: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+
+    // 1. Nominatim Reverse Geocoding
+    try {
+        const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=${currentLang}&addressdetails=1&extratags=1&namedetails=1&zoom=18`;
+        const res = await fetch(url);
+        if (res.ok) {
+            const data = await res.json();
+            if (data && (data.address || data.display_name)) {
+                globalRawAddressData = data;
+                processResults();
+                return;
+            }
+        }
+    } catch (e) {
+        console.warn("Nominatim primary failed, trying secondary API...", e);
+    }
+
+    // 2. Fallback Reverse Geocoding API
+    try {
+        const fallbackUrl = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=${currentLang}`;
+        const res = await fetch(fallbackUrl);
+        if (res.ok) {
+            const data = await res.json();
+            let addrParts = [data.locality, data.city, data.principalSubdivision].filter(Boolean);
+            if (addrParts.length > 0) {
+                globalRawAddressData = { display_name: `${addrParts.join(", ")} (${formattedCoords})` };
+                processResults();
+                return;
+            }
+        }
+    } catch (e) {
+        console.warn("Secondary geocoding failed", e);
+    }
+
+    // 3. Fallback to GPS coordinates directly
+    globalRawAddressData = { display_name: formattedCoords };
+    processResults();
 }
 
 function initializeApp() {
@@ -1530,33 +1556,38 @@ function initializeApp() {
 
         let geolocationCompleted = false;
 
-        const geoTimeout = setTimeout(() => {
-            if (!geolocationCompleted) {
-                geolocationCompleted = true;
-                if (spinner) spinner.style.display = 'none';
-                document.getElementById('txt-status').innerText = translations[currentLang].geoErr;
-            }
-        }, 8000);
+        const requestPosition = (highAccuracy = true) => {
+            const options = {
+                enableHighAccuracy: highAccuracy,
+                timeout: highAccuracy ? 8000 : 15000,
+                maximumAge: 5000
+            };
 
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                if (!geolocationCompleted) {
-                    geolocationCompleted = true;
-                    clearTimeout(geoTimeout);
-                    if (spinner) spinner.style.display = 'none';
-                    fetchAddressFromCoords(position.coords.latitude, position.coords.longitude);
-                }
-            },
-            error => {
-                if (!geolocationCompleted) {
-                    geolocationCompleted = true;
-                    clearTimeout(geoTimeout);
-                    if (spinner) spinner.style.display = 'none';
-                    document.getElementById('txt-status').innerText = translations[currentLang].geoErr;
-                }
-            },
-            { enableHighAccuracy: true, timeout: 7000, maximumAge: 10000 }
-        );
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    if (!geolocationCompleted) {
+                        geolocationCompleted = true;
+                        if (spinner) spinner.style.display = 'none';
+                        fetchAddressFromCoords(position.coords.latitude, position.coords.longitude);
+                    }
+                },
+                error => {
+                    if (!geolocationCompleted) {
+                        if (highAccuracy) {
+                            // Fallback to standard geolocation accuracy
+                            requestPosition(false);
+                        } else {
+                            geolocationCompleted = true;
+                            if (spinner) spinner.style.display = 'none';
+                            document.getElementById('txt-status').innerText = translations[currentLang].geoErr;
+                        }
+                    }
+                },
+                options
+            );
+        };
+
+        requestPosition(true);
     });
 }
 
@@ -1578,12 +1609,28 @@ function renderMap(userLat, userLon, store, routeCoords) {
     const storeLatLng = [store.lat, store.lon];
     const storePopupName = store.name || "";
 
-    L.marker(userLatLng).addTo(map).bindPopup(`<b>${t.userLoc}</b>`).openPopup();
+    // მარკერი შესაძლებელია გადაადგილდეს ხელით
+    const userMarker = L.marker(userLatLng, { draggable: true }).addTo(map);
+    userMarker.bindPopup(`<b>${t.userLoc}</b><br><small style="color:#64748b;">(შეგიძლიათ მარკერის გადაადგილება)</small>`).openPopup();
+
+    userMarker.on('dragend', function (e) {
+        const newPos = e.target.getLatLng();
+        fetchAddressFromCoords(newPos.lat, newPos.lng);
+    });
+
+    map.on('click', function(e) {
+        userMarker.setLatLng(e.latlng);
+        fetchAddressFromCoords(e.latlng.lat, e.latlng.lng);
+    });
+
     L.marker(storeLatLng).addTo(map).bindPopup(`<b>${storePopupName}</b>`);
 
     if (routeCoords && routeCoords.length > 0) {
         const polyline = L.polyline(routeCoords, { color: '#e60012', weight: 5, opacity: 0.85 }).addTo(map);
         map.fitBounds(polyline.getBounds(), { padding: [50, 50] });
+    } else {
+        const bounds = L.latLngBounds([userLatLng, storeLatLng]);
+        map.fitBounds(bounds, { padding: [50, 50] });
     }
 
     setTimeout(() => {
@@ -1684,12 +1731,10 @@ function initTransportHoldToEdit() {
         }
     }
 
-    // Desktop
     transportRow.addEventListener('mousedown', startHold);
     transportRow.addEventListener('mouseup', cancelHold);
     transportRow.addEventListener('mouseleave', cancelHold);
 
-    // Mobile
     transportRow.addEventListener('touchstart', startHold, { passive: true });
     transportRow.addEventListener('touchmove', cancelHold, { passive: true });
     transportRow.addEventListener('touchend', cancelHold);
