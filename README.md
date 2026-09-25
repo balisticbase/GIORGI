@@ -18,4 +18,4 @@
 Copy the raw link below and add it to **Custom Filters / Subscriptions** in your ad blocker settings:
 
 ```text
-[https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/CleanGEO%F0%9F%87%AC%F0%9F%87%AAP](https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/CleanGEO%F0%9F%87%AC%F0%9F%87%AAP)
+[https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/CleanGEO🇬🇪)
