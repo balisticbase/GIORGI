@@ -7,7 +7,8 @@
 ### Method 1: Direct Filter Link (Auto-updates)
 Copy this link and add it as a **Custom Filter / Subscription** in your ad blocker settings:
 
-`https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPOSITORY/main/geo-shield.txt`
+[`https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPOSITORY/main/geo-shield.txt`](https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/CleanGEO🇬🇪)
+
 
 ### Method 2: Manual (User Rules)
 1. Open **AdGuard** or **uBlock Origin** settings.
