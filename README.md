@@ -8,7 +8,7 @@
 
 - 🌐 **Website:** [ioscrack.online](https://ioscrack.online)
 - 💬 **Telegram Channel:** [@GEOShieldd](https://t.me/GEOShieldd)
-- 📜 **Raw Filter URL:** [Download List](https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/CleanGEO%F0%9F%87%AC%F0%9F%87%AAP)
+- 📜 **Raw Filter URL:** [Download List](https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/CleanGEO🇬🇪)
 
 ---
 
