@@ -1,4 +1,4 @@
-# GEO Shield 🇬🇪 (CleanGEO)
+# GEO Shield 🇬🇪 CleanGEO
 
 **GEO Shield** is a dedicated ad-blocking filter list designed for AdGuard, uBlock Origin, and other ad blockers. It specifically targets aggressive casino popups, dodgy redirects, intrusive banners, and tracking links on Georgian websites (movie portals, news outlets, streaming services).
 
