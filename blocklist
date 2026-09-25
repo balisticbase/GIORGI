@@ -395,6 +395,7 @@ croconet.cam##div iframe
 ! mykadri.tv
 
 
+mykadri.tv##.mykadri-device-banner:remove()
 mykadri.tv##.fullstory-banner-top-v4
 mykadri.tv##.mykadri-catfish:remove()
 mykadri.tv##.avc-asvla
