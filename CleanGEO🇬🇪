@@ -406,3 +406,4 @@ mykadri.tv##.fullstory-banner-top-v4
 mykadri.tv##.mykadri-catfish:remove()
 mykadri.tv##.avc-asvla
 mykadri.tv##center:has(> .mykadri-device-banner):remove()
+mykadri.tv#%#//scriptlet('remove-class', 'is-visible', 'div.mykadri-catfish')
