@@ -342,6 +342,11 @@ liveball.sx##.custom_brand_mobile
 liveball.sx##.catfish_sec
 liveball.sx##div[data-noclick="1"]
 liveball.sx###notice
+liveball.sx##div.free.align_center
+liveball.sx##div.tg_block.align_center
+liveball.sx#$#div.free.align_center { remove: true; }
+liveball.sx#$#div.tg_block.align_center { remove: true; }
+
 
 
 
