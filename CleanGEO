@@ -215,15 +215,9 @@ combatfootages.com#$?#html { overflow: auto !important; }
 
 ! kinolab.cc
 
-kinolab.cc##.jw-overlays:remove()
-kinolab.cc##div[class="avc-asvla"]
-kinolab.cc##.top-banner
+
 ||ftp.kinolab.cc/ads/$media,video
 ||ftp.kinolab.cc/ads/*mp4*$all
-kinolab.cc##.jw-media:has(video[src*="/ads/"])
-kinolab.cc#$?#.jw-media:has(video[src*="/ads/"]) { display: none !important; }
-
-
 
 
 
@@ -357,6 +351,12 @@ liveball.sx#$#div.tg_block.align_center { remove: true; }
 
 ! kinolab.cc
 
+
+kinolab.cc##.jw-overlays:remove()
+kinolab.cc##div[class="avc-asvla"]
+kinolab.cc##.top-banner
+kinolab.cc##.jw-media:has(video[src*="/ads/"])
+kinolab.cc#$?#.jw-media:has(video[src*="/ads/"]) { display: none !important; }
 
 
 
