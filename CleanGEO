@@ -367,6 +367,17 @@ kinolab.cc#$?#.jw-media:has(video[src*="/ads/"]) { display: none !important; }
 
 
 
+! kinomigma.com
+
+
+kinomigma.com###donateModal
+kinomigma.com#$###donateModal { remove: true }
+kinomigma.com#$#body { overflow: auto !important; }
+kinomigma.com###donateModal + .modal-backdrop
+
+
+
+
 ! televiziebi.tv
 
 
