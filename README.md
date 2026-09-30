@@ -8,7 +8,7 @@
 
 - 🌐 **Website:** [ioscrack.online](https://ioscrack.online)
 - 💬 **Telegram Channel:** [@GEOShieldd](https://t.me/GEOShieldd)
-- 📜 **Raw Filter URL:** [Download List](https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/CleanGEO🇬🇪)
+- 📜 **Raw Filter URL:** [Download List](https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/CleanGEO)
 
 ---
 
@@ -18,4 +18,4 @@
 Copy the raw link below and add it to **Custom Filters / Subscriptions** in your ad blocker settings:
 
 ```text
-[https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/CleanGEO🇬🇪)
+[https://raw.githubusercontent.com/balisticbase/GIORGI/refs/heads/main/CleanGEO)
