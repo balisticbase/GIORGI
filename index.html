@@ -1,2014 +1,268 @@
-<!DOCTYPE html>
-<html lang="ka">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+export default {
 
-<title>Image Authenticity Checker</title>
+    async fetch(request) {
 
-<style>
-:root{
-    --bg:#080b10;
-    --card:#10151d;
-    --card2:#0d1219;
-    --border:#202936;
-    --text:#f3f6fa;
-    --muted:#8c98a8;
-    --blue:#4d8dff;
-    --green:#22c77a;
-    --yellow:#f5b942;
-    --red:#ff5964;
-}
+        const corsHeaders = {
 
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
+            "Access-Control-Allow-Origin": "*",
 
-body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-    background:
-        radial-gradient(circle at top,#101a29 0%,#080b10 45%);
-    color:var(--text);
-    min-height:100vh;
-}
+            "Access-Control-Allow-Methods":
+                "POST, OPTIONS",
 
-.container{
-    width:min(1200px,calc(100% - 28px));
-    margin:0 auto;
-    padding:30px 0 60px;
-}
+            "Access-Control-Allow-Headers":
+                "Content-Type",
 
-.header{
-    text-align:center;
-    margin-bottom:28px;
-}
+            "Access-Control-Max-Age":
+                "86400"
 
-.header h1{
-    font-size:clamp(28px,5vw,48px);
-    margin-bottom:10px;
-    letter-spacing:-1px;
-}
+        };
 
-.header p{
-    color:var(--muted);
-    font-size:15px;
-    line-height:1.6;
-}
 
-.upload{
-    border:1.5px dashed #344154;
-    background:rgba(16,21,29,.88);
-    border-radius:22px;
-    padding:35px 20px;
-    text-align:center;
-    cursor:pointer;
-    transition:.2s;
-}
-
-.upload:hover,
-.upload.dragover{
-    border-color:var(--blue);
-    background:#111a26;
-}
-
-.upload-icon{
-    width:62px;
-    height:62px;
-    border-radius:18px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin:0 auto 16px;
-    background:#182438;
-    color:var(--blue);
-    font-size:28px;
-}
-
-.upload h2{
-    font-size:20px;
-    margin-bottom:8px;
-}
-
-.upload p{
-    color:var(--muted);
-    font-size:14px;
-}
-
-#fileInput{
-    display:none;
-}
-
-.preview{
-    display:none;
-    margin-top:22px;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:20px;
-    overflow:hidden;
-}
-
-.preview-image-wrap{
-    background:#05070a;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:250px;
-    max-height:650px;
-    padding:15px;
-}
-
-.preview img{
-    max-width:100%;
-    max-height:620px;
-    object-fit:contain;
-    border-radius:12px;
-}
-
-.file-info{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    border-top:1px solid var(--border);
-}
-
-.file-info div{
-    padding:14px;
-    border-right:1px solid var(--border);
-}
-
-.file-info div:last-child{
-    border-right:0;
-}
-
-.file-info span{
-    display:block;
-    color:var(--muted);
-    font-size:12px;
-    margin-bottom:5px;
-}
-
-.file-info strong{
-    font-size:14px;
-    word-break:break-word;
-}
-
-.analysis{
-    display:none;
-    margin-top:22px;
-}
-
-.global{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:22px;
-    padding:25px;
-    margin-bottom:20px;
-}
-
-.global-title{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    margin-bottom:15px;
-}
-
-.global-title h2{
-    font-size:20px;
-}
-
-.global-score{
-    font-size:42px;
-    font-weight:800;
-}
-
-.global-wait{
-    color:var(--muted);
-    font-size:14px;
-}
-
-.progress{
-    height:9px;
-    background:#1b222c;
-    border-radius:999px;
-    overflow:hidden;
-}
-
-.progress-bar{
-    width:0%;
-    height:100%;
-    background:linear-gradient(90deg,var(--blue),#69a3ff);
-    transition:width .3s ease;
-}
-
-.progress-text{
-    margin-top:10px;
-    color:var(--muted);
-    font-size:13px;
-}
-
-.detectors{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:18px;
-}
-
-.detector{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:20px;
-    padding:20px;
-}
-
-.detector-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:18px;
-}
-
-.detector-name{
-    font-weight:700;
-    font-size:17px;
-}
-
-.badge{
-    padding:6px 10px;
-    border-radius:999px;
-    font-size:11px;
-    font-weight:700;
-    background:#1a212c;
-    color:var(--muted);
-}
-
-.badge.running{
-    color:#8bb5ff;
-    background:#14243e;
-}
-
-.badge.success{
-    color:#55e69c;
-    background:#10291e;
-}
-
-.badge.error{
-    color:#ff7d86;
-    background:#30171a;
-}
-
-.detector-score{
-    font-size:34px;
-    font-weight:800;
-    margin-bottom:8px;
-}
-
-.detector-verdict{
-    font-size:14px;
-    margin-bottom:15px;
-}
-
-.detector-detail{
-    color:var(--muted);
-    font-size:13px;
-    line-height:1.6;
-    min-height:42px;
-    word-break:break-word;
-}
-
-.details{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:18px;
-    margin-top:18px;
-}
-
-.box{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:20px;
-    padding:20px;
-}
-
-.box h3{
-    margin-bottom:14px;
-    font-size:17px;
-}
-
-.rows{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-}
-
-.row{
-    display:flex;
-    justify-content:space-between;
-    gap:15px;
-    padding-bottom:10px;
-    border-bottom:1px solid #1c232d;
-    font-size:13px;
-}
-
-.row:last-child{
-    border-bottom:0;
-    padding-bottom:0;
-}
-
-.row span:first-child{
-    color:var(--muted);
-}
-
-.row span:last-child{
-    text-align:right;
-    word-break:break-word;
-}
-
-.signals{
-    margin-top:18px;
-}
-
-.signal-list{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-}
-
-.signal{
-    background:#171e28;
-    border:1px solid #293342;
-    color:#cbd4df;
-    border-radius:999px;
-    padding:7px 11px;
-    font-size:12px;
-}
-
-.signal.ai{
-    border-color:#704048;
-    color:#ff9ba2;
-}
-
-.signal.good{
-    border-color:#23583e;
-    color:#68e6a2;
-}
-
-.notice{
-    margin-top:18px;
-    padding:15px;
-    border-radius:14px;
-    background:#111923;
-    border:1px solid #253142;
-    color:#aeb9c7;
-    font-size:13px;
-    line-height:1.6;
-}
-
-.reset{
-    display:none;
-    margin-top:20px;
-    width:100%;
-    border:0;
-    border-radius:15px;
-    padding:15px;
-    background:#1b2430;
-    color:#fff;
-    font-weight:700;
-    cursor:pointer;
-    font-size:15px;
-}
-
-.reset:hover{
-    background:#253141;
-}
-
-.loading-dot{
-    display:inline-block;
-    width:7px;
-    height:7px;
-    background:var(--blue);
-    border-radius:50%;
-    margin-left:5px;
-    animation:pulse 1s infinite;
-}
-
-@keyframes pulse{
-    0%,100%{opacity:.3}
-    50%{opacity:1}
-}
-
-@media(max-width:800px){
-    .file-info{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .file-info div:nth-child(2){
-        border-right:0;
-    }
-
-    .file-info div:nth-child(3),
-    .file-info div:nth-child(4){
-        border-top:1px solid var(--border);
-    }
-
-    .detectors,
-    .details{
-        grid-template-columns:1fr;
-    }
-}
-
-@media(max-width:520px){
-    .container{
-        width:min(100% - 18px,1200px);
-        padding-top:18px;
-    }
-
-    .upload{
-        padding:28px 15px;
-    }
-
-    .global{
-        padding:18px;
-    }
-
-    .detector,
-    .box{
-        padding:17px;
-    }
-
-    .global-title{
-        align-items:flex-start;
-        flex-direction:column;
-    }
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-    <div class="header">
-        <h1>Image Authenticity Checker</h1>
-        <p>
-            შეამოწმე ფოტო AI-ით არის გენერირებული, შეცვლილია თუ შეიცავს
-            ციფრული წარმოშობის ნიშნებს.
-        </p>
-    </div>
-
-    <label class="upload" id="dropZone">
-
-        <div class="upload-icon">⌁</div>
-
-        <h2>ატვირთე ფოტო</h2>
-
-        <p>
-            დააჭირე აქ ან ჩააგდე JPG, JPEG, PNG, WEBP
-        </p>
-
-        <input
-            id="fileInput"
-            type="file"
-            accept="image/jpeg,image/png,image/webp,image/gif"
-        >
-
-    </label>
-
-    <section class="preview" id="preview">
-
-        <div class="preview-image-wrap">
-            <img id="previewImage" alt="Preview">
-        </div>
-
-        <div class="file-info">
-
-            <div>
-                <span>ფაილი</span>
-                <strong id="fileName">—</strong>
-            </div>
-
-            <div>
-                <span>ტიპი</span>
-                <strong id="fileType">—</strong>
-            </div>
-
-            <div>
-                <span>ზომა</span>
-                <strong id="fileSize">—</strong>
-            </div>
-
-            <div>
-                <span>გარჩევადობა</span>
-                <strong id="fileDimensions">—</strong>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <section class="analysis" id="analysis">
-
-        <div class="global">
-
-            <div class="global-title">
-                <div>
-                    <h2>საბოლოო ანალიზი</h2>
-                    <div class="global-wait" id="globalStatus">
-                        ველოდები დეტექტორებს...
-                    </div>
-                </div>
-
-                <div class="global-score" id="globalScore">—</div>
-            </div>
-
-            <div class="progress">
-                <div
-                    class="progress-bar"
-                    id="progressBar">
-                </div>
-            </div>
-
-            <div class="progress-text" id="progressText">
-                0% — ანალიზი იწყება...
-            </div>
-
-        </div>
-
-
-        <div class="detectors">
-
-            <div class="detector">
-
-                <div class="detector-head">
-                    <div class="detector-name">
-                        Elpis
-                    </div>
-
-                    <div
-                        class="badge"
-                        id="elpisBadge">
-                        ელოდება
-                    </div>
-                </div>
-
-                <div
-                    class="detector-score"
-                    id="elpisScore">
-                    —
-                </div>
-
-                <div
-                    class="detector-verdict"
-                    id="elpisVerdict">
-                    —
-                </div>
-
-                <div
-                    class="detector-detail"
-                    id="elpisDetail">
-                    ანალიზი ჯერ არ დაწყებულა.
-                </div>
-
-            </div>
-
-
-            <div class="detector">
-
-                <div class="detector-head">
-                    <div class="detector-name">
-                        Vynly
-                    </div>
-
-                    <div
-                        class="badge"
-                        id="vynlyBadge">
-                        ელოდება
-                    </div>
-                </div>
-
-                <div
-                    class="detector-score"
-                    id="vynlyScore">
-                    —
-                </div>
-
-                <div
-                    class="detector-verdict"
-                    id="vynlyVerdict">
-                    —
-                </div>
-
-                <div
-                    class="detector-detail"
-                    id="vynlyDetail">
-                    ანალიზი ჯერ არ დაწყებულა.
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="details">
-
-            <div class="box">
-
-                <h3>ფაილის მეტამონაცემები</h3>
-
-                <div class="rows">
-
-                    <div class="row">
-                        <span>EXIF</span>
-                        <span id="exifStatus">შემოწმება...</span>
-                    </div>
-
-                    <div class="row">
-                        <span>Camera / Software</span>
-                        <span id="softwareStatus">—</span>
-                    </div>
-
-                    <div class="row">
-                        <span>ფორმატი</span>
-                        <span id="formatStatus">—</span>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="box">
-
-                <h3>დეტექტორის სტატუსი</h3>
-
-                <div class="rows">
-
-                    <div class="row">
-                        <span>Elpis</span>
-                        <span id="elpisState">Waiting</span>
-                    </div>
-
-                    <div class="row">
-                        <span>Vynly</span>
-                        <span id="vynlyState">Waiting</span>
-                    </div>
-
-                    <div class="row">
-                        <span>საბოლოო</span>
-                        <span id="finalState">Waiting</span>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="box signals">
-
-            <h3>აღმოჩენილი ნიშნები</h3>
-
-            <div
-                class="signal-list"
-                id="signalList">
-
-                <span class="signal">
-                    ჯერ არაფერი აღმოჩენილა
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <div class="notice">
-            მნიშვნელოვანი: AI დეტექტორის შედეგი არ არის აბსოლუტური მტკიცებულება.
-            განსაკუთრებით მაშინ, როდესაც ფოტოს მეტამონაცემები წაშლილია ან ფოტო
-            რამდენჯერმე არის გადაკოდირებული. C2PA/SynthID/გენერატორის metadata
-            უფრო ძლიერი მტკიცებულებაა, ვიდრე მხოლოდ ვიზუალური შეფასება.
-        </div>
-
-        <button
-            class="reset"
-            id="resetBtn">
-            სხვა ფოტოს შემოწმება
-        </button>
-
-    </section>
-
-</div>
-
-
-<script>
-
-/* =========================================================
-   CONFIGURATION
-   ========================================================= */
-
-/*
-   IMPORTANT:
-
-   Replace YOUR-WORKER.workers.dev with your actual
-   Cloudflare Worker URL.
-
-   Example:
-
-   https://image-check-proxy.yourname.workers.dev/vynly
-*/
-
-const VYNLY_PROXY =
-    "https://YOUR-WORKER.workers.dev/vynly";
-
-
-const ELPIS_API =
-    "https://elpis.ae/ai-detect-api";
-
-
-/* =========================================================
-   ELEMENTS
-   ========================================================= */
-
-const fileInput =
-    document.getElementById("fileInput");
-
-const dropZone =
-    document.getElementById("dropZone");
-
-const preview =
-    document.getElementById("preview");
-
-const previewImage =
-    document.getElementById("previewImage");
-
-const analysis =
-    document.getElementById("analysis");
-
-const resetBtn =
-    document.getElementById("resetBtn");
-
-let currentAnalysisId = 0;
-
-let detectorScores = [];
-
-let discoveredSignals = new Set();
-
-
-/* =========================================================
-   FILE INPUT
-   ========================================================= */
-
-dropZone.addEventListener("click", () => {
-    fileInput.click();
-});
-
-
-fileInput.addEventListener("change", () => {
-
-    if (!fileInput.files.length)
-        return;
-
-    handleFile(fileInput.files[0]);
-
-});
-
-
-dropZone.addEventListener("dragover", event => {
-
-    event.preventDefault();
-
-    dropZone.classList.add("dragover");
-
-});
-
-
-dropZone.addEventListener("dragleave", () => {
-
-    dropZone.classList.remove("dragover");
-
-});
-
-
-dropZone.addEventListener("drop", event => {
-
-    event.preventDefault();
-
-    dropZone.classList.remove("dragover");
-
-    const file =
-        event.dataTransfer.files[0];
-
-    if (file)
-        handleFile(file);
-
-});
-
-
-/* =========================================================
-   HANDLE FILE
-   ========================================================= */
-
-function handleFile(file){
-
-    if (!file.type.startsWith("image/")){
-
-        alert("გთხოვ ატვირთე მხოლოდ ფოტო.");
-
-        return;
-    }
-
-    showPreview(file);
-
-    startAnalysis(file);
-}
-
-
-/* =========================================================
-   PREVIEW
-   ========================================================= */
-
-function showPreview(file){
-
-    const url =
-        URL.createObjectURL(file);
-
-    previewImage.src = url;
-
-    preview.style.display = "block";
-
-    document.getElementById("fileName").textContent =
-        file.name;
-
-    document.getElementById("fileType").textContent =
-        file.type || "unknown";
-
-    document.getElementById("fileSize").textContent =
-        formatBytes(file.size);
-
-    document.getElementById("formatStatus").textContent =
-        file.type || "unknown";
-
-    previewImage.onload = () => {
-
-        document.getElementById("fileDimensions").textContent =
-            `${previewImage.naturalWidth} × ${previewImage.naturalHeight}`;
-
-    };
-
-}
-
-
-/* =========================================================
-   START ANALYSIS
-   ========================================================= */
-
-async function startAnalysis(file){
-
-    const id =
-        ++currentAnalysisId;
-
-    detectorScores = [];
-
-    discoveredSignals = new Set();
-
-    analysis.style.display = "block";
-
-    resetDetectorUI();
-
-    setGlobalWaiting();
-
-    resetSignals();
-
-    detectEXIF(file);
-
-
-    /*
-       BOTH SERVICES ARE STARTED AT THE SAME TIME.
-
-       The final result is NOT displayed until BOTH
-       requests have finished.
-    */
-
-    const requests = [
-
-        {
-            name: "Elpis",
-            promise: runElpis(file)
-        },
-
-        {
-            name: "Vynly",
-            promise: runVynly(file)
-        }
-
-    ];
-
-
-    let completed = 0;
-
-
-    const results = await Promise.allSettled(
-
-        requests.map(item => item.promise)
-
-    );
-
-
-    if (id !== currentAnalysisId)
-        return;
-
-
-    for (let i = 0; i < results.length; i++){
-
-        const result =
-            results[i];
-
-        const name =
-            requests[i].name;
-
-
-        completed++;
-
-        setProgress(
-            Math.round(
-                (completed / results.length) * 100
-            )
-        );
-
-
-        if (result.status === "fulfilled"){
-
-            processDetectorResult(
-                name,
-                result.value
-            );
-
-        }else{
-
-            showDetectorError(
-                name,
-                result.reason
-            );
-
-        }
-
-    }
-
-
-    /*
-       VERY IMPORTANT:
-       Final score is calculated ONLY NOW.
-       Both detectors have finished.
-    */
-
-    setProgress(100);
-
-    updateGlobalScore();
-
-    updateSignals();
-
-    document.getElementById("finalState").textContent =
-        "Completed";
-
-    document.getElementById("globalStatus").textContent =
-        "ყველა ხელმისაწვდომი დეტექტორის პასუხი მიღებულია.";
-
-    resetBtn.style.display = "block";
-
-}
-
-
-/* =========================================================
-   ELPIS
-   ========================================================= */
-
-async function runElpis(file){
-
-    setDetectorRunning("Elpis");
-
-    const form =
-        new FormData();
-
-    form.append(
-        "image",
-        file,
-        file.name
-    );
-
-
-    const response =
-        await fetch(ELPIS_API, {
-
-            method:"POST",
-
-            body:form
-
-        });
-
-
-    if (!response.ok){
-
-        throw new Error(
-            `HTTP ${response.status}`
-        );
-
-    }
-
-
-    return await response.json();
-
-}
-
-
-/* =========================================================
-   VYNLY
-   ========================================================= */
-
-async function runVynly(file){
-
-    setDetectorRunning("Vynly");
-
-
-    if (
-        !VYNLY_PROXY ||
-        VYNLY_PROXY.includes("YOUR-WORKER")
-    ){
-
-        throw new Error(
-            "Cloudflare Worker URL ჯერ არ არის მითითებული."
-        );
-
-    }
-
-
-    const form =
-        new FormData();
-
-
-    form.append(
-        "image",
-        file,
-        file.name
-    );
-
-
-    /*
-       Browser -> Cloudflare Worker
-                    |
-                    v
-                Vynly API
-
-       This avoids browser CORS problems.
-    */
-
-    const response =
-        await fetch(VYNLY_PROXY, {
-
-            method:"POST",
-
-            body:form
-
-        });
-
-
-    if (!response.ok){
-
-        let errorText = "";
-
-        try{
-            errorText =
-                await response.text();
-        }catch(e){}
-
-        throw new Error(
-            `HTTP ${response.status} ${errorText}`
-        );
-
-    }
-
-
-    return await response.json();
-
-}
-
-
-/* =========================================================
-   PROCESS RESULT
-   ========================================================= */
-
-function processDetectorResult(name,data){
-
-    const score =
-        extractAIScore(data);
-
-    const verdict =
-        extractVerdict(data);
-
-    const confidence =
-        extractConfidence(data);
-
-    const signals =
-        extractSignals(data);
-
-
-    if (typeof score === "number"){
-
-        detectorScores.push({
-            name,
-            score
-        });
-
-    }
-
-
-    signals.forEach(signal => {
-
-        discoveredSignals.add(signal);
-
-    });
-
-
-    setDetectorSuccess(
-        name,
-        score,
-        verdict,
-        confidence,
-        data
-    );
-
-}
-
-
-/* =========================================================
-   EXTRACT AI SCORE
-   ========================================================= */
-
-function extractAIScore(data){
-
-    if (!data || typeof data !== "object")
-        return null;
-
-
-    const possibleObjects = [
-
-        data,
-
-        data.result,
-
-        data.data,
-
-        data.analysis
-
-    ];
-
-
-    const keys = [
-
-        "ai_probability",
-        "aiProbability",
-
-        "ai_score",
-        "aiScore",
-
-        "ai_percent",
-        "aiPercentage",
-
-        "ai_percentage",
-
-        "probability_ai",
-
-        "ai_generated_probability",
-
-        "aiGeneratedProbability"
-
-    ];
-
-
-    for (const obj of possibleObjects){
-
-        if (!obj || typeof obj !== "object")
-            continue;
-
-
-        for (const key of keys){
-
-            if (
-                typeof obj[key] === "number" &&
-                Number.isFinite(obj[key])
-            ){
-
-                let value =
-                    obj[key];
-
-
-                if (value >= 0 && value <= 1)
-                    value *= 100;
-
-
-                if (value >= 0 && value <= 100)
-                    return value;
-
-            }
-
-        }
-
-    }
-
-
-    return null;
-
-}
-
-
-/* =========================================================
-   VERDICT
-   ========================================================= */
-
-function extractVerdict(data){
-
-    if (!data)
-        return "უცნობია";
-
-
-    const objects = [
-
-        data,
-
-        data.result,
-
-        data.data,
-
-        data.analysis
-
-    ];
-
-
-    const keys = [
-
-        "verdict",
-        "label",
-        "classification",
-        "result",
-        "status"
-
-    ];
-
-
-    for (const obj of objects){
-
-        if (!obj || typeof obj !== "object")
-            continue;
-
-
-        for (const key of keys){
-
-            if (
-                typeof obj[key] === "string" &&
-                obj[key].trim()
-            ){
-
-                return obj[key];
-
-            }
-
-        }
-
-    }
-
-
-    return "პასუხი მიღებულია";
-
-}
-
-
-/* =========================================================
-   CONFIDENCE
-   ========================================================= */
-
-function extractConfidence(data){
-
-    if (!data || typeof data !== "object")
-        return null;
-
-
-    const keys = [
-
-        "confidence",
-        "confidence_score",
-        "confidenceScore"
-
-    ];
-
-
-    const objects = [
-
-        data,
-        data.result,
-        data.data,
-        data.analysis
-
-    ];
-
-
-    for (const obj of objects){
-
-        if (!obj || typeof obj !== "object")
-            continue;
-
-
-        for (const key of keys){
-
-            if (
-                typeof obj[key] === "number"
-            ){
-
-                let value =
-                    obj[key];
-
-                if (value <= 1)
-                    value *= 100;
-
-                return Math.round(value);
-
-            }
-
-        }
-
-    }
-
-
-    return null;
-
-}
-
-
-/* =========================================================
-   SIGNAL EXTRACTION
-   ========================================================= */
-
-function extractSignals(data){
-
-    const found = [];
-
-    const text =
-        JSON.stringify(data)
-        .toLowerCase();
-
-
-    const checks = [
-
-        {
-            words:["c2pa","jumbf","content credentials"],
-            label:"C2PA / Content Credentials"
-        },
-
-        {
-            words:["synthid","trainedalgorithmicmedia"],
-            label:"SynthID / AI provenance"
-        },
-
-        {
-            words:["midjourney"],
-            label:"Midjourney"
-        },
-
-        {
-            words:["stable diffusion"],
-            label:"Stable Diffusion"
-        },
-
-        {
-            words:["comfyui"],
-            label:"ComfyUI"
-        },
-
-        {
-            words:["automatic1111","a1111"],
-            label:"Stable Diffusion / A1111"
-        },
-
-        {
-            words:["flux"],
-            label:"FLUX"
-        },
-
-        {
-            words:["ideogram"],
-            label:"Ideogram"
-        },
-
-        {
-            words:["leonardo"],
-            label:"Leonardo"
-        },
-
-        {
-            words:["runway"],
-            label:"Runway"
-        },
-
-        {
-            words:["imagen"],
-            label:"Google Imagen"
-        },
-
-        {
-            words:["firefly"],
-            label:"Adobe Firefly"
-        },
-
-        {
-            words:["dall-e","dalle"],
-            label:"DALL-E"
-        },
-
-        {
-            words:["gemini"],
-            label:"Gemini"
-        },
-
-        {
-            words:["watermark"],
-            label:"Visible / embedded watermark"
-        },
-
-        {
-            words:["workflow"],
-            label:"Workflow metadata"
-        },
-
-        {
-            words:["parameters"],
-            label:"Generation parameters"
-        }
-
-    ];
-
-
-    for (const check of checks){
+        /* CORS */
 
         if (
-            check.words.some(
-                word => text.includes(word)
-            )
+            request.method ===
+            "OPTIONS"
         ){
 
-            found.push(check.label);
+            return new Response(
+                null,
+                {
+                    status:204,
+                    headers:corsHeaders
+                }
+            );
+
+        }
+
+
+        /* POST ONLY */
+
+        if (
+            request.method !==
+            "POST"
+        ){
+
+            return new Response(
+
+                JSON.stringify({
+                    error:
+                        "Only POST is allowed"
+                }),
+
+                {
+                    status:405,
+
+                    headers:{
+                        ...corsHeaders,
+
+                        "Content-Type":
+                            "application/json"
+                    }
+                }
+
+            );
+
+        }
+
+
+        /* PATH */
+
+        const url =
+            new URL(
+                request.url
+            );
+
+
+        if (
+            url.pathname !==
+            "/vynly"
+        ){
+
+            return new Response(
+
+                JSON.stringify({
+                    error:
+                        "Not found"
+                }),
+
+                {
+                    status:404,
+
+                    headers:{
+                        ...corsHeaders,
+
+                        "Content-Type":
+                            "application/json"
+                    }
+                }
+
+            );
+
+        }
+
+
+        try{
+
+            /*
+             * Read uploaded image
+             */
+
+            const incoming =
+                await request.formData();
+
+
+            const image =
+                incoming.get(
+                    "image"
+                );
+
+
+            if (
+                !image ||
+                typeof image ===
+                "string"
+            ){
+
+                return new Response(
+
+                    JSON.stringify({
+                        error:
+                            "Missing image"
+                    }),
+
+                    {
+                        status:400,
+
+                        headers:{
+                            ...corsHeaders,
+
+                            "Content-Type":
+                                "application/json"
+                        }
+                    }
+
+                );
+
+            }
+
+
+            /*
+             * Create Vynly FormData
+             */
+
+            const form =
+                new FormData();
+
+
+            form.append(
+                "image",
+                image,
+                image.name ||
+                "image.jpg"
+            );
+
+
+            /*
+             * Send to Vynly
+             */
+
+            const response =
+                await fetch(
+
+                    "https://vynly.co/api/check",
+
+                    {
+                        method:"POST",
+
+                        body:form,
+
+                        headers:{
+                            "Origin":
+                                "https://vynly.co",
+
+                            "Accept":
+                                "application/json"
+                        }
+
+                    }
+
+                );
+
+
+            /*
+             * Read response
+             */
+
+            const body =
+                await response.text();
+
+
+            /*
+             * Return response
+             * with CORS
+             */
+
+            return new Response(
+
+                body,
+
+                {
+
+                    status:
+                        response.status,
+
+                    headers:{
+
+                        ...corsHeaders,
+
+                        "Content-Type":
+                            response.headers.get(
+                                "Content-Type"
+                            ) ||
+                            "application/json"
+
+                    }
+
+                }
+
+            );
+
+
+        }catch(error){
+
+            return new Response(
+
+                JSON.stringify({
+
+                    error:
+                        "Vynly proxy failed",
+
+                    message:
+                        error?.message ||
+                        "Unknown error"
+
+                }),
+
+                {
+
+                    status:502,
+
+                    headers:{
+
+                        ...corsHeaders,
+
+                        "Content-Type":
+                            "application/json"
+
+                    }
+
+                }
+
+            );
 
         }
 
     }
 
-
-    return found;
-
-}
-
-
-/* =========================================================
-   UI - DETECTOR RUNNING
-   ========================================================= */
-
-function setDetectorRunning(name){
-
-    const key =
-        name.toLowerCase();
-
-
-    const badge =
-        document.getElementById(
-            key + "Badge"
-        );
-
-    const state =
-        document.getElementById(
-            key + "State"
-        );
-
-    badge.textContent =
-        "ანალიზდება";
-
-    badge.className =
-        "badge running";
-
-    state.textContent =
-        "Running";
-
-    document.getElementById(
-        key + "Detail"
-    ).innerHTML =
-        'სერვისის პასუხს ველოდები <span class="loading-dot"></span>';
-
-}
-
-
-/* =========================================================
-   UI - SUCCESS
-   ========================================================= */
-
-function setDetectorSuccess(
-    name,
-    score,
-    verdict,
-    confidence,
-    raw
-){
-
-    const key =
-        name.toLowerCase();
-
-
-    const badge =
-        document.getElementById(
-            key + "Badge"
-        );
-
-    const state =
-        document.getElementById(
-            key + "State"
-        );
-
-
-    badge.textContent =
-        "დასრულდა";
-
-    badge.className =
-        "badge success";
-
-    state.textContent =
-        "Completed";
-
-
-    document.getElementById(
-        key + "Score"
-    ).textContent =
-        score === null
-            ? "—"
-            : `${Math.round(score)}%`;
-
-
-    document.getElementById(
-        key + "Verdict"
-    ).textContent =
-        verdict;
-
-
-    let detail =
-        "პასუხი მიღებულია.";
-
-    if (confidence !== null){
-
-        detail +=
-            ` Confidence: ${confidence}%`;
-
-    }
-
-
-    /*
-       Do not dump the entire API response.
-    */
-
-    document.getElementById(
-        key + "Detail"
-    ).textContent =
-        detail;
-
-}
-
-
-/* =========================================================
-   UI - ERROR
-   ========================================================= */
-
-function showDetectorError(
-    name,
-    error
-){
-
-    const key =
-        name.toLowerCase();
-
-
-    const badge =
-        document.getElementById(
-            key + "Badge"
-        );
-
-    const state =
-        document.getElementById(
-            key + "State"
-        );
-
-
-    badge.textContent =
-        "შეცდომა";
-
-    badge.className =
-        "badge error";
-
-
-    state.textContent =
-        "Error";
-
-
-    document.getElementById(
-        key + "Score"
-    ).textContent =
-        "—";
-
-
-    document.getElementById(
-        key + "Verdict"
-    ).textContent =
-        "ვერ მოხერხდა";
-
-
-    document.getElementById(
-        key + "Detail"
-    ).textContent =
-        error?.message ||
-        "Unknown error";
-
-}
-
-
-/* =========================================================
-   GLOBAL RESULT
-   ========================================================= */
-
-function updateGlobalScore(){
-
-    const scoreElement =
-        document.getElementById("globalScore");
-
-
-    if (!detectorScores.length){
-
-        scoreElement.textContent =
-            "—";
-
-        document.getElementById(
-            "globalStatus"
-        ).textContent =
-            "რიცხვითი AI score ვერ მივიღეთ.";
-
-        return;
-
-    }
-
-
-    const sum =
-        detectorScores.reduce(
-            (total,item) =>
-                total + item.score,
-            0
-        );
-
-
-    const average =
-        sum / detectorScores.length;
-
-
-    scoreElement.textContent =
-        `${Math.round(average)}%`;
-
-
-    document.getElementById(
-        "globalStatus"
-    ).textContent =
-        `${detectorScores.length} დეტექტორის შედეგზე დაყრდნობით`;
-
-}
-
-
-/* =========================================================
-   PROGRESS
-   ========================================================= */
-
-function setProgress(percent){
-
-    document.getElementById(
-        "progressBar"
-    ).style.width =
-        `${percent}%`;
-
-
-    document.getElementById(
-        "progressText"
-    ).textContent =
-        `${percent}% — ${
-            percent < 100
-                ? "ანალიზი მიმდინარეობს..."
-                : "ანალიზი დასრულებულია."
-        }`;
-
-}
-
-
-function setGlobalWaiting(){
-
-    document.getElementById(
-        "globalScore"
-    ).textContent =
-        "—";
-
-
-    document.getElementById(
-        "globalStatus"
-    ).textContent =
-        "ველოდები ორივე დეტექტორის პასუხს...";
-
-    setProgress(0);
-
-}
-
-
-/* =========================================================
-   EXIF
-   ========================================================= */
-
-async function detectEXIF(file){
-
-    document.getElementById(
-        "exifStatus"
-    ).textContent =
-        "შემოწმება...";
-
-
-    document.getElementById(
-        "softwareStatus"
-    ).textContent =
-        "—";
-
-
-    try{
-
-        const buffer =
-            await file.slice(
-                0,
-                Math.min(file.size,500000)
-            ).arrayBuffer();
-
-
-        const bytes =
-            new Uint8Array(buffer);
-
-
-        const text =
-            new TextDecoder(
-                "latin1"
-            ).decode(bytes);
-
-
-        const hasExif =
-            text.includes("Exif");
-
-
-        document.getElementById(
-            "exifStatus"
-        ).textContent =
-            hasExif
-                ? "ნაპოვნია"
-                : "არ ჩანს";
-
-
-        const softwareWords = [
-
-            "Adobe",
-            "Photoshop",
-            "Lightroom",
-            "GIMP",
-            "Snapseed",
-            "Canva",
-            "Midjourney",
-            "Stable Diffusion",
-            "ComfyUI"
-
-        ];
-
-
-        const found =
-            softwareWords.find(
-                word => text
-                    .toLowerCase()
-                    .includes(
-                        word.toLowerCase()
-                    )
-            );
-
-
-        document.getElementById(
-            "softwareStatus"
-        ).textContent =
-            found || "არ ჩანს";
-
-    }catch(error){
-
-        document.getElementById(
-            "exifStatus"
-        ).textContent =
-            "ვერ შემოწმდა";
-
-    }
-
-}
-
-
-/* =========================================================
-   SIGNALS
-   ========================================================= */
-
-function resetSignals(){
-
-    document.getElementById(
-        "signalList"
-    ).innerHTML = `
-        <span class="signal">
-            შემოწმება მიმდინარეობს...
-        </span>
-    `;
-
-}
-
-
-function updateSignals(){
-
-    const container =
-        document.getElementById(
-            "signalList"
-        );
-
-
-    container.innerHTML = "";
-
-
-    if (!discoveredSignals.size){
-
-        container.innerHTML = `
-            <span class="signal good">
-                ცნობილი AI provenance signal ვერ მოიძებნა
-            </span>
-        `;
-
-        return;
-
-    }
-
-
-    discoveredSignals.forEach(signal => {
-
-        const span =
-            document.createElement("span");
-
-        span.className =
-            "signal ai";
-
-        span.textContent =
-            signal;
-
-        container.appendChild(span);
-
-    });
-
-}
-
-
-/* =========================================================
-   RESET UI
-   ========================================================= */
-
-function resetDetectorUI(){
-
-    const services = [
-        "elpis",
-        "vynly"
-    ];
-
-
-    services.forEach(key => {
-
-        document.getElementById(
-            key + "Badge"
-        ).textContent =
-            "ელოდება";
-
-
-        document.getElementById(
-            key + "Badge"
-        ).className =
-            "badge";
-
-
-        document.getElementById(
-            key + "Score"
-        ).textContent =
-            "—";
-
-
-        document.getElementById(
-            key + "Verdict"
-        ).textContent =
-            "—";
-
-
-        document.getElementById(
-            key + "Detail"
-        ).textContent =
-            "ანალიზი ჯერ არ დაწყებულა.";
-
-
-        document.getElementById(
-            key + "State"
-        ).textContent =
-            "Waiting";
-
-    });
-
-
-    document.getElementById(
-        "finalState"
-    ).textContent =
-        "Waiting";
-
-}
-
-
-/* =========================================================
-   RESET BUTTON
-   ========================================================= */
-
-resetBtn.addEventListener(
-    "click",
-    resetAll
-);
-
-
-function resetAll(){
-
-    currentAnalysisId++;
-
-    detectorScores = [];
-
-    discoveredSignals =
-        new Set();
-
-
-    fileInput.value = "";
-
-    previewImage.src = "";
-
-    preview.style.display =
-        "none";
-
-    analysis.style.display =
-        "none";
-
-    resetBtn.style.display =
-        "none";
-
-    setProgress(0);
-
-}
-
-
-/* =========================================================
-   HELPERS
-   ========================================================= */
-
-function formatBytes(bytes){
-
-    if (!bytes)
-        return "0 B";
-
-
-    const units = [
-        "B",
-        "KB",
-        "MB",
-        "GB"
-    ];
-
-
-    const index =
-        Math.floor(
-            Math.log(bytes) /
-            Math.log(1024)
-        );
-
-
-    return (
-        bytes /
-        Math.pow(1024,index)
-    ).toFixed(
-        index === 0 ? 0 : 2
-    ) +
-    " " +
-    units[index];
-
-}
-
-</script>
-
-</body>
-</html>
+};
