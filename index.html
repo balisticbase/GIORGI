@@ -1,40 +1,35 @@
 <!DOCTYPE html>
 <html lang="ka">
 <head>
+
 <meta charset="UTF-8">
 
 <meta name="viewport"
       content="width=device-width,
-               initial-scale=1,
-               maximum-scale=5,
-               viewport-fit=cover">
+      initial-scale=1,
+      viewport-fit=cover">
 
-<meta name="theme-color" content="#080b12">
+<meta name="theme-color"
+      content="#070a10">
 
-<title>Image Authenticity Checker</title>
+<title>
+Image Authenticity Checker
+</title>
 
 <style>
 
-/* =========================================================
-   RESET
-========================================================= */
-
-*,
-*::before,
-*::after {
+* {
     box-sizing: border-box;
 }
 
 html {
     width: 100%;
     min-height: 100%;
-    scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
 }
 
 body {
     margin: 0;
-    width: 100%;
     min-height: 100vh;
     min-height: 100dvh;
 
@@ -43,122 +38,108 @@ body {
         BlinkMacSystemFont,
         "Segoe UI",
         Roboto,
-        Helvetica,
         Arial,
         sans-serif;
+
+    color: #fff;
 
     background:
         radial-gradient(
             circle at top,
-            #151d2c 0%,
-            #080b12 45%,
+            #182235 0%,
+            #080b12 48%,
             #05070b 100%
         );
 
-    color: #ffffff;
+    -webkit-font-smoothing: antialiased;
 
     overflow-x: hidden;
-
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
 }
-
-
-/* =========================================================
-   VARIABLES
-========================================================= */
 
 :root {
 
-    --page-max: 1180px;
+    --max-width: 1200px;
 
-    --gap-xs: 8px;
-    --gap-sm: 12px;
-    --gap-md: 16px;
-    --gap-lg: 24px;
-    --gap-xl: 32px;
+    --bg: #080b12;
+    --card: #10151f;
+    --card2: #151c28;
 
-    --radius-sm: 10px;
-    --radius-md: 16px;
-    --radius-lg: 22px;
+    --border: #273141;
 
-    --background: #080b12;
-    --surface: #10151f;
-    --surface-2: #151b27;
-    --border: #252d3a;
-
-    --text: #ffffff;
-    --muted: #919baa;
+    --text: #fff;
+    --muted: #929baa;
 
     --blue: #60a5fa;
     --green: #4ade80;
     --yellow: #fbbf24;
     --red: #fb7185;
+
 }
 
-
-/* =========================================================
-   PAGE
-========================================================= */
-
 .page {
+
     width: 100%;
+
     min-height: 100vh;
     min-height: 100dvh;
 
     padding-top:
-        max(24px, env(safe-area-inset-top));
+        max(20px, env(safe-area-inset-top));
 
     padding-right:
-        max(16px, env(safe-area-inset-right));
+        max(14px, env(safe-area-inset-right));
 
     padding-bottom:
         max(30px, env(safe-area-inset-bottom));
 
     padding-left:
-        max(16px, env(safe-area-inset-left));
+        max(14px, env(safe-area-inset-left));
 }
 
-
 .container {
+
     width: 100%;
-    max-width: var(--page-max);
+
+    max-width:
+        var(--max-width);
+
     margin: 0 auto;
 }
 
+header {
 
-/* =========================================================
-   HEADER
-========================================================= */
-
-.header {
-    width: 100%;
     text-align: center;
 
     padding:
-        clamp(8px, 2vw, 20px)
-        0
-        clamp(24px, 5vw, 42px);
+        15px 0 30px;
 }
 
 .logo {
-    display: inline-flex;
+
+    width:
+        clamp(52px, 10vw, 72px);
+
+    height:
+        clamp(52px, 10vw, 72px);
+
+    margin: 0 auto 16px;
+
+    display: flex;
+
     align-items: center;
+
     justify-content: center;
-
-    width: clamp(48px, 8vw, 70px);
-    height: clamp(48px, 8vw, 70px);
-
-    margin-bottom: clamp(12px, 2vw, 18px);
 
     border-radius: 20px;
 
-    background: #151d2a;
+    background: #151d2b;
 
-    font-size: clamp(24px, 5vw, 36px);
+    font-size:
+        clamp(28px, 6vw, 40px);
 }
 
-.header h1 {
+h1 {
+
     margin: 0;
 
     font-size:
@@ -166,13 +147,12 @@ body {
 
     line-height: 1.1;
 
-    letter-spacing: -0.035em;
-
-    overflow-wrap: anywhere;
+    letter-spacing: -0.04em;
 }
 
-.header p {
-    max-width: 680px;
+header p {
+
+    max-width: 700px;
 
     margin:
         12px auto 0;
@@ -180,94 +160,90 @@ body {
     color: var(--muted);
 
     font-size:
-        clamp(14px, 2vw, 18px);
+        clamp(13px, 2vw, 17px);
 
     line-height: 1.6;
 }
 
 
-/* =========================================================
-   UPLOAD AREA
-========================================================= */
+/* UPLOAD */
 
 .upload {
-    position: relative;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    position: relative;
 
     width: 100%;
 
     min-height:
-        clamp(250px, 38vw, 380px);
+        clamp(240px, 35vw, 360px);
 
     padding:
-        clamp(30px, 7vw, 70px)
-        clamp(18px, 5vw, 50px);
+        clamp(25px, 6vw, 60px);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
 
     border:
-        2px dashed #354052;
+        2px dashed #3a4658;
 
     border-radius:
         clamp(18px, 3vw, 28px);
 
     background:
-        rgba(16, 21, 31, 0.88);
-
-    text-align: center;
+        rgba(16,21,31,.92);
 
     cursor: pointer;
 
     transition:
-        border-color .2s ease,
-        background .2s ease,
-        transform .2s ease;
+        .2s ease;
 }
 
 .upload:hover {
-    border-color: #687589;
+
+    border-color: #718096;
+
     background: #131a26;
 }
 
 .upload:active {
+
     transform: scale(.995);
 }
 
-.upload:focus-within {
-    border-color: var(--blue);
-}
-
 .upload input {
+
     position: absolute;
 
-    width: 1px;
-    height: 1px;
-
     opacity: 0;
+
+    pointer-events: none;
 }
 
-.upload-icon {
+.uploadIcon {
+
     font-size:
-        clamp(42px, 9vw, 72px);
+        clamp(45px, 9vw, 75px);
 
-    line-height: 1;
-
-    margin-bottom:
-        clamp(14px, 3vw, 22px);
+    margin-bottom: 18px;
 }
 
 .upload h2 {
+
     margin: 0;
 
     font-size:
         clamp(19px, 4vw, 28px);
-
-    line-height: 1.25;
 }
 
 .upload p {
+
     margin:
         10px 0 0;
 
@@ -275,38 +251,27 @@ body {
 
     font-size:
         clamp(13px, 2vw, 16px);
-
-    line-height: 1.5;
-
-    max-width: 500px;
 }
 
 
-/* =========================================================
-   RESULTS
-========================================================= */
+/* RESULTS */
 
 #results {
+
     display: none;
 
-    width: 100%;
-
-    margin-top:
-        clamp(20px, 4vw, 32px);
+    margin-top: 25px;
 }
 
 
-/* =========================================================
-   PREVIEW
-========================================================= */
+/* IMAGE */
 
 .preview {
-    width: 100%;
 
     padding:
-        clamp(12px, 2vw, 20px);
+        clamp(10px, 2vw, 20px);
 
-    background: var(--surface);
+    background: var(--card);
 
     border:
         1px solid var(--border);
@@ -315,78 +280,76 @@ body {
         clamp(16px, 3vw, 24px);
 }
 
-.preview-image-wrapper {
+.imageBox {
+
     width: 100%;
 
-    min-height: 160px;
+    min-height: 180px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     overflow: hidden;
 
+    background: #05070b;
+
     border-radius:
         clamp(10px, 2vw, 16px);
-
-    background: #05070b;
 }
 
-.preview img {
-    display: block;
+.imageBox img {
 
-    width: 100%;
-    height: auto;
+    display: block;
 
     max-width: 100%;
 
+    width: auto;
+
+    height: auto;
+
     max-height:
-        min(72vh, 760px);
+        min(70vh, 750px);
 
     object-fit: contain;
-
-    border-radius:
-        clamp(10px, 2vw, 16px);
 }
 
-.file-name {
+.filename {
+
     margin-top: 12px;
 
     color: var(--muted);
 
-    font-size:
-        clamp(12px, 1.8vw, 15px);
-
-    line-height: 1.5;
+    font-size: 14px;
 
     overflow-wrap: anywhere;
 }
 
 
-/* =========================================================
-   CARDS
-========================================================= */
+/* SCORE CARDS */
 
-.cards {
+.grid {
+
     display: grid;
 
     grid-template-columns:
         repeat(2, minmax(0, 1fr));
 
-    gap:
-        clamp(12px, 2vw, 20px);
+    gap: 16px;
 
-    margin-top:
-        clamp(12px, 2vw, 20px);
+    margin-top: 16px;
 }
 
 .card {
+
     min-width: 0;
 
     padding:
-        clamp(16px, 3vw, 26px);
+        clamp(16px, 3vw, 25px);
 
-    background: var(--surface);
+    background: var(--card);
 
     border:
         1px solid var(--border);
@@ -396,45 +359,24 @@ body {
 }
 
 .card h3 {
+
     margin:
         0 0 12px;
 
     font-size:
         clamp(14px, 2vw, 18px);
-
-    line-height: 1.35;
 }
 
 .score {
-    font-size:
-        clamp(30px, 7vw, 48px);
 
-    line-height: 1;
+    font-size:
+        clamp(30px, 7vw, 50px);
 
     font-weight: 800;
 
-    letter-spacing: -0.04em;
-
     margin:
-        16px 0;
+        12px 0 16px;
 }
-
-.card p {
-    margin:
-        12px 0 0;
-
-    color: var(--muted);
-
-    font-size:
-        clamp(12px, 1.8vw, 15px);
-
-    line-height: 1.55;
-}
-
-
-/* =========================================================
-   COLORS
-========================================================= */
 
 .good {
     color: var(--green);
@@ -452,48 +394,56 @@ body {
     color: var(--blue);
 }
 
-
-/* =========================================================
-   PROGRESS BAR
-========================================================= */
-
 .bar {
+
     width: 100%;
-    height:
-        clamp(7px, 1vw, 10px);
+
+    height: 9px;
 
     overflow: hidden;
 
-    background: #242b38;
-
     border-radius: 100px;
+
+    background: #242c39;
 }
 
-.bar-inner {
+.bar span {
+
+    display: block;
+
     width: 0;
+
     height: 100%;
 
     border-radius: inherit;
 
-    background: currentColor;
-
     transition:
-        width 900ms cubic-bezier(.2,.8,.2,1);
+        width .9s ease;
+}
+
+.cardText {
+
+    margin:
+        12px 0 0;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.6;
 }
 
 
-/* =========================================================
-   DETAILS
-========================================================= */
+/* DETAILS */
 
 .details {
-    margin-top:
-        clamp(12px, 2vw, 20px);
+
+    margin-top: 16px;
 
     padding:
-        clamp(16px, 3vw, 26px);
+        clamp(16px, 3vw, 25px);
 
-    background: var(--surface);
+    background: var(--card);
 
     border:
         1px solid var(--border);
@@ -503,45 +453,44 @@ body {
 }
 
 .details h2 {
+
     margin:
-        0 0 10px;
+        0 0 8px;
 
     font-size:
         clamp(18px, 3vw, 24px);
 }
 
 .row {
+
     display: grid;
 
     grid-template-columns:
-        minmax(120px, 1fr)
+        minmax(130px, 1fr)
         minmax(0, 2fr);
 
-    gap:
-        14px;
+    gap: 15px;
 
     padding:
         13px 0;
 
     border-bottom:
-        1px solid #222936;
+        1px solid #222a36;
 
-    font-size:
-        clamp(12px, 1.8vw, 15px);
-
-    line-height: 1.5;
+    font-size: 14px;
 }
 
 .row:last-child {
+
     border-bottom: 0;
 }
 
 .label {
+
     color: var(--muted);
 }
 
 .value {
-    min-width: 0;
 
     text-align: right;
 
@@ -549,301 +498,308 @@ body {
 }
 
 
-/* =========================================================
-   NOTICE
-========================================================= */
+/* EXTERNAL DETECTORS */
+
+.external {
+
+    margin-top: 16px;
+
+    padding:
+        clamp(16px, 3vw, 25px);
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        clamp(15px, 2.5vw, 22px);
+}
+
+.external h2 {
+
+    margin:
+        0 0 8px;
+
+    font-size:
+        clamp(18px, 3vw, 24px);
+}
+
+.external p {
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+    margin:
+        0 0 18px;
+}
+
+.services {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+.service {
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 17px;
+
+    background: var(--card2);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 15px;
+}
+
+.serviceName {
+
+    font-weight: 700;
+
+    font-size: 15px;
+}
+
+.serviceDescription {
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+.serviceButton {
+
+    width: 100%;
+
+    min-height: 44px;
+
+    border: 0;
+
+    border-radius: 11px;
+
+    background: #fff;
+
+    color: #080b12;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    touch-action: manipulation;
+}
+
+.serviceButton:active {
+
+    transform: scale(.98);
+}
+
+
+/* NOTICE */
 
 .notice {
-    margin-top:
-        clamp(12px, 2vw, 20px);
+
+    margin-top: 16px;
 
     padding:
         clamp(15px, 3vw, 22px);
 
-    border-radius:
-        clamp(14px, 2.5vw, 20px);
+    background: var(--card2);
 
-    background: var(--surface-2);
+    border-radius: 16px;
 
     color: #aeb7c5;
 
-    font-size:
-        clamp(12px, 1.8vw, 15px);
+    font-size: 13px;
 
     line-height: 1.65;
 }
 
 
-/* =========================================================
-   RESET BUTTON
-========================================================= */
+/* RESET */
 
 .reset {
-    display: block;
 
     width: 100%;
 
     min-height: 50px;
 
-    margin-top:
-        clamp(12px, 2vw, 20px);
-
-    padding:
-        13px 18px;
+    margin-top: 16px;
 
     border: 0;
 
-    border-radius:
-        clamp(11px, 2vw, 15px);
+    border-radius: 13px;
 
-    background: #ffffff;
+    background: #fff;
 
     color: #080b12;
 
-    font-family: inherit;
-
-    font-size:
-        clamp(14px, 2vw, 16px);
+    font-size: 15px;
 
     font-weight: 700;
 
     cursor: pointer;
 
     touch-action: manipulation;
-
-    transition:
-        transform .15s ease,
-        opacity .15s ease;
-}
-
-.reset:hover {
-    opacity: .9;
-}
-
-.reset:active {
-    transform: scale(.985);
 }
 
 
-/* =========================================================
-   SMALL PHONES
-========================================================= */
+/* SMALL PHONES */
 
 @media (max-width: 380px) {
 
     .page {
-        padding-left: 12px;
-        padding-right: 12px;
+
+        padding-left: 11px;
+        padding-right: 11px;
+
     }
 
-    .header {
-        padding-bottom: 22px;
-    }
+    .grid {
 
-    .upload {
-        min-height: 230px;
-        padding: 28px 14px;
-    }
-
-    .cards {
         grid-template-columns: 1fr;
+
+    }
+
+    .services {
+
+        grid-template-columns: 1fr;
+
     }
 
     .row {
+
         grid-template-columns: 1fr;
+
         gap: 3px;
+
     }
 
     .value {
+
         text-align: left;
+
     }
 }
 
 
-/* =========================================================
-   PHONES
-========================================================= */
+/* NORMAL PHONES */
 
-@media (min-width: 381px) and (max-width: 600px) {
+@media
+(min-width: 381px)
+and (max-width: 600px) {
 
-    .cards {
+    .grid {
+
         grid-template-columns: 1fr;
+
     }
 
-    .row {
-        grid-template-columns:
-            minmax(110px, 1fr)
-            minmax(0, 1.5fr);
+    .services {
+
+        grid-template-columns: 1fr;
+
     }
 
 }
 
 
-/* =========================================================
-   TABLETS
-========================================================= */
+/* TABLETS */
 
-@media (min-width: 601px) and (max-width: 900px) {
+@media
+(min-width: 601px)
+and (max-width: 900px) {
 
     .page {
+
         padding-left: 28px;
         padding-right: 28px;
-    }
 
-    .upload {
-        min-height: 310px;
     }
 
 }
 
 
-/* =========================================================
-   DESKTOP
-========================================================= */
+/* DESKTOP */
 
 @media (min-width: 901px) {
 
     .page {
+
         padding-left: 32px;
         padding-right: 32px;
-    }
 
-    .upload:hover {
-        transform: translateY(-2px);
     }
 
 }
 
 
-/* =========================================================
-   VERY LARGE SCREENS
-========================================================= */
-
-@media (min-width: 1600px) {
-
-    :root {
-        --page-max: 1280px;
-    }
-
-}
-
-
-/* =========================================================
-   LANDSCAPE PHONE
-========================================================= */
+/* LANDSCAPE PHONE */
 
 @media
 (orientation: landscape)
 and (max-height: 600px)
 and (max-width: 900px) {
 
-    .page {
-        padding-top: 14px;
+    header {
+
+        padding-top: 5px;
+
         padding-bottom: 20px;
-    }
 
-    .header {
-        padding-bottom: 18px;
-    }
-
-    .header p {
-        margin-top: 7px;
     }
 
     .upload {
-        min-height: 210px;
+
+        min-height: 200px;
+
     }
 
-    .upload-icon {
-        font-size: 40px;
-        margin-bottom: 10px;
+    .uploadIcon {
+
+        font-size: 38px;
+
+        margin-bottom: 8px;
+
     }
 
 }
 
 
-/* =========================================================
-   LANDSCAPE TABLET
-========================================================= */
+/* REDUCED MOTION */
 
 @media
-(orientation: landscape)
-and (min-width: 700px)
-and (max-height: 800px) {
+(prefers-reduced-motion: reduce) {
 
-    .preview img {
-        max-height: 65vh;
-    }
-
-}
-
-
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
+    * {
 
         scroll-behavior: auto !important;
 
-        transition-duration: 0.01ms !important;
+        transition: none !important;
 
-        animation-duration: 0.01ms !important;
-    }
-
-}
-
-
-/* =========================================================
-   DARK MODE ENFORCEMENT
-========================================================= */
-
-@media (prefers-color-scheme: dark) {
-
-    body {
-        background:
-            radial-gradient(
-                circle at top,
-                #151d2c 0%,
-                #080b12 45%,
-                #05070b 100%
-            );
-    }
-
-}
-
-
-/* =========================================================
-   PRINT
-========================================================= */
-
-@media print {
-
-    body {
-        background: white;
-        color: black;
-    }
-
-    .upload,
-    .reset {
-        display: none;
-    }
-
-    .card,
-    .details,
-    .preview,
-    .notice {
-        background: white;
-        border: 1px solid #ccc;
     }
 
 }
 
 </style>
+
 </head>
 
 
@@ -853,268 +809,403 @@ and (max-height: 800px) {
 
 <div class="container">
 
-<header class="header">
 
-    <div class="logo">
-        🔍
-    </div>
+<header>
 
-    <h1>
-        Image Authenticity Checker
-    </h1>
+<div class="logo">
+🔍
+</div>
 
-    <p>
-        ფოტოს ტექნიკური მონაცემების და საეჭვო ნიშნების
-        ბრაუზერში შემოწმება
-    </p>
+<h1>
+Image Authenticity Checker
+</h1>
+
+<p>
+შეამოწმე ფოტო ტექნიკური ნიშნებით და გახსენი
+უფასო გარე AI დეტექტორები დამატებითი შემოწმებისთვის
+</p>
 
 </header>
 
 
-<label class="upload" for="fileInput">
+<label
+class="upload"
+for="fileInput"
+>
 
-    <input
-        id="fileInput"
-        type="file"
-        accept="image/jpeg,image/png,image/webp,image/gif,image/bmp,image/*"
-    >
+<input
+id="fileInput"
+type="file"
+accept="image/*"
+>
 
-    <div class="upload-icon">
-        📷
-    </div>
+<div class="uploadIcon">
+📷
+</div>
 
-    <h2>
-        ატვირთე ფოტო
-    </h2>
+<h2>
+ატვირთე ფოტო
+</h2>
 
-    <p>
-        დააჭირე აქ ან აირჩიე ფოტო შენი მოწყობილობიდან
-    </p>
+<p>
+აირჩიე JPG, PNG, WEBP ან სხვა გამოსახულება
+</p>
 
 </label>
 
 
-<section id="results" aria-live="polite">
+<section id="results">
 
 
-    <div class="preview">
+<div class="preview">
 
-        <div class="preview-image-wrapper">
+<div class="imageBox">
 
-            <img
-                id="previewImage"
-                alt="ატვირთული ფოტო"
-            >
+<img
+id="previewImage"
+alt="ატვირთული ფოტო"
+>
 
-        </div>
+</div>
 
-        <div
-            class="file-name"
-            id="fileName"
-        ></div>
+<div
+class="filename"
+id="filename"
+></div>
 
-    </div>
+</div>
 
 
-    <div class="cards">
+<div class="grid">
 
 
-        <article class="card">
+<div class="card">
 
-            <h3>
-                AI გენერაციის სავარაუდო მაჩვენებელი
-            </h3>
+<h3>
+AI გენერაციის საეჭვო მაჩვენებელი
+</h3>
 
-            <div
-                class="score neutral"
-                id="aiScore"
-            >
-                --%
-            </div>
+<div
+id="aiScore"
+class="score neutral"
+>
+--%
+</div>
 
-            <div class="bar">
+<div class="bar">
 
-                <div
-                    class="bar-inner neutral"
-                    id="aiBar"
-                ></div>
+<span
+id="aiBar"
+class="neutral"
+></span>
 
-            </div>
+</div>
 
-            <p id="aiText">
-                ანალიზი მიმდინარეობს
-            </p>
+<p
+id="aiText"
+class="cardText"
+>
+ანალიზი მიმდინარეობს
+</p>
 
-        </article>
+</div>
 
 
-        <article class="card">
+<div class="card">
 
-            <h3>
-                რედაქტირების სავარაუდო ნიშნები
-            </h3>
+<h3>
+რედაქტირების საეჭვო მაჩვენებელი
+</h3>
 
-            <div
-                class="score neutral"
-                id="editScore"
-            >
-                --%
-            </div>
+<div
+id="editScore"
+class="score neutral"
+>
+--%
+</div>
 
-            <div class="bar">
+<div class="bar">
 
-                <div
-                    class="bar-inner neutral"
-                    id="editBar"
-                ></div>
+<span
+id="editBar"
+class="neutral"
+></span>
 
-            </div>
+</div>
 
-            <p id="editText">
-                ანალიზი მიმდინარეობს
-            </p>
+<p
+id="editText"
+class="cardText"
+>
+ანალიზი მიმდინარეობს
+</p>
 
-        </article>
+</div>
 
 
-    </div>
+</div>
 
 
-    <section class="details">
+<section class="details">
 
-        <h2>
-            ფოტოს ინფორმაცია
-        </h2>
+<h2>
+ფოტოს ტექნიკური ინფორმაცია
+</h2>
 
 
-        <div class="row">
+<div class="row">
 
-            <span class="label">
-                ფაილის ტიპი
-            </span>
+<span class="label">
+ფაილის ტიპი
+</span>
 
-            <span
-                class="value"
-                id="fileType"
-            >
-                --
-            </span>
+<span
+id="fileType"
+class="value"
+>
+--
+</span>
 
-        </div>
+</div>
 
 
-        <div class="row">
+<div class="row">
 
-            <span class="label">
-                ფაილის ზომა
-            </span>
+<span class="label">
+ფაილის ზომა
+</span>
 
-            <span
-                class="value"
-                id="fileSize"
-            >
-                --
-            </span>
+<span
+id="fileSize"
+class="value"
+>
+--
+</span>
 
-        </div>
+</div>
 
 
-        <div class="row">
+<div class="row">
 
-            <span class="label">
-                ფოტოს ზომები
-            </span>
+<span class="label">
+ფოტოს ზომები
+</span>
 
-            <span
-                class="value"
-                id="dimensions"
-            >
-                --
-            </span>
+<span
+id="dimensions"
+class="value"
+>
+--
+</span>
 
-        </div>
+</div>
 
 
-        <div class="row">
+<div class="row">
 
-            <span class="label">
-                EXIF მონაცემები
-            </span>
+<span class="label">
+EXIF
+</span>
 
-            <span
-                class="value"
-                id="exifStatus"
-            >
-                --
-            </span>
+<span
+id="exif"
+class="value"
+>
+--
+</span>
 
-        </div>
+</div>
 
 
-        <div class="row">
+<div class="row">
 
-            <span class="label">
-                ფაილის ბოლო ცვლილება
-            </span>
+<span class="label">
+ფაილის სახელი
+</span>
 
-            <span
-                class="value"
-                id="modifiedDate"
-            >
-                --
-            </span>
+<span
+id="fileName"
+class="value"
+>
+--
+</span>
 
-        </div>
+</div>
 
 
-        <div class="row">
+</section>
 
-            <span class="label">
-                ფაილის სახელი
-            </span>
 
-            <span
-                class="value"
-                id="originalName"
-            >
-                --
-            </span>
+<section class="external">
 
-        </div>
+<h2>
+უფასო გარე AI დეტექტორები
+</h2>
 
+<p>
+ეს სერვისები ცალკე გაიხსნება. API Key არ გამოიყენება.
+ბრაუზერის უსაფრთხოების გამო ამ HTML ფაილს არ შეუძლია
+სხვა საიტზე ფოტოს ავტომატურად ატვირთვა და შედეგის
+უკან დაბრუნება.
+</p>
 
-    </section>
 
+<div class="services">
 
-    <div class="notice">
 
-        <strong>
-            მნიშვნელოვანი
-        </strong>
+<div class="service">
 
-        <br><br>
+<div>
 
-        ეს ინსტრუმენტი მუშაობს მხოლოდ ბრაუზერში.
-        ფოტო გარე სერვერზე არ იგზავნება.
+<div class="serviceName">
+Lynote AI Detector
+</div>
 
-        <br><br>
+<div class="serviceDescription">
+უფასო AI Image Detector
+</div>
 
-        AI გენერირებული ფოტოს 100 პროცენტიანი დადგენა
-        მხოლოდ ტექნიკური მონაცემებით შეუძლებელია.
+</div>
 
-        შედეგები წარმოადგენს ტექნიკურ სავარაუდო შეფასებას
-        და არა საბოლოო მტკიცებულებას.
+<button
+class="serviceButton"
+data-url="https://huggingface.co/spaces/Lynote/free-ai-image-detector"
+>
+გახსნა
+</button>
 
-    </div>
+</div>
 
 
-    <button
-        class="reset"
-        id="resetButton"
-        type="button"
-    >
-        სხვა ფოტოს შემოწმება
-    </button>
+<div class="service">
+
+<div>
+
+<div class="serviceName">
+MediaSens
+</div>
+
+<div class="serviceDescription">
+AI detection, metadata და C2PA
+</div>
+
+</div>
+
+<button
+class="serviceButton"
+data-url="https://media.sens.center/ai-image-detector"
+>
+გახსნა
+</button>
+
+</div>
+
+
+<div class="service">
+
+<div>
+
+<div class="serviceName">
+WASMTools
+</div>
+
+<div class="serviceDescription">
+ლოკალური AI image detector
+</div>
+
+</div>
+
+<button
+class="serviceButton"
+data-url="https://wasmtools.dev/tools/ai-image-detector/index.html"
+>
+გახსნა
+</button>
+
+</div>
+
+
+<div class="service">
+
+<div>
+
+<div class="serviceName">
+PixelSmithery
+</div>
+
+<div class="serviceDescription">
+AI Image Checker
+</div>
+
+</div>
+
+<button
+class="serviceButton"
+data-url="https://pixelsmithery.com/tools/ai-image-checker/"
+>
+გახსნა
+</button>
+
+</div>
+
+
+<div class="service">
+
+<div>
+
+<div class="serviceName">
+FauxGuard
+</div>
+
+<div class="serviceDescription">
+AI generated და AI edited detection
+</div>
+
+</div>
+
+<button
+class="serviceButton"
+data-url="https://fauxguard.ai/"
+>
+გახსნა
+</button>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+<div class="notice">
+
+<strong>
+მნიშვნელოვანი
+</strong>
+
+<br><br>
+
+ეს საიტი ფოტოს თავად არ აგზავნის გარე სერვერზე.
+
+ტექნიკური შეფასება კეთდება მოწყობილობაზე.
+
+გარე დეტექტორები იხსნება ცალკე და მათი შედეგი
+უნდა შეადარო ერთმანეთს.
+
+არც ერთი AI detector არ იძლევა გარანტიას რომ
+ფოტო ნამდვილად AI გენერირებულია ან ნამდვილად
+ორიგინალია.
+
+</div>
+
+
+<button
+id="reset"
+class="reset"
+>
+სხვა ფოტოს შემოწმება
+</button>
 
 
 </section>
@@ -1126,621 +1217,511 @@ and (max-height: 800px) {
 
 <script>
 
-/* =========================================================
-   ELEMENTS
-========================================================= */
 
-const fileInput =
-    document.getElementById("fileInput");
+const input =
+document.getElementById("fileInput");
 
 const results =
-    document.getElementById("results");
+document.getElementById("results");
 
-const previewImage =
-    document.getElementById("previewImage");
-
-const fileName =
-    document.getElementById("fileName");
-
-const resetButton =
-    document.getElementById("resetButton");
+const image =
+document.getElementById("previewImage");
 
 
-/* =========================================================
-   FILE INPUT
-========================================================= */
+input.addEventListener(
+"change",
+function() {
 
-fileInput.addEventListener(
-    "change",
-    handleFile
+const file =
+this.files[0];
+
+if (!file) return;
+
+if (!file.type.startsWith("image/")) {
+
+alert(
+"გთხოვ აირჩიე ფოტო"
 );
 
+return;
 
-resetButton.addEventListener(
-    "click",
-    resetChecker
-);
-
-
-/* =========================================================
-   HANDLE FILE
-========================================================= */
-
-function handleFile(event) {
-
-    const file =
-        event.target.files &&
-        event.target.files[0];
-
-    if (!file) {
-        return;
-    }
-
-    if (!file.type.startsWith("image/")) {
-
-        alert(
-            "გთხოვ აირჩიე სურათის ფაილი"
-        );
-
-        fileInput.value = "";
-
-        return;
-    }
-
-    analyzeImage(file);
 }
 
+analyze(file);
 
-/* =========================================================
-   ANALYZE IMAGE
-========================================================= */
-
-function analyzeImage(file) {
-
-    results.style.display = "block";
-
-    fileName.textContent =
-        file.name;
-
-    document.getElementById(
-        "originalName"
-    ).textContent =
-        file.name;
-
-    document.getElementById(
-        "fileType"
-    ).textContent =
-        file.type || "უცნობი";
-
-    document.getElementById(
-        "fileSize"
-    ).textContent =
-        formatBytes(file.size);
-
-    document.getElementById(
-        "modifiedDate"
-    ).textContent =
-        file.lastModified
-            ? new Date(
-                file.lastModified
-              ).toLocaleString("ka-GE")
-            : "უცნობია";
+});
 
 
-    const objectURL =
-        URL.createObjectURL(file);
+/* =====================================================
+   ANALYZE
+===================================================== */
+
+function analyze(file) {
+
+results.style.display =
+"block";
 
 
-    previewImage.onload =
-        function () {
-
-            document.getElementById(
-                "dimensions"
-            ).textContent =
-                this.naturalWidth +
-                " × " +
-                this.naturalHeight;
+document.getElementById(
+"filename"
+).textContent =
+file.name;
 
 
-            analyzeTechnicalProperties(
-                file,
-                this
-            );
+document.getElementById(
+"fileName"
+).textContent =
+file.name;
 
 
-            URL.revokeObjectURL(
-                objectURL
-            );
-        };
+document.getElementById(
+"fileType"
+).textContent =
+file.type || "Unknown";
 
 
-    previewImage.src =
-        objectURL;
+document.getElementById(
+"fileSize"
+).textContent =
+formatBytes(file.size);
 
 
-    results.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
+const url =
+URL.createObjectURL(file);
+
+
+image.onload =
+function() {
+
+document.getElementById(
+"dimensions"
+).textContent =
+this.naturalWidth +
+" × " +
+this.naturalHeight;
+
+
+technicalAnalysis(
+file,
+this
+);
+
+
+URL.revokeObjectURL(url);
+
+};
+
+
+image.src =
+url;
+
+
+detectEXIF(file);
 
 }
 
 
-/* =========================================================
+/* =====================================================
    TECHNICAL ANALYSIS
-========================================================= */
+===================================================== */
 
-function analyzeTechnicalProperties(
-    file,
-    image
+function technicalAnalysis(
+file,
+img
 ) {
 
-    let editScore = 15;
-    let aiScore = 10;
+let ai = 8;
+
+let edit = 12;
 
 
-    const extension =
-        file.name
-            .split(".")
-            .pop()
-            .toLowerCase();
+const width =
+img.naturalWidth;
+
+const height =
+img.naturalHeight;
 
 
-    const width =
-        image.naturalWidth;
-
-    const height =
-        image.naturalHeight;
+const pixels =
+width * height;
 
 
-    /*
-       File type
-    */
-
-    if (
-        extension === "jpg" ||
-        extension === "jpeg"
-    ) {
-
-        editScore += 5;
-
-    }
+const name =
+file.name.toLowerCase();
 
 
-    if (extension === "png") {
+/*
+AI dimension patterns
+*/
 
-        editScore += 8;
+if (
+width % 64 === 0 &&
+height % 64 === 0
+) {
 
-    }
-
-
-    if (extension === "webp") {
-
-        editScore += 10;
-
-    }
-
-
-    /*
-       Dimensions
-    */
-
-    if (
-        (
-            width % 64 === 0 &&
-            height % 64 === 0
-        )
-        ||
-        (
-            width % 512 === 0 &&
-            height % 512 === 0
-        )
-    ) {
-
-        aiScore += 18;
-
-    }
-
-
-    /*
-       Large image
-    */
-
-    if (
-        width >= 4000 ||
-        height >= 4000
-    ) {
-
-        editScore += 5;
-
-    }
-
-
-    /*
-       Pixel / file size ratio
-    */
-
-    const pixels =
-        width * height;
-
-
-    if (
-        pixels > 12000000 &&
-        file.size < 1000000
-    ) {
-
-        editScore += 12;
-
-    }
-
-
-    /*
-       Filename hints
-    */
-
-    const lowerName =
-        file.name.toLowerCase();
-
-
-    const suspiciousNames = [
-
-        "midjourney",
-        "stable",
-        "diffusion",
-        "dall",
-        "firefly",
-        "leonardo",
-        "generated",
-        "ai-image"
-
-    ];
-
-
-    suspiciousNames.forEach(
-        function(word) {
-
-            if (
-                lowerName.includes(word)
-            ) {
-
-                aiScore += 25;
-
-            }
-
-        }
-    );
-
-
-    /*
-       Normalize
-    */
-
-    aiScore =
-        Math.min(
-            95,
-            Math.max(
-                1,
-                aiScore
-            )
-        );
-
-
-    editScore =
-        Math.min(
-            95,
-            Math.max(
-                1,
-                editScore
-            )
-        );
-
-
-    /*
-       EXIF
-    */
-
-    detectEXIF(file);
-
-
-    /*
-       Display
-    */
-
-    setTimeout(
-        function() {
-
-            showScore(
-                "aiScore",
-                "aiBar",
-                "aiText",
-                aiScore
-            );
-
-
-            showScore(
-                "editScore",
-                "editBar",
-                "editText",
-                editScore
-            );
-
-        },
-        300
-    );
+ai += 15;
 
 }
 
 
-/* =========================================================
+if (
+width % 512 === 0 ||
+height % 512 === 0
+) {
+
+ai += 10;
+
+}
+
+
+/*
+Very high resolution
+*/
+
+if (
+width >= 4000 ||
+height >= 4000
+) {
+
+edit += 5;
+
+}
+
+
+/*
+Large image but very small file
+*/
+
+if (
+pixels > 12000000 &&
+file.size < 1000000
+) {
+
+edit += 15;
+
+}
+
+
+/*
+Filename clues
+*/
+
+const keywords = [
+
+"midjourney",
+"stable",
+"diffusion",
+"dall",
+"firefly",
+"leonardo",
+"generated",
+"ai-image"
+
+];
+
+
+keywords.forEach(
+function(keyword) {
+
+if (
+name.includes(keyword)
+) {
+
+ai += 25;
+
+}
+
+});
+
+
+ai =
+Math.min(95, ai);
+
+edit =
+Math.min(95, edit);
+
+
+showScore(
+"aiScore",
+"aiBar",
+"aiText",
+ai
+);
+
+
+showScore(
+"editScore",
+"editBar",
+"editText",
+edit
+);
+
+}
+
+
+/* =====================================================
    SCORE
-========================================================= */
+===================================================== */
 
 function showScore(
-    scoreId,
-    barId,
-    textId,
-    score
+scoreID,
+barID,
+textID,
+score
 ) {
 
-    const scoreElement =
-        document.getElementById(
-            scoreId
-        );
+const scoreElement =
+document.getElementById(scoreID);
 
-    const bar =
-        document.getElementById(
-            barId
-        );
+const bar =
+document.getElementById(barID);
 
-    const text =
-        document.getElementById(
-            textId
-        );
+const text =
+document.getElementById(textID);
 
 
-    scoreElement.textContent =
-        score + "%";
+scoreElement.textContent =
+score + "%";
 
 
-    bar.style.width =
-        score + "%";
+bar.style.width =
+score + "%";
 
 
-    scoreElement.className =
-        "score";
+scoreElement.className =
+"score";
 
 
-    if (score < 30) {
+if (score < 30) {
 
-        scoreElement.classList.add(
-            "good"
-        );
+scoreElement.classList.add(
+"good"
+);
 
-        bar.className =
-            "bar-inner good";
+bar.className =
+"good";
 
-        text.textContent =
-            "ძლიერი საეჭვო ნიშანი არ აღმოჩნდა.";
+text.textContent =
+"ძლიერი საეჭვო ტექნიკური ნიშანი არ აღმოჩნდა.";
 
-    }
+}
 
-    else if (score < 60) {
+else if (score < 60) {
 
-        scoreElement.classList.add(
-            "warning"
-        );
+scoreElement.classList.add(
+"warning"
+);
 
-        bar.className =
-            "bar-inner warning";
+bar.className =
+"warning";
 
-        text.textContent =
-            "აღმოჩნდა გარკვეული საეჭვო ტექნიკური ნიშნები.";
+text.textContent =
+"აღმოჩნდა გარკვეული საეჭვო ნიშნები.";
 
-    }
+}
 
-    else {
+else {
 
-        scoreElement.classList.add(
-            "bad"
-        );
+scoreElement.classList.add(
+"bad"
+);
 
-        bar.className =
-            "bar-inner bad";
+bar.className =
+"bad";
 
-        text.textContent =
-            "აღმოჩნდა რამდენიმე საეჭვო ტექნიკური ნიშანი.";
+text.textContent =
+"აღმოჩნდა რამდენიმე საეჭვო ტექნიკური ნიშანი.";
 
-    }
+}
 
 }
 
 
-/* =========================================================
+/* =====================================================
    EXIF
-========================================================= */
+===================================================== */
 
 function detectEXIF(file) {
 
-    const reader =
-        new FileReader();
+const reader =
+new FileReader();
 
 
-    reader.onload =
-        function() {
+reader.onload =
+function() {
 
-            const buffer =
-                new Uint8Array(
-                    reader.result
-                );
-
-
-            let found =
-                false;
+const bytes =
+new Uint8Array(
+reader.result
+);
 
 
-            /*
-               EXIF marker
-            */
-
-            for (
-                let i = 0;
-                i < buffer.length - 4;
-                i++
-            ) {
-
-                if (
-                    buffer[i] === 0x45 &&
-                    buffer[i + 1] === 0x78 &&
-                    buffer[i + 2] === 0x69 &&
-                    buffer[i + 3] === 0x66
-                ) {
-
-                    found = true;
-
-                    break;
-
-                }
-
-            }
+let found = false;
 
 
-            const element =
-                document.getElementById(
-                    "exifStatus"
-                );
+for (
+let i = 0;
+i < bytes.length - 4;
+i++
+) {
 
+if (
 
-            if (found) {
+bytes[i] === 0x45 &&
+bytes[i+1] === 0x78 &&
+bytes[i+2] === 0x69 &&
+bytes[i+3] === 0x66
 
-                element.textContent =
-                    "აღმოჩენილია";
+) {
 
-                element.className =
-                    "value good";
+found = true;
 
-            }
+break;
 
-            else {
-
-                element.textContent =
-                    "არ აღმოჩნდა";
-
-                element.className =
-                    "value warning";
-
-            }
-
-        };
-
-
-    reader.readAsArrayBuffer(
-        file.slice(
-            0,
-            Math.min(
-                file.size,
-                500000
-            )
-        )
-    );
+}
 
 }
 
 
-/* =========================================================
-   FORMAT FILE SIZE
-========================================================= */
+const element =
+document.getElementById("exif");
+
+
+if (found) {
+
+element.textContent =
+"აღმოჩენილია";
+
+element.className =
+"value good";
+
+}
+
+else {
+
+element.textContent =
+"არ აღმოჩნდა";
+
+element.className =
+"value warning";
+
+}
+
+};
+
+
+reader.readAsArrayBuffer(
+file.slice(
+0,
+Math.min(
+file.size,
+500000
+)
+)
+);
+
+}
+
+
+/* =====================================================
+   EXTERNAL SERVICES
+===================================================== */
+
+document
+.querySelectorAll(".serviceButton")
+.forEach(
+function(button) {
+
+button.addEventListener(
+"click",
+function() {
+
+const url =
+this.dataset.url;
+
+
+/*
+Open external detector
+*/
+
+window.open(
+url,
+"_blank",
+"noopener,noreferrer"
+);
+
+});
+});
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+document
+.getElementById("reset")
+.addEventListener(
+"click",
+function() {
+
+input.value =
+"";
+
+results.style.display =
+"none";
+
+image.removeAttribute(
+"src"
+);
+
+window.scrollTo({
+top: 0,
+behavior: "smooth"
+});
+
+});
+
+
+/* =====================================================
+   FILE SIZE
+===================================================== */
 
 function formatBytes(bytes) {
 
-    if (!bytes) {
-        return "0 Bytes";
-    }
+if (!bytes)
+return "0 Bytes";
 
 
-    const units = [
-        "Bytes",
-        "KB",
-        "MB",
-        "GB"
-    ];
+const units = [
+"Bytes",
+"KB",
+"MB",
+"GB"
+];
 
 
-    const index =
-        Math.floor(
-            Math.log(bytes) /
-            Math.log(1024)
-        );
+const index =
+Math.floor(
+Math.log(bytes) /
+Math.log(1024)
+);
 
 
-    return (
-        parseFloat(
-            (
-                bytes /
-                Math.pow(
-                    1024,
-                    index
-                )
-            ).toFixed(2)
-        )
-        +
-        " " +
-        units[index]
-    );
-
-}
-
-
-/* =========================================================
-   RESET
-========================================================= */
-
-function resetChecker() {
-
-    results.style.display =
-        "none";
-
-
-    fileInput.value =
-        "";
-
-
-    previewImage.removeAttribute(
-        "src"
-    );
-
-
-    fileName.textContent =
-        "";
-
-
-    document.getElementById(
-        "aiScore"
-    ).textContent =
-        "--%";
-
-
-    document.getElementById(
-        "editScore"
-    ).textContent =
-        "--%";
-
-
-    document.getElementById(
-        "aiBar"
-    ).style.width =
-        "0";
-
-
-    document.getElementById(
-        "editBar"
-    ).style.width =
-        "0";
-
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+return (
+parseFloat(
+(
+bytes /
+Math.pow(
+1024,
+index
+)
+).toFixed(2)
+)
++
+" "
++
+units[index]
+);
 
 }
 
