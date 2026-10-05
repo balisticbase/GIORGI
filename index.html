@@ -9,729 +9,701 @@
       initial-scale=1,
       viewport-fit=cover">
 
-<meta name="theme-color"
-      content="#070a10">
+<meta name="theme-color" content="#070a10">
 
-<title>
-Image Authenticity Checker
-</title>
+<title>Image Authenticity Checker</title>
 
 <style>
 
-* {
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
 }
 
-html {
-    width: 100%;
-    min-height: 100%;
-    -webkit-text-size-adjust: 100%;
+html{
+    width:100%;
+    min-height:100%;
+    -webkit-text-size-adjust:100%;
 }
 
-body {
-    margin: 0;
-    min-height: 100vh;
-    min-height: 100dvh;
+body{
+    margin:0;
+    min-height:100vh;
+    min-height:100dvh;
 
     font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Arial,
-        sans-serif;
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
 
-    color: #fff;
+    color:#fff;
 
     background:
-        radial-gradient(
-            circle at top,
-            #182235 0%,
-            #080b12 48%,
-            #05070b 100%
-        );
+    radial-gradient(
+        circle at top,
+        #182235 0%,
+        #080b12 48%,
+        #05070b 100%
+    );
 
-    -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing:antialiased;
 
-    overflow-x: hidden;
+    overflow-x:hidden;
 }
 
-:root {
+:root{
 
-    --max-width: 1200px;
+    --max:1200px;
 
-    --bg: #080b12;
-    --card: #10151f;
-    --card2: #151c28;
+    --bg:#080b12;
+    --card:#10151f;
+    --card2:#151c28;
 
-    --border: #273141;
+    --border:#273141;
 
-    --text: #fff;
-    --muted: #929baa;
+    --muted:#929baa;
 
-    --blue: #60a5fa;
-    --green: #4ade80;
-    --yellow: #fbbf24;
-    --red: #fb7185;
+    --blue:#60a5fa;
+    --green:#4ade80;
+    --yellow:#fbbf24;
+    --red:#fb7185;
 
 }
 
-.page {
+.page{
 
-    width: 100%;
-
-    min-height: 100vh;
-    min-height: 100dvh;
-
-    padding-top:
-        max(20px, env(safe-area-inset-top));
-
-    padding-right:
-        max(14px, env(safe-area-inset-right));
-
-    padding-bottom:
-        max(30px, env(safe-area-inset-bottom));
-
-    padding-left:
-        max(14px, env(safe-area-inset-left));
-}
-
-.container {
-
-    width: 100%;
-
-    max-width:
-        var(--max-width);
-
-    margin: 0 auto;
-}
-
-header {
-
-    text-align: center;
+    width:100%;
+    min-height:100vh;
+    min-height:100dvh;
 
     padding:
-        15px 0 30px;
+    max(18px,env(safe-area-inset-top))
+    max(14px,env(safe-area-inset-right))
+    max(30px,env(safe-area-inset-bottom))
+    max(14px,env(safe-area-inset-left));
 }
 
-.logo {
+.container{
 
-    width:
-        clamp(52px, 10vw, 72px);
+    width:100%;
+    max-width:var(--max);
 
-    height:
-        clamp(52px, 10vw, 72px);
-
-    margin: 0 auto 16px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 20px;
-
-    background: #151d2b;
-
-    font-size:
-        clamp(28px, 6vw, 40px);
+    margin:auto;
 }
 
-h1 {
+header{
 
-    margin: 0;
+    text-align:center;
 
-    font-size:
-        clamp(25px, 5vw, 46px);
-
-    line-height: 1.1;
-
-    letter-spacing: -0.04em;
+    padding:15px 0 30px;
 }
 
-header p {
+.logo{
 
-    max-width: 700px;
+    width:68px;
+    height:68px;
 
-    margin:
-        12px auto 0;
+    margin:0 auto 16px;
 
-    color: var(--muted);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:20px;
+
+    background:#151d2b;
+
+    font-size:35px;
+}
+
+h1{
+
+    margin:0;
 
     font-size:
-        clamp(13px, 2vw, 17px);
+    clamp(25px,5vw,46px);
 
-    line-height: 1.6;
+    line-height:1.1;
+
+    letter-spacing:-.04em;
+}
+
+header p{
+
+    max-width:720px;
+
+    margin:12px auto 0;
+
+    color:var(--muted);
+
+    font-size:
+    clamp(13px,2vw,17px);
+
+    line-height:1.6;
 }
 
 
 /* UPLOAD */
 
-.upload {
+.upload{
 
-    position: relative;
+    position:relative;
 
-    width: 100%;
+    width:100%;
 
     min-height:
-        clamp(240px, 35vw, 360px);
+    clamp(240px,35vw,350px);
 
     padding:
-        clamp(25px, 6vw, 60px);
+    clamp(25px,6vw,60px);
 
-    display: flex;
+    display:flex;
 
-    flex-direction: column;
+    flex-direction:column;
 
-    align-items: center;
+    align-items:center;
 
-    justify-content: center;
+    justify-content:center;
 
-    text-align: center;
+    text-align:center;
 
-    border:
-        2px dashed #3a4658;
+    border:2px dashed #3a4658;
 
     border-radius:
-        clamp(18px, 3vw, 28px);
+    clamp(18px,3vw,28px);
 
-    background:
-        rgba(16,21,31,.92);
+    background:rgba(16,21,31,.92);
 
-    cursor: pointer;
+    cursor:pointer;
 
-    transition:
-        .2s ease;
+    transition:.2s ease;
 }
 
-.upload:hover {
+.upload:hover{
 
-    border-color: #718096;
+    border-color:#718096;
 
-    background: #131a26;
+    background:#131a26;
 }
 
-.upload:active {
+.upload.drag{
 
-    transform: scale(.995);
+    border-color:var(--blue);
+
+    background:#101d31;
 }
 
-.upload input {
+.upload input{
 
-    position: absolute;
+    position:absolute;
 
-    opacity: 0;
+    width:1px;
+    height:1px;
 
-    pointer-events: none;
+    opacity:0;
 }
 
-.uploadIcon {
+.uploadIcon{
 
     font-size:
-        clamp(45px, 9vw, 75px);
+    clamp(45px,9vw,75px);
 
-    margin-bottom: 18px;
+    margin-bottom:18px;
 }
 
-.upload h2 {
+.upload h2{
 
-    margin: 0;
+    margin:0;
 
     font-size:
-        clamp(19px, 4vw, 28px);
+    clamp(19px,4vw,28px);
 }
 
-.upload p {
+.upload p{
 
-    margin:
-        10px 0 0;
+    margin:10px 0 0;
 
-    color: var(--muted);
+    color:var(--muted);
 
     font-size:
-        clamp(13px, 2vw, 16px);
+    clamp(13px,2vw,16px);
 }
 
 
 /* RESULTS */
 
-#results {
+#results{
 
-    display: none;
+    display:none;
 
-    margin-top: 25px;
+    margin-top:25px;
 }
 
 
-/* IMAGE */
+/* PREVIEW */
 
-.preview {
+.preview{
 
     padding:
-        clamp(10px, 2vw, 20px);
+    clamp(10px,2vw,20px);
 
-    background: var(--card);
+    background:var(--card);
 
-    border:
-        1px solid var(--border);
-
-    border-radius:
-        clamp(16px, 3vw, 24px);
-}
-
-.imageBox {
-
-    width: 100%;
-
-    min-height: 180px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    overflow: hidden;
-
-    background: #05070b;
+    border:1px solid var(--border);
 
     border-radius:
-        clamp(10px, 2vw, 16px);
+    clamp(16px,3vw,24px);
 }
 
-.imageBox img {
+.imageBox{
 
-    display: block;
+    width:100%;
 
-    max-width: 100%;
+    min-height:180px;
 
-    width: auto;
+    display:flex;
 
-    height: auto;
+    align-items:center;
+    justify-content:center;
+
+    overflow:hidden;
+
+    background:#05070b;
+
+    border-radius:
+    clamp(10px,2vw,16px);
+}
+
+.imageBox img{
+
+    display:block;
+
+    max-width:100%;
+    width:auto;
+    height:auto;
 
     max-height:
-        min(70vh, 750px);
+    min(70vh,750px);
 
-    object-fit: contain;
+    object-fit:contain;
 }
 
-.filename {
+.filename{
 
-    margin-top: 12px;
+    margin-top:12px;
 
-    color: var(--muted);
+    color:var(--muted);
 
-    font-size: 14px;
+    font-size:14px;
 
-    overflow-wrap: anywhere;
+    overflow-wrap:anywhere;
 }
 
 
-/* SCORE CARDS */
+/* GLOBAL */
 
-.grid {
+.global{
 
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-
-    gap: 16px;
-
-    margin-top: 16px;
-}
-
-.card {
-
-    min-width: 0;
+    margin-top:16px;
 
     padding:
-        clamp(16px, 3vw, 25px);
+    clamp(18px,3vw,28px);
 
-    background: var(--card);
+    background:var(--card);
 
-    border:
-        1px solid var(--border);
+    border:1px solid var(--border);
 
     border-radius:
-        clamp(15px, 2.5vw, 22px);
+    clamp(16px,3vw,24px);
 }
 
-.card h3 {
+.globalTitle{
 
-    margin:
-        0 0 12px;
+    margin:0 0 15px;
 
     font-size:
-        clamp(14px, 2vw, 18px);
+    clamp(18px,3vw,25px);
 }
 
-.score {
+.globalScore{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+}
+
+.bigScore{
 
     font-size:
-        clamp(30px, 7vw, 50px);
+    clamp(40px,9vw,70px);
 
-    font-weight: 800;
+    font-weight:900;
 
-    margin:
-        12px 0 16px;
+    line-height:1;
 }
 
-.good {
-    color: var(--green);
+.globalStatus{
+
+    padding:8px 13px;
+
+    border-radius:100px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    background:#222b38;
 }
 
-.warning {
-    color: var(--yellow);
-}
+.globalDescription{
 
-.bad {
-    color: var(--red);
-}
+    margin:15px 0 0;
 
-.neutral {
-    color: var(--blue);
-}
+    color:var(--muted);
 
-.bar {
+    line-height:1.6;
 
-    width: 100%;
-
-    height: 9px;
-
-    overflow: hidden;
-
-    border-radius: 100px;
-
-    background: #242c39;
-}
-
-.bar span {
-
-    display: block;
-
-    width: 0;
-
-    height: 100%;
-
-    border-radius: inherit;
-
-    transition:
-        width .9s ease;
-}
-
-.cardText {
-
-    margin:
-        12px 0 0;
-
-    color: var(--muted);
-
-    font-size: 13px;
-
-    line-height: 1.6;
+    font-size:14px;
 }
 
 
-/* DETAILS */
+/* DETECTORS */
 
-.details {
+.detectors{
 
-    margin-top: 16px;
-
-    padding:
-        clamp(16px, 3vw, 25px);
-
-    background: var(--card);
-
-    border:
-        1px solid var(--border);
-
-    border-radius:
-        clamp(15px, 2.5vw, 22px);
-}
-
-.details h2 {
-
-    margin:
-        0 0 8px;
-
-    font-size:
-        clamp(18px, 3vw, 24px);
-}
-
-.row {
-
-    display: grid;
+    display:grid;
 
     grid-template-columns:
-        minmax(130px, 1fr)
-        minmax(0, 2fr);
+    repeat(2,minmax(0,1fr));
 
-    gap: 15px;
+    gap:16px;
+
+    margin-top:16px;
+}
+
+.detector{
+
+    min-width:0;
 
     padding:
-        13px 0;
+    clamp(16px,3vw,25px);
 
-    border-bottom:
-        1px solid #222a36;
+    background:var(--card);
 
-    font-size: 14px;
-}
-
-.row:last-child {
-
-    border-bottom: 0;
-}
-
-.label {
-
-    color: var(--muted);
-}
-
-.value {
-
-    text-align: right;
-
-    overflow-wrap: anywhere;
-}
-
-
-/* EXTERNAL DETECTORS */
-
-.external {
-
-    margin-top: 16px;
-
-    padding:
-        clamp(16px, 3vw, 25px);
-
-    background: var(--card);
-
-    border:
-        1px solid var(--border);
+    border:1px solid var(--border);
 
     border-radius:
-        clamp(15px, 2.5vw, 22px);
+    clamp(15px,2.5vw,22px);
 }
 
-.external h2 {
+.detectorTop{
 
-    margin:
-        0 0 8px;
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+}
+
+.detectorName{
+
+    font-size:17px;
+
+    font-weight:800;
+}
+
+.status{
+
+    font-size:11px;
+
+    font-weight:700;
+
+    padding:6px 9px;
+
+    border-radius:100px;
+
+    background:#202836;
+
+    color:#aeb7c5;
+}
+
+.detectorScore{
+
+    margin-top:20px;
 
     font-size:
-        clamp(18px, 3vw, 24px);
+    clamp(30px,6vw,48px);
+
+    font-weight:900;
 }
 
-.external p {
+.detectorVerdict{
 
-    color: var(--muted);
+    margin-top:8px;
 
-    font-size: 13px;
+    font-weight:700;
 
-    line-height: 1.6;
-
-    margin:
-        0 0 18px;
+    font-size:14px;
 }
 
-.services {
+.detectorText{
 
-    display: grid;
+    margin-top:12px;
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    line-height:1.6;
+
+    overflow-wrap:anywhere;
+}
+
+.detectorError{
+
+    color:#fb7185;
+}
+
+.loading{
+
+    animation:pulse 1.2s infinite;
+}
+
+@keyframes pulse{
+
+    0%,100%{
+        opacity:.45;
+    }
+
+    50%{
+        opacity:1;
+    }
+
+}
+
+
+/* TECHNICAL */
+
+.details{
+
+    margin-top:16px;
+
+    padding:
+    clamp(16px,3vw,25px);
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    border-radius:
+    clamp(15px,2.5vw,22px);
+}
+
+.details h2{
+
+    margin:0 0 8px;
+
+    font-size:
+    clamp(18px,3vw,24px);
+}
+
+.row{
+
+    display:grid;
 
     grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+    minmax(130px,1fr)
+    minmax(0,2fr);
 
-    gap: 12px;
+    gap:15px;
+
+    padding:13px 0;
+
+    border-bottom:1px solid #222a36;
+
+    font-size:14px;
 }
 
-.service {
+.row:last-child{
 
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: space-between;
-
-    gap: 15px;
-
-    padding: 17px;
-
-    background: var(--card2);
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 15px;
+    border-bottom:0;
 }
 
-.serviceName {
+.label{
 
-    font-weight: 700;
-
-    font-size: 15px;
+    color:var(--muted);
 }
 
-.serviceDescription {
+.value{
 
-    color: var(--muted);
+    text-align:right;
 
-    font-size: 12px;
-
-    line-height: 1.5;
+    overflow-wrap:anywhere;
 }
 
-.serviceButton {
 
-    width: 100%;
+/* SIGNALS */
 
-    min-height: 44px;
+.signals{
 
-    border: 0;
+    margin-top:16px;
 
-    border-radius: 11px;
+    padding:
+    clamp(16px,3vw,25px);
 
-    background: #fff;
+    background:var(--card);
 
-    color: #080b12;
+    border:1px solid var(--border);
 
-    font-weight: 700;
-
-    cursor: pointer;
-
-    font-family: inherit;
-
-    touch-action: manipulation;
+    border-radius:
+    clamp(15px,2.5vw,22px);
 }
 
-.serviceButton:active {
+.signals h2{
 
-    transform: scale(.98);
+    margin:0 0 15px;
+
+    font-size:
+    clamp(18px,3vw,24px);
+}
+
+.signal{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+    padding:12px 0;
+
+    border-bottom:1px solid #222a36;
+
+    font-size:14px;
+}
+
+.signal:last-child{
+
+    border-bottom:0;
+}
+
+.signalName{
+
+    color:var(--muted);
+}
+
+.signalValue{
+
+    text-align:right;
+
+    font-weight:700;
 }
 
 
 /* NOTICE */
 
-.notice {
+.notice{
 
-    margin-top: 16px;
+    margin-top:16px;
 
     padding:
-        clamp(15px, 3vw, 22px);
+    clamp(15px,3vw,22px);
 
-    background: var(--card2);
+    background:var(--card2);
 
-    border-radius: 16px;
+    border-radius:16px;
 
-    color: #aeb7c5;
+    color:#aeb7c5;
 
-    font-size: 13px;
+    font-size:13px;
 
-    line-height: 1.65;
+    line-height:1.65;
 }
 
 
 /* RESET */
 
-.reset {
+.reset{
 
-    width: 100%;
+    width:100%;
 
-    min-height: 50px;
+    min-height:50px;
 
-    margin-top: 16px;
+    margin-top:16px;
 
-    border: 0;
+    border:0;
 
-    border-radius: 13px;
+    border-radius:13px;
 
-    background: #fff;
+    background:#fff;
 
-    color: #080b12;
+    color:#080b12;
 
-    font-size: 15px;
+    font-size:15px;
 
-    font-weight: 700;
+    font-weight:800;
 
-    cursor: pointer;
+    cursor:pointer;
 
-    touch-action: manipulation;
+    touch-action:manipulation;
 }
 
 
-/* SMALL PHONES */
+/* MOBILE */
 
-@media (max-width: 380px) {
+@media(max-width:600px){
 
-    .page {
+    .detectors{
 
-        padding-left: 11px;
-        padding-right: 11px;
-
+        grid-template-columns:1fr;
     }
 
-    .grid {
+    .row{
 
-        grid-template-columns: 1fr;
+        grid-template-columns:1fr;
 
+        gap:4px;
     }
 
-    .services {
+    .value{
 
-        grid-template-columns: 1fr;
-
-    }
-
-    .row {
-
-        grid-template-columns: 1fr;
-
-        gap: 3px;
-
-    }
-
-    .value {
-
-        text-align: left;
-
-    }
-}
-
-
-/* NORMAL PHONES */
-
-@media
-(min-width: 381px)
-and (max-width: 600px) {
-
-    .grid {
-
-        grid-template-columns: 1fr;
-
-    }
-
-    .services {
-
-        grid-template-columns: 1fr;
-
+        text-align:left;
     }
 
 }
 
 
-/* TABLETS */
+/* SMALL */
 
-@media
-(min-width: 601px)
-and (max-width: 900px) {
+@media(max-width:380px){
 
-    .page {
+    .page{
 
-        padding-left: 28px;
-        padding-right: 28px;
+        padding-left:11px;
+        padding-right:11px;
+    }
 
+}
+
+
+/* TABLET */
+
+@media(min-width:601px) and (max-width:900px){
+
+    .page{
+
+        padding-left:28px;
+        padding-right:28px;
     }
 
 }
@@ -739,45 +711,36 @@ and (max-width: 900px) {
 
 /* DESKTOP */
 
-@media (min-width: 901px) {
+@media(min-width:901px){
 
-    .page {
+    .page{
 
-        padding-left: 32px;
-        padding-right: 32px;
-
+        padding-left:32px;
+        padding-right:32px;
     }
 
 }
 
 
-/* LANDSCAPE PHONE */
+/* LANDSCAPE */
 
-@media
-(orientation: landscape)
-and (max-height: 600px)
-and (max-width: 900px) {
+@media(
+orientation:landscape
+) and (
+max-height:600px
+) and (
+max-width:900px
+){
 
-    header {
+    header{
 
-        padding-top: 5px;
-
-        padding-bottom: 20px;
-
+        padding-top:5px;
+        padding-bottom:20px;
     }
 
-    .upload {
+    .upload{
 
-        min-height: 200px;
-
-    }
-
-    .uploadIcon {
-
-        font-size: 38px;
-
-        margin-bottom: 8px;
-
+        min-height:200px;
     }
 
 }
@@ -785,15 +748,12 @@ and (max-width: 900px) {
 
 /* REDUCED MOTION */
 
-@media
-(prefers-reduced-motion: reduce) {
+@media(prefers-reduced-motion:reduce){
 
-    * {
+    *{
 
-        scroll-behavior: auto !important;
-
-        transition: none !important;
-
+        transition:none!important;
+        animation:none!important;
     }
 
 }
@@ -821,8 +781,9 @@ Image Authenticity Checker
 </h1>
 
 <p>
-შეამოწმე ფოტო ტექნიკური ნიშნებით და გახსენი
-უფასო გარე AI დეტექტორები დამატებითი შემოწმებისთვის
+ერთი ფოტოს მრავალფენიანი შემოწმება
+AI გენერაციის ნიშნებზე, provenance metadata ზე,
+EXIF ზე და სხვა ტექნიკურ სიგნალებზე
 </p>
 
 </header>
@@ -830,13 +791,14 @@ Image Authenticity Checker
 
 <label
 class="upload"
+id="upload"
 for="fileInput"
 >
 
 <input
 id="fileInput"
 type="file"
-accept="image/*"
+accept="image/jpeg,image/png,image/webp,image/avif,image/bmp,image/tiff,image/*"
 >
 
 <div class="uploadIcon">
@@ -848,7 +810,7 @@ accept="image/*"
 </h2>
 
 <p>
-აირჩიე JPG, PNG, WEBP ან სხვა გამოსახულება
+დააჭირე აქ ან გადაათრიე ფოტო ამ ადგილას
 </p>
 
 </label>
@@ -863,82 +825,135 @@ accept="image/*"
 
 <img
 id="previewImage"
-alt="ატვირთული ფოტო"
+alt="Uploaded image"
 >
 
 </div>
 
 <div
-class="filename"
 id="filename"
-></div>
+class="filename"
+>
+</div>
 
 </div>
 
 
-<div class="grid">
+<div class="global">
 
+<h2 class="globalTitle">
+საერთო შედეგი
+</h2>
 
-<div class="card">
-
-<h3>
-AI გენერაციის საეჭვო მაჩვენებელი
-</h3>
+<div class="globalScore">
 
 <div
-id="aiScore"
-class="score neutral"
+id="globalScore"
+class="bigScore"
 >
---%
+--
 </div>
 
-<div class="bar">
-
-<span
-id="aiBar"
-class="neutral"
-></span>
+<div
+id="globalStatus"
+class="globalStatus"
+>
+ანალიზი მიმდინარეობს
+</div>
 
 </div>
 
 <p
-id="aiText"
-class="cardText"
+id="globalDescription"
+class="globalDescription"
 >
-ანალიზი მიმდინარეობს
+გარე detector ების პასუხებს ვაგროვებთ
 </p>
 
 </div>
 
 
-<div class="card">
+<div class="detectors">
 
-<h3>
-რედაქტირების საეჭვო მაჩვენებელი
-</h3>
+
+<div class="detector">
+
+<div class="detectorTop">
+
+<div class="detectorName">
+Elpis
+</div>
 
 <div
-id="editScore"
-class="score neutral"
+id="elpisStatus"
+class="status loading"
 >
---%
+შემოწმება
 </div>
-
-<div class="bar">
-
-<span
-id="editBar"
-class="neutral"
-></span>
 
 </div>
 
-<p
-id="editText"
-class="cardText"
+<div
+id="elpisScore"
+class="detectorScore"
 >
-ანალიზი მიმდინარეობს
-</p>
+--
+</div>
+
+<div
+id="elpisVerdict"
+class="detectorVerdict"
+>
+ელოდება პასუხს
+</div>
+
+<div
+id="elpisText"
+class="detectorText"
+>
+ფოტო იგზავნება Elpis forensic detector ში
+</div>
+
+</div>
+
+
+<div class="detector">
+
+<div class="detectorTop">
+
+<div class="detectorName">
+Vynly
+</div>
+
+<div
+id="vynlyStatus"
+class="status loading"
+>
+შემოწმება
+</div>
+
+</div>
+
+<div
+id="vynlyScore"
+class="detectorScore"
+>
+--
+</div>
+
+<div
+id="vynlyVerdict"
+class="detectorVerdict"
+>
+ელოდება პასუხს
+</div>
+
+<div
+id="vynlyText"
+class="detectorText"
+>
+მოწმდება C2PA, SynthID, XMP, EXIF და generator ნიშნები
+</div>
 
 </div>
 
@@ -1036,144 +1051,76 @@ class="value"
 </section>
 
 
-<section class="external">
+<section class="signals">
 
 <h2>
-უფასო გარე AI დეტექტორები
+დამატებითი სიგნალები
 </h2>
 
-<p>
-ეს სერვისები ცალკე გაიხსნება. API Key არ გამოიყენება.
-ბრაუზერის უსაფრთხოების გამო ამ HTML ფაილს არ შეუძლია
-სხვა საიტზე ფოტოს ავტომატურად ატვირთვა და შედეგის
-უკან დაბრუნება.
-</p>
 
+<div class="signal">
 
-<div class="services">
+<span class="signalName">
+C2PA
+</span>
 
-
-<div class="service">
-
-<div>
-
-<div class="serviceName">
-Lynote AI Detector
-</div>
-
-<div class="serviceDescription">
-უფასო AI Image Detector
-</div>
-
-</div>
-
-<button
-class="serviceButton"
-data-url="https://huggingface.co/spaces/Lynote/free-ai-image-detector"
+<span
+id="c2pa"
+class="signalValue"
 >
-გახსნა
-</button>
+მიღებული იქნება detector ისგან
+</span>
 
 </div>
 
 
-<div class="service">
+<div class="signal">
 
-<div>
+<span class="signalName">
+SynthID
+</span>
 
-<div class="serviceName">
-MediaSens
-</div>
-
-<div class="serviceDescription">
-AI detection, metadata და C2PA
-</div>
-
-</div>
-
-<button
-class="serviceButton"
-data-url="https://media.sens.center/ai-image-detector"
+<span
+id="synthid"
+class="signalValue"
 >
-გახსნა
-</button>
+მიღებული იქნება detector ისგან
+</span>
 
 </div>
 
 
-<div class="service">
+<div class="signal">
 
-<div>
+<span class="signalName">
+Generator metadata
+</span>
 
-<div class="serviceName">
-WASMTools
-</div>
-
-<div class="serviceDescription">
-ლოკალური AI image detector
-</div>
-
-</div>
-
-<button
-class="serviceButton"
-data-url="https://wasmtools.dev/tools/ai-image-detector/index.html"
+<span
+id="generator"
+class="signalValue"
 >
-გახსნა
-</button>
+მიღებული იქნება detector ისგან
+</span>
 
 </div>
 
 
-<div class="service">
+<div class="signal">
 
-<div>
+<span class="signalName">
+PNG workflow
+</span>
 
-<div class="serviceName">
-PixelSmithery
-</div>
-
-<div class="serviceDescription">
-AI Image Checker
-</div>
-
-</div>
-
-<button
-class="serviceButton"
-data-url="https://pixelsmithery.com/tools/ai-image-checker/"
+<span
+id="workflow"
+class="signalValue"
 >
-გახსნა
-</button>
+მიღებული იქნება detector ისგან
+</span>
 
 </div>
 
-
-<div class="service">
-
-<div>
-
-<div class="serviceName">
-FauxGuard
-</div>
-
-<div class="serviceDescription">
-AI generated და AI edited detection
-</div>
-
-</div>
-
-<button
-class="serviceButton"
-data-url="https://fauxguard.ai/"
->
-გახსნა
-</button>
-
-</div>
-
-
-</div>
 
 </section>
 
@@ -1186,16 +1133,17 @@ data-url="https://fauxguard.ai/"
 
 <br><br>
 
-ეს საიტი ფოტოს თავად არ აგზავნის გარე სერვერზე.
+საერთო პროცენტი არის მხოლოდ detector ების
+არსებული შედეგების აგრეგირებული შეფასება და არა
+აბსოლუტური მტკიცებულება.
 
-ტექნიკური შეფასება კეთდება მოწყობილობაზე.
+AI detector ები შეიძლება შეცდნენ განსაკუთრებით
+იმ ფოტოებზე რომლებმაც გაიარეს screenshot,
+compression, resize ან ხელახალი export.
 
-გარე დეტექტორები იხსნება ცალკე და მათი შედეგი
-უნდა შეადარო ერთმანეთს.
-
-არც ერთი AI detector არ იძლევა გარანტიას რომ
-ფოტო ნამდვილად AI გენერირებულია ან ნამდვილად
-ორიგინალია.
+თუ detector ი იძლევა provenance სიგნალს როგორიცაა
+C2PA ან generator metadata ეს ცალკე და უფრო ძლიერი
+სიგნალია ვიდრე მხოლოდ ვიზუალური AI კლასიფიკაცია.
 
 </div>
 
@@ -1218,8 +1166,32 @@ class="reset"
 <script>
 
 
+/*
+========================================================
+CONFIGURATION
+========================================================
+*/
+
+
+const ELpisAPI =
+"https://elpis.ae/ai-detect-api";
+
+const VynlyAPI =
+"https://vynly.co/api/check";
+
+
+/*
+========================================================
+ELEMENTS
+========================================================
+*/
+
+
 const input =
 document.getElementById("fileInput");
+
+const upload =
+document.getElementById("upload");
 
 const results =
 document.getElementById("results");
@@ -1228,16 +1200,90 @@ const image =
 document.getElementById("previewImage");
 
 
+/*
+========================================================
+FILE INPUT
+========================================================
+*/
+
+
 input.addEventListener(
 "change",
-function() {
+async function(){
 
 const file =
 this.files[0];
 
-if (!file) return;
+if(!file)
+return;
 
-if (!file.type.startsWith("image/")) {
+await startAnalysis(file);
+
+});
+
+
+/*
+========================================================
+DRAG AND DROP
+========================================================
+*/
+
+
+[
+"dragenter",
+"dragover"
+].forEach(
+eventName=>{
+
+upload.addEventListener(
+eventName,
+event=>{
+
+event.preventDefault();
+
+upload.classList.add(
+"drag"
+);
+
+});
+
+});
+
+
+[
+"dragleave",
+"drop"
+].forEach(
+eventName=>{
+
+upload.addEventListener(
+eventName,
+event=>{
+
+event.preventDefault();
+
+upload.classList.remove(
+"drag"
+);
+
+});
+
+});
+
+
+upload.addEventListener(
+"drop",
+async event=>{
+
+const file =
+event.dataTransfer.files[0];
+
+if(!file)
+return;
+
+if(
+!file.type.startsWith("image/")
+){
 
 alert(
 "გთხოვ აირჩიე ფოტო"
@@ -1247,16 +1293,36 @@ return;
 
 }
 
-analyze(file);
+await startAnalysis(file);
 
 });
 
 
-/* =====================================================
-   ANALYZE
-===================================================== */
+/*
+========================================================
+MAIN ANALYSIS
+========================================================
+*/
 
-function analyze(file) {
+
+async function startAnalysis(file){
+
+if(
+!file.type.startsWith("image/")
+){
+
+alert(
+"ფაილი არ არის მხარდაჭერილი ფოტო"
+);
+
+return;
+
+}
+
+
+/*
+Show UI
+*/
 
 results.style.display =
 "block";
@@ -1286,12 +1352,16 @@ document.getElementById(
 formatBytes(file.size);
 
 
-const url =
+/*
+Preview
+*/
+
+const objectURL =
 URL.createObjectURL(file);
 
 
 image.onload =
-function() {
+function(){
 
 document.getElementById(
 "dimensions"
@@ -1300,255 +1370,875 @@ this.naturalWidth +
 " × " +
 this.naturalHeight;
 
-
-technicalAnalysis(
-file,
-this
+URL.revokeObjectURL(
+objectURL
 );
-
-
-URL.revokeObjectURL(url);
 
 };
 
 
 image.src =
-url;
+objectURL;
 
+
+/*
+Local EXIF
+*/
 
 detectEXIF(file);
 
-}
 
+/*
+Reset detector UI
+*/
 
-/* =====================================================
-   TECHNICAL ANALYSIS
-===================================================== */
-
-function technicalAnalysis(
-file,
-img
-) {
-
-let ai = 8;
-
-let edit = 12;
-
-
-const width =
-img.naturalWidth;
-
-const height =
-img.naturalHeight;
-
-
-const pixels =
-width * height;
-
-
-const name =
-file.name.toLowerCase();
+resetDetectorUI();
 
 
 /*
-AI dimension patterns
+Run both services simultaneously
 */
 
-if (
-width % 64 === 0 &&
-height % 64 === 0
-) {
+const resultsArray =
+await Promise.allSettled([
 
-ai += 15;
+runElpis(file),
 
-}
+runVynly(file)
+
+]);
 
 
-if (
-width % 512 === 0 ||
-height % 512 === 0
-) {
+/*
+Process Elpis
+*/
 
-ai += 10;
+if(
+resultsArray[0].status === "fulfilled"
+){
+
+applyElpisResult(
+resultsArray[0].value
+);
+
+}else{
+
+showDetectorError(
+"elpis",
+resultsArray[0].reason
+);
 
 }
 
 
 /*
-Very high resolution
+Process Vynly
 */
 
-if (
-width >= 4000 ||
-height >= 4000
-) {
+if(
+resultsArray[1].status === "fulfilled"
+){
 
-edit += 5;
+applyVynlyResult(
+resultsArray[1].value
+);
+
+}else{
+
+showDetectorError(
+"vynly",
+resultsArray[1].reason
+);
 
 }
 
 
 /*
-Large image but very small file
+Update combined score
 */
 
-if (
-pixels > 12000000 &&
-file.size < 1000000
-) {
-
-edit += 15;
+updateGlobalScore();
 
 }
 
 
 /*
-Filename clues
+========================================================
+ELPIS
+========================================================
 */
 
-const keywords = [
 
-"midjourney",
-"stable",
-"diffusion",
-"dall",
-"firefly",
-"leonardo",
-"generated",
-"ai-image"
+async function runElpis(file){
 
-];
+const form =
+new FormData();
+
+form.append(
+"image",
+file
+);
 
 
-keywords.forEach(
-function(keyword) {
+const response =
+await fetch(
+ELpisAPI,
+{
 
-if (
-name.includes(keyword)
-) {
+method:"POST",
 
-ai += 25;
-
-}
+body:form
 
 });
 
 
-ai =
-Math.min(95, ai);
+if(!response.ok){
 
-edit =
-Math.min(95, edit);
-
-
-showScore(
-"aiScore",
-"aiBar",
-"aiText",
-ai
-);
-
-
-showScore(
-"editScore",
-"editBar",
-"editText",
-edit
+throw new Error(
+"Elpis HTTP " +
+response.status
 );
 
 }
 
 
-/* =====================================================
-   SCORE
-===================================================== */
+return await response.json();
 
-function showScore(
-scoreID,
-barID,
-textID,
+}
+
+
+/*
+========================================================
+VYNLY
+========================================================
+*/
+
+
+async function runVynly(file){
+
+const form =
+new FormData();
+
+form.append(
+"image",
+file
+);
+
+
+const response =
+await fetch(
+VynlyAPI,
+{
+
+method:"POST",
+
+body:form
+
+});
+
+
+if(!response.ok){
+
+throw new Error(
+"Vynly HTTP " +
+response.status
+);
+
+}
+
+
+return await response.json();
+
+}
+
+
+/*
+========================================================
+ELPIS RESULT
+========================================================
+*/
+
+
+let detectorScores = [];
+
+
+function applyElpisResult(data){
+
+const score =
+extractScore(data);
+
+
+const verdict =
+extractVerdict(data);
+
+
+const confidence =
+extractConfidence(data);
+
+
+if(
+typeof score === "number"
+){
+
+detectorScores.push(
 score
-) {
+);
+
+document.getElementById(
+"elpisScore"
+).textContent =
+score + "%";
+
+}else{
+
+document.getElementById(
+"elpisScore"
+).textContent =
+"—";
+
+}
+
+
+document.getElementById(
+"elpisVerdict"
+).textContent =
+verdict;
+
+
+document.getElementById(
+"elpisText"
+).textContent =
+confidence
+?
+"Confidence: " +
+confidence
+:
+"რეალური detector პასუხი მიღებულია";
+
+
+setStatus(
+"elpisStatus",
+"დასრულდა",
+"success"
+);
+
+
+/*
+Try to extract forensic signals
+*/
+
+extractSignals(
+data
+);
+
+}
+
+
+/*
+========================================================
+VYNLY RESULT
+========================================================
+*/
+
+
+function applyVynlyResult(data){
+
+const score =
+extractScore(data);
+
+
+const verdict =
+extractVerdict(data);
+
+
+const confidence =
+extractConfidence(data);
+
+
+if(
+typeof score === "number"
+){
+
+detectorScores.push(
+score
+);
+
+document.getElementById(
+"vynlyScore"
+).textContent =
+score + "%";
+
+}else{
+
+document.getElementById(
+"vynlyScore"
+).textContent =
+"—";
+
+}
+
+
+document.getElementById(
+"vynlyVerdict"
+).textContent =
+verdict;
+
+
+document.getElementById(
+"vynlyText"
+).textContent =
+confidence
+?
+"Confidence: " +
+confidence
+:
+"რეალური detector პასუხი მიღებულია";
+
+
+setStatus(
+"vynlyStatus",
+"დასრულდა",
+"success"
+);
+
+
+/*
+Extract provenance fields
+*/
+
+extractSignals(
+data
+);
+
+}
+
+
+/*
+========================================================
+GENERIC SCORE PARSER
+========================================================
+*/
+
+
+function extractScore(data){
+
+if(!data)
+return null;
+
+
+const possible = [
+
+data.ai_probability,
+
+data.aiProbability,
+
+data.ai_score,
+
+data.aiScore,
+
+data.confidence,
+
+data.score,
+
+data.probability,
+
+data.result?.ai_probability,
+
+data.result?.ai_score,
+
+data.result?.confidence,
+
+data.result?.score
+
+];
+
+
+for(
+const value of possible
+){
+
+if(
+typeof value === "number"
+){
+
+let number =
+value;
+
+if(
+number >= 0 &&
+number <= 1
+){
+
+number *= 100;
+
+}
+
+return Math.round(
+number
+);
+
+}
+
+
+if(
+typeof value === "string"
+){
+
+const parsed =
+parseFloat(
+value
+);
+
+if(
+!Number.isNaN(parsed)
+){
+
+let number =
+parsed;
+
+if(
+number >= 0 &&
+number <= 1
+){
+
+number *= 100;
+
+}
+
+return Math.round(
+number
+);
+
+}
+
+}
+
+}
+
+
+return null;
+
+}
+
+
+/*
+========================================================
+VERDICT
+========================================================
+*/
+
+
+function extractVerdict(data){
+
+if(!data)
+return "Unknown";
+
+
+const values = [
+
+data.verdict_label,
+
+data.verdict,
+
+data.label,
+
+data.status,
+
+data.result?.verdict_label,
+
+data.result?.verdict,
+
+data.result?.label
+
+];
+
+
+for(
+const value of values
+){
+
+if(
+typeof value === "string" &&
+value.trim()
+){
+
+return prettify(
+value
+);
+
+}
+
+}
+
+
+return "Unknown";
+
+}
+
+
+/*
+========================================================
+CONFIDENCE
+========================================================
+*/
+
+
+function extractConfidence(data){
+
+if(!data)
+return null;
+
+
+const values = [
+
+data.confidence,
+
+data.result?.confidence
+
+];
+
+
+for(
+const value of values
+){
+
+if(
+value !== undefined &&
+value !== null
+){
+
+if(
+typeof value === "number"
+){
+
+return Math.round(
+value <= 1
+?
+value * 100
+:
+value
+) + "%";
+
+}
+
+return String(value);
+
+}
+
+}
+
+
+return null;
+
+}
+
+
+/*
+========================================================
+SIGNALS
+========================================================
+*/
+
+
+function extractSignals(data){
+
+if(!data)
+return;
+
+
+const raw =
+JSON.stringify(data)
+.toLowerCase();
+
+
+if(
+raw.includes("c2pa")
+){
+
+document.getElementById(
+"c2pa"
+).textContent =
+"სიგნალი აღმოჩნდა პასუხში";
+
+}
+
+
+if(
+raw.includes("synthid")
+){
+
+document.getElementById(
+"synthid"
+).textContent =
+"სიგნალი აღმოჩნდა პასუხში";
+
+}
+
+
+if(
+raw.includes("midjourney") ||
+raw.includes("stable diffusion") ||
+raw.includes("comfyui") ||
+raw.includes("dall-e") ||
+raw.includes("dalle") ||
+raw.includes("firefly") ||
+raw.includes("flux") ||
+raw.includes("leonardo")
+){
+
+document.getElementById(
+"generator"
+).textContent =
+"Generator metadata აღმოჩნდა";
+
+}
+
+
+if(
+raw.includes("workflow")
+){
+
+document.getElementById(
+"workflow"
+).textContent =
+"Workflow data აღმოჩნდა";
+
+}
+
+}
+
+
+/*
+========================================================
+GLOBAL SCORE
+========================================================
+*/
+
+
+function updateGlobalScore(){
+
+if(
+detectorScores.length === 0
+){
+
+document.getElementById(
+"globalScore"
+).textContent =
+"—";
+
+document.getElementById(
+"globalStatus"
+).textContent =
+"Detector შედეგი ვერ იქნა მიღებული";
+
+document.getElementById(
+"globalDescription"
+).textContent =
+"გარე სერვისებმა ვერ დააბრუნეს რიცხვითი AI score.";
+
+return;
+
+}
+
+
+const average =
+Math.round(
+detectorScores.reduce(
+(a,b)=>a+b,
+0
+)
+/
+detectorScores.length
+);
+
 
 const scoreElement =
-document.getElementById(scoreID);
+document.getElementById(
+"globalScore"
+);
 
-const bar =
-document.getElementById(barID);
+const statusElement =
+document.getElementById(
+"globalStatus"
+);
 
-const text =
-document.getElementById(textID);
+const description =
+document.getElementById(
+"globalDescription"
+);
 
 
 scoreElement.textContent =
-score + "%";
+average + "%";
 
 
-bar.style.width =
-score + "%";
+if(
+average < 30
+){
+
+statusElement.textContent =
+"დაბალი AI სიგნალი";
+
+statusElement.style.background =
+"rgba(74,222,128,.15)";
+
+statusElement.style.color =
+"#4ade80";
+
+description.textContent =
+"ხელმისაწვდომი detector შედეგების მიხედვით ძლიერი AI სიგნალი არ ჩანს.";
+
+}
+
+else if(
+average < 60
+){
+
+statusElement.textContent =
+"გაურკვეველი";
+
+statusElement.style.background =
+"rgba(251,191,36,.15)";
+
+statusElement.style.color =
+"#fbbf24";
+
+description.textContent =
+"აღმოჩნდა გარკვეული AI ნიშნები მაგრამ შედეგი საბოლოო დასკვნისთვის საკმარისი არ არის.";
+
+}
+
+else{
+
+statusElement.textContent =
+"მაღალი AI სიგნალი";
+
+statusElement.style.background =
+"rgba(251,113,133,.15)";
+
+statusElement.style.color =
+"#fb7185";
+
+description.textContent =
+"ხელმისაწვდომმა detector ებმა მაღალი AI სიგნალი დააფიქსირეს.";
+
+}
+
+}
 
 
-scoreElement.className =
-"score";
+/*
+========================================================
+ERROR
+========================================================
+*/
 
 
-if (score < 30) {
+function showDetectorError(
+name,
+error
+){
 
-scoreElement.classList.add(
-"good"
+setStatus(
+name + "Status",
+"შეცდომა",
+"error"
 );
 
-bar.className =
-"good";
 
-text.textContent =
-"ძლიერი საეჭვო ტექნიკური ნიშანი არ აღმოჩნდა.";
+document.getElementById(
+name + "Score"
+).textContent =
+"—";
 
-}
 
-else if (score < 60) {
+document.getElementById(
+name + "Verdict"
+).textContent =
+"ვერ მოხერხდა";
 
-scoreElement.classList.add(
-"warning"
+
+document.getElementById(
+name + "Text"
+).textContent =
+error?.message ||
+"სერვისი მიუწვდომელია";
+
+document.getElementById(
+name + "Text"
+).classList.add(
+"detectorError"
 );
 
-bar.className =
-"warning";
-
-text.textContent =
-"აღმოჩნდა გარკვეული საეჭვო ნიშნები.";
-
 }
 
-else {
 
-scoreElement.classList.add(
-"bad"
+/*
+========================================================
+STATUS
+========================================================
+*/
+
+
+function setStatus(
+id,
+text,
+type
+){
+
+const element =
+document.getElementById(id);
+
+
+element.textContent =
+text;
+
+
+element.classList.remove(
+"loading"
 );
 
-bar.className =
-"bad";
 
-text.textContent =
-"აღმოჩნდა რამდენიმე საეჭვო ტექნიკური ნიშანი.";
+if(
+type === "success"
+){
+
+element.style.color =
+"#4ade80";
+
+element.style.background =
+"rgba(74,222,128,.12)";
+
+}
+
+else{
+
+element.style.color =
+"#fb7185";
+
+element.style.background =
+"rgba(251,113,133,.12)";
 
 }
 
 }
 
 
-/* =====================================================
-   EXIF
-===================================================== */
+/*
+========================================================
+EXIF
+========================================================
+*/
 
-function detectEXIF(file) {
+
+function detectEXIF(file){
 
 const reader =
 new FileReader();
 
 
 reader.onload =
-function() {
+function(){
 
 const bytes =
 new Uint8Array(
@@ -1556,25 +2246,27 @@ reader.result
 );
 
 
-let found = false;
+let found =
+false;
 
 
-for (
-let i = 0;
-i < bytes.length - 4;
+for(
+let i=0;
+i<bytes.length-4;
 i++
-) {
+){
 
-if (
+if(
 
 bytes[i] === 0x45 &&
 bytes[i+1] === 0x78 &&
 bytes[i+2] === 0x69 &&
 bytes[i+3] === 0x66
 
-) {
+){
 
-found = true;
+found =
+true;
 
 break;
 
@@ -1584,26 +2276,26 @@ break;
 
 
 const element =
-document.getElementById("exif");
+document.getElementById(
+"exif"
+);
 
 
-if (found) {
+if(found){
 
 element.textContent =
 "აღმოჩენილია";
 
-element.className =
-"value good";
+element.style.color =
+"#4ade80";
 
-}
-
-else {
+}else{
 
 element.textContent =
 "არ აღმოჩნდა";
 
-element.className =
-"value warning";
+element.style.color =
+"#fbbf24";
 
 }
 
@@ -1623,46 +2315,63 @@ file.size,
 }
 
 
-/* =====================================================
-   EXTERNAL SERVICES
-===================================================== */
+/*
+========================================================
+RESET DETECTOR UI
+========================================================
+*/
 
-document
-.querySelectorAll(".serviceButton")
-.forEach(
-function(button) {
 
-button.addEventListener(
-"click",
-function() {
+function resetDetectorUI(){
 
-const url =
-this.dataset.url;
+detectorScores =
+[];
+
+
+[
+"elpis",
+"vynly"
+].forEach(
+name=>{
+
+document.getElementById(
+name + "Status"
+).textContent =
+"შემოწმება";
+
+document.getElementById(
+name + "Status"
+).classList.add(
+"loading"
+);
+
+document.getElementById(
+name + "Score"
+).textContent =
+"—";
+
+document.getElementById(
+name + "Verdict"
+).textContent =
+"ელოდება პასუხს";
+
+});
+
+}
 
 
 /*
-Open external detector
+========================================================
+RESET
+========================================================
 */
 
-window.open(
-url,
-"_blank",
-"noopener,noreferrer"
-);
-
-});
-});
-
-
-/* =====================================================
-   RESET
-===================================================== */
 
 document
 .getElementById("reset")
 .addEventListener(
 "click",
-function() {
+function(){
 
 input.value =
 "";
@@ -1675,28 +2384,51 @@ image.removeAttribute(
 );
 
 window.scrollTo({
-top: 0,
-behavior: "smooth"
-});
+
+top:0,
+
+behavior:"smooth"
 
 });
 
+});
 
-/* =====================================================
-   FILE SIZE
-===================================================== */
 
-function formatBytes(bytes) {
+/*
+========================================================
+HELPERS
+========================================================
+*/
 
-if (!bytes)
+
+function prettify(value){
+
+return String(value)
+.replaceAll(
+"_",
+" "
+)
+.replace(
+/^\w/,
+c=>c.toUpperCase()
+);
+
+}
+
+
+function formatBytes(bytes){
+
+if(!bytes)
 return "0 Bytes";
 
 
 const units = [
+
 "Bytes",
 "KB",
 "MB",
 "GB"
+
 ];
 
 
@@ -1708,6 +2440,7 @@ Math.log(1024)
 
 
 return (
+
 parseFloat(
 (
 bytes /
@@ -1717,10 +2450,12 @@ index
 )
 ).toFixed(2)
 )
+
 +
 " "
 +
 units[index]
+
 );
 
 }
