@@ -2,173 +2,534 @@
 <html lang="ka">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1,
+               maximum-scale=5,
+               viewport-fit=cover">
+
+<meta name="theme-color" content="#080b12">
+
 <title>Image Authenticity Checker</title>
 
 <style>
-* {
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*,
+*::before,
+*::after {
     box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    min-height: 100%;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
     margin: 0;
+    width: 100%;
     min-height: 100vh;
-    font-family: Arial, sans-serif;
-    background: #080b12;
+    min-height: 100dvh;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #151d2c 0%,
+            #080b12 45%,
+            #05070b 100%
+        );
+
     color: #ffffff;
+
+    overflow-x: hidden;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root {
+
+    --page-max: 1180px;
+
+    --gap-xs: 8px;
+    --gap-sm: 12px;
+    --gap-md: 16px;
+    --gap-lg: 24px;
+    --gap-xl: 32px;
+
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 22px;
+
+    --background: #080b12;
+    --surface: #10151f;
+    --surface-2: #151b27;
+    --border: #252d3a;
+
+    --text: #ffffff;
+    --muted: #919baa;
+
+    --blue: #60a5fa;
+    --green: #4ade80;
+    --yellow: #fbbf24;
+    --red: #fb7185;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page {
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    padding-top:
+        max(24px, env(safe-area-inset-top));
+
+    padding-right:
+        max(16px, env(safe-area-inset-right));
+
+    padding-bottom:
+        max(30px, env(safe-area-inset-bottom));
+
+    padding-left:
+        max(16px, env(safe-area-inset-left));
+}
+
 
 .container {
-    width: min(1000px, 94%);
+    width: 100%;
+    max-width: var(--page-max);
     margin: 0 auto;
-    padding: 40px 0;
 }
 
+
+/* =========================================================
+   HEADER
+========================================================= */
+
 .header {
+    width: 100%;
     text-align: center;
-    margin-bottom: 30px;
+
+    padding:
+        clamp(8px, 2vw, 20px)
+        0
+        clamp(24px, 5vw, 42px);
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: clamp(48px, 8vw, 70px);
+    height: clamp(48px, 8vw, 70px);
+
+    margin-bottom: clamp(12px, 2vw, 18px);
+
+    border-radius: 20px;
+
+    background: #151d2a;
+
+    font-size: clamp(24px, 5vw, 36px);
 }
 
 .header h1 {
-    font-size: 36px;
-    margin: 0 0 10px;
+    margin: 0;
+
+    font-size:
+        clamp(25px, 5vw, 46px);
+
+    line-height: 1.1;
+
+    letter-spacing: -0.035em;
+
+    overflow-wrap: anywhere;
 }
 
 .header p {
-    color: #9da5b4;
-    font-size: 16px;
+    max-width: 680px;
+
+    margin:
+        12px auto 0;
+
+    color: var(--muted);
+
+    font-size:
+        clamp(14px, 2vw, 18px);
+
+    line-height: 1.6;
 }
 
+
+/* =========================================================
+   UPLOAD AREA
+========================================================= */
+
 .upload {
-    border: 2px dashed #394252;
-    border-radius: 20px;
-    padding: 50px 20px;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    min-height:
+        clamp(250px, 38vw, 380px);
+
+    padding:
+        clamp(30px, 7vw, 70px)
+        clamp(18px, 5vw, 50px);
+
+    border:
+        2px dashed #354052;
+
+    border-radius:
+        clamp(18px, 3vw, 28px);
+
+    background:
+        rgba(16, 21, 31, 0.88);
+
     text-align: center;
-    background: #10151f;
+
     cursor: pointer;
-    transition: 0.2s;
+
+    transition:
+        border-color .2s ease,
+        background .2s ease,
+        transform .2s ease;
 }
 
 .upload:hover {
-    border-color: #667085;
+    border-color: #687589;
     background: #131a26;
 }
 
+.upload:active {
+    transform: scale(.995);
+}
+
+.upload:focus-within {
+    border-color: var(--blue);
+}
+
 .upload input {
-    display: none;
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    opacity: 0;
 }
 
 .upload-icon {
-    font-size: 55px;
-    margin-bottom: 15px;
+    font-size:
+        clamp(42px, 9vw, 72px);
+
+    line-height: 1;
+
+    margin-bottom:
+        clamp(14px, 3vw, 22px);
 }
 
 .upload h2 {
-    margin: 5px 0 10px;
+    margin: 0;
+
+    font-size:
+        clamp(19px, 4vw, 28px);
+
+    line-height: 1.25;
 }
 
 .upload p {
-    color: #8f98a8;
-    margin: 0;
+    margin:
+        10px 0 0;
+
+    color: var(--muted);
+
+    font-size:
+        clamp(13px, 2vw, 16px);
+
+    line-height: 1.5;
+
+    max-width: 500px;
 }
+
+
+/* =========================================================
+   RESULTS
+========================================================= */
 
 #results {
     display: none;
-    margin-top: 30px;
+
+    width: 100%;
+
+    margin-top:
+        clamp(20px, 4vw, 32px);
 }
 
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
 .preview {
-    background: #10151f;
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 20px;
+    width: 100%;
+
+    padding:
+        clamp(12px, 2vw, 20px);
+
+    background: var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        clamp(16px, 3vw, 24px);
+}
+
+.preview-image-wrapper {
+    width: 100%;
+
+    min-height: 160px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius:
+        clamp(10px, 2vw, 16px);
+
+    background: #05070b;
 }
 
 .preview img {
     display: block;
+
     width: 100%;
-    max-height: 600px;
+    height: auto;
+
+    max-width: 100%;
+
+    max-height:
+        min(72vh, 760px);
+
     object-fit: contain;
-    border-radius: 14px;
-    background: #05070b;
+
+    border-radius:
+        clamp(10px, 2vw, 16px);
 }
 
 .file-name {
-    margin-top: 15px;
-    color: #aab3c2;
-    word-break: break-all;
+    margin-top: 12px;
+
+    color: var(--muted);
+
+    font-size:
+        clamp(12px, 1.8vw, 15px);
+
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
 }
+
+
+/* =========================================================
+   CARDS
+========================================================= */
 
 .cards {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap:
+        clamp(12px, 2vw, 20px);
+
+    margin-top:
+        clamp(12px, 2vw, 20px);
 }
 
 .card {
-    background: #10151f;
-    border-radius: 18px;
-    padding: 22px;
+    min-width: 0;
+
+    padding:
+        clamp(16px, 3vw, 26px);
+
+    background: var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        clamp(15px, 2.5vw, 22px);
 }
 
 .card h3 {
-    margin-top: 0;
-    font-size: 17px;
+    margin:
+        0 0 12px;
+
+    font-size:
+        clamp(14px, 2vw, 18px);
+
+    line-height: 1.35;
 }
 
 .score {
-    font-size: 35px;
-    font-weight: bold;
-    margin: 12px 0;
+    font-size:
+        clamp(30px, 7vw, 48px);
+
+    line-height: 1;
+
+    font-weight: 800;
+
+    letter-spacing: -0.04em;
+
+    margin:
+        16px 0;
 }
 
+.card p {
+    margin:
+        12px 0 0;
+
+    color: var(--muted);
+
+    font-size:
+        clamp(12px, 1.8vw, 15px);
+
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   COLORS
+========================================================= */
+
 .good {
-    color: #4ade80;
+    color: var(--green);
 }
 
 .warning {
-    color: #fbbf24;
+    color: var(--yellow);
 }
 
 .bad {
-    color: #fb7185;
+    color: var(--red);
 }
 
 .neutral {
-    color: #60a5fa;
+    color: var(--blue);
 }
 
+
+/* =========================================================
+   PROGRESS BAR
+========================================================= */
+
 .bar {
-    height: 9px;
-    background: #242b38;
-    border-radius: 20px;
+    width: 100%;
+    height:
+        clamp(7px, 1vw, 10px);
+
     overflow: hidden;
+
+    background: #242b38;
+
+    border-radius: 100px;
 }
 
 .bar-inner {
-    height: 100%;
     width: 0;
-    border-radius: 20px;
-    transition: width 1s ease;
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: currentColor;
+
+    transition:
+        width 900ms cubic-bezier(.2,.8,.2,1);
 }
 
+
+/* =========================================================
+   DETAILS
+========================================================= */
+
 .details {
-    margin-top: 20px;
-    background: #10151f;
-    border-radius: 18px;
-    padding: 22px;
+    margin-top:
+        clamp(12px, 2vw, 20px);
+
+    padding:
+        clamp(16px, 3vw, 26px);
+
+    background: var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        clamp(15px, 2.5vw, 22px);
 }
 
 .details h2 {
-    margin-top: 0;
+    margin:
+        0 0 10px;
+
+    font-size:
+        clamp(18px, 3vw, 24px);
 }
 
 .row {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 12px 0;
-    border-bottom: 1px solid #222936;
+    display: grid;
+
+    grid-template-columns:
+        minmax(120px, 1fr)
+        minmax(0, 2fr);
+
+    gap:
+        14px;
+
+    padding:
+        13px 0;
+
+    border-bottom:
+        1px solid #222936;
+
+    font-size:
+        clamp(12px, 1.8vw, 15px);
+
+    line-height: 1.5;
 }
 
 .row:last-child {
@@ -176,243 +537,775 @@ body {
 }
 
 .label {
-    color: #8f98a8;
+    color: var(--muted);
 }
 
 .value {
+    min-width: 0;
+
     text-align: right;
-    word-break: break-word;
+
+    overflow-wrap: anywhere;
 }
+
+
+/* =========================================================
+   NOTICE
+========================================================= */
 
 .notice {
-    margin-top: 20px;
-    padding: 18px;
-    border-radius: 15px;
-    background: #171d28;
+    margin-top:
+        clamp(12px, 2vw, 20px);
+
+    padding:
+        clamp(15px, 3vw, 22px);
+
+    border-radius:
+        clamp(14px, 2.5vw, 20px);
+
+    background: var(--surface-2);
+
     color: #aeb7c5;
-    line-height: 1.6;
+
+    font-size:
+        clamp(12px, 1.8vw, 15px);
+
+    line-height: 1.65;
 }
+
+
+/* =========================================================
+   RESET BUTTON
+========================================================= */
 
 .reset {
-    margin-top: 20px;
+    display: block;
+
     width: 100%;
+
+    min-height: 50px;
+
+    margin-top:
+        clamp(12px, 2vw, 20px);
+
+    padding:
+        13px 18px;
+
     border: 0;
-    border-radius: 13px;
-    padding: 15px;
+
+    border-radius:
+        clamp(11px, 2vw, 15px);
+
     background: #ffffff;
+
     color: #080b12;
-    font-size: 16px;
-    font-weight: bold;
+
+    font-family: inherit;
+
+    font-size:
+        clamp(14px, 2vw, 16px);
+
+    font-weight: 700;
+
     cursor: pointer;
+
+    touch-action: manipulation;
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
 }
 
-@media (max-width: 700px) {
-    .header h1 {
-        font-size: 28px;
+.reset:hover {
+    opacity: .9;
+}
+
+.reset:active {
+    transform: scale(.985);
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .page {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .header {
+        padding-bottom: 22px;
+    }
+
+    .upload {
+        min-height: 230px;
+        padding: 28px 14px;
     }
 
     .cards {
         grid-template-columns: 1fr;
     }
 
-    .container {
-        padding: 25px 0;
+    .row {
+        grid-template-columns: 1fr;
+        gap: 3px;
+    }
+
+    .value {
+        text-align: left;
     }
 }
+
+
+/* =========================================================
+   PHONES
+========================================================= */
+
+@media (min-width: 381px) and (max-width: 600px) {
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .row {
+        grid-template-columns:
+            minmax(110px, 1fr)
+            minmax(0, 1.5fr);
+    }
+
+}
+
+
+/* =========================================================
+   TABLETS
+========================================================= */
+
+@media (min-width: 601px) and (max-width: 900px) {
+
+    .page {
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+
+    .upload {
+        min-height: 310px;
+    }
+
+}
+
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media (min-width: 901px) {
+
+    .page {
+        padding-left: 32px;
+        padding-right: 32px;
+    }
+
+    .upload:hover {
+        transform: translateY(-2px);
+    }
+
+}
+
+
+/* =========================================================
+   VERY LARGE SCREENS
+========================================================= */
+
+@media (min-width: 1600px) {
+
+    :root {
+        --page-max: 1280px;
+    }
+
+}
+
+
+/* =========================================================
+   LANDSCAPE PHONE
+========================================================= */
+
+@media
+(orientation: landscape)
+and (max-height: 600px)
+and (max-width: 900px) {
+
+    .page {
+        padding-top: 14px;
+        padding-bottom: 20px;
+    }
+
+    .header {
+        padding-bottom: 18px;
+    }
+
+    .header p {
+        margin-top: 7px;
+    }
+
+    .upload {
+        min-height: 210px;
+    }
+
+    .upload-icon {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+}
+
+
+/* =========================================================
+   LANDSCAPE TABLET
+========================================================= */
+
+@media
+(orientation: landscape)
+and (min-width: 700px)
+and (max-height: 800px) {
+
+    .preview img {
+        max-height: 65vh;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        scroll-behavior: auto !important;
+
+        transition-duration: 0.01ms !important;
+
+        animation-duration: 0.01ms !important;
+    }
+
+}
+
+
+/* =========================================================
+   DARK MODE ENFORCEMENT
+========================================================= */
+
+@media (prefers-color-scheme: dark) {
+
+    body {
+        background:
+            radial-gradient(
+                circle at top,
+                #151d2c 0%,
+                #080b12 45%,
+                #05070b 100%
+            );
+    }
+
+}
+
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+@media print {
+
+    body {
+        background: white;
+        color: black;
+    }
+
+    .upload,
+    .reset {
+        display: none;
+    }
+
+    .card,
+    .details,
+    .preview,
+    .notice {
+        background: white;
+        border: 1px solid #ccc;
+    }
+
+}
+
 </style>
 </head>
 
+
 <body>
+
+<main class="page">
 
 <div class="container">
 
-    <div class="header">
-        <h1>Image Authenticity Checker</h1>
-        <p>ფოტოს ტექნიკური და მეტამონაცემების შემოწმება</p>
+<header class="header">
+
+    <div class="logo">
+        🔍
     </div>
 
-    <label class="upload">
-        <input type="file" id="fileInput" accept="image/*">
+    <h1>
+        Image Authenticity Checker
+    </h1>
 
-        <div class="upload-icon">📷</div>
+    <p>
+        ფოტოს ტექნიკური მონაცემების და საეჭვო ნიშნების
+        ბრაუზერში შემოწმება
+    </p>
 
-        <h2>ატვირთე ფოტო</h2>
+</header>
 
-        <p>
-            დააჭირე აქ ან აირჩიე ფოტო მოწყობილობიდან
-        </p>
-    </label>
 
-    <div id="results">
+<label class="upload" for="fileInput">
 
-        <div class="preview">
-            <img id="previewImage" alt="Uploaded image">
-            <div class="file-name" id="fileName"></div>
-        </div>
+    <input
+        id="fileInput"
+        type="file"
+        accept="image/jpeg,image/png,image/webp,image/gif,image/bmp,image/*"
+    >
 
-        <div class="cards">
+    <div class="upload-icon">
+        📷
+    </div>
 
-            <div class="card">
-                <h3>AI გენერაციის სავარაუდო მაჩვენებელი</h3>
+    <h2>
+        ატვირთე ფოტო
+    </h2>
 
-                <div class="score neutral" id="aiScore">
-                    --%
-                </div>
+    <p>
+        დააჭირე აქ ან აირჩიე ფოტო შენი მოწყობილობიდან
+    </p>
 
-                <div class="bar">
-                    <div class="bar-inner" id="aiBar"></div>
-                </div>
+</label>
 
-                <p id="aiText">
-                    ანალიზი მიმდინარეობს
-                </p>
-            </div>
 
-            <div class="card">
-                <h3>რედაქტირების სავარაუდო ნიშნები</h3>
+<section id="results" aria-live="polite">
 
-                <div class="score neutral" id="editScore">
-                    --%
-                </div>
 
-                <div class="bar">
-                    <div class="bar-inner" id="editBar"></div>
-                </div>
+    <div class="preview">
 
-                <p id="editText">
-                    ანალიზი მიმდინარეობს
-                </p>
-            </div>
+        <div class="preview-image-wrapper">
+
+            <img
+                id="previewImage"
+                alt="ატვირთული ფოტო"
+            >
 
         </div>
 
-        <div class="details">
-
-            <h2>ფოტოს ინფორმაცია</h2>
-
-            <div class="row">
-                <span class="label">ფაილის ტიპი</span>
-                <span class="value" id="fileType">--</span>
-            </div>
-
-            <div class="row">
-                <span class="label">ფაილის ზომა</span>
-                <span class="value" id="fileSize">--</span>
-            </div>
-
-            <div class="row">
-                <span class="label">ზომები</span>
-                <span class="value" id="dimensions">--</span>
-            </div>
-
-            <div class="row">
-                <span class="label">EXIF მონაცემები</span>
-                <span class="value" id="exifStatus">--</span>
-            </div>
-
-            <div class="row">
-                <span class="label">ფაილის ბოლო ცვლილება</span>
-                <span class="value" id="modifiedDate">--</span>
-            </div>
-
-            <div class="row">
-                <span class="label">ფაილის სახელი</span>
-                <span class="value" id="originalName">--</span>
-            </div>
-
-        </div>
-
-        <div class="notice">
-            <strong>მნიშვნელოვანი:</strong><br>
-            ეს ინსტრუმენტი მუშაობს მხოლოდ ბრაუზერში და არ აგზავნის ფოტოს
-            გარე სერვერზე. AI გენერირებული ფოტოს 100 პროცენტიანი დადგენა
-            მხოლოდ ამ ტექნიკური შემოწმებებით შეუძლებელია. შედეგები არის
-            სავარაუდო და ეფუძნება ფოტოს ტექნიკურ ნიშნებს.
-        </div>
-
-        <button class="reset" onclick="resetChecker()">
-            სხვა ფოტოს შემოწმება
-        </button>
+        <div
+            class="file-name"
+            id="fileName"
+        ></div>
 
     </div>
+
+
+    <div class="cards">
+
+
+        <article class="card">
+
+            <h3>
+                AI გენერაციის სავარაუდო მაჩვენებელი
+            </h3>
+
+            <div
+                class="score neutral"
+                id="aiScore"
+            >
+                --%
+            </div>
+
+            <div class="bar">
+
+                <div
+                    class="bar-inner neutral"
+                    id="aiBar"
+                ></div>
+
+            </div>
+
+            <p id="aiText">
+                ანალიზი მიმდინარეობს
+            </p>
+
+        </article>
+
+
+        <article class="card">
+
+            <h3>
+                რედაქტირების სავარაუდო ნიშნები
+            </h3>
+
+            <div
+                class="score neutral"
+                id="editScore"
+            >
+                --%
+            </div>
+
+            <div class="bar">
+
+                <div
+                    class="bar-inner neutral"
+                    id="editBar"
+                ></div>
+
+            </div>
+
+            <p id="editText">
+                ანალიზი მიმდინარეობს
+            </p>
+
+        </article>
+
+
+    </div>
+
+
+    <section class="details">
+
+        <h2>
+            ფოტოს ინფორმაცია
+        </h2>
+
+
+        <div class="row">
+
+            <span class="label">
+                ფაილის ტიპი
+            </span>
+
+            <span
+                class="value"
+                id="fileType"
+            >
+                --
+            </span>
+
+        </div>
+
+
+        <div class="row">
+
+            <span class="label">
+                ფაილის ზომა
+            </span>
+
+            <span
+                class="value"
+                id="fileSize"
+            >
+                --
+            </span>
+
+        </div>
+
+
+        <div class="row">
+
+            <span class="label">
+                ფოტოს ზომები
+            </span>
+
+            <span
+                class="value"
+                id="dimensions"
+            >
+                --
+            </span>
+
+        </div>
+
+
+        <div class="row">
+
+            <span class="label">
+                EXIF მონაცემები
+            </span>
+
+            <span
+                class="value"
+                id="exifStatus"
+            >
+                --
+            </span>
+
+        </div>
+
+
+        <div class="row">
+
+            <span class="label">
+                ფაილის ბოლო ცვლილება
+            </span>
+
+            <span
+                class="value"
+                id="modifiedDate"
+            >
+                --
+            </span>
+
+        </div>
+
+
+        <div class="row">
+
+            <span class="label">
+                ფაილის სახელი
+            </span>
+
+            <span
+                class="value"
+                id="originalName"
+            >
+                --
+            </span>
+
+        </div>
+
+
+    </section>
+
+
+    <div class="notice">
+
+        <strong>
+            მნიშვნელოვანი
+        </strong>
+
+        <br><br>
+
+        ეს ინსტრუმენტი მუშაობს მხოლოდ ბრაუზერში.
+        ფოტო გარე სერვერზე არ იგზავნება.
+
+        <br><br>
+
+        AI გენერირებული ფოტოს 100 პროცენტიანი დადგენა
+        მხოლოდ ტექნიკური მონაცემებით შეუძლებელია.
+
+        შედეგები წარმოადგენს ტექნიკურ სავარაუდო შეფასებას
+        და არა საბოლოო მტკიცებულებას.
+
+    </div>
+
+
+    <button
+        class="reset"
+        id="resetButton"
+        type="button"
+    >
+        სხვა ფოტოს შემოწმება
+    </button>
+
+
+</section>
 
 </div>
 
+</main>
+
+
 <script>
 
-const fileInput = document.getElementById("fileInput");
+/* =========================================================
+   ELEMENTS
+========================================================= */
 
-fileInput.addEventListener("change", function () {
+const fileInput =
+    document.getElementById("fileInput");
 
-    const file = this.files[0];
+const results =
+    document.getElementById("results");
 
-    if (!file) return;
+const previewImage =
+    document.getElementById("previewImage");
+
+const fileName =
+    document.getElementById("fileName");
+
+const resetButton =
+    document.getElementById("resetButton");
+
+
+/* =========================================================
+   FILE INPUT
+========================================================= */
+
+fileInput.addEventListener(
+    "change",
+    handleFile
+);
+
+
+resetButton.addEventListener(
+    "click",
+    resetChecker
+);
+
+
+/* =========================================================
+   HANDLE FILE
+========================================================= */
+
+function handleFile(event) {
+
+    const file =
+        event.target.files &&
+        event.target.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+
+        alert(
+            "გთხოვ აირჩიე სურათის ფაილი"
+        );
+
+        fileInput.value = "";
+
+        return;
+    }
 
     analyzeImage(file);
+}
 
-});
 
+/* =========================================================
+   ANALYZE IMAGE
+========================================================= */
 
 function analyzeImage(file) {
 
-    const results = document.getElementById("results");
-
-    const preview = document.getElementById("previewImage");
-
-    const fileName = document.getElementById("fileName");
-
     results.style.display = "block";
 
-    fileName.textContent = file.name;
-
-    document.getElementById("originalName").textContent =
+    fileName.textContent =
         file.name;
 
-    document.getElementById("fileType").textContent =
+    document.getElementById(
+        "originalName"
+    ).textContent =
+        file.name;
+
+    document.getElementById(
+        "fileType"
+    ).textContent =
         file.type || "უცნობი";
 
-    document.getElementById("fileSize").textContent =
+    document.getElementById(
+        "fileSize"
+    ).textContent =
         formatBytes(file.size);
 
-    document.getElementById("modifiedDate").textContent =
-        new Date(file.lastModified).toLocaleString("ka-GE");
+    document.getElementById(
+        "modifiedDate"
+    ).textContent =
+        file.lastModified
+            ? new Date(
+                file.lastModified
+              ).toLocaleString("ka-GE")
+            : "უცნობია";
 
-    const url = URL.createObjectURL(file);
 
-    preview.src = url;
+    const objectURL =
+        URL.createObjectURL(file);
 
-    preview.onload = function () {
 
-        document.getElementById("dimensions").textContent =
-            this.naturalWidth + " × " + this.naturalHeight;
+    previewImage.onload =
+        function () {
 
-        analyzeTechnicalProperties(file, this);
+            document.getElementById(
+                "dimensions"
+            ).textContent =
+                this.naturalWidth +
+                " × " +
+                this.naturalHeight;
 
-    };
+
+            analyzeTechnicalProperties(
+                file,
+                this
+            );
+
+
+            URL.revokeObjectURL(
+                objectURL
+            );
+        };
+
+
+    previewImage.src =
+        objectURL;
+
+
+    results.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
 
 }
 
 
-function analyzeTechnicalProperties(file, image) {
+/* =========================================================
+   TECHNICAL ANALYSIS
+========================================================= */
+
+function analyzeTechnicalProperties(
+    file,
+    image
+) {
 
     let editScore = 15;
-
     let aiScore = 10;
 
-    let reasons = [];
 
     const extension =
-        file.name.split(".").pop().toLowerCase();
+        file.name
+            .split(".")
+            .pop()
+            .toLowerCase();
+
+
+    const width =
+        image.naturalWidth;
+
+    const height =
+        image.naturalHeight;
+
 
     /*
-       JPEG / PNG / WEBP basic analysis
+       File type
     */
 
-    if (extension === "jpg" || extension === "jpeg") {
+    if (
+        extension === "jpg" ||
+        extension === "jpeg"
+    ) {
 
         editScore += 5;
 
     }
+
 
     if (extension === "png") {
 
@@ -420,169 +1313,225 @@ function analyzeTechnicalProperties(file, image) {
 
     }
 
+
     if (extension === "webp") {
 
         editScore += 10;
 
     }
 
+
     /*
-       Very unusual dimensions can sometimes be
-       associated with generated images.
+       Dimensions
     */
 
-    const width = image.naturalWidth;
-    const height = image.naturalHeight;
-
-    const ratio = width / height;
-
     if (
-        (width % 64 === 0 && height % 64 === 0) ||
-        (width % 512 === 0 && height % 512 === 0)
+        (
+            width % 64 === 0 &&
+            height % 64 === 0
+        )
+        ||
+        (
+            width % 512 === 0 &&
+            height % 512 === 0
+        )
     ) {
 
         aiScore += 18;
 
-        reasons.push(
-            "გამოსახულების ზომები ემთხვევა გავრცელებულ გენერაციულ ფორმატებს"
-        );
-
     }
 
+
     /*
-       Very high resolution
+       Large image
     */
 
-    if (width >= 4000 || height >= 4000) {
+    if (
+        width >= 4000 ||
+        height >= 4000
+    ) {
 
         editScore += 5;
 
     }
 
+
     /*
-       Small file with huge dimensions
+       Pixel / file size ratio
     */
 
-    const pixels = width * height;
+    const pixels =
+        width * height;
 
-    if (pixels > 12000000 && file.size < 1000000) {
+
+    if (
+        pixels > 12000000 &&
+        file.size < 1000000
+    ) {
 
         editScore += 12;
 
-        reasons.push(
-            "ფოტოს ზომა და ფაილის მოცულობა ერთმანეთთან უჩვეულო თანაფარდობაშია"
-        );
-
     }
+
 
     /*
        Filename hints
     */
 
-    const lowerName = file.name.toLowerCase();
+    const lowerName =
+        file.name.toLowerCase();
+
 
     const suspiciousNames = [
+
         "midjourney",
         "stable",
         "diffusion",
         "dall",
         "firefly",
         "leonardo",
-        "ai",
-        "generated"
+        "generated",
+        "ai-image"
+
     ];
 
-    suspiciousNames.forEach(word => {
 
-        if (lowerName.includes(word)) {
+    suspiciousNames.forEach(
+        function(word) {
 
-            aiScore += 25;
+            if (
+                lowerName.includes(word)
+            ) {
 
-            reasons.push(
-                "ფაილის სახელში აღმოჩნდა AI გენერაციასთან დაკავშირებული სიტყვა"
-            );
+                aiScore += 25;
+
+            }
 
         }
+    );
 
-    });
 
     /*
-       Clamp scores
+       Normalize
     */
 
-    aiScore = Math.min(95, Math.max(1, aiScore));
+    aiScore =
+        Math.min(
+            95,
+            Math.max(
+                1,
+                aiScore
+            )
+        );
 
-    editScore = Math.min(95, Math.max(1, editScore));
+
+    editScore =
+        Math.min(
+            95,
+            Math.max(
+                1,
+                editScore
+            )
+        );
+
 
     /*
-       EXIF basic detection.
-       Browser cannot reliably decode every EXIF field
-       without an external library.
+       EXIF
     */
 
     detectEXIF(file);
 
-    setTimeout(function () {
 
-        showScore(
-            "aiScore",
-            "aiBar",
-            "aiText",
-            aiScore,
-            "AI გენერაციის სავარაუდო მაჩვენებელი"
-        );
+    /*
+       Display
+    */
 
-        showScore(
-            "editScore",
-            "editBar",
-            "editText",
-            editScore,
-            "რედაქტირების სავარაუდო მაჩვენებელი"
-        );
+    setTimeout(
+        function() {
 
-    }, 500);
+            showScore(
+                "aiScore",
+                "aiBar",
+                "aiText",
+                aiScore
+            );
+
+
+            showScore(
+                "editScore",
+                "editBar",
+                "editText",
+                editScore
+            );
+
+        },
+        300
+    );
 
 }
 
+
+/* =========================================================
+   SCORE
+========================================================= */
 
 function showScore(
     scoreId,
     barId,
     textId,
-    score,
-    type
+    score
 ) {
 
     const scoreElement =
-        document.getElementById(scoreId);
+        document.getElementById(
+            scoreId
+        );
 
     const bar =
-        document.getElementById(barId);
+        document.getElementById(
+            barId
+        );
 
     const text =
-        document.getElementById(textId);
+        document.getElementById(
+            textId
+        );
+
 
     scoreElement.textContent =
         score + "%";
 
+
     bar.style.width =
         score + "%";
+
 
     scoreElement.className =
         "score";
 
+
     if (score < 30) {
 
-        scoreElement.classList.add("good");
+        scoreElement.classList.add(
+            "good"
+        );
+
+        bar.className =
+            "bar-inner good";
 
         text.textContent =
-            "ამ ტექნიკურ შემოწმებაში ძლიერი საეჭვო ნიშანი არ აღმოჩნდა.";
+            "ძლიერი საეჭვო ნიშანი არ აღმოჩნდა.";
 
     }
 
     else if (score < 60) {
 
-        scoreElement.classList.add("warning");
+        scoreElement.classList.add(
+            "warning"
+        );
+
+        bar.className =
+            "bar-inner warning";
 
         text.textContent =
             "აღმოჩნდა გარკვეული საეჭვო ტექნიკური ნიშნები.";
@@ -591,7 +1540,12 @@ function showScore(
 
     else {
 
-        scoreElement.classList.add("bad");
+        scoreElement.classList.add(
+            "bad"
+        );
+
+        bar.className =
+            "bar-inner bad";
 
         text.textContent =
             "აღმოჩნდა რამდენიმე საეჭვო ტექნიკური ნიშანი.";
@@ -601,78 +1555,107 @@ function showScore(
 }
 
 
+/* =========================================================
+   EXIF
+========================================================= */
+
 function detectEXIF(file) {
 
-    const reader = new FileReader();
+    const reader =
+        new FileReader();
 
-    reader.onload = function () {
 
-        const buffer =
-            new Uint8Array(reader.result);
+    reader.onload =
+        function() {
 
-        let found = false;
+            const buffer =
+                new Uint8Array(
+                    reader.result
+                );
 
-        /*
-           Basic JPEG EXIF marker detection
-        */
 
-        for (let i = 0; i < buffer.length - 1; i++) {
+            let found =
+                false;
 
-            if (
-                buffer[i] === 0x45 &&
-                buffer[i + 1] === 0x78 &&
-                buffer[i + 2] === 0x69 &&
-                buffer[i + 3] === 0x66
+
+            /*
+               EXIF marker
+            */
+
+            for (
+                let i = 0;
+                i < buffer.length - 4;
+                i++
             ) {
 
-                found = true;
+                if (
+                    buffer[i] === 0x45 &&
+                    buffer[i + 1] === 0x78 &&
+                    buffer[i + 2] === 0x69 &&
+                    buffer[i + 3] === 0x66
+                ) {
 
-                break;
+                    found = true;
+
+                    break;
+
+                }
 
             }
 
-        }
 
-        const element =
-            document.getElementById("exifStatus");
+            const element =
+                document.getElementById(
+                    "exifStatus"
+                );
 
-        if (found) {
 
-            element.textContent =
-                "აღმოჩენილია";
+            if (found) {
 
-            element.className =
-                "value good";
+                element.textContent =
+                    "აღმოჩენილია";
 
-        }
+                element.className =
+                    "value good";
 
-        else {
+            }
 
-            element.textContent =
-                "არ აღმოჩნდა";
+            else {
 
-            element.className =
-                "value warning";
+                element.textContent =
+                    "არ აღმოჩნდა";
 
-        }
+                element.className =
+                    "value warning";
 
-    };
+            }
 
-    /*
-       Read first part only for efficiency
-    */
+        };
+
 
     reader.readAsArrayBuffer(
-        file.slice(0, Math.min(file.size, 500000))
+        file.slice(
+            0,
+            Math.min(
+                file.size,
+                500000
+            )
+        )
     );
 
 }
 
 
+/* =========================================================
+   FORMAT FILE SIZE
+========================================================= */
+
 function formatBytes(bytes) {
 
-    if (bytes === 0)
+    if (!bytes) {
         return "0 Bytes";
+    }
+
 
     const units = [
         "Bytes",
@@ -681,33 +1664,83 @@ function formatBytes(bytes) {
         "GB"
     ];
 
+
     const index =
         Math.floor(
-            Math.log(bytes) / Math.log(1024)
+            Math.log(bytes) /
+            Math.log(1024)
         );
+
 
     return (
         parseFloat(
-            (bytes / Math.pow(1024, index))
-            .toFixed(2)
+            (
+                bytes /
+                Math.pow(
+                    1024,
+                    index
+                )
+            ).toFixed(2)
         )
-        + " "
-        + units[index]
+        +
+        " " +
+        units[index]
     );
 
 }
 
 
+/* =========================================================
+   RESET
+========================================================= */
+
 function resetChecker() {
 
-    document.getElementById("results").style.display =
+    results.style.display =
         "none";
 
-    document.getElementById("fileInput").value =
+
+    fileInput.value =
         "";
 
-    document.getElementById("previewImage").src =
+
+    previewImage.removeAttribute(
+        "src"
+    );
+
+
+    fileName.textContent =
         "";
+
+
+    document.getElementById(
+        "aiScore"
+    ).textContent =
+        "--%";
+
+
+    document.getElementById(
+        "editScore"
+    ).textContent =
+        "--%";
+
+
+    document.getElementById(
+        "aiBar"
+    ).style.width =
+        "0";
+
+
+    document.getElementById(
+        "editBar"
+    ).style.width =
+        "0";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 
 }
 
