@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Authenticity Checker</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #080b12;
+    color: #ffffff;
+}
+
+.container {
+    width: min(1000px, 94%);
+    margin: 0 auto;
+    padding: 40px 0;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 36px;
+    margin: 0 0 10px;
+}
+
+.header p {
+    color: #9da5b4;
+    font-size: 16px;
+}
+
+.upload {
+    border: 2px dashed #394252;
+    border-radius: 20px;
+    padding: 50px 20px;
+    text-align: center;
+    background: #10151f;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.upload:hover {
+    border-color: #667085;
+    background: #131a26;
+}
+
+.upload input {
+    display: none;
+}
+
+.upload-icon {
+    font-size: 55px;
+    margin-bottom: 15px;
+}
+
+.upload h2 {
+    margin: 5px 0 10px;
+}
+
+.upload p {
+    color: #8f98a8;
+    margin: 0;
+}
+
+#results {
+    display: none;
+    margin-top: 30px;
+}
+
+.preview {
+    background: #10151f;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.preview img {
+    display: block;
+    width: 100%;
+    max-height: 600px;
+    object-fit: contain;
+    border-radius: 14px;
+    background: #05070b;
+}
+
+.file-name {
+    margin-top: 15px;
+    color: #aab3c2;
+    word-break: break-all;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.card {
+    background: #10151f;
+    border-radius: 18px;
+    padding: 22px;
+}
+
+.card h3 {
+    margin-top: 0;
+    font-size: 17px;
+}
+
+.score {
+    font-size: 35px;
+    font-weight: bold;
+    margin: 12px 0;
+}
+
+.good {
+    color: #4ade80;
+}
+
+.warning {
+    color: #fbbf24;
+}
+
+.bad {
+    color: #fb7185;
+}
+
+.neutral {
+    color: #60a5fa;
+}
+
+.bar {
+    height: 9px;
+    background: #242b38;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.bar-inner {
+    height: 100%;
+    width: 0;
+    border-radius: 20px;
+    transition: width 1s ease;
+}
+
+.details {
+    margin-top: 20px;
+    background: #10151f;
+    border-radius: 18px;
+    padding: 22px;
+}
+
+.details h2 {
+    margin-top: 0;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 12px 0;
+    border-bottom: 1px solid #222936;
+}
+
+.row:last-child {
+    border-bottom: 0;
+}
+
+.label {
+    color: #8f98a8;
+}
+
+.value {
+    text-align: right;
+    word-break: break-word;
+}
+
+.notice {
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 15px;
+    background: #171d28;
+    color: #aeb7c5;
+    line-height: 1.6;
+}
+
+.reset {
+    margin-top: 20px;
+    width: 100%;
+    border: 0;
+    border-radius: 13px;
+    padding: 15px;
+    background: #ffffff;
+    color: #080b12;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+@media (max-width: 700px) {
+    .header h1 {
+        font-size: 28px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        padding: 25px 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Image Authenticity Checker</h1>
+        <p>ფოტოს ტექნიკური და მეტამონაცემების შემოწმება</p>
+    </div>
+
+    <label class="upload">
+        <input type="file" id="fileInput" accept="image/*">
+
+        <div class="upload-icon">📷</div>
+
+        <h2>ატვირთე ფოტო</h2>
+
+        <p>
+            დააჭირე აქ ან აირჩიე ფოტო მოწყობილობიდან
+        </p>
+    </label>
+
+    <div id="results">
+
+        <div class="preview">
+            <img id="previewImage" alt="Uploaded image">
+            <div class="file-name" id="fileName"></div>
+        </div>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>AI გენერაციის სავარაუდო მაჩვენებელი</h3>
+
+                <div class="score neutral" id="aiScore">
+                    --%
+                </div>
+
+                <div class="bar">
+                    <div class="bar-inner" id="aiBar"></div>
+                </div>
+
+                <p id="aiText">
+                    ანალიზი მიმდინარეობს
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>რედაქტირების სავარაუდო ნიშნები</h3>
+
+                <div class="score neutral" id="editScore">
+                    --%
+                </div>
+
+                <div class="bar">
+                    <div class="bar-inner" id="editBar"></div>
+                </div>
+
+                <p id="editText">
+                    ანალიზი მიმდინარეობს
+                </p>
+            </div>
+
+        </div>
+
+        <div class="details">
+
+            <h2>ფოტოს ინფორმაცია</h2>
+
+            <div class="row">
+                <span class="label">ფაილის ტიპი</span>
+                <span class="value" id="fileType">--</span>
+            </div>
+
+            <div class="row">
+                <span class="label">ფაილის ზომა</span>
+                <span class="value" id="fileSize">--</span>
+            </div>
+
+            <div class="row">
+                <span class="label">ზომები</span>
+                <span class="value" id="dimensions">--</span>
+            </div>
+
+            <div class="row">
+                <span class="label">EXIF მონაცემები</span>
+                <span class="value" id="exifStatus">--</span>
+            </div>
+
+            <div class="row">
+                <span class="label">ფაილის ბოლო ცვლილება</span>
+                <span class="value" id="modifiedDate">--</span>
+            </div>
+
+            <div class="row">
+                <span class="label">ფაილის სახელი</span>
+                <span class="value" id="originalName">--</span>
+            </div>
+
+        </div>
+
+        <div class="notice">
+            <strong>მნიშვნელოვანი:</strong><br>
+            ეს ინსტრუმენტი მუშაობს მხოლოდ ბრაუზერში და არ აგზავნის ფოტოს
+            გარე სერვერზე. AI გენერირებული ფოტოს 100 პროცენტიანი დადგენა
+            მხოლოდ ამ ტექნიკური შემოწმებებით შეუძლებელია. შედეგები არის
+            სავარაუდო და ეფუძნება ფოტოს ტექნიკურ ნიშნებს.
+        </div>
+
+        <button class="reset" onclick="resetChecker()">
+            სხვა ფოტოს შემოწმება
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+const fileInput = document.getElementById("fileInput");
+
+fileInput.addEventListener("change", function () {
+
+    const file = this.files[0];
+
+    if (!file) return;
+
+    analyzeImage(file);
+
+});
+
+
+function analyzeImage(file) {
+
+    const results = document.getElementById("results");
+
+    const preview = document.getElementById("previewImage");
+
+    const fileName = document.getElementById("fileName");
+
+    results.style.display = "block";
+
+    fileName.textContent = file.name;
+
+    document.getElementById("originalName").textContent =
+        file.name;
+
+    document.getElementById("fileType").textContent =
+        file.type || "უცნობი";
+
+    document.getElementById("fileSize").textContent =
+        formatBytes(file.size);
+
+    document.getElementById("modifiedDate").textContent =
+        new Date(file.lastModified).toLocaleString("ka-GE");
+
+    const url = URL.createObjectURL(file);
+
+    preview.src = url;
+
+    preview.onload = function () {
+
+        document.getElementById("dimensions").textContent =
+            this.naturalWidth + " × " + this.naturalHeight;
+
+        analyzeTechnicalProperties(file, this);
+
+    };
+
+}
+
+
+function analyzeTechnicalProperties(file, image) {
+
+    let editScore = 15;
+
+    let aiScore = 10;
+
+    let reasons = [];
+
+    const extension =
+        file.name.split(".").pop().toLowerCase();
+
+    /*
+       JPEG / PNG / WEBP basic analysis
+    */
+
+    if (extension === "jpg" || extension === "jpeg") {
+
+        editScore += 5;
+
+    }
+
+    if (extension === "png") {
+
+        editScore += 8;
+
+    }
+
+    if (extension === "webp") {
+
+        editScore += 10;
+
+    }
+
+    /*
+       Very unusual dimensions can sometimes be
+       associated with generated images.
+    */
+
+    const width = image.naturalWidth;
+    const height = image.naturalHeight;
+
+    const ratio = width / height;
+
+    if (
+        (width % 64 === 0 && height % 64 === 0) ||
+        (width % 512 === 0 && height % 512 === 0)
+    ) {
+
+        aiScore += 18;
+
+        reasons.push(
+            "გამოსახულების ზომები ემთხვევა გავრცელებულ გენერაციულ ფორმატებს"
+        );
+
+    }
+
+    /*
+       Very high resolution
+    */
+
+    if (width >= 4000 || height >= 4000) {
+
+        editScore += 5;
+
+    }
+
+    /*
+       Small file with huge dimensions
+    */
+
+    const pixels = width * height;
+
+    if (pixels > 12000000 && file.size < 1000000) {
+
+        editScore += 12;
+
+        reasons.push(
+            "ფოტოს ზომა და ფაილის მოცულობა ერთმანეთთან უჩვეულო თანაფარდობაშია"
+        );
+
+    }
+
+    /*
+       Filename hints
+    */
+
+    const lowerName = file.name.toLowerCase();
+
+    const suspiciousNames = [
+        "midjourney",
+        "stable",
+        "diffusion",
+        "dall",
+        "firefly",
+        "leonardo",
+        "ai",
+        "generated"
+    ];
+
+    suspiciousNames.forEach(word => {
+
+        if (lowerName.includes(word)) {
+
+            aiScore += 25;
+
+            reasons.push(
+                "ფაილის სახელში აღმოჩნდა AI გენერაციასთან დაკავშირებული სიტყვა"
+            );
+
+        }
+
+    });
+
+    /*
+       Clamp scores
+    */
+
+    aiScore = Math.min(95, Math.max(1, aiScore));
+
+    editScore = Math.min(95, Math.max(1, editScore));
+
+    /*
+       EXIF basic detection.
+       Browser cannot reliably decode every EXIF field
+       without an external library.
+    */
+
+    detectEXIF(file);
+
+    setTimeout(function () {
+
+        showScore(
+            "aiScore",
+            "aiBar",
+            "aiText",
+            aiScore,
+            "AI გენერაციის სავარაუდო მაჩვენებელი"
+        );
+
+        showScore(
+            "editScore",
+            "editBar",
+            "editText",
+            editScore,
+            "რედაქტირების სავარაუდო მაჩვენებელი"
+        );
+
+    }, 500);
+
+}
+
+
+function showScore(
+    scoreId,
+    barId,
+    textId,
+    score,
+    type
+) {
+
+    const scoreElement =
+        document.getElementById(scoreId);
+
+    const bar =
+        document.getElementById(barId);
+
+    const text =
+        document.getElementById(textId);
+
+    scoreElement.textContent =
+        score + "%";
+
+    bar.style.width =
+        score + "%";
+
+    scoreElement.className =
+        "score";
+
+    if (score < 30) {
+
+        scoreElement.classList.add("good");
+
+        text.textContent =
+            "ამ ტექნიკურ შემოწმებაში ძლიერი საეჭვო ნიშანი არ აღმოჩნდა.";
+
+    }
+
+    else if (score < 60) {
+
+        scoreElement.classList.add("warning");
+
+        text.textContent =
+            "აღმოჩნდა გარკვეული საეჭვო ტექნიკური ნიშნები.";
+
+    }
+
+    else {
+
+        scoreElement.classList.add("bad");
+
+        text.textContent =
+            "აღმოჩნდა რამდენიმე საეჭვო ტექნიკური ნიშანი.";
+
+    }
+
+}
+
+
+function detectEXIF(file) {
+
+    const reader = new FileReader();
+
+    reader.onload = function () {
+
+        const buffer =
+            new Uint8Array(reader.result);
+
+        let found = false;
+
+        /*
+           Basic JPEG EXIF marker detection
+        */
+
+        for (let i = 0; i < buffer.length - 1; i++) {
+
+            if (
+                buffer[i] === 0x45 &&
+                buffer[i + 1] === 0x78 &&
+                buffer[i + 2] === 0x69 &&
+                buffer[i + 3] === 0x66
+            ) {
+
+                found = true;
+
+                break;
+
+            }
+
+        }
+
+        const element =
+            document.getElementById("exifStatus");
+
+        if (found) {
+
+            element.textContent =
+                "აღმოჩენილია";
+
+            element.className =
+                "value good";
+
+        }
+
+        else {
+
+            element.textContent =
+                "არ აღმოჩნდა";
+
+            element.className =
+                "value warning";
+
+        }
+
+    };
+
+    /*
+       Read first part only for efficiency
+    */
+
+    reader.readAsArrayBuffer(
+        file.slice(0, Math.min(file.size, 500000))
+    );
+
+}
+
+
+function formatBytes(bytes) {
+
+    if (bytes === 0)
+        return "0 Bytes";
+
+    const units = [
+        "Bytes",
+        "KB",
+        "MB",
+        "GB"
+    ];
+
+    const index =
+        Math.floor(
+            Math.log(bytes) / Math.log(1024)
+        );
+
+    return (
+        parseFloat(
+            (bytes / Math.pow(1024, index))
+            .toFixed(2)
+        )
+        + " "
+        + units[index]
+    );
+
+}
+
+
+function resetChecker() {
+
+    document.getElementById("results").style.display =
+        "none";
+
+    document.getElementById("fileInput").value =
+        "";
+
+    document.getElementById("previewImage").src =
+        "";
+
+}
+
+</script>
+
+</body>
+</html>
