@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>G Search</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #202124;
+  background: #fff;
+}
+
+header {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  padding: 18px 24px;
+  font-size: 14px;
+}
+
+a {
+  color: #1a73e8;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+main {
+  width: min(760px, calc(100% - 32px));
+  margin: 9vh auto 0;
+  text-align: center;
+}
+
+.logo {
+  font-size: clamp(52px, 11vw, 82px);
+  font-weight: 500;
+  letter-spacing: -5px;
+  margin-bottom: 30px;
+}
+
+.blue { color: #4285f4; }
+.red { color: #ea4335; }
+.yellow { color: #fbbc05; }
+.green { color: #34a853; }
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #dfe1e5;
+  border-radius: 28px;
+  padding: 8px 16px;
+}
+
+.search:hover,
+.search:focus-within {
+  box-shadow: 0 2px 8px #0002;
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  font-size: 16px;
+  padding: 9px 0;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 7px;
+  padding: 11px 17px;
+  font-size: 14px;
+  background: #f8f9fa;
+  color: #202124;
+}
+
+button:hover {
+  box-shadow: 0 1px 4px #0003;
+}
+
+.search button {
+  padding: 5px;
+  background: transparent;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.note {
+  color: #70757a;
+  font-size: 13px;
+}
+
+.panel {
+  text-align: left;
+  margin-top: 38px;
+  padding: 18px;
+  border: 1px solid #dadce0;
+  border-radius: 12px;
+}
+
+.panel h2 {
+  font-size: 17px;
+}
+
+.panel p {
+  color: #5f6368;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.dns {
+  overflow-wrap: anywhere;
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 8px;
+  font-family: monospace;
+}
+
+#results {
+  display: none;
+  text-align: left;
+  margin-top: 30px;
+}
+
+.result {
+  padding: 12px 0;
+}
+
+.result h3 {
+  font-size: 19px;
+  font-weight: 400;
+  margin: 5px 0;
+}
+
+.result p {
+  color: #5f6368;
+  font-size: 14px;
+}
+
+#viewer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: white;
+  flex-direction: column;
+}
+
+.viewerbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px;
+  border-bottom: 1px solid #dadce0;
+}
+
+.viewerbar input {
+  flex: 1;
+  min-width: 150px;
+  padding: 10px;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+}
+
+#frame {
+  width: 100%;
+  flex: 1;
+  border: 0;
+}
+
+#viewerMsg {
+  padding: 10px;
+  font-size: 13px;
+  background: #fff8e1;
+  color: #795900;
+}
+
+footer {
+  text-align: center;
+  margin: 55px 15px 25px;
+  color: #70757a;
+  font-size: 13px;
+}
+
+@media(max-width:500px) {
+  main {
+    margin-top: 7vh;
+  }
+
+  .viewerbar input {
+    flex-basis: 100%;
+  }
+
+  .panel {
+    padding: 14px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a href="https://www.google.com"
+     target="_blank" rel="noopener">
+     Google
+  </a>
+
+  <a href="https://adguard-dns.io/"
+     target="_blank" rel="noopener">
+     AdGuard DNS
+  </a>
+</header>
+
+<main>
+
+  <h1 class="logo">
+    <span class="blue">G</span><span class="red">S</span><span class="yellow">e</span><span class="blue">a</span><span class="green">r</span><span class="red">ch</span>
+  </h1>
+
+  <form id="searchForm">
+    <div class="search">
+
+      <span aria-hidden="true">⌕</span>
+
+      <input
+        id="query"
+        type="search"
+        placeholder="მოძებნე ან შეიყვანე საიტის მისამართი"
+        autocomplete="off"
+        aria-label="ძიება">
+
+      <button type="button" id="clear"
+              aria-label="გასუფთავება">✕</button>
+
+    </div>
+
+    <div class="actions">
+      <button type="submit">Google ძიება</button>
+      <button type="button" id="openSite">საიტის გახსნა</button>
+    </div>
+  </form>
+
+  <p class="note">
+    მოძებნე ინფორმაცია ან გახსენი სასურველი ვებსაიტი
+  </p>
+
+  <section id="results"></section>
+
+  <section class="panel">
+    <h2>AdGuard DNS</h2>
+
+    <p>
+      გამოყენებული DNS-over-HTTPS მისამართი
+    </p>
+
+    <div class="dns">
+      https://dns.adguard-dns.com/dns-query
+    </div>
+
+    <p>
+      ეს არის DNS სერვისის მისამართი და არა საძიებო სისტემა.
+      ამ HTML ფაილის მითითება თავისთავად არ ცვლის მოწყობილობის
+      DNS პარამეტრებს.
+    </p>
+
+    <a href="https://adguard-dns.io/"
+       target="_blank" rel="noopener">
+       AdGuard DNS ოფიციალური გვერდი
+    </a>
+  </section>
+
+</main>
+
+<div id="viewer" role="dialog" aria-label="ვებსაიტის ნახვა">
+
+  <div class="viewerbar">
+
+    <button type="button" id="backHome">
+      ← უკან
+    </button>
+
+    <input
+      id="siteUrl"
+      type="url"
+      placeholder="https://example.com"
+      aria-label="საიტის მისამართი">
+
+    <button type="button" id="goSite">
+      გახსნა
+    </button>
+
+    <button type="button" id="newTab">
+      ახალ ჩანართში
+    </button>
+
+  </div>
+
+  <div id="viewerMsg">
+    თუ საიტი არ იტვირთება, შესაძლოა ის სხვა გვერდში ჩატვირთვას
+    კრძალავდეს. სცადე ახალ ჩანართში გახსნა.
+  </div>
+
+  <iframe
+    id="frame"
+    title="არჩეული ვებსაიტი"
+    referrerpolicy="no-referrer">
+  </iframe>
+
+</div>
+
+<footer>
+  G Search · HTML საძიებო გვერდი
+</footer>
+
+<script>
+const form = document.getElementById("searchForm");
+const query = document.getElementById("query");
+const results = document.getElementById("results");
+const viewer = document.getElementById("viewer");
+const siteUrl = document.getElementById("siteUrl");
+const frame = document.getElementById("frame");
+
+function normalizeUrl(value) {
+  let address = value.trim();
+
+  if (!address) {
+    return "";
+  }
+
+  if (!/^https?:\/\//i.test(address)) {
+    address = "https://" + address;
+  }
+
+  try {
+    const parsed = new URL(address);
+
+    if (
+      parsed.protocol !== "https:" &&
+      parsed.protocol !== "http:"
+    ) {
+      return "";
+    }
+
+    return parsed.href;
+  } catch {
+    return "";
+  }
+}
+
+function searchGoogle() {
+  const text = query.value.trim();
+
+  if (!text) {
+    query.focus();
+    return;
+  }
+
+  const searchUrl =
+    "https://www.google.com/search?q=" +
+    encodeURIComponent(text);
+
+  results.replaceChildren();
+  results.style.display = "block";
+
+  const item = document.createElement("div");
+  item.className = "result";
+
+  const heading = document.createElement("h3");
+  const link = document.createElement("a");
+
+  link.href = searchUrl;
+  link.target = "_blank";
+  link.rel = "noopener";
+  link.textContent = "Google-ში ძიების შედეგები";
+
+  heading.appendChild(link);
+
+  const description = document.createElement("p");
+  description.textContent =
+    "ძიების შედეგები გაიხსნება Google-ის გვერდზე ახალ ჩანართში.";
+
+  item.appendChild(heading);
+  item.appendChild(description);
+  results.appendChild(item);
+
+  window.open(searchUrl, "_blank", "noopener");
+}
+
+function openWebsite(value) {
+  const address = normalizeUrl(value);
+
+  if (!address) {
+    alert("შეიყვანე სწორი მისამართი, მაგალითად example.com");
+    return;
+  }
+
+  siteUrl.value = address;
+  viewer.style.display = "flex";
+  frame.src = address;
+}
+
+form.addEventListener("submit", function(event) {
+  event.preventDefault();
+  searchGoogle();
+});
+
+document.getElementById("clear").addEventListener("click", function() {
+  query.value = "";
+  query.focus();
+});
+
+document.getElementById("openSite").addEventListener("click", function() {
+  openWebsite(query.value);
+});
+
+document.getElementById("goSite").addEventListener("click", function() {
+  openWebsite(siteUrl.value);
+});
+
+siteUrl.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    openWebsite(siteUrl.value);
+  }
+});
+
+document.getElementById("newTab").addEventListener("click", function() {
+  const address = normalizeUrl(siteUrl.value);
+
+  if (address) {
+    window.open(address, "_blank", "noopener");
+  }
+});
+
+document.getElementById("backHome").addEventListener("click", function() {
+  frame.src = "about:blank";
+  viewer.style.display = "none";
+});
+</script>
+
+</body>
+</html>
